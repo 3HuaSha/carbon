@@ -2976,6 +2976,9 @@ msgstr "Numer partii"
 msgid "Batch Properties"
 msgstr "Właściwości partii"
 
+msgid "Batch Quantities"
+msgstr "Ilości partii produkcyjnych"
+
 msgid "Batch Size"
 msgstr "Rozmiar partii"
 
@@ -9053,6 +9056,9 @@ msgstr "Ruchy Magazynowe"
 
 msgid "Inventory Qty"
 msgstr "Ilość w magazynie"
+
+msgid "Inventory Quantities"
+msgstr "Ilości zapasów"
 
 msgid "Inventory Tracking"
 msgstr "Śledzenie zapasów"
@@ -15654,6 +15660,9 @@ msgstr "Numery seryjne do zwrotu"
 
 msgid "Serial or Batch Tracking Required"
 msgstr "Wymagane śledzenie seryjne lub partyjne"
+
+msgid "Serial Quantities"
+msgstr "Ilości seryjne"
 
 msgid "Serial tracking"
 msgstr "Śledzenie numerów seryjnych"
