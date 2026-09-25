@@ -8376,14 +8376,26 @@ msgstr "Headers"
 msgid "Help"
 msgstr "Help"
 
+msgid "Hidden on this step"
+msgstr "Hidden on this step"
+
 msgid "Hide"
 msgstr "Hide"
+
+msgid "Hide {label}"
+msgstr "Hide {label}"
 
 msgid "Hide account number"
 msgstr "Hide account number"
 
+msgid "Hide again"
+msgstr "Hide again"
+
 msgid "Hide raw"
 msgstr "Hide raw"
+
+msgid "Hide selected on this step"
+msgstr "Hide selected on this step"
 
 msgid "Hide system quantities until the review step"
 msgstr "Hide system quantities until the review step"
@@ -8919,6 +8931,9 @@ msgstr "Install"
 
 msgid "Installed"
 msgstr "Installed"
+
+msgid "Installed on this step, so it can't be hidden here."
+msgstr "Installed on this step, so it can't be hidden here."
 
 msgid "Instructions"
 msgstr "Instructions"
@@ -11726,6 +11741,9 @@ msgstr "Nothing else at this location has stock to pull from."
 
 msgid "Nothing here matches your search and filters."
 msgstr "Nothing here matches your search and filters."
+
+msgid "Nothing hidden. Use the eye in the Components panel to hide parts on this step."
+msgstr "Nothing hidden. Use the eye in the Components panel to hide parts on this step."
 
 msgid "Nothing in the archive"
 msgstr "Nothing in the archive"
@@ -15370,6 +15388,9 @@ msgstr "Select a reason for why the quote was not created."
 msgid "Select a shape first to see available options"
 msgstr "Select a shape first to see available options"
 
+msgid "Select a step to hide parts on it."
+msgstr "Select a step to hide parts on it."
+
 msgid "Select a substance and shape first to see available options"
 msgstr "Select a substance and shape first to see available options"
 
@@ -15977,15 +15998,28 @@ msgstr "Shortcuts"
 msgid "Show"
 msgstr "Show"
 
+#. placeholder {0}: group.name
+msgid "Show {0}"
+msgstr "Show {0}"
+
 #. placeholder {0}: overflow.length
 msgid "Show {0} more"
 msgstr "Show {0} more"
+
+msgid "Show {label}"
+msgstr "Show {label}"
 
 msgid "Show a readable Customer ID column on the customer list, customer forms, and dropdowns. Customers are still identified internally either way."
 msgstr "Show a readable Customer ID column on the customer list, customer forms, and dropdowns. Customers are still identified internally either way."
 
 msgid "Show a readable Supplier ID column on the supplier list, supplier forms, and dropdowns. Suppliers are still identified internally either way."
 msgstr "Show a readable Supplier ID column on the supplier list, supplier forms, and dropdowns. Suppliers are still identified internally either way."
+
+msgid "Show all"
+msgstr "Show all"
+
+msgid "Show all hidden on this step"
+msgstr "Show all hidden on this step"
 
 msgid "Show available batch numbers"
 msgstr "Show available batch numbers"
@@ -18168,6 +18202,9 @@ msgstr "This station runs ability-gated work — it only runs while a qualified 
 
 msgid "This station runs work with no ability requirement; operators assigned on the manning board shape available labor."
 msgstr "This station runs work with no ability requirement; operators assigned on the manning board shape available labor."
+
+msgid "This step"
+msgstr "This step"
 
 #. placeholder {0}: usageCount === 1 ? "" : "s"
 msgid "This storage type is currently used by {usageCount} storage unit{0}."

@@ -637,7 +637,7 @@ export async function getAssemblyPlaybackByOperationId(
   const steps = await client
     .from("assemblyInstructionStep")
     .select(
-      "id, title, instructionText, componentNodeIds, motion, camera, fastener, durationSeconds, warnings"
+      "id, title, instructionText, componentNodeIds, hiddenComponentNodeIds, motion, camera, fastener, durationSeconds, warnings"
     )
     .eq("assemblyInstructionId", instructionId)
     .order("sortOrder", { ascending: true });

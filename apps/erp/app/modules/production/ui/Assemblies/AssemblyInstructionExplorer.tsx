@@ -96,7 +96,10 @@ type AssemblyInstructionExplorerProps = {
   /** Double-click a step — preview (play) its insertion motion */
   onPreviewStep: (stepId: string) => void;
   onHighlightComponents: (nodeIds: string[]) => void;
-  onHideComponents: (nodeIds: string[]) => void;
+  hasSelectedStep: boolean;
+  ownNodeIds: string[];
+  hiddenNodeIds: string[];
+  onSetHiddenComponents: (nodeIds: string[]) => void;
 };
 
 // Memoized: the parent route re-renders on every motion-drag frame
@@ -119,7 +122,10 @@ function AssemblyInstructionExplorer({
   onSelectStep,
   onPreviewStep,
   onHighlightComponents,
-  onHideComponents
+  hasSelectedStep,
+  ownNodeIds,
+  hiddenNodeIds,
+  onSetHiddenComponents
 }: AssemblyInstructionExplorerProps) {
   const { id } = useParams();
   if (!id) throw new Error("Could not find id");
@@ -777,7 +783,10 @@ function AssemblyInstructionExplorer({
             isActive={tab === "components"}
             isAddingStep={newStepFetcher.state !== "idle"}
             onHighlightComponents={onHighlightComponents}
-            onHideComponents={onHideComponents}
+            hasSelectedStep={hasSelectedStep}
+            ownNodeIds={ownNodeIds}
+            hiddenNodeIds={hiddenNodeIds}
+            onSetHiddenComponents={onSetHiddenComponents}
             onSelectStep={onSelectStep}
             onAddStep={onAddStep}
           />

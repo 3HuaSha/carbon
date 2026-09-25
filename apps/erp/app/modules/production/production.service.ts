@@ -7283,6 +7283,28 @@ export async function updateAssemblyStepComponents(
     .single();
 }
 
+// Replaces a step's hidden list. The step's own components are stripped (and the
+// list deduped) by the assembly_step_strip_own_hidden_components trigger.
+export async function updateAssemblyStepHiddenComponents(
+  client: SupabaseClient<Database>,
+  data: {
+    id: string;
+    hiddenComponentNodeIds: string[];
+    updatedBy: string;
+  }
+) {
+  return client
+    .from("assemblyInstructionStep")
+    .update({
+      hiddenComponentNodeIds: data.hiddenComponentNodeIds,
+      updatedBy: data.updatedBy,
+      updatedAt: new Date().toISOString()
+    })
+    .eq("id", data.id)
+    .select("id")
+    .single();
+}
+
 // Assign a set of component instances to a target step. `duplicate` unions them
 // onto the target only (a component may live on several steps). `move` unions
 // them onto the target AND strips them from every other step, so the component
@@ -9249,6 +9271,7 @@ export function toViewerStep(step: AssemblyInstructionStepRow): AssemblyStep {
     title: step.title,
     instructionText: step.instructionText,
     componentNodeIds: step.componentNodeIds ?? [],
+    hiddenComponentNodeIds: step.hiddenComponentNodeIds ?? [],
     motion: motion.success ? motion.data : { type: "none" },
     camera: camera.success ? camera.data : null,
     fastener: fastener.success ? fastener.data : null,

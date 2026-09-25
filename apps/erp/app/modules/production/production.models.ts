@@ -1470,6 +1470,10 @@ export const assemblyInstructionStepComponentsValidator = z.object({
   componentNodeIds: jsonField(z.array(z.string()))
 });
 
+export const assemblyInstructionStepHiddenComponentsValidator = z.object({
+  hiddenComponentNodeIds: jsonField(z.array(z.string()))
+});
+
 export const assemblyStepComponentsReassignValidator = z
   .object({
     // Absent for "remove" (unassign from every step); required otherwise.

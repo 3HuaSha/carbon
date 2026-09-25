@@ -8376,14 +8376,26 @@ msgstr "En-têtes"
 msgid "Help"
 msgstr "Aide"
 
+msgid "Hidden on this step"
+msgstr ""
+
 msgid "Hide"
 msgstr "Masquer"
+
+msgid "Hide {label}"
+msgstr ""
 
 msgid "Hide account number"
 msgstr "Masquer le numéro de compte"
 
+msgid "Hide again"
+msgstr ""
+
 msgid "Hide raw"
 msgstr "Masquer le brut"
+
+msgid "Hide selected on this step"
+msgstr ""
 
 msgid "Hide system quantities until the review step"
 msgstr "Masquer les quantités système jusqu'à l'étape de revue"
@@ -8919,6 +8931,9 @@ msgstr "Installer"
 
 msgid "Installed"
 msgstr "Installé"
+
+msgid "Installed on this step, so it can't be hidden here."
+msgstr ""
 
 msgid "Instructions"
 msgstr "Instructions"
@@ -11726,6 +11741,9 @@ msgstr "Aucun autre article à cet endroit n'a de stock à prélever."
 
 msgid "Nothing here matches your search and filters."
 msgstr "Rien ici ne correspond à votre recherche et vos filtres."
+
+msgid "Nothing hidden. Use the eye in the Components panel to hide parts on this step."
+msgstr ""
 
 msgid "Nothing in the archive"
 msgstr "Rien dans l'archive"
@@ -15370,6 +15388,9 @@ msgstr "Sélectionnez une raison pour laquelle le devis n'a pas été créé."
 msgid "Select a shape first to see available options"
 msgstr "Sélectionnez d'abord une forme pour voir les options disponibles"
 
+msgid "Select a step to hide parts on it."
+msgstr ""
+
 msgid "Select a substance and shape first to see available options"
 msgstr "Sélectionnez d'abord une substance et une forme pour voir les options disponibles"
 
@@ -15977,15 +15998,28 @@ msgstr "Raccourcis"
 msgid "Show"
 msgstr "Afficher"
 
+#. placeholder {0}: group.name
+msgid "Show {0}"
+msgstr ""
+
 #. placeholder {0}: overflow.length
 msgid "Show {0} more"
 msgstr "Afficher {0} supplémentaires"
+
+msgid "Show {label}"
+msgstr ""
 
 msgid "Show a readable Customer ID column on the customer list, customer forms, and dropdowns. Customers are still identified internally either way."
 msgstr "Afficher une colonne ID client lisible sur la liste des clients, les formulaires clients et les listes déroulantes. Les clients sont toujours identifiés en interne de toute façon."
 
 msgid "Show a readable Supplier ID column on the supplier list, supplier forms, and dropdowns. Suppliers are still identified internally either way."
 msgstr "Afficher une colonne ID Fournisseur lisible sur la liste des fournisseurs, les formulaires de fournisseur et les listes déroulantes. Les fournisseurs sont toujours identifiés en interne de toute façon."
+
+msgid "Show all"
+msgstr ""
+
+msgid "Show all hidden on this step"
+msgstr ""
 
 msgid "Show available batch numbers"
 msgstr "Afficher les numéros de lot disponibles"
@@ -18168,6 +18202,9 @@ msgstr "Cette station exécute du travail soumis à gating d'aptitude — elle n
 
 msgid "This station runs work with no ability requirement; operators assigned on the manning board shape available labor."
 msgstr "Cette station exécute un travail sans exigence de compétence ; les opérateurs assignés sur le tableau d'affectation façonnent la main-d'œuvre disponible."
+
+msgid "This step"
+msgstr ""
 
 #. placeholder {0}: usageCount === 1 ? "" : "s"
 msgid "This storage type is currently used by {usageCount} storage unit{0}."

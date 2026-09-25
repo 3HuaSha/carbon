@@ -109,6 +109,12 @@ export type AssemblyStep = {
    */
   flagged?: boolean;
   /**
+   * Components the author hid on THIS step only (tooling, fixtures, installed
+   * parts blocking the view). Not drawn while this step is active; they return
+   * on the next step. Never applied to the step's own `componentNodeIds`.
+   */
+  hiddenComponentNodeIds?: string[];
+  /**
    * Subassembly phase this step belongs to (baked at step generation from the
    * plan's contact graph). `null`/absent = the main phase, built seated. A
    * non-null phase builds staged off to the side and flies into the main body

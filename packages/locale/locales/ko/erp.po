@@ -8376,14 +8376,26 @@ msgstr "헤더"
 msgid "Help"
 msgstr "도움말"
 
+msgid "Hidden on this step"
+msgstr ""
+
 msgid "Hide"
 msgstr "숨기기"
+
+msgid "Hide {label}"
+msgstr ""
 
 msgid "Hide account number"
 msgstr "계좌 번호 숨기기"
 
+msgid "Hide again"
+msgstr ""
+
 msgid "Hide raw"
 msgstr "원본 숨기기"
+
+msgid "Hide selected on this step"
+msgstr ""
 
 msgid "Hide system quantities until the review step"
 msgstr "검토 단계 전까지 시스템 수량 숨기기"
@@ -8919,6 +8931,9 @@ msgstr "설치"
 
 msgid "Installed"
 msgstr "설치됨"
+
+msgid "Installed on this step, so it can't be hidden here."
+msgstr ""
 
 msgid "Instructions"
 msgstr "지시사항"
@@ -11726,6 +11741,9 @@ msgstr "이 위치에는 더 이상 가져올 재고가 없습니다."
 
 msgid "Nothing here matches your search and filters."
 msgstr "검색 및 필터와 일치하는 항목이 없습니다."
+
+msgid "Nothing hidden. Use the eye in the Components panel to hide parts on this step."
+msgstr ""
 
 msgid "Nothing in the archive"
 msgstr "보관함이 비어 있습니다"
@@ -15370,6 +15388,9 @@ msgstr "견적이 생성되지 않은 사유를 선택하세요."
 msgid "Select a shape first to see available options"
 msgstr "먼저 형태를 선택하여 가용 옵션을 확인하세요."
 
+msgid "Select a step to hide parts on it."
+msgstr ""
+
 msgid "Select a substance and shape first to see available options"
 msgstr "먼저 재질과 형태를 선택하여 가용 옵션을 확인하세요."
 
@@ -15977,15 +15998,28 @@ msgstr "단축키"
 msgid "Show"
 msgstr "표시"
 
+#. placeholder {0}: group.name
+msgid "Show {0}"
+msgstr ""
+
 #. placeholder {0}: overflow.length
 msgid "Show {0} more"
 msgstr "{0}개 더 표시"
+
+msgid "Show {label}"
+msgstr ""
 
 msgid "Show a readable Customer ID column on the customer list, customer forms, and dropdowns. Customers are still identified internally either way."
 msgstr "고객 목록, 고객 양식, 드롭다운에 읽기 쉬운 고객 ID 열을 표시합니다. 어느 쪽이든 고객은 내부적으로 동일하게 식별됩니다."
 
 msgid "Show a readable Supplier ID column on the supplier list, supplier forms, and dropdowns. Suppliers are still identified internally either way."
 msgstr "공급업체 목록, 공급업체 양식, 드롭다운에 읽기 쉬운 공급업체 ID 열을 표시합니다. 어느 쪽이든 공급업체는 내부적으로 동일하게 식별됩니다."
+
+msgid "Show all"
+msgstr ""
+
+msgid "Show all hidden on this step"
+msgstr ""
 
 msgid "Show available batch numbers"
 msgstr "가용 배치 번호 표시"
@@ -18168,6 +18202,9 @@ msgstr "이 작업장은 역량 게이트 작업을 실행합니다 — 자격 �
 
 msgid "This station runs work with no ability requirement; operators assigned on the manning board shape available labor."
 msgstr "이 스테이션은 역량 요구사항이 없는 작업을 실행합니다. 인력 배치 보드에서 할당된 작업자는 가용 노무를 형성합니다."
+
+msgid "This step"
+msgstr ""
 
 #. placeholder {0}: usageCount === 1 ? "" : "s"
 msgid "This storage type is currently used by {usageCount} storage unit{0}."

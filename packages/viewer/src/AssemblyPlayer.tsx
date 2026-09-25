@@ -56,6 +56,7 @@ import {
   type FutureComponentsMode,
   type InstalledComponentsMode,
   occluderWeight,
+  stepHiddenNodeIds,
   VIEW_MODES,
   viewForModes,
   visualForComponent
@@ -98,8 +99,6 @@ export type AssemblyPlayerProps = {
    * Independent of click-selection.
    */
   highlightedNodeIds?: string[];
-  /** Components hidden from the viewer entirely (fixtures, reference geometry) */
-  hiddenNodeIds?: string[];
   /**
    * Isolate/focus set. When non-empty, ONLY these components render — everything
    * else is hidden so the user can inspect the selection in isolation. Empty =
@@ -193,7 +192,6 @@ export const AssemblyPlayer = forwardRef<
     onSelectComponents,
     onGraphLoaded,
     highlightedNodeIds,
-    hiddenNodeIds,
     focusedNodeIds,
     readOnly = false,
     editMotion,
@@ -507,7 +505,6 @@ export const AssemblyPlayer = forwardRef<
               futureMode={futureMode}
               installedMode={installedMode}
               highlightedNodeIds={highlightedNodeIds}
-              hiddenNodeIds={hiddenNodeIds}
               focusedNodeIds={isPlaying ? undefined : focusedNodeIds}
               readOnly={readOnly}
               onSelectComponents={onSelectComponents}
@@ -848,7 +845,6 @@ function AssemblyScene({
   futureMode,
   installedMode,
   highlightedNodeIds,
-  hiddenNodeIds,
   focusedNodeIds,
   readOnly,
   onSelectComponents,
@@ -880,7 +876,6 @@ function AssemblyScene({
   futureMode: FutureComponentsMode;
   installedMode: InstalledComponentsMode;
   highlightedNodeIds?: string[];
-  hiddenNodeIds?: string[];
   focusedNodeIds?: string[];
   readOnly: boolean;
   onSelectComponents?: (nodeIds: string[]) => void;
@@ -1017,10 +1012,9 @@ function AssemblyScene({
     () => new Set(focusedNodeIds ?? []),
     [focusedNodeIds]
   );
-  const hiddenSet = useMemo(
-    () => new Set(hiddenNodeIds ?? []),
-    [hiddenNodeIds]
-  );
+  // Re-derived per step, so playback hides and restores each step's list as it
+  // moves through the sequence.
+  const hiddenSet = useMemo(() => stepHiddenNodeIds(activeStep), [activeStep]);
 
   // Component picking is only meaningful in the editor (a selection callback,
   // not read-only) — the drill affordance is gated on it so pure playback stays
@@ -2647,10 +2641,6 @@ const VIEW_LABELS: Record<
     label: "Focus",
     description:
       "Focus this step by fading the already-installed components to see-through"
-  },
-  isolate: {
-    label: "Isolate",
-    description: "Show only this step's components, hiding everything else"
   },
   full: { label: "Full", description: "Show every component solid" }
 };

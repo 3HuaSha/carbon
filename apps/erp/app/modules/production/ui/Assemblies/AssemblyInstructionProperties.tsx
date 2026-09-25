@@ -26,9 +26,11 @@ import {
 import { Editor } from "@carbon/react/Editor";
 import type { AssemblyGraphIndex, NamedUnit } from "@carbon/viewer";
 import { describeStep, groupComponentNodeIds } from "@carbon/viewer";
-import { memo, useMemo, useState } from "react";
+import { Trans, useLingui } from "@lingui/react/macro";
+import { memo, useEffect, useMemo, useState } from "react";
 import {
   LuCirclePlus,
+  LuEyeOff,
   LuMousePointerClick,
   LuTriangleAlert,
   LuX
@@ -79,6 +81,8 @@ type AssemblyInstructionPropertiesProps = {
   onStartAddComponents: () => void;
   onStopAddComponents: () => void;
   onRemoveComponents: (nodeIds: string[]) => void;
+  hiddenNodeIds: string[];
+  onSetHiddenComponents: (nodeIds: string[]) => void;
   /** The active step's motion path is open in the 3D editor */
   isEditingMotion: boolean;
   onEditMotion: (stepId: string) => void;
@@ -105,6 +109,8 @@ const AssemblyInstructionProperties = ({
   onStartAddComponents,
   onStopAddComponents,
   onRemoveComponents,
+  hiddenNodeIds,
+  onSetHiddenComponents,
   isEditingMotion,
   onEditMotion,
   onStopEditMotion,
@@ -214,6 +220,8 @@ const AssemblyInstructionProperties = ({
               onStartAddComponents={onStartAddComponents}
               onStopAddComponents={onStopAddComponents}
               onRemoveComponents={onRemoveComponents}
+              hiddenNodeIds={hiddenNodeIds}
+              onSetHiddenComponents={onSetHiddenComponents}
               isEditingMotion={isEditingMotion}
               onEditMotion={onEditMotion}
               onStopEditMotion={onStopEditMotion}
@@ -324,6 +332,8 @@ function StepForm({
   onStartAddComponents,
   onStopAddComponents,
   onRemoveComponents,
+  hiddenNodeIds,
+  onSetHiddenComponents,
   isEditingMotion,
   onEditMotion,
   onStopEditMotion,
@@ -342,6 +352,8 @@ function StepForm({
   onStartAddComponents: () => void;
   onStopAddComponents: () => void;
   onRemoveComponents: (nodeIds: string[]) => void;
+  hiddenNodeIds: string[];
+  onSetHiddenComponents: (nodeIds: string[]) => void;
   isEditingMotion: boolean;
   onEditMotion: (stepId: string) => void;
   onStopEditMotion: () => void;
@@ -593,6 +605,13 @@ function StepForm({
           onRemoveComponents={onRemoveComponents}
         />
 
+        <StepHiddenComponentsEditor
+          hiddenNodeIds={hiddenNodeIds}
+          graphIndex={graphIndex}
+          isDisabled={isDisabled}
+          onSetHiddenComponents={onSetHiddenComponents}
+        />
+
         <Submit
           isDisabled={cannotSave || fetcher.state !== "idle"}
           isLoading={fetcher.state !== "idle"}
@@ -728,5 +747,147 @@ function StepComponentsEditor({
         </ul>
       )}
     </VStack>
+  );
+}
+
+/** Parts are hidden from the Components panel eye; here they can only be shown again. */
+function StepHiddenComponentsEditor({
+  hiddenNodeIds,
+  graphIndex,
+  isDisabled,
+  onSetHiddenComponents
+}: {
+  hiddenNodeIds: string[];
+  graphIndex: AssemblyGraphIndex | null;
+  isDisabled: boolean;
+  onSetHiddenComponents: (nodeIds: string[]) => void;
+}) {
+  const { t } = useLingui();
+  // "Show all" saves at once but stays undoable for SHOW_ALL_UNDO_MS, so a stray
+  // click can't silently throw away a step's tuned hidden list.
+  const [undoNodeIds, setUndoNodeIds] = useState<string[] | null>(null);
+  useEffect(() => {
+    if (!undoNodeIds) return;
+    const timer = setTimeout(() => setUndoNodeIds(null), SHOW_ALL_UNDO_MS);
+    return () => clearTimeout(timer);
+  }, [undoNodeIds]);
+  const isUndoPending = undoNodeIds !== null;
+  const listedNodeIds = undoNodeIds ?? hiddenNodeIds;
+
+  const groups = useMemo(
+    () => (graphIndex ? groupComponentNodeIds(listedNodeIds, graphIndex) : []),
+    [listedNodeIds, graphIndex]
+  );
+  const onShow = (nodeIds: string[]) => {
+    const show = new Set(nodeIds);
+    onSetHiddenComponents(hiddenNodeIds.filter((nodeId) => !show.has(nodeId)));
+  };
+
+  const onShowAll = () => {
+    setUndoNodeIds(hiddenNodeIds);
+    onSetHiddenComponents([]);
+  };
+
+  // Restore the shown parts, keeping anything hidden elsewhere in the meantime.
+  const onHideAgain = () => {
+    if (!undoNodeIds) return;
+    onSetHiddenComponents([...new Set([...hiddenNodeIds, ...undoNodeIds])]);
+    setUndoNodeIds(null);
+  };
+
+  return (
+    <VStack
+      spacing={2}
+      className="w-full rounded-lg border border-border bg-muted/40 p-3"
+    >
+      <HStack className="w-full justify-between">
+        <Label className="text-xxs font-medium uppercase tracking-wide text-muted-foreground">
+          <Trans>Hidden on this step</Trans>
+        </Label>
+        {!isDisabled &&
+          (isUndoPending ? (
+            <HideAgainButton onClick={onHideAgain} />
+          ) : (
+            groups.length > 0 && (
+              <Button variant="secondary" size="sm" onClick={onShowAll}>
+                <Trans>Show all</Trans>
+              </Button>
+            )
+          ))}
+      </HStack>
+      {groups.length === 0 ? (
+        <p className="text-xs text-muted-foreground">
+          <Trans>
+            Nothing hidden. Use the eye in the Components panel to hide parts on
+            this step.
+          </Trans>
+        </p>
+      ) : (
+        <ul className="max-h-64 w-full divide-y divide-border overflow-y-auto rounded-lg border border-border scrollbar-thin scrollbar-track-transparent scrollbar-thumb-accent">
+          {groups.map((group) => (
+            <li
+              key={group.key}
+              className={cn(
+                "flex w-full items-center gap-2 px-2 py-1.5 text-sm",
+                isUndoPending && "opacity-50"
+              )}
+            >
+              <ComponentColorSwatch color={group.color} />
+              <span
+                className="min-w-0 flex-1 truncate text-muted-foreground"
+                title={group.name}
+              >
+                {group.name}
+              </span>
+              <Badge variant="secondary" className="tabular-nums">
+                ×{group.count}
+              </Badge>
+              {!isDisabled && !isUndoPending && (
+                <IconButton
+                  aria-label={t`Show ${group.name}`}
+                  icon={<LuEyeOff />}
+                  variant="ghost"
+                  size="sm"
+                  className="text-muted-foreground"
+                  onClick={() => onShow(group.nodeIds)}
+                />
+              )}
+            </li>
+          ))}
+        </ul>
+      )}
+    </VStack>
+  );
+}
+
+const SHOW_ALL_UNDO_MS = 4000;
+
+function HideAgainButton({ onClick }: { onClick: () => void }) {
+  const [isDraining, setIsDraining] = useState(false);
+  useEffect(() => {
+    // Start full, then drain on the next frame so the width transition runs.
+    const frame = requestAnimationFrame(() => setIsDraining(true));
+    return () => cancelAnimationFrame(frame);
+  }, []);
+
+  return (
+    <Button
+      variant="secondary"
+      size="sm"
+      className="relative overflow-hidden"
+      onClick={onClick}
+    >
+      <span
+        aria-hidden
+        className="pointer-events-none absolute inset-y-0 left-0 bg-primary/15"
+        style={{
+          width: isDraining ? "0%" : "100%",
+          transition: `width ${SHOW_ALL_UNDO_MS}ms linear`
+        }}
+      />
+      <span className="relative">
+        <Trans>Hide again</Trans>
+      </span>
+    </Button>
   );
 }

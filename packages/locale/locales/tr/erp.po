@@ -8376,14 +8376,26 @@ msgstr "Başlıklar"
 msgid "Help"
 msgstr "Yardım"
 
+msgid "Hidden on this step"
+msgstr ""
+
 msgid "Hide"
 msgstr "Gizle"
+
+msgid "Hide {label}"
+msgstr ""
 
 msgid "Hide account number"
 msgstr "Hesap numarasını gizle"
 
+msgid "Hide again"
+msgstr ""
+
 msgid "Hide raw"
 msgstr "Ham verileri gizle"
+
+msgid "Hide selected on this step"
+msgstr ""
 
 msgid "Hide system quantities until the review step"
 msgstr "Sistem miktarlarını inceleme adımına kadar gizle"
@@ -8919,6 +8931,9 @@ msgstr "Yükle"
 
 msgid "Installed"
 msgstr "Yüklendi"
+
+msgid "Installed on this step, so it can't be hidden here."
+msgstr ""
 
 msgid "Instructions"
 msgstr "Talimatlar"
@@ -11726,6 +11741,9 @@ msgstr "Bu konumda çekilecek başka hiçbir stok yok."
 
 msgid "Nothing here matches your search and filters."
 msgstr "Burada arama ve filtrelerinizle eşleşen hiçbir şey yok."
+
+msgid "Nothing hidden. Use the eye in the Components panel to hide parts on this step."
+msgstr ""
 
 msgid "Nothing in the archive"
 msgstr "Arşivde hiçbir şey yok"
@@ -15370,6 +15388,9 @@ msgstr "Teklifin neden oluşturulmadığına dair bir sebep seçin."
 msgid "Select a shape first to see available options"
 msgstr "Kullanılabilir seçenekleri görmek için önce bir şekil seç"
 
+msgid "Select a step to hide parts on it."
+msgstr ""
+
 msgid "Select a substance and shape first to see available options"
 msgstr "Kullanılabilir seçenekleri görmek için önce bir madde ve şekil seç"
 
@@ -15977,15 +15998,28 @@ msgstr "Kısayollar"
 msgid "Show"
 msgstr "Göster"
 
+#. placeholder {0}: group.name
+msgid "Show {0}"
+msgstr ""
+
 #. placeholder {0}: overflow.length
 msgid "Show {0} more"
 msgstr "{0} daha göster"
+
+msgid "Show {label}"
+msgstr ""
 
 msgid "Show a readable Customer ID column on the customer list, customer forms, and dropdowns. Customers are still identified internally either way."
 msgstr "Müşteri listesinde, müşteri formlarında ve açılır menülerde okunabilir bir Müşteri Kimliği sütunu gösterir. Müşteriler her iki durumda da dahili olarak tanımlanmaya devam eder."
 
 msgid "Show a readable Supplier ID column on the supplier list, supplier forms, and dropdowns. Suppliers are still identified internally either way."
 msgstr "Tedarikçi listesinde, tedarikçi formlarında ve açılır menülerde okunabilir bir Tedarikçi Kimliği sütunu gösterir. Tedarikçiler her iki durumda da dahili olarak tanımlanmaya devam eder."
+
+msgid "Show all"
+msgstr ""
+
+msgid "Show all hidden on this step"
+msgstr ""
 
 msgid "Show available batch numbers"
 msgstr "Kullanılabilir parti numaralarını göster"
@@ -18168,6 +18202,9 @@ msgstr "Bu istasyon yetkinlik kapısı geçmeli işleri çalıştırır — yaln
 
 msgid "This station runs work with no ability requirement; operators assigned on the manning board shape available labor."
 msgstr "Bu istasyon hiçbir Yetkinlik gereksinimi olmaksızın iş çalıştırır; personel panosuna atanan Operatörler mevcut İşçiliği şekillendirir."
+
+msgid "This step"
+msgstr ""
 
 #. placeholder {0}: usageCount === 1 ? "" : "s"
 msgid "This storage type is currently used by {usageCount} storage unit{0}."

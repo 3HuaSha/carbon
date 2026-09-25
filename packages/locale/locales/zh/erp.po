@@ -8376,14 +8376,26 @@ msgstr "标头"
 msgid "Help"
 msgstr "帮助"
 
+msgid "Hidden on this step"
+msgstr ""
+
 msgid "Hide"
 msgstr "隐藏"
+
+msgid "Hide {label}"
+msgstr ""
 
 msgid "Hide account number"
 msgstr "隐藏账户号码"
 
+msgid "Hide again"
+msgstr ""
+
 msgid "Hide raw"
 msgstr "隐藏原始内容"
+
+msgid "Hide selected on this step"
+msgstr ""
 
 msgid "Hide system quantities until the review step"
 msgstr "在评审步骤前隐藏系统数量"
@@ -8919,6 +8931,9 @@ msgstr "安装"
 
 msgid "Installed"
 msgstr "已安装"
+
+msgid "Installed on this step, so it can't be hidden here."
+msgstr ""
 
 msgid "Instructions"
 msgstr "说明"
@@ -11726,6 +11741,9 @@ msgstr "此位置没有其他可提取的库存。"
 
 msgid "Nothing here matches your search and filters."
 msgstr "没有与您的搜索和过滤条件匹配的内容。"
+
+msgid "Nothing hidden. Use the eye in the Components panel to hide parts on this step."
+msgstr ""
 
 msgid "Nothing in the archive"
 msgstr "存档中没有任何内容"
@@ -15370,6 +15388,9 @@ msgstr "选择未创建报价的原因。"
 msgid "Select a shape first to see available options"
 msgstr "请先选择形状以查看可用选项"
 
+msgid "Select a step to hide parts on it."
+msgstr ""
+
 msgid "Select a substance and shape first to see available options"
 msgstr "请先选择物质和形状以查看可用选项"
 
@@ -15977,15 +15998,28 @@ msgstr "快捷键"
 msgid "Show"
 msgstr "显示"
 
+#. placeholder {0}: group.name
+msgid "Show {0}"
+msgstr ""
+
 #. placeholder {0}: overflow.length
 msgid "Show {0} more"
 msgstr "显示{0}个更多"
+
+msgid "Show {label}"
+msgstr ""
 
 msgid "Show a readable Customer ID column on the customer list, customer forms, and dropdowns. Customers are still identified internally either way."
 msgstr "在客户列表、客户表单和下拉菜单上显示可读的客户ID列。无论哪种方式，客户在内部仍然可以被识别。"
 
 msgid "Show a readable Supplier ID column on the supplier list, supplier forms, and dropdowns. Suppliers are still identified internally either way."
 msgstr "在供应商列表、供应商表单和下拉菜单上显示可读的供应商 ID 列。无论哪种方式，供应商在内部仍然可以被识别。"
+
+msgid "Show all"
+msgstr ""
+
+msgid "Show all hidden on this step"
+msgstr ""
 
 msgid "Show available batch numbers"
 msgstr "显示可用的生产批次号"
@@ -18168,6 +18202,9 @@ msgstr "此工作中心运行需要特定技能的工作 — 仅当具有资格�
 
 msgid "This station runs work with no ability requirement; operators assigned on the manning board shape available labor."
 msgstr "该站运行无技能要求的工作；人员配备板上分配的操作员塑造可用人工。"
+
+msgid "This step"
+msgstr ""
 
 #. placeholder {0}: usageCount === 1 ? "" : "s"
 msgid "This storage type is currently used by {usageCount} storage unit{0}."
