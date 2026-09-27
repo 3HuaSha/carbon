@@ -2316,3 +2316,38 @@ attacker reads it: `SET LOCAL ROLE anon; SELECT count(*) FROM "view";` must be 0
 
 **Applies to:** `packages/database/supabase/migrations/**`; enforced by the
 `no-view-without-invoker` conformance check and the `view-without-security-invoker` invariant.
+
+## A PostgREST update that matches no row reports success
+
+**Context:** Typed item updates (`upsertPart`, `upsertTool`, `upsertConsumable`,
+`upsertService`, `upsertMaterial`) filtered the typed table by the item's uuid,
+but those tables are keyed by the item's readable id plus `companyId`.
+
+**Problem:** `client.from(t).update(...).eq(...)` with no `.select()` returns
+`{ error: null }` when it matches zero rows. Half of every typed update wrote
+nothing, and the API and MCP reported success.
+
+**Rule:** An update whose miss is a bug ends with `.select("id").single()`, so
+a miss comes back as an error. Key each table by its own primary key: `item`
+by uuid, the typed tables by `readableId` + `companyId`
+(`resolveTypedItem` / `updateTypedItem` in `items.service.ts`).
+
+**Applies to:** any supabase-js update in a service, above all one that writes
+a pair of tables keyed differently.
+
+## A Kysely write needs its own RLS gate
+
+**Context:** Material property edits write the material row, every revision's
+item row and `itemCost` in one Kysely transaction.
+
+**Problem:** Kysely connects as the Postgres role and bypasses RLS, so a caller
+without `parts_update` in the company, or naming another company's material,
+would still write.
+
+**Rule:** Before a Kysely transaction on rows a caller names, run one UPDATE
+through the caller's supabase client, filtered by id and `companyId`, with
+`.select().single()`, and stop on its error (`requireMaterialUpdatable`). Pick
+a row whose policy also covers the other rows the transaction writes.
+
+**Applies to:** any service that takes both `client` and `db` and writes with
+`db` on behalf of an API or MCP caller.
