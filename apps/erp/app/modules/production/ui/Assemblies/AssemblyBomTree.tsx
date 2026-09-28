@@ -30,7 +30,7 @@ import type { AssemblyGraphIndex, ComponentGroup } from "@carbon/viewer";
 import { describeStep, groupComponentNodeIds } from "@carbon/viewer";
 import { Trans, useLingui } from "@lingui/react/macro";
 import { useVirtualizer } from "@tanstack/react-virtual";
-import type { MouseEvent } from "react";
+import type { MouseEvent, ReactNode } from "react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   LuArrowDownAZ,
@@ -38,6 +38,7 @@ import {
   LuBlocks,
   LuChevronDown,
   LuChevronRight,
+  LuCircleDot,
   LuCirclePlus,
   LuEye,
   LuEyeOff,
@@ -47,6 +48,7 @@ import {
   LuPencil,
   LuSearch,
   LuSettings,
+  LuSparkles,
   LuTrash,
   LuX
 } from "react-icons/lu";
@@ -1055,6 +1057,7 @@ function UnitListRow({
   onToggleExpand: () => void;
   onEdit: () => void;
 }) {
+  const { t } = useLingui();
   const permissions = usePermissions();
   const deleteFetcher = useFetcher<{ success: boolean }>();
   const canUpdate = !isDisabled && permissions.can("update", "production");
@@ -1095,7 +1098,7 @@ function UnitListRow({
         <button
           type="button"
           aria-label={
-            isExpanded ? `Collapse ${unit.name}` : `Expand ${unit.name}`
+            isExpanded ? t`Collapse ${unit.name}` : t`Expand ${unit.name}`
           }
           className="flex h-5 w-5 shrink-0 items-center justify-center rounded-sm text-muted-foreground hover:bg-accent"
           onClick={(event) => {
@@ -1116,19 +1119,13 @@ function UnitListRow({
       <span className="min-w-0 flex-1 truncate font-medium" title={unit.name}>
         {unit.name}
       </span>
-      {unit.sourceGroupId && (
-        <Badge
-          variant="outline"
-          className="text-muted-foreground"
-          title="Detected by the motion planner"
-        >
-          Auto
+      {unit.sourceGroupId && <DetectedIcon />}
+      {isOnStep && <ThisStepIcon />}
+      {memberCount > 1 && (
+        <Badge variant="secondary" className="tabular-nums">
+          ×{memberCount}
         </Badge>
       )}
-      {isOnStep && <ThisStepBadge />}
-      <Badge variant="secondary" className="tabular-nums">
-        ×{memberCount}
-      </Badge>
       <div className="flex items-center">
         <HideToggle
           label={unit.name}
@@ -1140,11 +1137,11 @@ function UnitListRow({
         />
         {canUpdate && (
           <IconButton
-            aria-label={`Edit subassembly ${unit.name}`}
+            aria-label={t`Edit subassembly ${unit.name}`}
             icon={<LuPencil />}
             variant="ghost"
             size="sm"
-            className="opacity-0 group-hover:opacity-100 focus:opacity-100"
+            className="opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 focus:opacity-100"
             onClick={(event) => {
               event.stopPropagation();
               onEdit();
@@ -1153,11 +1150,11 @@ function UnitListRow({
         )}
         {canDelete && (
           <IconButton
-            aria-label={`Delete subassembly ${unit.name}`}
+            aria-label={t`Delete subassembly ${unit.name}`}
             icon={<LuTrash />}
             variant="ghost"
             size="sm"
-            className="opacity-0 group-hover:opacity-100 focus:opacity-100"
+            className="opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 focus:opacity-100"
             onClick={(event) => {
               event.stopPropagation();
               deleteFetcher.submit(new FormData(), {
@@ -1232,10 +1229,12 @@ function UnitChildRow({
       >
         {group.name}
       </span>
-      {isOnStep && <ThisStepBadge />}
-      <Badge variant="secondary" className="tabular-nums">
-        ×{count}
-      </Badge>
+      {isOnStep && <ThisStepIcon />}
+      {count > 1 && (
+        <Badge variant="secondary" className="tabular-nums">
+          ×{count}
+        </Badge>
+      )}
       <HideToggle
         label={group.name}
         isHidden={allHidden}
@@ -1529,6 +1528,7 @@ function ComponentRow({
   onToggleExpand: () => void;
   onSelectStep: (stepId: string) => void;
 }) {
+  const { t } = useLingui();
   const bomLine = mapping ? bomByItemId.get(mapping.itemId) : undefined;
   const quantityMismatch =
     bomLine !== undefined && Math.round(bomLine.quantity) !== group.count;
@@ -1569,7 +1569,7 @@ function ComponentRow({
         <button
           type="button"
           aria-label={
-            isExpanded ? `Collapse ${group.name}` : `Expand ${group.name}`
+            isExpanded ? t`Collapse ${group.name}` : t`Expand ${group.name}`
           }
           className="flex h-5 w-5 shrink-0 items-center justify-center rounded-sm text-muted-foreground hover:bg-accent"
           onClick={(event) => {
@@ -1608,10 +1608,12 @@ function ComponentRow({
           </span>
         )}
       </div>
-      {isOnStep && <ThisStepBadge />}
-      <Badge variant="secondary" className="tabular-nums">
-        ×{group.count}
-      </Badge>
+      {isOnStep && <ThisStepIcon />}
+      {group.count > 1 && (
+        <Badge variant="secondary" className="tabular-nums">
+          ×{group.count}
+        </Badge>
+      )}
       {/* Ghost icon buttons sit flush together (no gap between them) */}
       <div className="flex items-center">
         <HideToggle
@@ -1625,11 +1627,11 @@ function ComponentRow({
         <Popover>
           <PopoverTrigger asChild>
             <IconButton
-              aria-label={`Component details: ${group.name}`}
+              aria-label={t`Component details: ${group.name}`}
               icon={<LuSettings />}
               variant="ghost"
               size="sm"
-              className="opacity-0 group-hover:opacity-100 focus:opacity-100 data-[state=open]:opacity-100"
+              className="opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 focus:opacity-100 data-[state=open]:opacity-100"
               onClick={(event) => event.stopPropagation()}
             />
           </PopoverTrigger>
@@ -1655,12 +1657,36 @@ function ComponentRow({
   );
 }
 
-/** Blue matches the viewer's active-step tint. */
-function ThisStepBadge() {
+/** Blue matches the viewer's active-step tint. An icon, so the name keeps the row. */
+function ThisStepIcon() {
+  const { t } = useLingui();
   return (
-    <Badge variant="blue" className="shrink-0 whitespace-nowrap">
-      <Trans>This step</Trans>
-    </Badge>
+    <RowIcon label={t`In this step`}>
+      <LuCircleDot className="size-3.5 text-blue-500" />
+    </RowIcon>
+  );
+}
+
+/** A subassembly the motion planner found on its own (not authored). */
+function DetectedIcon() {
+  const { t } = useLingui();
+  return (
+    <RowIcon label={t`Detected by the motion planner`}>
+      <LuSparkles className="size-3.5 text-muted-foreground" />
+    </RowIcon>
+  );
+}
+
+function RowIcon({ label, children }: { label: string; children: ReactNode }) {
+  return (
+    <Tooltip>
+      <TooltipTrigger asChild>
+        <span role="img" aria-label={label} className="inline-flex shrink-0">
+          {children}
+        </span>
+      </TooltipTrigger>
+      <TooltipContent>{label}</TooltipContent>
+    </Tooltip>
   );
 }
 
@@ -1692,7 +1718,7 @@ function HideToggle({
         "focus:opacity-100",
         isMarked
           ? "opacity-100 text-muted-foreground"
-          : "opacity-0 group-hover:opacity-100"
+          : "opacity-0 group-hover:opacity-100 group-focus-within:opacity-100"
       )}
       onClick={(event) => {
         event.stopPropagation();
@@ -1708,7 +1734,8 @@ function HideToggle({
         <span
           className={cn(
             "inline-flex",
-            !isMarked && "opacity-0 group-hover:opacity-100"
+            !isMarked &&
+              "opacity-0 group-hover:opacity-100 group-focus-within:opacity-100"
           )}
         >
           {button}
@@ -1778,7 +1805,7 @@ function InstanceRow({
           #{instanceIndex + 1}
         </span>
       </span>
-      {isOnStep && <ThisStepBadge />}
+      {isOnStep && <ThisStepIcon />}
       <HideToggle
         label={label}
         isHidden={isHidden}

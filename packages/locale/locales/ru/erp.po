@@ -288,6 +288,9 @@ msgstr "{arOverduePct}% дебиторской задолженности"
 msgid "{chainLabel}. Consider pointing this part directly at the final successor."
 msgstr "{chainLabel}. Рассмотрите возможность указания этой детали непосредственно на финального преемника."
 
+msgid "{componentCount, plural, one {# component} other {# components}}"
+msgstr ""
+
 msgid "{conflictCount} conflicts"
 msgstr "{conflictCount} конфликтов"
 
@@ -538,6 +541,9 @@ msgstr "90 дней"
 msgid "A \"must match\" rule on this process blocks these from sharing a batch"
 msgstr "Правило «должны совпадать» на этом процессе препятствует размещению в одной серии"
 
+msgid "A 3D model the operator can turn around"
+msgstr ""
+
 msgid "A Carbon-run data migration — you load your own data"
 msgstr "Миграция данных, управляемая Carbon — вы загружаете свои собственные данные"
 
@@ -738,6 +744,12 @@ msgstr "Задача несоответствия, которая предотв
 
 msgid "A part contains the information about a specific item that can be purchased or manufactured."
 msgstr "Деталь содержит информацию о конкретном товаре, который можно приобрести или изготовить."
+
+msgid "A part in this step may tip once placed — consider a fixture or a second person."
+msgstr ""
+
+msgid "A photo or PDF the operator sees on this step"
+msgstr ""
 
 msgid "A physical pull signal — a printed card or QR code living with the stock — that raises a purchase order or a job the moment it's scanned to refill a bin."
 msgstr "Физический сигнал вытягивания — печатная карточка или QR-код, находящийся рядом с запасом — который создает заказ поставщику или производственный заказ в момент сканирования для пополнения ячейки."
@@ -1377,6 +1389,9 @@ msgstr "Добавить условие"
 msgid "Add Company"
 msgstr "Добавить организацию"
 
+msgid "Add components first"
+msgstr ""
+
 msgid "Add condition"
 msgstr "Добавить условие"
 
@@ -1430,6 +1445,9 @@ msgstr "Добавить вручную"
 
 msgid "Add match"
 msgstr "Добавить совпадение"
+
+msgid "Add Model"
+msgstr ""
 
 msgid "Add Note"
 msgstr "Добавить примечание"
@@ -1509,6 +1527,9 @@ msgstr "Добавить отгрузку"
 
 msgid "Add Shipping"
 msgstr "Добавить доставку"
+
+msgid "Add Slide"
+msgstr ""
 
 msgid "Add slot"
 msgstr "Добавить слот"
@@ -2797,6 +2818,9 @@ msgstr "Автоматизировать флаги качества и увед
 msgid "Automate your business processes with event-driven workflows that trigger actions when things happen in Carbon."
 msgstr "Автоматизируйте бизнес-процессы с помощью рабочих процессов, управляемых событиями, которые инициируют действия при возникновении событий в Carbon."
 
+msgid "Automatic"
+msgstr ""
+
 msgid "Automatic Cost Updates"
 msgstr "Автоматическое обновление себестоимости"
 
@@ -3066,6 +3090,7 @@ msgstr "Блокировать, разрешить переопределени�
 msgid "Blocked"
 msgstr "Заблокировано"
 
+#. placeholder {0}: blockers.join(", ")
 #. placeholder {0}: workCenter.blockingDispatchReadableId
 msgid "Blocked by {0}"
 msgstr "Заблокировано {0}"
@@ -3087,6 +3112,9 @@ msgstr "Тело"
 
 msgid "BoM"
 msgstr "BoM"
+
+msgid "BOM"
+msgstr ""
 
 msgid "BoM + BoP"
 msgstr "BoM + BoP"
@@ -3130,6 +3158,9 @@ msgstr "Навигационная цепочка"
 msgid "Bring in your parts, BOMs, Bill of Process, and costing — with Carbon's import tools, CSV, or LLM help."
 msgstr "Импортируйте ваши детали, BOM, перечень операций и калькуляцию — используя инструменты импорта Carbon, CSV или помощь LLM."
 
+msgid "Brings in steps"
+msgstr ""
+
 msgid "Browse library"
 msgstr "Обзор библиотеки"
 
@@ -3157,6 +3188,9 @@ msgstr "Создайте любую новую работу"
 msgid "Build integrations and customizations"
 msgstr "Создавайте интеграции и настройки"
 
+msgid "Build off to the side"
+msgstr ""
+
 msgid "Build quotes pulling live part, cost, and Bill of Process data"
 msgstr "Создавайте коммерческие предложения, используя данные о деталях, себестоимости и перечне операций в реальном времени"
 
@@ -3166,8 +3200,14 @@ msgstr "Создавайте материалы обучения на основ
 msgid "Build tailored, role-based training materials"
 msgstr "Создавайте адаптированные материалы обучения на основе ролей"
 
+msgid "Builds this step's components beside the model as a group, then carries the group in at a later join step."
+msgstr ""
+
 msgid "Built and costed as its own method"
 msgstr "Построен и рассчитан как собственный метод"
+
+msgid "Built off to the side, then carried in at its join step"
+msgstr ""
 
 msgid "Bulk Import"
 msgstr "Массовый импорт"
@@ -3267,6 +3307,9 @@ msgstr "Вызвать внешний URL"
 
 msgid "Called a method in Carbon — the components plus operations that produce a part."
 msgstr "Называется метод в Carbon — компоненты плюс операции, которые создают деталь."
+
+msgid "Camera"
+msgstr ""
 
 msgid "Can't be restored"
 msgstr "Невозможно восстановить"
@@ -3686,6 +3729,9 @@ msgstr "Удаление демо-данных"
 msgid "Click again to disconnect"
 msgstr "Нажмите еще раз, чтобы отключить"
 
+msgid "Click components in the viewer to add them. Shift-click adds several."
+msgstr ""
+
 msgid "Click to rename"
 msgstr "Нажмите, чтобы переименовать"
 
@@ -3751,6 +3797,11 @@ msgstr "Код"
 
 msgid "Collapse"
 msgstr "Свернуть"
+
+#. placeholder {0}: group.name
+#. placeholder {0}: unit.name
+msgid "Collapse {0}"
+msgstr ""
 
 msgid "Collapse all"
 msgstr "Свернуть все"
@@ -3895,6 +3946,16 @@ msgstr "Завершение выполняется — повторите по�
 
 msgid "Completion Time"
 msgstr "Время завершения"
+
+#. placeholder {0}: group.name
+msgid "Component details: {0}"
+msgstr ""
+
+msgid "Components"
+msgstr ""
+
+msgid "Components hidden only while this step plays, such as a fixture in the way; use the eye in the Components tab to hide one."
+msgstr ""
 
 #. placeholder {0}: formatRelativeTime(tieOut.computedAt)
 msgid "computed {0}"
@@ -5713,6 +5774,9 @@ msgstr "Удалить способ доставки"
 msgid "Delete step"
 msgstr "Удалить шаг"
 
+msgid "Delete Step"
+msgstr ""
+
 msgid "Delete Stock Transfer"
 msgstr "Удалить передачу запасов"
 
@@ -5721,6 +5785,10 @@ msgstr "Удалить тип хранилища"
 
 msgid "Delete Storage Unit"
 msgstr "Удалить единицу хранения"
+
+#. placeholder {0}: unit.name
+msgid "Delete subassembly {0}"
+msgstr ""
 
 msgid "Delete Substance"
 msgstr "Удалить вещество"
@@ -5890,6 +5958,9 @@ msgstr "Подробности"
 
 msgid "Details"
 msgstr "Детали"
+
+msgid "Detected by the motion planner"
+msgstr ""
 
 msgid "Developer"
 msgstr "Разработчик"
@@ -6108,8 +6179,17 @@ msgstr "готово"
 msgid "Done"
 msgstr "Готово"
 
+msgid "Done Adding"
+msgstr ""
+
+msgid "Done Editing Path"
+msgstr ""
+
 msgid "Done when day-to-day runs without us in the room"
 msgstr "Готово, когда ежедневные операции работают без нас в офисе"
+
+msgid "Double-click to play this step"
+msgstr ""
 
 msgid "Download"
 msgstr "Скачать"
@@ -6153,6 +6233,9 @@ msgstr "Перетащите PDF-файл заказа поставщику сю
 
 msgid "Drag handle"
 msgstr "Ручка перетаскивания"
+
+msgid "Drag the red waypoints in the viewer"
+msgstr ""
 
 msgid "Drag to assign"
 msgstr "Перетащите для назначения"
@@ -6555,6 +6638,9 @@ msgstr "Изменить партнера"
 msgid "Edit Passkey"
 msgstr "Изменить Ключ доступа"
 
+msgid "Edit Path"
+msgstr ""
+
 msgid "Edit Payment"
 msgstr "Изменить Платеж"
 
@@ -6653,6 +6739,10 @@ msgstr "Изменить Тип хранилища"
 
 msgid "Edit Storage Unit"
 msgstr "Изменить Единицу хранения"
+
+#. placeholder {0}: unit.name
+msgid "Edit subassembly {0}"
+msgstr ""
 
 msgid "Edit Substance"
 msgstr "Изменить Вещество"
@@ -7151,7 +7241,9 @@ msgstr "Существующий покупатель Stripe"
 msgid "Expand"
 msgstr "Развернуть"
 
+#. placeholder {0}: group.name
 #. placeholder {0}: item.label
+#. placeholder {0}: unit.name
 msgid "Expand {0}"
 msgstr "Развернуть {0}"
 
@@ -8388,7 +8480,7 @@ msgstr ""
 msgid "Hide account number"
 msgstr "Скрыть номер счёта"
 
-msgid "Hide again"
+msgid "Hide Again"
 msgstr ""
 
 msgid "Hide raw"
@@ -8767,6 +8859,9 @@ msgstr "В наличии, остаток как {substitute}"
 msgid "In the loop together"
 msgstr "В курсе дела вместе"
 
+msgid "In this step"
+msgstr ""
+
 msgid "In use"
 msgstr "В использовании"
 
@@ -8933,6 +9028,9 @@ msgid "Installed"
 msgstr "Установлено"
 
 msgid "Installed on this step, so it can't be hidden here."
+msgstr ""
+
+msgid "Instruction"
 msgstr ""
 
 msgid "Instructions"
@@ -9385,6 +9483,13 @@ msgstr "Производственные заказы, у которых эта 
 #. placeholder {0}: company?.name ?? "Company"
 msgid "Join {0}"
 msgstr "Присоединиться к {0}"
+
+#. placeholder {0}: selected.number
+msgid "Joins step {0}"
+msgstr ""
+
+msgid "Joins step {number}: {title}"
+msgstr ""
 
 msgid "Journal"
 msgstr "Операция"
@@ -10591,6 +10696,9 @@ msgstr "Последние — используйте поиск для поис
 msgid "Most things get caught and resolved here. Name it plainly."
 msgstr "Большинство проблем выявляются и решаются здесь. Называйте их четко."
 
+msgid "Motion"
+msgstr ""
+
 msgid "Move"
 msgstr "Переместить"
 
@@ -11191,11 +11299,20 @@ msgstr "Пока нет изменений."
 msgid "No clauses yet. Use Add clause above."
 msgstr "Пока нет условий. Используйте добавление условия выше."
 
+msgid "No clear path"
+msgstr ""
+
+msgid "No collision-free path"
+msgstr ""
+
 msgid "No comments yet. Be the first to add a comment."
 msgstr "Нет комментариев. Будьте первым, кто добавит комментарий."
 
 msgid "No completed jobs within range"
 msgstr "Нет завершенных производственных заказов в диапазоне"
+
+msgid "No components yet"
+msgstr ""
 
 msgid "No condition may match"
 msgstr "Ни одно условие не должно совпадать"
@@ -11543,8 +11660,14 @@ msgstr "На этой странице сочетания клавиш недо�
 msgid "No single, trusted number for inventory or job status"
 msgstr "Нет единого надежного показателя для инвентаря или статуса работы"
 
+msgid "No slides yet"
+msgstr ""
+
 msgid "No sorts applied to this view"
 msgstr "Сортировка не применена к этому представлению"
+
+msgid "No step selected"
+msgstr ""
 
 msgid "No stock"
 msgstr "Нет запасов"
@@ -11614,6 +11737,12 @@ msgstr "На этой площадке нет рабочих центров"
 
 msgid "No work centers exist"
 msgstr "Рабочих центров не существует"
+
+msgid "No, build in place"
+msgstr ""
+
+msgid "No, it's the base"
+msgstr ""
 
 msgid "Nom"
 msgstr "Номин"
@@ -11741,9 +11870,6 @@ msgstr "На этом месте больше нечего извлекать и
 
 msgid "Nothing here matches your search and filters."
 msgstr "Здесь нет ничего, соответствующего вашему поиску и фильтрам."
-
-msgid "Nothing hidden. Use the eye in the Components panel to hide parts on this step."
-msgstr ""
 
 msgid "Nothing in the archive"
 msgstr "Ничего в архиве"
@@ -12168,6 +12294,9 @@ msgstr "Оператор получит предупреждение. Товар
 
 msgid "Operator must pick a different batch/serial."
 msgstr "Оператор должен выбрать другую партию/серию."
+
+msgid "Operator must record this step"
+msgstr ""
 
 msgid "Operator Pool"
 msgstr "Пул операторов"
@@ -12715,6 +12844,9 @@ msgstr "Сначала выберите свойство"
 msgid "Pick a record type…"
 msgstr "Выберите тип записи…"
 
+msgid "Pick a step from the list to edit its details, components, and materials."
+msgstr ""
+
 msgid "Pick a target date to compare."
 msgstr "Выберите целевую дату для сравнения."
 
@@ -12860,6 +12992,9 @@ msgstr "Верхний предел планирования на одно пр�
 
 msgid "Plants, warehouses"
 msgstr "Заводы, склады"
+
+msgid "Playback"
+msgstr ""
 
 msgid "Please contact your administrator to enable audit logging."
 msgstr "Пожалуйста, обратитесь к администратору для включения логирования аудита."
@@ -14030,6 +14165,9 @@ msgstr "Пересчитать график для этой площадки с�
 msgid "Regenerate thumbnail from the 3D model"
 msgstr "Восстановить миниатюру из 3D модели"
 
+msgid "Regenerating removes \"Build off to the side\" settings."
+msgstr ""
+
 msgid "Regenerating thumbnail…"
 msgstr "Создание миниатюры…"
 
@@ -14140,6 +14278,10 @@ msgstr "Убрать {0}"
 #. placeholder {0}: removing.jobReadableId ?? "this operation"
 msgid "Remove {0} from this batch? Its operation goes back to the schedule to run on its own."
 msgstr "Убрать {0} из этой серии? Его операция вернется в график для самостоятельного запуска."
+
+#. placeholder {0}: group.name
+msgid "Remove {0} from this step"
+msgstr ""
 
 msgid "Remove {label}"
 msgstr "Убрать {label}"
@@ -15081,6 +15223,9 @@ msgstr "Сохранить представление"
 msgid "Saved"
 msgstr "Сохранено"
 
+msgid "Saved view"
+msgstr ""
+
 msgid "Saved Views"
 msgstr "Сохраненные представления"
 
@@ -16015,7 +16160,7 @@ msgstr "Показывать столбец с читаемым ID Покупа�
 msgid "Show a readable Supplier ID column on the supplier list, supplier forms, and dropdowns. Suppliers are still identified internally either way."
 msgstr "Показать читаемый столбец ID поставщика в списке поставщиков, формах поставщиков и раскрывающихся списках. Поставщики по-прежнему идентифицируются внутри системы в любом случае."
 
-msgid "Show all"
+msgid "Show All"
 msgstr ""
 
 msgid "Show all hidden on this step"
@@ -16188,6 +16333,9 @@ msgstr "Разделить выручку по покупателям, типа�
 #. placeholder {0}: i + 1
 msgid "Slide {0}"
 msgstr "Слайд {0}"
+
+msgid "Slides"
+msgstr ""
 
 msgid "Smallest run worth batching. Leave empty for none."
 msgstr "Минимальный размер партии для комплектования. Оставьте пусто без значения."
@@ -16442,6 +16590,10 @@ msgstr "Остаться на этой странице"
 msgid "Step"
 msgstr "Шаг"
 
+#. placeholder {0}: stepIndex + 1
+msgid "Step {0} of {stepCount}"
+msgstr ""
+
 msgid "Step added"
 msgstr "Шаг добавлен"
 
@@ -16453,6 +16605,12 @@ msgstr "Записи шагов"
 
 msgid "Step removed — pick a new value"
 msgstr "Шаг удален — выберите новое значение"
+
+msgid "Step status: {label}"
+msgstr ""
+
+msgid "Step status: {label}. Change status"
+msgstr ""
 
 msgid "steps"
 msgstr "шаги"
@@ -17641,6 +17799,9 @@ msgstr "Деталь производится как собственное за
 msgid "The part is taken from existing stock when its parent is built — no new job or purchase order."
 msgstr "Деталь берется из существующего запаса при производстве ее родительского элемента — без создания нового производственного заказа или заказа поставщику."
 
+msgid "The path this step's components travel into place during playback; worked out from the model, or drawn by hand with Edit Path."
+msgstr ""
+
 msgid "The people on the Carbon side who will run your implementation, and how to reach them."
 msgstr "Сотрудники Carbon, которые будут проводить ваше внедрение, и способы связи с ними."
 
@@ -17930,6 +18091,9 @@ msgstr "Отметка версии для этого документа; нов
 msgid "The version stamp for this procedure; new versions create a copy that supersedes the previous one without deleting it."
 msgstr "Отметка версии для этой процедуры; новые версии создают копию, которая заменяет предыдущую без ее удаления."
 
+msgid "The view a step plays from; without a saved view the step frames its own components."
+msgstr ""
+
 msgid "The warehouse goods on this order will ship from; the customer's Shipping Location is where they'll arrive."
 msgstr "Склад, с которого будут отгружены товары по этому заказу; площадка доставки покупателя — это место, где они прибудут."
 
@@ -18203,9 +18367,6 @@ msgstr "Эта станция выполняет работу, требующу�
 msgid "This station runs work with no ability requirement; operators assigned on the manning board shape available labor."
 msgstr "Эта станция выполняет работу без требований навыков; операторы, назначенные на таблицу назначений, формируют доступный труд."
 
-msgid "This step"
-msgstr ""
-
 #. placeholder {0}: usageCount === 1 ? "" : "s"
 msgid "This storage type is currently used by {usageCount} storage unit{0}."
 msgstr "Этот тип хранения в настоящее время используется {usageCount} единиц хранения{0}."
@@ -18410,6 +18571,9 @@ msgstr "Сегодня"
 
 msgid "Today:"
 msgstr "Сегодня:"
+
+msgid "Todo"
+msgstr ""
 
 msgid "Toggle"
 msgstr "Переключить"
@@ -18945,6 +19109,9 @@ msgstr "Безымянная диаграмма"
 msgid "Untitled line"
 msgstr "Безымянная строка"
 
+msgid "Untitled step"
+msgstr ""
+
 msgid "Unused picked material flushed back from the work center to the warehouse."
 msgstr "Неиспользованный отобранный материал поступает обратно из рабочего центра на склад."
 
@@ -19134,6 +19301,9 @@ msgstr "Использовать другую учетную запись"
 
 msgid "Use a different email"
 msgstr "Использовать другой адрес электронной почты"
+
+msgid "Use Current View"
+msgstr ""
 
 msgid "Use metric system for default material dimensions."
 msgstr "Используйте метрическую систему для измерений материала по умолчанию."

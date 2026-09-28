@@ -91,6 +91,22 @@ export const terms = {
     definition: msg`A Make to Order component that gets its own job and routing inside the parent's build.`,
     href: "/docs/reference/methods#kit-or-subassembly"
   },
+  "assembly-step-motion": {
+    term: msg`Motion`,
+    definition: msg`The path this step's components travel into place during playback; worked out from the model, or drawn by hand with Edit Path.`
+  },
+  "assembly-step-camera": {
+    term: msg`Camera`,
+    definition: msg`The view a step plays from; without a saved view the step frames its own components.`
+  },
+  "assembly-step-build-aside": {
+    term: msg`Build off to the side`,
+    definition: msg`Builds this step's components beside the model as a group, then carries the group in at a later join step.`
+  },
+  "assembly-step-hidden-components": {
+    term: msg`Hidden on this step`,
+    definition: msg`Components hidden only while this step plays, such as a fixture in the way; use the eye in the Components tab to hide one.`
+  },
   kit: {
     term: msg`Kit`,
     definition: msg`A Make to Order component whose parts are issued together into the parent job — no separate build.`,
