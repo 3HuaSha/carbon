@@ -3838,6 +3838,9 @@ msgstr "Collapse Labor"
 msgid "Collapse Machine"
 msgstr "Collapse Machine"
 
+msgid "Collapse row"
+msgstr "Collapse row"
+
 msgid "Collapse Setup"
 msgstr "Collapse Setup"
 
@@ -7291,6 +7294,9 @@ msgstr "Expand Labor"
 msgid "Expand Machine"
 msgstr "Expand Machine"
 
+msgid "Expand row"
+msgstr "Expand row"
+
 msgid "Expand Setup"
 msgstr "Expand Setup"
 
@@ -8742,6 +8748,9 @@ msgstr "I'm Still Working"
 
 msgid "IBAN"
 msgstr "IBAN"
+
+msgid "IC Transaction"
+msgstr "IC Transaction"
 
 msgid "Id"
 msgstr "Id"
