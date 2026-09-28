@@ -16,7 +16,11 @@ import type {
   CameraPose,
   Motion
 } from "@carbon/viewer";
-import { AssemblyPlayer, indexAssemblyGraph } from "@carbon/viewer";
+import {
+  AssemblyPlayer,
+  indexAssemblyGraph,
+  stagedGroupNodeIds
+} from "@carbon/viewer";
 import { msg } from "@lingui/core/macro";
 import { useCallback, useMemo, useRef, useState } from "react";
 import type { ActionFunctionArgs, LoaderFunctionArgs } from "react-router";
@@ -295,10 +299,26 @@ export default function AssemblyInstructionRoute() {
     [hiddenFetcher, id]
   );
 
-  const selectedOwnNodeIds = useMemo(
-    () => draftComponentNodeIds ?? selectedStep?.componentNodeIds ?? [],
-    [draftComponentNodeIds, selectedStep]
+  // The selected step shows its hidden draft before the autosave round-trips.
+  const viewerSteps = useMemo(
+    () =>
+      steps.map((step) => {
+        const viewerStep = toViewerStep(step);
+        return draftHiddenNodeIds && step.id === selectedStep?.id
+          ? { ...viewerStep, hiddenComponentNodeIds: draftHiddenNodeIds }
+          : viewerStep;
+      }),
+    [steps, draftHiddenNodeIds, selectedStep]
   );
+
+  // A join step also "owns" the group built aside for it: those parts move on
+  // it, so they get the This-step badge and can't be hidden there.
+  const selectedOwnNodeIds = useMemo(() => {
+    const own = draftComponentNodeIds ?? selectedStep?.componentNodeIds ?? [];
+    if (!selectedStep) return own;
+    const staged = stagedGroupNodeIds(viewerSteps, selectedStep.id);
+    return staged.length === 0 ? own : [...new Set([...own, ...staged])];
+  }, [draftComponentNodeIds, selectedStep, viewerSteps]);
   // Mirrors the DB trigger for the in-flight drafts: a part the step installs is
   // never listed as hidden on it (e.g. right after adding it to the step).
   const selectedHiddenNodeIds = useMemo(() => {
@@ -427,18 +447,6 @@ export default function AssemblyInstructionRoute() {
       );
     },
     [isDisabled, selectedStep, draftComponentNodeIds, saveComponentNodeIds]
-  );
-
-  // The selected step shows its hidden draft before the autosave round-trips.
-  const viewerSteps = useMemo(
-    () =>
-      steps.map((step) => {
-        const viewerStep = toViewerStep(step);
-        return draftHiddenNodeIds && step.id === selectedStep?.id
-          ? { ...viewerStep, hiddenComponentNodeIds: draftHiddenNodeIds }
-          : viewerStep;
-      }),
-    [steps, draftHiddenNodeIds, selectedStep]
   );
 
   // Per-step slides/tools/materials for the properties panel — memoized so a
@@ -740,6 +748,8 @@ export default function AssemblyInstructionRoute() {
                   stepSlides={selectedStepSlides}
                   stepTools={selectedStepTools}
                   bomMaterials={bomMaterials}
+                  viewerSteps={viewerSteps}
+                  onSelectStep={onSelectStep}
                 />
               }
             />

@@ -31,7 +31,11 @@ export async function action({ request, params }: ActionFunctionArgs) {
   );
 
   try {
-    await updateAssemblyInstructionStepOrder(getDatabaseClient(), updates);
+    await updateAssemblyInstructionStepOrder(
+      getDatabaseClient(),
+      params.id,
+      updates
+    );
   } catch (err) {
     return data(
       { success: false },

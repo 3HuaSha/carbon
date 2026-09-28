@@ -1474,6 +1474,11 @@ export const assemblyInstructionStepHiddenComponentsValidator = z.object({
   hiddenComponentNodeIds: jsonField(z.array(z.string()))
 });
 
+/** Sub-assembly staging: the later step this one is built aside for. Empty = built in place. */
+export const assemblyInstructionStepJoinValidator = z.object({
+  joinStepId: zfd.text(z.string().optional())
+});
+
 export const assemblyStepComponentsReassignValidator = z
   .object({
     // Absent for "remove" (unassign from every step); required otherwise.

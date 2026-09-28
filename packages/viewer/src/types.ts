@@ -115,12 +115,11 @@ export type AssemblyStep = {
    */
   hiddenComponentNodeIds?: string[];
   /**
-   * Subassembly phase this step belongs to (baked at step generation from the
-   * plan's contact graph). `null`/absent = the main phase, built seated. A
-   * non-null phase builds staged off to the side and flies into the main body
-   * at its `join` step. See `@carbon/viewer` staging.
+   * Built off to the side: the id of the later JOIN step where the group this
+   * step builds is carried into the main assembly (DB `parentStepId`).
+   * `null`/absent = built in place. See `staging.ts`.
    */
-  phase?: { id: string; name: string; join: boolean } | null;
+  joinStepId?: string | null;
 };
 
 /** One node of the assembly tree in graph.json. */
