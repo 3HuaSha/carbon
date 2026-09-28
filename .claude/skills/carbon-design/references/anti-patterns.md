@@ -69,6 +69,20 @@ Three kinds:
 - Designing against invented APIs (props, route helpers, columns) or restating a sibling's
   constants from memory. → open the source; import the constant.
 
+### Usability and robustness
+- A page that only displays: values the sibling lets users change (quantity, price, dates,
+  customer, terms) shown as text. → line form card, Properties autosave, form cards
+  (`functionality.md`).
+- Disabled "not available" placeholders for actions you didn't wire. → wire the real route,
+  or leave the capability out and say why.
+- Re-implementing a mutation (price resolution, lock checks, status derivation) the record's
+  existing route already does. → post to that route.
+- Text in flex rows without `min-w-0` + `truncate`: names run under trailing quantities and
+  off the panel edge. IDs that wrap ("MTR-" / "9000"). Tables whose last column is clipped
+  inside a card. Tooltip wrappers that break a `w-full` button.
+- Declaring UI done after typecheck/lint without rendering it at desk and phone widths and
+  using it once.
+
 ### Copy
 - "Oops!", "Successfully saved! 🎉", exclamation marks, marketing voice.
 - Sentence-case buttons/headers in ERP; Title Case toasts.

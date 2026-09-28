@@ -12,13 +12,16 @@ self-critique loop, not a formality: find the gaps, fix them, re-run until clean
 3. **Walk the checklist below.** For every item answer PASS / FIX / N/A. Every FIX gets changed
    now, not listed as a follow-up.
 4. **Grep your diff** for the mechanical red flags (§3).
-5. **Render the states** mentally (or in the browser via the `test` / `agent-browser` skills if
-   the app is running): empty, loading, one row, many rows, long text, locked, no permission,
-   error, dark mode, mobile (ERP < 768px) or tablet (MES).
-6. Repeat 3–5 until everything is PASS or a justified N/A. Then write the review summary (§4).
+5. **Render it and use it in a real browser (§4).** Not optional when a dev server can run.
+   Walk the states: empty, one row, many rows, long text, locked, no permission, error, dark
+   mode, 1440 / 1024 / 390 px (ERP) or tablet (MES). Perform every capability in the brief.
+6. Repeat 3–5 until everything is PASS or a justified N/A. Then write the review summary (§5).
 
-## 1. The seven questions (answer in one line each)
+## 1. The eight questions (answer in one line each)
 
+0. **Can a user do their job here?** Walk the capability table from the brief: can each job
+   be done on this screen, the way the sibling page lets them? Anything read-only that the
+   sibling lets them change is a FIX.
 1. **Does this feel like Carbon?** Put it next to the sibling screen: would a user notice a
    different hand?
 2. **Is the information hierarchy consistent?** Identity first; one primary; metadata recedes;
@@ -33,6 +36,25 @@ self-critique loop, not a formality: find the gaps, fix them, re-run until clean
 7. **Did any generic SaaS reflex slip in?** Check `anti-patterns.md` §1 line by line.
 
 ## 2. Checklist
+
+### Functionality
+- [ ] Every row of the archetype contract in `functionality.md` is implemented or skipped with a reason
+- [ ] Values users change (qty, price, dates, customer, terms) are editable where shown — line form card, Properties autosave, or form card
+- [ ] Every control posts to a real, verified endpoint; no disabled placeholders or dead buttons
+- [ ] Locks use the domain helper on the client and the route's guard on the server
+- [ ] After each mutation the screen reflects it (revalidation or optimistic state) and errors toast
+- [ ] Each capability was exercised once in the browser
+
+### Layout robustness
+- [ ] Flex rows: text column `flex-1 min-w-0`, text `truncate`/`line-clamp-1` on `w-full` children, fixed parts `shrink-0`
+- [ ] Trailing hover actions absolutely positioned over a `pr-*` reserve; nothing overlaps text
+- [ ] IDs and money never wrap (`whitespace-nowrap`); long descriptions truncate with `TruncatedTooltipText`
+- [ ] Tables in cards don't clip columns; the card never grows wider than its pane
+- [ ] Full-width buttons stay full width (wrappers like Tooltip triggers don't break `w-full`)
+- [ ] No `Hyperlink` inside a tight flex row or card header — it reserves width for its hidden hover "Open" button; use a plain `Link` there, `Hyperlink` in table cells
+- [ ] Wide tables inside narrow panes get a `min-w-[…]` so the `Table` primitive scrolls horizontally instead of squashing columns into each other
+- [ ] Grids/rows inside workspace panes use container queries (`@container` + `@md:`…), not viewport `md:`/`lg:` — panes resize independently of the screen
+- [ ] Screenshots at 1440 / 1024 / 390 px checked, with the longest real names in the data
 
 ### Structure
 - [ ] Correct archetype (`page-archetypes.md`) and matches its exemplar's shape
@@ -114,11 +136,31 @@ grep -nE ' title=\{?["`t]' $FILES                                  # native titl
 grep -nE 'size="sm"' $FILES                                        # MES files: every operator action is lg
 grep -nE '<div[^>]*(divide-y|grid-cols-\[)' $FILES                 # record list as divs? → TableBase
 grep -nE 'font-headline|size="h[123]"' $FILES                      # serif only for the page title
+grep -nE 'isDisabled(\s|>|$)|isDisabled=\{true\}' $FILES           # hard-disabled controls → wired action or a real lock condition
 ```
 (`grep -P` may be needed for the lookahead on some systems; if unavailable, grep
 `react-icons/` and inspect.) Every hit is either fixed or justified in the summary.
 
-## 4. Review summary (write this at the end)
+## 4. Browser verification (how)
+
+```bash
+grep '^ERP_URL' .env.local                        # per-worktree URL; never assume
+agent-browser open "$ERP_URL/login"               # then follow the `auth` skill (DEV_BYPASS_EMAIL)
+agent-browser set viewport 1440 900
+agent-browser open "$ERP_URL/x/<your route>" && sleep 4
+agent-browser screenshot <scratchpad>/1440.png     # then Read the png and look at it
+agent-browser set viewport 1024 800 && agent-browser screenshot <scratchpad>/1024.png
+agent-browser set viewport 390 844  && agent-browser screenshot <scratchpad>/390.png
+agent-browser snapshot -i                          # refs for clicking/filling to exercise capabilities
+```
+To change a number in a react-aria field, `click` it, `press Meta+a`, then `type` — `fill`
+can append to the existing value (3 → "34"). Re-read the field from `snapshot -i` before saving,
+and confirm the saved value in the database or the reloaded page. Revert every test edit.
+Pick records with the longest names, the most lines and a locked status. After each
+capability (edit qty, change a date, add/delete a line, transition), re-screenshot and confirm
+the page reflects it. Fix, re-render, re-look. Include what you exercised in the summary.
+
+## 5. Review summary (write this at the end)
 
 ```
 Design-language review
@@ -127,6 +169,8 @@ Design-language review
 - Extended: <what + why> (or none)
 - New: <component/pattern + why no existing one fits + how it follows Carbon's language> (or none)
 - Deviations from the exemplar: <each with a reason> (or none)
+- Capabilities exercised in the browser: <job → result> (one line each)
+- Screenshots reviewed: <widths + records used>
 - States covered: empty / loading / error / locked / no-permission / dark / mobile|tablet
 - Open questions for the team: <e.g. drift items touched> (or none)
 - Props audit: <Component — props used — file:line of its props type> (one line each)

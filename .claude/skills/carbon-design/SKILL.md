@@ -35,10 +35,13 @@ sits next to the ID and the next step is the one primary button. Documents open 
 workspace — header strip, structure on the left, work in the middle, metadata on the right.
 State lives in the URL. Secondary things hide in known places (⋯ menu, Properties panel,
 hidden columns, row menus), never behind modes. Permissions and locks disable in place.
-Everything is keyboard-reachable, translated, and honest about its state. On the shop floor
-the same language gets bigger, simpler and touch-first.
+Everything is keyboard-reachable, translated, and honest about its state. And it is **worked
+on**, not looked at: every value a user may need to change is changeable right where it is
+shown (a line opens into its editable form, a header fact autosaves in Properties, the next
+status is one click), guarded by the record's lock. On the shop floor the same language gets
+bigger, simpler and touch-first.
 
-## The 12 laws (short form — the reasoning is in `references/principles.md`)
+## The 13 laws (short form — the reasoning is in `references/principles.md`)
 
 1. **Quiet chrome, loud data.** Tokens only; hue only for meaning; ink primary; no colored prose.
 2. **Identity first.** Readable IDs / thumbnails / avatars — visible, copyable, linked. No raw ids.
@@ -52,6 +55,7 @@ the same language gets bigger, simpler and touch-first.
 10. **Dense, not cramped.** `text-sm` body, `text-xs` muted labels, h-8 buttons, 4/8/16 spacing, `font-medium`.
 11. **Primitives own the surface.** `Card > CardContent`, no double edges, `rounded-lg` inner boxes, no big shadows.
 12. **Honest, grounded, translated, keyboard-first.** Real states only; real APIs and domain rules (verified in source); every string in Lingui; named shortcuts.
+13. **Usable end to end.** The screen provides its archetype's full capability contract (`references/functionality.md`) wired to the record's real endpoints. A read-only mock or a disabled placeholder is not a design.
 
 ## Workflow
 
@@ -59,7 +63,8 @@ Follow these steps for any UI work. Steps 1–4 happen **before** writing code.
 
 ### Step 1 — Classify the work
 Identify every surface the feature touches and read the matching references. Always read
-`references/principles.md` and `references/anti-patterns.md` once per task.
+`references/principles.md`, `references/functionality.md` and `references/anti-patterns.md`
+once per task.
 
 | The feature involves… | Read |
 |---|---|
@@ -73,12 +78,15 @@ Identify every surface the feature touches and read the matching references. Alw
 | Keyboard, drag & drop, motion, accessibility, responsive | `references/interaction-motion-a11y.md` |
 | Anything operators use on the shop floor (`apps/mes`) | `references/shop-floor-mes.md` |
 | Any user-facing words | `references/content-and-copy.md` |
+| What users must be able to do; wiring edits, lines, statuses, locks | `references/functionality.md` |
 | Unsure how far to reuse vs invent | `references/worked-examples.md` |
 
 ### Step 2 — Find the sibling and read it
 Pick the archetype (`page-archetypes.md` §15) and open its exemplar files. Also find the
 closest existing screen *in the same module*. Read their actual code — the exemplar is the
-spec. Canonical starting points:
+spec. Read its **routes** too (`$id.new`, `$id.$lineId.details`, `update.tsx`, `status`,
+`confirm`, `delete`): that is where the functionality and the domain rules live, and your
+screen will post to them. Canonical starting points:
 
 | Need | Exemplar (paths from `apps/erp/app/`) |
 |---|---|
@@ -118,6 +126,9 @@ Design brief — <feature>
 - Data cases: <nulls and special values the domain already models (e.g. deadline types, locked
   rows, mixed selections, multi-currency) and how each renders — reuse the domain's own
   predicates (e.g. `deadlineRequiresDueDate`) instead of approximating>
+- Capabilities: <one line per user job: job → surface → component → endpoint it posts to
+  (`path.to.*`, verified) → what locks it. Every row of the archetype contract in
+  `functionality.md` is either here or skipped with a reason>
 - Copy: <titles, buttons, toasts, empty text — in Carbon patterns>
 - Reuse / extend / create: <list, with the reason for each extend/create and what was rejected>
 ```
@@ -125,7 +136,23 @@ If the user asked only for a design (no code), the brief plus annotated ASCII wi
 component choices is the deliverable.
 
 ### Step 5 — Build
-Follow the brief and the exemplar.
+Follow the brief and the exemplar. **Wire every capability for real** — post to the record's
+existing routes, reuse its validated form components where they fit, respect its lock
+helpers. If a job has no endpoint, stop and say so rather than rendering a dead control.
+
+**Build for real data.** Names are long, descriptions are missing, quantities have five
+decimals, lists have 40 rows. In every flex row the text column is `flex-1 min-w-0` with
+`truncate`/`line-clamp-1` on `w-full` children, fixed parts (thumbnails, badges, amounts,
+trailing actions) are `shrink-0`, trailing hover actions are absolutely positioned over a
+`pr-10` reserve, IDs are `whitespace-nowrap`, and tables inside cards use the `Table`
+primitive (it scrolls horizontally itself) with no content forcing a card wider than its
+column. Exemplar comment: `modules/sales/ui/SalesOrder/SalesOrderSummary.tsx:409-413`.
+Content inside the 3-pane workspace lives in **resizable panes**, so its width has little to
+do with the viewport: at a 1024 px screen with Explorer and Properties open, the content pane
+is ~470 px. Size grids and row layouts inside panes with **container queries** (`@container`
+on the card/row, then `@md:` / `@xl:` / `@3xl:` — Tailwind v4 built-in, precedent
+`components/Gantt/Gantt.tsx`), not `md:`/`lg:` viewport breakpoints. Let status pills and
+badges wrap (`flex-wrap`) rather than clip.
 
 **Verify before you use — every time.** The most common way a Carbon-looking design breaks is
 an invented API. Before writing any of these, open the source and confirm it:
@@ -154,10 +181,16 @@ Also obey the mechanics rules:
 `.claude/rules/numeric-precision.md`, `.claude/rules/table-csv-export.md`, `packages/react/AGENTS.md`.
 Where those files disagree with the code (e.g. Card radius), the code wins — note it.
 
-### Step 6 — Design-language review (mandatory)
+### Step 6 — Design-language review and browser verification (mandatory)
 Run `references/design-review.md`: the seven questions, the checklist, the grep for red flags,
-and the state walk-through. **Fix every FIX and re-run** until clean. Work is not done until the
-review summary is written. If something can't be made to fit without a system change (a new
+the state walk-through, **and §4 — render it in a real browser and use it**. Typecheck and
+lint passing says nothing about layout or usability. Check whether the dev server is up
+(`grep ^ERP_URL .env.local`, then load it); if it is, log in with the `auth` skill and
+screenshot every screen at 1440, 1024 and 390 px wide, perform each capability from the brief
+once (edit a quantity, change a date, add and delete a line, transition status), and look at
+the screenshots before claiming anything. If no server can run, say explicitly that the UI is
+unverified — never present it as done. **Fix every FIX and re-run** until clean. Work is not
+done until the review summary is written. If something can't be made to fit without a system change (a new
 shared component, a new token), stop and ask rather than improvising a one-off.
 
 ## When Carbon itself is inconsistent
@@ -181,7 +214,9 @@ mention any drift you touched in your summary.
 
 ## Done when
 
-- [ ] Design brief written (Step 4) and followed
+- [ ] Design brief written (Step 4) and followed, including the capability table
+- [ ] Every capability wired to a real endpoint and exercised once in the browser
+- [ ] Screenshots at 1440 / 1024 / 390 px reviewed; no overflow, clipping or wrapping IDs
 - [ ] Every reuse/extend/create decision recorded with its reason
 - [ ] `references/design-review.md` checklist all PASS or justified N/A; red-flag grep clean or justified
 - [ ] Review summary written in the final message, including open questions about drift

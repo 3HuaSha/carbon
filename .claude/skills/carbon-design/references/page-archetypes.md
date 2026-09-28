@@ -100,6 +100,9 @@ RFQs, invoices, RMA, Job, Issue, Change Notice, Maintenance, Procedure, Training
   `modules/purchasing/ui/PurchaseOrder/PurchaseOrderHeader.tsx` (downstream-doc dropdowns),
   `modules/production/ui/Jobs/JobHeader.tsx` (derived badges, view switcher),
   `modules/quality/ui/Issue/IssueProperties.tsx` (autosave properties).
+- **Capabilities** (add/edit/delete/reorder lines, autosave Properties, lifecycle routes,
+  notes, documents, downstream docs, audit log) — the full contract with exemplars is in
+  `functionality.md` §2. The shape above is only half the archetype.
 - `$id._index.tsx` redirects to `$id.details`. Parent loader loads the record + lines; children
   read them via `useRouteData(path.to.x(id))`.
 

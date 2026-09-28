@@ -8,7 +8,7 @@ you can ask of your own design.
 
 ## Contents
 1. Who Carbon is for (the premise)
-2. The 19 principles
+2. The 20 principles
 3. Carbon vs generic SaaS — the contrast table
 4. How to decide when principles pull in different directions
 
@@ -223,6 +223,19 @@ helper) rather than building a parallel system that answers the same question di
 - **Test:** *Did I open the source for every component, prop, path helper and column I used?
   Does every special value the domain models have a designed rendering?*
 
+### P20. Worked on, not looked at
+Every Carbon screen is a place where work happens. The value a user reads is the value they
+can change, in the same place: a line opens into its editable form card, a header fact
+autosaves in Properties, a status moves with one primary click, a stock figure has its
+adjustment modal. All of it runs through the record's existing route actions, so the domain
+rules (sales rules, lock guards, price resolution, MRP) come along for free.
+- **Why:** users open a sales order to *change* it — the customer called about quantity,
+  price, a date. A beautiful read-only page sends them hunting for "the real one".
+- **Shows up as:** `ModalCard` line forms, per-field autosave Properties, status routes,
+  `is{Entity}Locked` + `requireUnlocked` (`references/functionality.md`).
+- **Test:** *Pick the three most common reasons a user opens this screen. Can they finish
+  each one here without leaving? Did I click through each one in a browser?*
+
 ---
 
 ## 3. Carbon vs generic SaaS
@@ -248,6 +261,7 @@ Use this table when a design "works" but feels generic.
 | Numbers right-aligned with bold totals | Left-aligned list cells with `tabular-nums`; right alignment only in label→amount summaries; totals `font-semibold` |
 | Undo snackbars | Confirm first; soft delete where reversible ("Deactivate", "Move to Trash") |
 | Floating "+" action button | "Add X" primary in the table title bar (desk); FAB only in MES operation dock |
+| Read-only "view" pages with an Edit button elsewhere | The page you read is the page you edit; locks disable in place |
 | Hover-scale animations, bouncy springs | Press `active:scale-[0.96]`, 150–200ms ease-out, property-scoped transitions |
 | Wide-screen dashboards with many widgets | Content capped (`max-w-4xl` create, `max-w-5xl` posting docs, `max-w-[60rem]` settings); dashboards only on module landing pages |
 
