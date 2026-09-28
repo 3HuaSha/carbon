@@ -1,11 +1,11 @@
 {
   "kind": "carbon-company-backup",
   "version": 1,
-  "schemaVersion": "20260925063121",
+  "schemaVersion": "20260927230425",
   "sourceCompanyId": "schema-baseline",
   "sourceCompanyGroupId": null,
   "sourceCompanyName": null,
-  "exportedAt": "2026-09-25T11:42:30.815Z",
+  "exportedAt": "2026-09-27T23:05:53.317Z",
   "exportedBy": "schema-baseline",
   "label": "schema baseline",
   "includeStorage": "none",
@@ -745,7 +745,7 @@
     {
       "name": "employee",
       "rows": 0,
-      "columns": ["active", "id", "companyId", "employeeTypeId", "pin"]
+      "columns": ["active", "id", "companyId", "employeeTypeId"]
     },
     {
       "name": "employeeTypePermission",
@@ -1011,7 +1011,6 @@
         "expiresAt",
         "createdAt",
         "updatedAt",
-        "updatedBy",
         "id",
         "companyId",
         "type",
@@ -1023,7 +1022,8 @@
         "complianceContact",
         "ipAddress",
         "userAgent",
-        "createdBy"
+        "createdBy",
+        "updatedBy"
       ]
     },
     {
@@ -1703,12 +1703,12 @@
       "name": "part",
       "rows": 0,
       "columns": [
-        "approved",
-        "fromDate",
-        "toDate",
         "createdAt",
         "updatedAt",
         "customFields",
+        "approved",
+        "fromDate",
+        "toDate",
         "id",
         "approvedBy",
         "companyId",
@@ -2322,10 +2322,10 @@
       "name": "supplierType",
       "rows": 0,
       "columns": [
-        "protected",
-        "createdAt",
         "updatedAt",
         "customFields",
+        "protected",
+        "createdAt",
         "id",
         "name",
         "companyId",
@@ -2597,6 +2597,7 @@
       "name": "assemblyInstructionStep",
       "rows": 0,
       "columns": [
+        "hiddenComponentNodeIds",
         "sortOrder",
         "type",
         "description",
@@ -2614,6 +2615,8 @@
         "updatedAt",
         "status",
         "buildWave",
+        "updatedBy",
+        "rootStepId",
         "id",
         "assemblyInstructionId",
         "parentStepId",
@@ -2625,10 +2628,7 @@
         "componentNodeIds",
         "planConfidence",
         "companyId",
-        "createdBy",
-        "updatedBy",
-        "rootStepId",
-        "hiddenComponentNodeIds"
+        "createdBy"
       ]
     },
     {
@@ -3323,19 +3323,19 @@
       "name": "userAttributeValue",
       "rows": 0,
       "columns": [
+        "updatedAt",
         "valueBoolean",
         "valueDate",
         "valueNumeric",
         "createdAt",
-        "updatedAt",
         "id",
         "userAttributeId",
         "userId",
         "valueText",
         "valueUser",
         "createdBy",
-        "updatedBy",
-        "valueFile"
+        "valueFile",
+        "updatedBy"
       ]
     },
     {
@@ -3354,7 +3354,7 @@
     {
       "name": "userToCompany",
       "rows": 0,
-      "columns": ["role", "companyId", "userId"]
+      "columns": ["role", "userId", "companyId"]
     },
     {
       "name": "warehouse",
@@ -3784,7 +3784,6 @@
         "createdAt",
         "updatedAt",
         "customFields",
-        "updatedBy",
         "id",
         "companyId",
         "cardTransactionId",
@@ -3800,7 +3799,8 @@
         "journalId",
         "postedBy",
         "voidedBy",
-        "createdBy"
+        "createdBy",
+        "updatedBy"
       ]
     },
     {
@@ -3812,7 +3812,6 @@
         "createdAt",
         "updatedAt",
         "customFields",
-        "projectId",
         "id",
         "companyId",
         "cardTransactionId",
@@ -3820,7 +3819,8 @@
         "costCenterId",
         "description",
         "createdBy",
-        "updatedBy"
+        "updatedBy",
+        "projectId"
       ]
     },
     {
@@ -3919,6 +3919,13 @@
         "createdAt",
         "updatedAt",
         "customFields",
+        "id",
+        "companyId",
+        "customerId",
+        "name",
+        "accountHolderName",
+        "bankName",
+        "bankAddress",
         "countryCode",
         "currencyCode",
         "accountNumber",
@@ -3927,14 +3934,7 @@
         "notes",
         "createdBy",
         "updatedBy",
-        "tags",
-        "id",
-        "companyId",
-        "customerId",
-        "name",
-        "accountHolderName",
-        "bankName",
-        "bankAddress"
+        "tags"
       ]
     },
     {
@@ -4422,9 +4422,6 @@
       "name": "job",
       "rows": 0,
       "columns": [
-        "status",
-        "dueDate",
-        "deadlineType",
         "quantity",
         "scrapQuantity",
         "quantityComplete",
@@ -4443,6 +4440,9 @@
         "priority",
         "projectedCompletionAt",
         "scheduleOutdatedAt",
+        "status",
+        "dueDate",
+        "deadlineType",
         "id",
         "jobId",
         "itemId",
@@ -5778,14 +5778,14 @@
       "name": "quoteOperationStep",
       "rows": 0,
       "columns": [
-        "required",
-        "sortOrder",
-        "type",
         "minValue",
         "maxValue",
         "createdAt",
         "updatedAt",
         "description",
+        "required",
+        "sortOrder",
+        "type",
         "id",
         "name",
         "unitOfMeasureCode",
@@ -6003,8 +6003,6 @@
         "createdAt",
         "updatedAt",
         "customFields",
-        "createdBy",
-        "updatedBy",
         "id",
         "salesReturnOrderId",
         "itemId",
@@ -6013,7 +6011,9 @@
         "salesOrderLineId",
         "shipmentLineId",
         "salesInvoiceLineId",
-        "companyId"
+        "companyId",
+        "createdBy",
+        "updatedBy"
       ]
     },
     {
@@ -6856,6 +6856,7 @@
     "apiKey",
     "apiKeyRateLimit",
     "companyIntegration",
+    "employeePin",
     "oauthClient",
     "oauthToken",
     "webhook"
