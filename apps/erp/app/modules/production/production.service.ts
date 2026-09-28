@@ -7426,6 +7426,7 @@ export async function updateAssemblyStepHiddenComponents(
   client: SupabaseClient<Database>,
   data: {
     id: string;
+    assemblyInstructionId: string;
     hiddenComponentNodeIds: string[];
     updatedBy: string;
   }
@@ -7438,6 +7439,7 @@ export async function updateAssemblyStepHiddenComponents(
       updatedAt: new Date().toISOString()
     })
     .eq("id", data.id)
+    .eq("assemblyInstructionId", data.assemblyInstructionId)
     .select("id")
     .single();
 }

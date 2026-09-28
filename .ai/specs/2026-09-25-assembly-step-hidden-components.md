@@ -30,7 +30,8 @@ MES. This is why the earlier "isolate" release missed the ask.
   That is requirement 2 and gets its own spec.
 - Hiding that carries forward to later steps. Each step's list covers only that
   step (see Q1).
-- A temporary, unsaved hide. Isolate remains the tool for quick looks.
+- A temporary, unsaved hide. Selecting a component in the Components panel
+  still isolates it for a quick look (`focusedNodeIds`), but nothing is saved.
 - Any control in MES.
 - Translating the Components panel's existing, untouched English strings. Only
   copy that this work adds or changes is made translatable.
@@ -72,24 +73,26 @@ One new column on `assemblyInstructionStep`:
 2. Hidden applies only while that step is active (Q1). During full playback,
    the part disappears when the step starts and comes back on the next step.
 3. Hidden parts are not drawn at all. They are not ghosted.
-4. Isolate is unchanged. It stays temporary and is never saved.
+4. The temporary focus (select a component in the Components panel to see it
+   alone) is unchanged and never saved. The named Isolate view was removed.
 
 ### Viewer (`@carbon/viewer`)
 
 - `AssemblyStep` gains `hiddenComponentNodeIds?: string[]`.
-- In the scene's visibility pass, the existing explicit-hide pass hides the
-  union of the `hiddenNodeIds` prop and `activeStep.hiddenComponentNodeIds`,
-  minus the active step's own `componentNodeIds`. The pass already runs last,
-  after step-state visuals, highlight, and isolate. The effect already depends
-  on the active step, so playback updates per step automatically.
-- The `hiddenNodeIds` prop stays for other callers. The ERP editor stops passing
-  its temporary set.
+- In the scene's visibility pass, the explicit-hide pass hides
+  `activeStep.hiddenComponentNodeIds` minus the active step's own
+  `componentNodeIds`. The pass runs last, after step-state visuals, highlight,
+  and focus. The effect depends on the active step, so playback updates per
+  step automatically.
+- The player has no separate `hiddenNodeIds` prop; the step's list is the only
+  input.
 
 ### Services and routes (ERP)
 
-- `updateAssemblyStepHiddenComponents(client, { id, hiddenComponentNodeIds, updatedBy })`
-  reads the step's `componentNodeIds`, strips them from the list, dedupes, and
-  updates only the hidden column.
+- `updateAssemblyStepHiddenComponents(client, { id, assemblyInstructionId, hiddenComponentNodeIds, updatedBy })`
+  updates only the hidden column, matching the step by id AND instruction so a
+  route can't reach a step of another instruction. The trigger strips the
+  step's own parts and dedupes.
 - Validator `assemblyInstructionStepHiddenComponentsValidator`, with a JSON
   string array like the components validator.
 - Route `x+/assembly+/$id.steps.hidden.$stepId.tsx` is a POST autosave that
@@ -148,7 +151,7 @@ player applies them.
 | Hide scope | This step only | Q1 answer. |
 | Hide visual | Not drawn, never ghosted | The ask is to remove clutter. Ghosting still clutters and costs rendering. |
 | Own parts | Server strips them, UI disables them, player ignores them | Q3 answer. Three layers, so old or edited data can't make a step animate an invisible part. |
-| Temporary hide | Removed, eye now saves | Q2 answer. Isolate covers quick looks. |
+| Temporary hide | Removed, eye now saves | Q2 answer. Selecting a component still focuses it for a quick look. |
 | Save style | Immediate autosave route per field | Matches the components and motion autosave routes. |
 | Regenerate | Drops hidden lists with the steps | Consistent with every other authored step field. |
 
@@ -202,3 +205,4 @@ closest match here is the per-step "exception list".
 
 - 2026-09-25: first draft, with Q1 to Q4 answered by the user.
 - 2026-09-25: after review, the own-parts rule moved into a DB trigger; hidden-list rows are no longer clickable; the player's unused `hiddenNodeIds` prop was removed.
+- 2026-09-28: aligned with the implementation after PR review: the named Isolate view is gone (temporary focus remains), the player takes no `hiddenNodeIds` prop, and the hidden-list update is scoped to its instruction.

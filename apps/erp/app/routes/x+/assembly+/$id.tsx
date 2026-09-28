@@ -22,7 +22,7 @@ import {
   stagedGroupNodeIds
 } from "@carbon/viewer";
 import { msg } from "@lingui/core/macro";
-import { useCallback, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { ActionFunctionArgs, LoaderFunctionArgs } from "react-router";
 import {
   data,
@@ -298,6 +298,15 @@ export default function AssemblyInstructionRoute() {
     },
     [hiddenFetcher, id]
   );
+  // A failed save must not keep showing the unsaved list: fall back to the step's saved one.
+  useEffect(() => {
+    if (
+      hiddenFetcher.state === "idle" &&
+      hiddenFetcher.data?.success === false
+    ) {
+      setDraftHiddenNodeIds(null);
+    }
+  }, [hiddenFetcher.state, hiddenFetcher.data]);
 
   // The selected step shows its hidden draft before the autosave round-trips.
   const viewerSteps = useMemo(

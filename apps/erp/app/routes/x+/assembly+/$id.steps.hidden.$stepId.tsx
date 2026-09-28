@@ -36,6 +36,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
 
   const update = await updateAssemblyStepHiddenComponents(client, {
     id: stepId,
+    assemblyInstructionId: id,
     hiddenComponentNodeIds: validation.data.hiddenComponentNodeIds,
     updatedBy: userId
   });
