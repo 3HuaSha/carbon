@@ -3,7 +3,7 @@
 - **Status:** Draft, awaiting review
 - **Date:** 2026-09-25
 - **Branch:** `feat/asembly-view-isolation`
-- **Source:** customer ask in Slack (Dom: SA-0076 "Hide Components"; Anshul: "hide anything on any step … ERP will be the control on what is visible and MES will view").
+- **Need:** hide chosen parts on any step. The ERP controls what is visible, and MES plays it back.
 
 ## Summary
 
@@ -27,7 +27,7 @@ MES. This is why the earlier "isolate" release missed the ask.
 ## Non-goals
 
 - Sub-assembly grouping ("build the hub aside, then install it as one block").
-  That is requirement 2 and gets its own spec.
+  That gets its own spec.
 - Hiding that carries forward to later steps. Each step's list covers only that
   step (see Q1).
 - A temporary, unsaved hide. Selecting a component in the Components panel

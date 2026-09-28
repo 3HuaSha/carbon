@@ -30,7 +30,7 @@ function leaf(nodeId: string, min: Vec3, max: Vec3): AssemblyGraphNode {
   };
 }
 
-// SA-0033-shaped: a trailing arm with a front hub (bearing, circlip, disc).
+// A trailing arm with a front hub (bearing, circlip, disc).
 const graph: AssemblyGraph = {
   version: 1,
   unit: "mm",

@@ -3,7 +3,7 @@
 - **Status:** Implemented (MES playback not browser-checked)
 - **Date:** 2026-09-28
 - **Branch:** `feat/asembly-view-isolation`
-- **Source:** customer ask in Slack, requirement 2 ("assemble the group, then show the group being assembled to a larger group"). Dom's example is SA-0033: bearing and circlip into the trailing arm; bearing, circlip and brake disc onto the front hub; front hub assembly onto the trailing arm assembly.
+- **Need:** show a group of parts being assembled on its own, then show the finished group being fitted into a larger assembly. Example build: bearing and circlip into a trailing arm; bearing, circlip and brake disc onto a front hub; the front hub assembly onto the trailing arm assembly.
 - **Research:** `.ai/research/2026-09-28-assembly-subassembly-staging.md` (current code, sections 1–8; other tools, section 9)
 
 ## Summary
@@ -193,12 +193,12 @@ No planner change in v1. What happens today stays true:
 
 | Decision | Choice | Why |
 |---|---|---|
-| How a sub-assembly is marked | Per step, "joins at" a later step (Q1) | Explicit, fits SA-0033, author can fix it. The planner's automatic phases only work on fresh plans. |
+| How a sub-assembly is marked | Per step, "joins at" a later step (Q1) | Explicit, fits the example build, author can fix it. The planner's automatic phases only work on fresh plans. |
 | Where the link is stored | Existing `parentStepId` column | Already typed, FK'd, `ON DELETE SET NULL`, and remapped by version copy. No migration. |
 | Where the group sits | Auto spot to the right of the model, one lane per group (Q2) | No author work. Dragging can come later via `explode`. |
 | What the join step lists | Its own parts only; it moves the staged group automatically (Q3) | Materials are never seeded twice, and the planner never sees a repeated node (it drops repeats, `pipeline2.rs:1771-1776`). |
 | Join step motion | Glide to the insertion start, then the step's insertion (Q4) | Reads like a hand carrying the part in, and reuses the existing motion editor for the last move. |
-| Nesting | Not in v1 | SA-0033 needs one level. Nesting multiplies the lane and validation rules. |
+| Nesting | Not in v1 | The example build needs one level. Nesting multiplies the lane and validation rules. |
 | Viewer field name | `joinStepId` (maps from `parentStepId`) | Says what it means at the call site. |
 | Unused `phase` type | Removed | Never populated. Two sub-assembly concepts on one type would confuse. |
 | Picking mode positions | Always at the seat | Clicking must select what the author sees in the BOM tree. |
@@ -206,7 +206,7 @@ No planner change in v1. What happens today stays true:
 
 ## Acceptance criteria
 
-Set up from SA-0033 (or the seeded demo assembly with an equivalent structure):
+Set up an assembly with this structure (the seeded demo assembly works):
 step 1 trailing arm (base), step 2 bearing + circlip into arm, step 3 bearing into
 hub, step 4 circlip into hub, step 5 brake disc onto hub, step 6 front hub into arm.
 
