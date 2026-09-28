@@ -2977,7 +2977,7 @@ msgid "Batch Properties"
 msgstr "Propriedades em Lote"
 
 msgid "Batch Quantities"
-msgstr "Quantidades de Lotes de Produção"
+msgstr "Quantidades de Lote"
 
 msgid "Batch Size"
 msgstr "Tamanho do Lote"

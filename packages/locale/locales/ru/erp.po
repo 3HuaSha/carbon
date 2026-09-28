@@ -2977,7 +2977,7 @@ msgid "Batch Properties"
 msgstr "Свойства партии"
 
 msgid "Batch Quantities"
-msgstr "Количество по сериям"
+msgstr "Количество по партиям"
 
 msgid "Batch Size"
 msgstr "Размер партии"

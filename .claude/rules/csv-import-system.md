@@ -267,6 +267,9 @@ edge function directly.
 Deno `serve` handler. Payload validated by `importCsvValidator` (table enum, `filePath`,
 `columnMappings`, optional `enumMappings`, `companyId`, `userId`).
 
+- Re-checks the caller: `update` on `IMPORT_PERMISSIONS[table]`, plus `create` for tables in
+  `IMPORT_REQUIRES_CREATE`. Both mirror `importPermissions` / `importRequiresCreate` in the
+  models, so a new import type adds its table to both sides.
 - Downloads CSV: `client.storage.from("private").download(filePath)`.
 - Parses with Deno std `import { parse } from "https://deno.land/std@0.175.0/encoding/csv.ts"`
   (`skipFirstRow: true, lazyQuotes: true`), falling back to a custom `parsePermissiveCsv()`
@@ -316,7 +319,7 @@ See `.claude/rules/accounting-sync-handlers.md` for the full `externalIntegratio
   They are separate parsers — don't assume identical behavior.
 - `enumMappings` crosses the route boundary as a JSON string; the service/edge function expect
   the parsed object.
-- The edge function transaction uses Kysely and bypasses RLS — the route's `requirePermissions`
-  is the only authorization gate.
+- The edge function transaction uses Kysely and bypasses RLS; authorization is the route's
+  `requirePermissions` plus the edge function's own check on the same permissions.
 - Row-level failures are returned in `errors[]` with `{ row, reason }`; only a thrown
   exception produces a 500.

@@ -95,7 +95,18 @@ const IMPORT_PERMISSIONS: Record<ImportTable, string> = {
   materialGrade: "parts",
   materialType: "parts",
   materialDimension: "parts",
+  inventoryQuantity: "inventory",
+  batchQuantity: "inventory",
+  serialQuantity: "inventory",
 };
+
+// Imports that post new records also need `create`, as the ERP's import route
+// demands (`importRequiresCreate` in `imports.models.ts`).
+const IMPORT_REQUIRES_CREATE = new Set<ImportTable>([
+  "inventoryQuantity",
+  "batchQuantity",
+  "serialQuantity",
+]);
 
 // The columns each importer may write from a CSV row. Kysely here runs as the
 // service role, so spreading a row into an INSERT/UPDATE would let a crafted
@@ -1199,6 +1210,9 @@ serve(async (req: Request) => {
 
     const client = await requirePermissions(req, companyId, userId, {
       update: IMPORT_PERMISSIONS[table],
+      ...(IMPORT_REQUIRES_CREATE.has(table)
+        ? { create: IMPORT_PERMISSIONS[table] }
+        : {}),
     });
 
     // The client is service-role and the legacy bucket is shared across

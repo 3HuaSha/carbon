@@ -2977,7 +2977,7 @@ msgid "Batch Properties"
 msgstr "批量属性"
 
 msgid "Batch Quantities"
-msgstr "生产批次数量"
+msgstr "批次数量"
 
 msgid "Batch Size"
 msgstr "批量大小"
