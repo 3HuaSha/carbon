@@ -3000,6 +3000,9 @@ msgstr "Номер партии"
 msgid "Batch Properties"
 msgstr "Свойства партии"
 
+msgid "Batch Quantities"
+msgstr "Количество по партиям"
+
 msgid "Batch Size"
 msgstr "Размер партии"
 
@@ -9169,6 +9172,9 @@ msgstr "Движения по товарно-материальным ценно
 
 msgid "Inventory Qty"
 msgstr "Кол-во в инвентаре"
+
+msgid "Inventory Quantities"
+msgstr "Количество в запасах"
 
 msgid "Inventory Tracking"
 msgstr "Отслеживание запасов"
@@ -15829,6 +15835,9 @@ msgstr "Серийные номера для возврата"
 
 msgid "Serial or Batch Tracking Required"
 msgstr "Требуется отслеживание по серийному номеру или партии"
+
+msgid "Serial Quantities"
+msgstr "Количество по серийным номерам"
 
 msgid "Serial tracking"
 msgstr "Отслеживание серийных номеров"
