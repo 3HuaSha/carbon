@@ -1,16 +1,18 @@
 import type { ComponentProps } from "react";
 import { z } from "zod";
 import { defineIntegration } from "../fns";
-import { isHttpsUrl, MOUNT_DEFAULT_BASE_URL } from "./lib/constants";
+import { MOUNT_DEFAULT_BASE_URL } from "./lib/constants";
 
 const MountSettingsSchema = z.object({
   clientId: z.string().min(1),
   // Empty means "keep the existing vaulted secret"; presence enforced at install.
   clientSecret: z.string(),
+  // A plain string check, not a refinement: zod v4 skips refinements for a
+  // `.default()` value (conformance: no-default-on-effects).
   baseUrl: z
     .string()
     .url()
-    .refine(isHttpsUrl, { message: "Must be an HTTPS URL" })
+    .startsWith("https://", { message: "Must be an HTTPS URL" })
     .default(MOUNT_DEFAULT_BASE_URL),
   tenant: z.string().min(1),
   scope: z.string().optional(),
