@@ -1,5 +1,7 @@
 import type { Database } from "@carbon/database";
 import type { Kysely, KyselyDatabase } from "@carbon/database/client";
+import { getLogger } from "@carbon/logger";
+import { datetime } from "@carbon/utils";
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { createMappingService } from "../../accounting/core/external-mapping";
 import { getMountClient } from "./client";
@@ -13,6 +15,8 @@ import {
 import { getMountIntegration } from "./service";
 import { createMountPublishSource } from "./source";
 import type { MountEntityType } from "./types";
+
+const logger = getLogger("ee", "mount");
 
 /**
  * One publish run: resolve settings, sweep, record the outcome. The
@@ -105,11 +109,18 @@ async function recordOutcome(
   companyId: string,
   summaries: MountPublishSummary[]
 ) {
+  // Throw rather than carry on: writing back without the stored metadata
+  // would drop the saved settings, and a lost write drops the deferred ids.
+  // A throw fails the job step, which Inngest retries.
   const current = await getMountIntegration(serviceRole, companyId);
-  const metadata = (current.data?.[0]?.metadata ?? {}) as Record<
-    string,
-    unknown
-  >;
+  if (current.error || !current.data?.[0]) {
+    logger.error("Failed to read Mount integration to record publish outcome", {
+      companyId,
+      error: current.error
+    });
+    throw new Error("Failed to read Mount integration");
+  }
+  const metadata = (current.data[0].metadata ?? {}) as Record<string, unknown>;
 
   const lastPublish = {
     ...((metadata.lastPublish as Record<string, unknown>) ?? {}),
@@ -117,7 +128,7 @@ async function recordOutcome(
       summaries.map((summary) => [
         summary.entityType,
         {
-          at: new Date().toISOString(),
+          at: datetime.timestamp(),
           created: summary.created,
           updated: summary.updated,
           more: summary.more,
@@ -129,9 +140,17 @@ async function recordOutcome(
     )
   };
 
-  await serviceRole
+  const update = await serviceRole
     .from("companyIntegration")
     .update({ metadata: { ...metadata, lastPublish } as never })
     .eq("companyId", companyId)
     .eq("id", MOUNT_INTEGRATION_ID);
+
+  if (update.error) {
+    logger.error("Failed to record Mount publish outcome", {
+      companyId,
+      error: update.error
+    });
+    throw new Error("Failed to record Mount publish outcome");
+  }
 }

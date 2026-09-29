@@ -28,6 +28,7 @@ export type MountMappingPort = {
     options?: {
       metadata?: Record<string, unknown>;
       allowDuplicateExternalId?: boolean;
+      lastSyncedAt?: string;
     }
   ): Promise<void>;
 };
@@ -84,7 +85,8 @@ export async function pushCompanyToMount(
   companyId: string,
   entityType: Extract<MountEntityType, "customer" | "supplier">,
   entityId: string,
-  input: MountCompanyInput
+  input: MountCompanyInput,
+  readAt?: string
 ): Promise<PushOutcome> {
   const externalId = await mappings.getExternalId(
     entityType,
@@ -95,7 +97,7 @@ export async function pushCompanyToMount(
   if (externalId) {
     try {
       await api.updateCompany(companyId, externalId, input);
-      await link(mappings, entityType, entityId, externalId, input);
+      await link(mappings, entityType, entityId, externalId, input, readAt);
       return { status: "updated", externalId };
     } catch (error) {
       if (!(error instanceof MountNotFoundError)) throw error;
@@ -125,7 +127,7 @@ export async function pushCompanyToMount(
     mountId = (await api.createCompany(companyId, input)).id;
   }
 
-  await link(mappings, entityType, entityId, mountId, input);
+  await link(mappings, entityType, entityId, mountId, input, readAt);
 
   return { status: match ? "updated" : "created", externalId: mountId };
 }
@@ -135,7 +137,8 @@ export async function pushItemToMount(
   api: MountApiPort,
   companyId: string,
   entityId: string,
-  input: MountObjectInput
+  input: MountObjectInput,
+  readAt?: string
 ): Promise<PushOutcome> {
   const externalId = await mappings.getExternalId(
     "item",
@@ -146,7 +149,7 @@ export async function pushItemToMount(
   if (externalId) {
     try {
       await api.updateObject(companyId, externalId, input);
-      await link(mappings, "item", entityId, externalId, input);
+      await link(mappings, "item", entityId, externalId, input, readAt);
       return { status: "updated", externalId };
     } catch (error) {
       if (!(error instanceof MountNotFoundError)) throw error;
@@ -177,7 +180,7 @@ export async function pushItemToMount(
     mountId = (await api.createObject(companyId, input)).id;
   }
 
-  await link(mappings, "item", entityId, mountId, input);
+  await link(mappings, "item", entityId, mountId, input, readAt);
 
   return { status: match ? "updated" : "created", externalId: mountId };
 }
@@ -185,16 +188,23 @@ export async function pushItemToMount(
 /**
  * The mapping's metadata records what Carbon last sent. Mount's PATCH does not
  * return the record, so the payload is the only snapshot available on update.
+ *
+ * `readAt` is when the record was read from Carbon, stored as `lastSyncedAt`.
+ * Stamping the link time instead would hide an edit made between the read and
+ * the push: its `updatedAt` would sort before `lastSyncedAt` and the sweep
+ * would never send it.
  */
 async function link(
   mappings: MountMappingPort,
   entityType: MountEntityType,
   entityId: string,
   mountId: string,
-  sent: MountCompanyInput | MountObjectInput
+  sent: MountCompanyInput | MountObjectInput,
+  readAt?: string
 ) {
   await mappings.link(entityType, entityId, MOUNT_INTEGRATION_ID, mountId, {
     metadata: sent,
+    lastSyncedAt: readAt,
     // A Mount part is per part number, and each Carbon revision is its own
     // item. When a new revision is released it takes over the Mount record,
     // while the superseded revision's row still points at it.

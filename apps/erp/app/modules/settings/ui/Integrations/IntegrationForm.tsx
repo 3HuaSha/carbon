@@ -22,7 +22,6 @@ import {
 } from "@carbon/form";
 import {
   Accordion,
-  AccordionContent,
   AccordionItem,
   AccordionTrigger,
   Badge,
@@ -617,6 +616,7 @@ export function IntegrationForm({
   // Mapping") update the search param, and this effect switches the tab
   // without a remount. Manual tab clicks don't write the URL.
   const [activeTab, setActiveTab] = useState(defaultTab ?? "settings");
+  const [settingsOpen, setSettingsOpen] = useState(false);
   useEffect(() => {
     if (defaultTab) setActiveTab(defaultTab);
   }, [defaultTab]);
@@ -817,22 +817,32 @@ export function IntegrationForm({
     </>
   );
 
-  // Collapsed by default: the fields still mount, so the form posts every
-  // value whether or not the section is open.
+  // Collapsed by default. The accordion only draws the trigger: its content
+  // unmounts when closed, which would drop these fields from the submitted
+  // form. So they sit outside it, always mounted, and are only hidden.
   const settingsBody = collapseSettings ? (
-    <Accordion type="single" collapsible className="w-full">
-      <AccordionItem value="settings" className="border-none">
-        <AccordionTrigger className="py-2 text-sm font-medium hover:no-underline">
-          {settingsLabel ?? <Trans>Settings</Trans>}
-        </AccordionTrigger>
-        <AccordionContent>
-          <VStack spacing={4} className="w-full pt-2">
-            {setupInstructions}
-            {settingsFields}
-          </VStack>
-        </AccordionContent>
-      </AccordionItem>
-    </Accordion>
+    <div className="flex w-full flex-col">
+      <Accordion
+        type="single"
+        collapsible
+        value={settingsOpen ? "settings" : ""}
+        onValueChange={(value) => setSettingsOpen(value === "settings")}
+        className="w-full"
+      >
+        <AccordionItem value="settings" className="border-none">
+          <AccordionTrigger className="py-2 text-sm font-medium hover:no-underline">
+            {settingsLabel ?? <Trans>Settings</Trans>}
+          </AccordionTrigger>
+        </AccordionItem>
+      </Accordion>
+      <VStack
+        spacing={4}
+        className={cn("w-full pt-2", !settingsOpen && "hidden")}
+      >
+        {setupInstructions}
+        {settingsFields}
+      </VStack>
+    </div>
   ) : (
     settingsFields
   );

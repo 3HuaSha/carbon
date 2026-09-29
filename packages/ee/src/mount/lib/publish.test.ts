@@ -184,6 +184,36 @@ describe("publishEntityType", () => {
     expect(summary.failed[0]?.reason).toContain("readableId");
   });
 
+  it("records the read time, not the link time, as lastSyncedAt", async () => {
+    const { api } = createFakeMount();
+    const synced: Array<string | undefined> = [];
+    const mappings: MountMappingPort = {
+      async getExternalId() {
+        return null;
+      },
+      async link(_t, _id, _i, _ext, options) {
+        synced.push(options?.lastSyncedAt);
+      }
+    };
+    let listedAt = "";
+    const source: MountPublishSource = {
+      async listStale() {
+        listedAt = new Date().toISOString();
+        // An edit landing after the read must still sort after lastSyncedAt.
+        await new Promise((resolve) => setTimeout(resolve, 5));
+        return [{ id: "i1", readableId: "P-1", name: "Bracket" }];
+      }
+    };
+
+    await publishEntityType(source, mappings, api, COMPANY_ID, "item", {
+      partDefinitionId: PART_DEFINITION
+    });
+
+    expect(synced).toHaveLength(1);
+    expect(synced[0]).toBeDefined();
+    expect(synced[0]! <= listedAt).toBe(true);
+  });
+
   describe("records that keep failing", () => {
     const parts: PublishablePart[] = Array.from({ length: 5 }, (_, i) => ({
       id: `i${i}`,

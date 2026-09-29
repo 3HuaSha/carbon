@@ -30,7 +30,12 @@ type MountSettings = {
   scope?: string;
 };
 
-type CachedToken = { accessToken: string; expiresAt: number };
+type CachedToken = {
+  accessToken: string;
+  expiresAt: number;
+  /** The settings the token was issued under; see `connectionKey`. */
+  connection: string;
+};
 
 /**
  * Re-exchange this long before a token actually lapses, so a request never
@@ -62,6 +67,11 @@ const TOKEN_EXPIRY_MARGIN_MS = 60_000;
 export class MountClient {
   instance: AxiosInstance;
   private tokens = new Map<string, CachedToken>();
+  /** One pending exchange per company, shared by concurrent callers. */
+  private inflight = new Map<
+    string,
+    { connection: string; exchange: Promise<string> }
+  >();
   /** Domain setting (identifier or title) -> id, per company. */
   private domainIds = new Map<string, string>();
 
@@ -76,15 +86,40 @@ export class MountClient {
     settings: MountSettings,
     { force = false }: { force?: boolean } = {}
   ): Promise<string> {
+    const connection = connectionKey(settings);
     const cached = this.tokens.get(companyId);
     if (
       !force &&
       cached &&
+      cached.connection === connection &&
       cached.expiresAt - TOKEN_EXPIRY_MARGIN_MS > Date.now()
     ) {
       return cached.accessToken;
     }
 
+    // A publish run resolves its settings with several requests at once;
+    // without this each of them would exchange its own token.
+    const pending = this.inflight.get(companyId);
+    if (!force && pending?.connection === connection) {
+      return await pending.exchange;
+    }
+
+    const exchange = this.exchangeToken(companyId, settings, connection);
+    this.inflight.set(companyId, { connection, exchange });
+    try {
+      return await exchange;
+    } finally {
+      if (this.inflight.get(companyId)?.exchange === exchange) {
+        this.inflight.delete(companyId);
+      }
+    }
+  }
+
+  private async exchangeToken(
+    companyId: string,
+    settings: MountSettings,
+    connection: string
+  ): Promise<string> {
     const body = new URLSearchParams({
       grant_type: "client_credentials",
       client_id: settings.clientId,
@@ -112,7 +147,8 @@ export class MountClient {
 
     this.tokens.set(companyId, {
       accessToken,
-      expiresAt: Date.parse(expiresAt)
+      expiresAt: Date.parse(expiresAt),
+      connection
     });
 
     return accessToken;
@@ -167,7 +203,7 @@ export class MountClient {
     if (!scope) return null;
     if (UUID_PATTERN.test(scope)) return scope;
 
-    const key = `${companyId}:${scope}`;
+    const key = `${companyId}:${connectionKey(settings)}:${scope}`;
     const cached = this.domainIds.get(key);
     if (cached) return cached;
 
@@ -413,6 +449,20 @@ export class MountClient {
       throw error;
     }
   }
+}
+
+/**
+ * Identifies the Mount connection a cached value belongs to. Changing the
+ * client, secret, tenant or API URL in settings must not keep serving a token
+ * or domain id issued under the old ones. In memory only, never persisted.
+ */
+function connectionKey(settings: MountSettings) {
+  return [
+    settings.baseUrl || MOUNT_DEFAULT_BASE_URL,
+    settings.tenant,
+    settings.clientId,
+    settings.clientSecret
+  ].join("\u0000");
 }
 
 const UUID_PATTERN =

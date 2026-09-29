@@ -1,3 +1,4 @@
+import { datetime } from "@carbon/utils";
 import {
   type CarbonCompanyRecord,
   type CarbonItemRecord,
@@ -112,6 +113,8 @@ export async function publishEntityType(
     return summary;
   }
 
+  // Taken before the read, so anything edited after it stays stale.
+  const readAt = datetime.timestamp();
   const records = await source.listStale(entityType, limit + 1, deferIds);
   const batch = records.slice(0, limit);
   const deferSet = new Set(deferIds);
@@ -130,7 +133,8 @@ export async function publishEntityType(
         companyId,
         entityType,
         record,
-        settings
+        settings,
+        readAt
       );
 
       if (outcome.status === "created") summary.created++;
@@ -183,7 +187,8 @@ async function publishOne(
   companyId: string,
   entityType: MountEntityType,
   record: PublishableCustomer | PublishableSupplier | PublishablePart,
-  settings: MountPublishSettings
+  settings: MountPublishSettings,
+  readAt: string
 ): Promise<PushOutcome> {
   if (entityType === "item") {
     return await pushItemToMount(
@@ -195,7 +200,8 @@ async function publishOne(
         record as PublishablePart,
         // Checked by the caller before the loop.
         settings.partDefinitionId as string
-      )
+      ),
+      readAt
     );
   }
 
@@ -216,7 +222,8 @@ async function publishOne(
     companyId,
     entityType,
     record.id,
-    input
+    input,
+    readAt
   );
 }
 
