@@ -569,12 +569,6 @@ export type IntegrationFormTab = {
 interface IntegrationFormProps {
   metadata: Record<string, unknown>;
   installed: boolean;
-  /**
-   * Collapse the settings and setup instructions behind a disclosure,
-   * labelled with `settingsLabel`, and move the actions above them. For an
-   * integration whose day-to-day surface is its actions: the credentials are
-   * entered once and then only re-read when something breaks.
-   */
   collapseSettings?: boolean;
   settingsLabel?: ReactNode;
   onClose: () => void;

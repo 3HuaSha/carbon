@@ -71,7 +71,6 @@ function createFakeMappings() {
   return { mappings, rows };
 }
 
-/** Mirrors the real source's ordering: deferred records sort last. */
 function partSource(parts: PublishablePart[]): MountPublishSource {
   return {
     async listStale(_entityType, limit, deferIds = []) {

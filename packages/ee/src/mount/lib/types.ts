@@ -54,11 +54,9 @@ export type MountObject = z.infer<typeof MountObjectSchema>;
 export type MountObjectDefinition = z.infer<typeof MountObjectDefinitionSchema>;
 export type MountCompanyType = z.infer<typeof MountCompanyTypeSchema>;
 
-/** The Carbon-side entity types this integration pushes. */
 export const MOUNT_ENTITY_TYPES = ["customer", "supplier", "item"] as const;
 export type MountEntityType = (typeof MOUNT_ENTITY_TYPES)[number];
 
-/** Write payloads. Mount names these `*Partial` in its OpenAPI spec. */
 export type MountCompanyInput = {
   identifier: string;
   name: string;
@@ -74,17 +72,12 @@ export type MountObjectInput = {
   definitionId: string;
 };
 
-/**
- * What `PATCH /X/{id}` returns: the fields that changed, not the record. An
- * update that changes nothing returns an empty list.
- */
 export type MountChange = {
   field: string;
   oldValue?: unknown;
   newValue?: unknown;
 };
 
-/** The Mount record a mapping row points at no longer exists. */
 export class MountNotFoundError extends Error {
   constructor(collection: string, mountId: string) {
     super(`Mount ${collection} ${mountId} not found`);

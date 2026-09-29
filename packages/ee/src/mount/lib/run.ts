@@ -18,11 +18,6 @@ import type { MountEntityType } from "./types";
 
 const logger = getLogger("ee", "mount");
 
-/**
- * One publish run: resolve settings, sweep, record the outcome. The
- * `mount-publish` job calls it for the integration's push actions, and a cron
- * would call it the same way.
- */
 export async function runMountPublish({
   serviceRole,
   db,
@@ -107,11 +102,6 @@ export async function runMountPublish({
   return { status: "ran", summaries };
 }
 
-/**
- * Persist what happened, including the deferred ids the next run sorts last.
- * A record that never published has no mapping row to carry a reason, so
- * this is the only record of why it failed or was ambiguous.
- */
 async function recordOutcome(
   serviceRole: SupabaseClient<Database>,
   companyId: string,

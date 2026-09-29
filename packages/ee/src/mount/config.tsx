@@ -5,7 +5,6 @@ import { MOUNT_DEFAULT_BASE_URL } from "./lib/constants";
 
 const MountSettingsSchema = z.object({
   clientId: z.string().min(1),
-  // Empty means "keep the existing vaulted secret"; presence enforced at install.
   clientSecret: z.string(),
   // A plain string check, not a refinement: zod v4 skips refinements for a
   // `.default()` value (conformance: no-default-on-effects).
@@ -16,9 +15,6 @@ const MountSettingsSchema = z.object({
     .default(MOUNT_DEFAULT_BASE_URL),
   tenant: z.string().min(1),
   scope: z.string().optional(),
-  // Slug and titles, not ids. Mount never shows a user a UUID: the object
-  // definition's slug is in its settings URL, and company types are listed by
-  // title. The client resolves both to ids at publish time.
   partDefinitionSlug: z.string().min(1),
   customerTypeTitle: z.string().optional(),
   supplierTypeTitle: z.string().optional()
@@ -153,11 +149,6 @@ export const Mount = defineIntegration({
   ]
 });
 
-/**
- * Steps verified against Mount's own admin UI, and against the API itself.
- * Member ID is called out because a client with no member is refused on every
- * request with a bare 403, and the integration can only report "unhealthy".
- */
 function SetupInstructions() {
   return (
     <>
@@ -215,10 +206,6 @@ function SetupInstructions() {
   );
 }
 
-/**
- * Placeholder mark in `currentColor`, matching the other integration logos.
- * Replace with Mount's own asset when they provide one.
- */
 function Logo(props: ComponentProps<"svg">) {
   return (
     <svg

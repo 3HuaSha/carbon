@@ -8,16 +8,10 @@
 
 export const MOUNT_DEFAULT_BASE_URL = "https://api.mount.cloud";
 
-/**
- * Mount versions its API by date. Omitting the header defaults to `latest`,
- * so this is always sent. Bumping it is a breaking-change review:
- * 2026-04-01 -> 2026-06-01 already changed the update payload shape.
- */
 export const MOUNT_API_VERSION = "2026-06-01";
 
 export const MOUNT_INTEGRATION_ID = "mount";
 
-/** The Mount API URL receives the client secret, so it must be HTTPS. */
 export function isHttpsUrl(value: string) {
   try {
     return new URL(value).protocol === "https:";

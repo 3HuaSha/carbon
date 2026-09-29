@@ -19,12 +19,6 @@ export interface ExternalIntegrationMapping {
 export interface LinkOptions {
   metadata?: Record<string, unknown>;
   remoteUpdatedAt?: Date | string;
-  /**
-   * When the Carbon side was read for this sync. Defaults to now. A caller that
-   * detects changes by comparing `lastSyncedAt` with the entity's `updatedAt`
-   * passes its read time, so an edit made while the sync was in flight still
-   * reads as newer and is picked up next time.
-   */
   lastSyncedAt?: Date | string;
   createdBy?: string;
   /**

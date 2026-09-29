@@ -38,12 +38,6 @@ export type PublishableSupplier = CarbonCompanyRecord & { id: string };
 export type PublishablePart = CarbonItemRecord & { id: string };
 
 export type MountPublishSource = {
-  /**
-   * Carbon records of this type that are missing from Mount or changed since
-   * they were last published. Ordered oldest-change first so a capped run
-   * always makes progress instead of re-reading the same head, with
-   * `deferIds` after everything else.
-   */
   listStale(
     entityType: MountEntityType,
     limit: number,
@@ -63,22 +57,12 @@ export type MountPublishSummary = {
   entityType: MountEntityType;
   created: number;
   updated: number;
-  /** Identifier matched more than one Mount record; a person must resolve it. */
   ambiguous: Array<{ entityId: string; identifier: string; matches: number }>;
-  /** Record could not be mapped or the push threw. */
   failed: Array<{ entityId: string; reason: string }>;
-  /** True when the cap was hit and records not already deferred remain. */
   more: boolean;
-  /**
-   * Records to sort last on the next run: this run's failures and ambiguous
-   * matches, plus earlier ones the cap kept this run from reaching. Without
-   * it a record that can never publish stays stale, sorts first by age, and
-   * takes a slot in every run ahead of records that would succeed.
-   */
   deferred: string[];
 };
 
-/** Records per run. A cap keeps one button press bounded and re-runnable. */
 export const MOUNT_PUBLISH_BATCH_SIZE = 200;
 
 export async function publishEntityType(
@@ -113,7 +97,6 @@ export async function publishEntityType(
     return summary;
   }
 
-  // Taken before the read, so anything edited after it stays stale.
   const readAt = datetime.timestamp();
   const records = await source.listStale(entityType, limit + 1, deferIds);
   const batch = records.slice(0, limit);

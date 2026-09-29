@@ -17,12 +17,6 @@ const PublishRequestSchema = z.object({
   entityType: z.enum(["customer", "supplier", "item"])
 });
 
-/**
- * POST — start a Mount publish for one family of records (the "Push
- * customers / suppliers / parts" actions on the integration settings page).
- * Fire-and-forget: the `mount-publish` job does the work, one run per company
- * at a time, and records its outcome on the integration's metadata.
- */
 export async function action({ request }: ActionFunctionArgs) {
   assertIsPost(request);
   const { client, companyId } = await requirePermissions(request, {

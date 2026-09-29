@@ -37,37 +37,11 @@ type MountSettings = {
 type CachedToken = {
   accessToken: string;
   expiresAt: number;
-  /** The settings the token was issued under; see `connectionKey`. */
   connection: string;
 };
 
-/**
- * Re-exchange this long before a token actually lapses, so a request never
- * races the expiry it was issued under.
- */
 const TOKEN_EXPIRY_MARGIN_MS = 60_000;
 
-/**
- * Mount's OpenAPI spec declares no `securitySchemes` at all, so the shape here
- * comes from its admin UI's own usage instructions: OAuth 2.0 client
- * credentials against `/auth/v2/token`, then a bearer token plus `X-Tenant` on
- * every call. Tenants are configured separately, so one Carbon company maps to
- * one Mount tenant.
- *
- * Mount also offers "direct key auth", sending the client secret itself as the
- * bearer. Do not use it here: that mode is only honoured by Mount's MCP
- * endpoint, and the REST API answers every request with a bare 403 — no body,
- * no explanation — which reads exactly like a permissions problem.
- *
- * The token response is NOT the OAuth-standard shape. It is camelCase with an
- * absolute expiry (`accessToken`, `refreshToken`, `expiresAt`,
- * `refreshExpiresAt`) and carries no `token_type` or `expires_in`.
- *
- * Tokens are cached in memory per company and never persisted. There is no
- * refresh-token handling on purpose: the secret is vaulted, so a new token is
- * always one call away, which avoids the concurrent-rotation problem the
- * accounting OAuth clients carry.
- */
 export class MountClient {
   instance: AxiosInstance;
   private tokens = new Map<string, CachedToken>();
@@ -166,7 +140,6 @@ export class MountClient {
     return accessToken;
   }
 
-  /** Drops a company's cached token; the next call re-exchanges. */
   invalidateToken(companyId: string) {
     this.tokens.delete(companyId);
   }
@@ -328,12 +301,6 @@ export class MountClient {
     return MountObjectDefinitionSchema.array().parse(data);
   }
 
-  /**
-   * Resolve the definition a user named by slug. The slug is what Mount shows
-   * them (it is the definition's settings URL); the id is what the write
-   * payload needs. Resolved per publish run, not stored, so renaming a
-   * definition in Mount does not silently strand the integration.
-   */
   async findObjectDefinitionBySlug(
     companyId: string,
     slug: string
@@ -347,7 +314,6 @@ export class MountClient {
     return match ?? null;
   }
 
-  /** Company types are listed to users by title; the payload needs the id. */
   async findCompanyTypeByTitle(
     companyId: string,
     title: string
@@ -369,11 +335,6 @@ export class MountClient {
     return MountCompanyTypeSchema.array().parse(data);
   }
 
-  /**
-   * `identifier` is not enforced unique by Mount, so this can legitimately
-   * return more than one row. The caller treats >1 as ambiguous rather than
-   * picking one — silently patching the wrong record is worse than failing.
-   */
   async findCompaniesByIdentifier(
     companyId: string,
     identifier: string
@@ -469,11 +430,6 @@ export class MountClient {
   }
 }
 
-/**
- * Identifies the Mount connection a cached value belongs to. Changing the
- * client, secret, tenant or API URL in settings must not keep serving a token
- * or domain id issued under the old ones. In memory only, never persisted.
- */
 function connectionKey(settings: MountSettings) {
   return [
     settings.baseUrl || MOUNT_DEFAULT_BASE_URL,
@@ -488,7 +444,6 @@ const MOUNT_REQUEST_TIMEOUT_MS = 30_000;
 const UUID_PATTERN =
   /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
-/** OData string literals escape a single quote by doubling it. */
 export function escapeODataString(value: string) {
   return value.replace(/'/g, "''");
 }

@@ -1885,8 +1885,6 @@ export default function IntegrationRoute() {
   const [searchParams] = useSearchParams();
   const { id: integrationId } = useParams();
 
-  // Mount is used through its push actions once connected, so its credentials
-  // fold away beneath them.
   const collapseSettings = integrationId === "mount" && installed;
 
   // Accounting-category integrations get Account Mapping, Posting, Dimensions

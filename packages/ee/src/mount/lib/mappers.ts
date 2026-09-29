@@ -80,12 +80,6 @@ export function mapSupplierToMountCompany(
   };
 }
 
-/**
- * Part number -> `identifier`, part name -> `title`. Mount generates an
- * identifier from the definition's prefix when one is not supplied, so passing
- * Carbon's part number explicitly is what keeps the two sides legible to a
- * quality handler.
- */
 export function mapItemToMountObject(
   item: CarbonItemRecord,
   definitionId: string

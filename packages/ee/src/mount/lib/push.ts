@@ -9,11 +9,6 @@ import {
   type MountObjectInput
 } from "./types";
 
-/**
- * The slice of `ExternalIntegrationMappingService` a push needs. Mount has no
- * external-id field, no idempotency key and no ETag, so this table is the only
- * record of which Mount row a Carbon record owns.
- */
 export type MountMappingPort = {
   getExternalId(
     entityType: string,
@@ -33,7 +28,6 @@ export type MountMappingPort = {
   ): Promise<void>;
 };
 
-/** The slice of `MountClient` a push needs. */
 export type MountApiPort = {
   findCompaniesByIdentifier(
     companyId: string,
@@ -69,16 +63,6 @@ export type PushOutcome =
   | { status: "updated"; externalId: string }
   | { status: "ambiguous"; identifier: string; matches: number };
 
-/**
- * Resolution order for every push: the mapping row first, then a lookup by
- * identifier to adopt a record someone created by hand, then create. Mount
- * accepts duplicate identifiers, so more than one match is reported rather
- * than resolved — patching an arbitrary one of two records is worse than
- * failing loudly.
- *
- * A mapped record that was deleted in Mount falls through to the lookup and
- * is published again: Carbon is the master, so Mount does not get to drop it.
- */
 export async function pushCompanyToMount(
   mappings: MountMappingPort,
   api: MountApiPort,
@@ -185,15 +169,6 @@ export async function pushItemToMount(
   return { status: match ? "updated" : "created", externalId: mountId };
 }
 
-/**
- * The mapping's metadata records what Carbon last sent. Mount's PATCH does not
- * return the record, so the payload is the only snapshot available on update.
- *
- * `readAt` is when the record was read from Carbon, stored as `lastSyncedAt`.
- * Stamping the link time instead would hide an edit made between the read and
- * the push: its `updatedAt` would sort before `lastSyncedAt` and the sweep
- * would never send it.
- */
 async function link(
   mappings: MountMappingPort,
   entityType: MountEntityType,

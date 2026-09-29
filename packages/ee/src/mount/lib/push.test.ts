@@ -15,11 +15,6 @@ import {
 const COMPANY_ID = "co_1";
 const PART_DEFINITION = "def_part";
 
-/**
- * An in-memory stand-in for Mount that behaves the way the real API does,
- * including the part that matters most here: `identifier` is NOT unique, so a
- * second create with the same identifier succeeds and leaves two rows.
- */
 function createFakeMount() {
   const companies: MountCompany[] = [];
   const objects: MountObject[] = [];

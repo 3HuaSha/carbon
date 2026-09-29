@@ -8,18 +8,6 @@ import type {
 import { MOUNT_INTEGRATION_ID } from "./service";
 import type { MountEntityType } from "./types";
 
-/**
- * "Stale" is: no mapping row, or the Carbon record changed after it was last
- * published. That definition is what makes the sweep idempotent — a run that
- * succeeds takes a record out of the set, and a run that fails leaves it in.
- *
- * Records that failed or were ambiguous on earlier runs (`deferIds`) sort
- * after everything else, so they only take capacity the rest of the stale set
- * leaves over.
- *
- * Every record publishes regardless of active status; see the note in
- * mappers.ts.
- */
 export function createMountPublishSource(
   db: Kysely<KyselyDatabase>,
   companyId: string
