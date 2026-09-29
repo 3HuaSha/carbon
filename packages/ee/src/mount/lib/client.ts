@@ -85,13 +85,11 @@ export class MountClient {
       // Concurrent callers share one token exchange; a hung endpoint must
       // reject eventually or all of them wait on it.
       timeout: MOUNT_REQUEST_TIMEOUT_MS,
-      // Every request carries the client secret or a bearer token, so a
-      // redirect may never downgrade to plain HTTP.
-      beforeRedirect: (options) => {
-        if (options.protocol !== "https:") {
-          throw new Error("Mount redirected to a non-HTTPS URL; refusing");
-        }
-      }
+      // Every request carries the client secret or a bearer token, and a
+      // 307/308 would resend them to wherever it points, another host or
+      // plain HTTP. Mount's API has no reason to redirect, so none are
+      // followed: a 3xx fails like any other error.
+      maxRedirects: 0
     });
   }
 
