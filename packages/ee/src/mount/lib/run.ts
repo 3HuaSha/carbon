@@ -39,7 +39,15 @@ export async function runMountPublish({
   { status: "inactive" } | { status: "ran"; summaries: MountPublishSummary[] }
 > {
   const integration = await getMountIntegration(serviceRole, companyId);
-  if (integration.error || !integration.data?.[0]?.active) {
+  // A failed lookup is not "inactive": throw so the job step retries.
+  if (integration.error) {
+    logger.error("Failed to read Mount integration", {
+      companyId,
+      error: integration.error
+    });
+    throw new Error("Failed to read Mount integration");
+  }
+  if (!integration.data?.[0]?.active) {
     return { status: "inactive" };
   }
 

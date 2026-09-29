@@ -16,3 +16,12 @@ export const MOUNT_DEFAULT_BASE_URL = "https://api.mount.cloud";
 export const MOUNT_API_VERSION = "2026-06-01";
 
 export const MOUNT_INTEGRATION_ID = "mount";
+
+/** The Mount API URL receives the client secret, so it must be HTTPS. */
+export function isHttpsUrl(value: string) {
+  try {
+    return new URL(value).protocol === "https:";
+  } catch {
+    return false;
+  }
+}

@@ -2,7 +2,11 @@ import { getCarbonServiceRole } from "@carbon/auth/client.server";
 import { getLogger } from "@carbon/logger";
 import axios, { type AxiosInstance } from "axios";
 import { resolveIntegrationSecrets } from "../../integrations/secrets";
-import { MOUNT_API_VERSION, MOUNT_DEFAULT_BASE_URL } from "./constants";
+import {
+  isHttpsUrl,
+  MOUNT_API_VERSION,
+  MOUNT_DEFAULT_BASE_URL
+} from "./constants";
 import { getMountIntegration, MOUNT_INTEGRATION_ID } from "./service";
 import {
   type MountChange,
@@ -77,7 +81,17 @@ export class MountClient {
 
   constructor() {
     this.instance = axios.create({
-      headers: { "Content-Type": "application/json" }
+      headers: { "Content-Type": "application/json" },
+      // Concurrent callers share one token exchange; a hung endpoint must
+      // reject eventually or all of them wait on it.
+      timeout: MOUNT_REQUEST_TIMEOUT_MS,
+      // Every request carries the client secret or a bearer token, so a
+      // redirect may never downgrade to plain HTTP.
+      beforeRedirect: (options) => {
+        if (options.protocol !== "https:") {
+          throw new Error("Mount redirected to a non-HTTPS URL; refusing");
+        }
+      }
     });
   }
 
@@ -182,6 +196,12 @@ export class MountClient {
 
     if (!metadata?.clientId) {
       throw new Error("Mount integration is missing a client ID");
+    }
+
+    // Also enforced by the settings schema; checked here for values saved
+    // before that, since the secret is sent to this URL.
+    if (!isHttpsUrl(metadata.baseUrl || MOUNT_DEFAULT_BASE_URL)) {
+      throw new Error("Mount API URL must use HTTPS");
     }
 
     return metadata;
@@ -464,6 +484,8 @@ function connectionKey(settings: MountSettings) {
     settings.clientSecret
   ].join("\u0000");
 }
+
+const MOUNT_REQUEST_TIMEOUT_MS = 30_000;
 
 const UUID_PATTERN =
   /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;

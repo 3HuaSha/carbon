@@ -1,13 +1,17 @@
 import type { ComponentProps } from "react";
 import { z } from "zod";
 import { defineIntegration } from "../fns";
-import { MOUNT_DEFAULT_BASE_URL } from "./lib/constants";
+import { isHttpsUrl, MOUNT_DEFAULT_BASE_URL } from "./lib/constants";
 
 const MountSettingsSchema = z.object({
   clientId: z.string().min(1),
   // Empty means "keep the existing vaulted secret"; presence enforced at install.
   clientSecret: z.string(),
-  baseUrl: z.string().url().default(MOUNT_DEFAULT_BASE_URL),
+  baseUrl: z
+    .string()
+    .url()
+    .refine(isHttpsUrl, { message: "Must be an HTTPS URL" })
+    .default(MOUNT_DEFAULT_BASE_URL),
   tenant: z.string().min(1),
   scope: z.string().optional(),
   // Slug and titles, not ids. Mount never shows a user a UUID: the object
