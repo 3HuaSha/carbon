@@ -9211,6 +9211,9 @@ msgstr "Инструкции наследуются из процедуры."
 msgid "Integration"
 msgstr "Интеграция"
 
+msgid "Integration credentials"
+msgstr ""
+
 msgid "Integration not found"
 msgstr "Интеграция не найдена"
 

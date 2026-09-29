@@ -9211,6 +9211,9 @@ msgstr "手順は手順書から継承されています。"
 msgid "Integration"
 msgstr "連携"
 
+msgid "Integration credentials"
+msgstr ""
+
 msgid "Integration not found"
 msgstr "連携が見つかりません"
 

@@ -9211,6 +9211,9 @@ msgstr "지시사항은 절차서에서 상속됩니다."
 msgid "Integration"
 msgstr "연동"
 
+msgid "Integration credentials"
+msgstr ""
+
 msgid "Integration not found"
 msgstr "연동을 찾을 수 없습니다"
 

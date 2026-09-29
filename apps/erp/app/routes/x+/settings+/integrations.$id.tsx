@@ -79,6 +79,7 @@ import {
   redirect,
   useLoaderData,
   useNavigate,
+  useParams,
   useSearchParams
 } from "react-router";
 // Deep service import (not the ~/modules/accounting barrel) to keep this
@@ -1721,6 +1722,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
   // callback, so they are never blocked here.
   const FORM_SECRET_INTEGRATIONS = new Set([
     "linear",
+    "mount",
     "paperless-parts",
     "email",
     "ramp",
@@ -1881,6 +1883,9 @@ export default function IntegrationRoute() {
 
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
+  const { id: integrationId } = useParams();
+
+  const collapseSettings = integrationId === "mount" && installed;
 
   // Accounting-category integrations get Account Mapping, Posting, Dimensions
   // and Sync Activity tabs next to the Settings form (deep-linkable via
@@ -1978,6 +1983,10 @@ export default function IntegrationRoute() {
     <IntegrationForm
       installed={installed}
       metadata={metadata}
+      collapseSettings={collapseSettings}
+      settingsLabel={
+        collapseSettings ? <Trans>Integration credentials</Trans> : undefined
+      }
       dynamicOptions={dynamicOptions}
       tabs={tabs.length > 0 ? tabs : undefined}
       defaultTab={defaultTab}

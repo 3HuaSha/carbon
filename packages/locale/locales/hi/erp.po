@@ -9211,6 +9211,9 @@ msgstr "निर्देश कार्यविधि से विरास
 msgid "Integration"
 msgstr "एकीकरण"
 
+msgid "Integration credentials"
+msgstr ""
+
 msgid "Integration not found"
 msgstr "एकीकरण नहीं मिला"
 
