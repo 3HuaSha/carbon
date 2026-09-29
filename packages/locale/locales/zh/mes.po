@@ -354,9 +354,6 @@ msgstr "完成中"
 msgid "Connecting"
 msgstr "连接中"
 
-msgid "Console"
-msgstr "控制台"
-
 msgid "Console Mode"
 msgstr "控制台模式"
 
@@ -705,9 +702,6 @@ msgstr "数量不足"
 
 msgid "Inventory adjustment completed"
 msgstr "库存调整已完成"
-
-msgid "Inventory Adjustments"
-msgstr "库存调整"
 
 msgid "is"
 msgstr "是"
@@ -1110,9 +1104,6 @@ msgstr "为MRB处置打开NCR"
 
 msgid "Open Jobs"
 msgstr "未结工单"
-
-msgid "Operations"
-msgstr "工序"
 
 msgid "Operations ended"
 msgstr "工序已结束"
@@ -1686,9 +1677,6 @@ msgstr "今天"
 
 msgid "Toggle the sidebar"
 msgstr "切换侧栏"
-
-msgid "Tools"
-msgstr "工具"
 
 msgid "Total"
 msgstr "总计"

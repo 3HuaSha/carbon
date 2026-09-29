@@ -354,9 +354,6 @@ msgstr "완료 처리 중"
 msgid "Connecting"
 msgstr "연결 중"
 
-msgid "Console"
-msgstr "콘솔"
-
 msgid "Console Mode"
 msgstr "콘솔 모드"
 
@@ -705,9 +702,6 @@ msgstr "수량 부족"
 
 msgid "Inventory adjustment completed"
 msgstr "재고 조정이 완료되었습니다"
-
-msgid "Inventory Adjustments"
-msgstr "재고 조정"
 
 msgid "is"
 msgstr "같음"
@@ -1110,9 +1104,6 @@ msgstr "MRB 처분 결정을 위해 NCR을 여세요"
 
 msgid "Open Jobs"
 msgstr "작업 지시 열기"
-
-msgid "Operations"
-msgstr "공정작업"
 
 msgid "Operations ended"
 msgstr "공정작업 종료됨"
@@ -1686,9 +1677,6 @@ msgstr "오늘"
 
 msgid "Toggle the sidebar"
 msgstr "사이드바 전환"
-
-msgid "Tools"
-msgstr "공구"
 
 msgid "Total"
 msgstr "총계"

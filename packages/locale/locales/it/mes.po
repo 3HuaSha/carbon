@@ -354,9 +354,6 @@ msgstr "Completamento in corso"
 msgid "Connecting"
 msgstr "Collegamento in corso"
 
-msgid "Console"
-msgstr "Console"
-
 msgid "Console Mode"
 msgstr "Modalità Console"
 
@@ -705,9 +702,6 @@ msgstr "Quantità insufficiente"
 
 msgid "Inventory adjustment completed"
 msgstr "Rettifica di magazzino completata"
-
-msgid "Inventory Adjustments"
-msgstr "Rettifiche di magazzino"
 
 msgid "is"
 msgstr "è"
@@ -1110,9 +1104,6 @@ msgstr "Apri un NCR per la disposizione MRB"
 
 msgid "Open Jobs"
 msgstr "Ordini di produzione aperti"
-
-msgid "Operations"
-msgstr "Operazioni"
 
 msgid "Operations ended"
 msgstr "Operazioni terminate"
@@ -1686,9 +1677,6 @@ msgstr "Oggi"
 
 msgid "Toggle the sidebar"
 msgstr "Attiva/disattiva la barra laterale"
-
-msgid "Tools"
-msgstr "Utensili"
 
 msgid "Total"
 msgstr "Totale"

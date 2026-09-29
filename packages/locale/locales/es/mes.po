@@ -354,9 +354,6 @@ msgstr "Finalizando"
 msgid "Connecting"
 msgstr "Conectando"
 
-msgid "Console"
-msgstr "Consola"
-
 msgid "Console Mode"
 msgstr "Modo consola"
 
@@ -705,9 +702,6 @@ msgstr "Cantidad insuficiente"
 
 msgid "Inventory adjustment completed"
 msgstr "Ajuste de inventario completado"
-
-msgid "Inventory Adjustments"
-msgstr "Ajustes de inventario"
 
 msgid "is"
 msgstr "es"
@@ -1110,9 +1104,6 @@ msgstr "Abrir un NCR para la disposición de MRB"
 
 msgid "Open Jobs"
 msgstr "Órdenes de trabajo abiertas"
-
-msgid "Operations"
-msgstr "Operaciones"
 
 msgid "Operations ended"
 msgstr "Operaciones finalizadas"
@@ -1686,9 +1677,6 @@ msgstr "Hoy"
 
 msgid "Toggle the sidebar"
 msgstr "Alternar la barra lateral"
-
-msgid "Tools"
-msgstr "Herramientas"
 
 msgid "Total"
 msgstr "Total"

@@ -354,9 +354,6 @@ msgstr "Завершение"
 msgid "Connecting"
 msgstr "Подключение"
 
-msgid "Console"
-msgstr "Консоль"
-
 msgid "Console Mode"
 msgstr "Режим консоли"
 
@@ -705,9 +702,6 @@ msgstr "Недостаточное количество"
 
 msgid "Inventory adjustment completed"
 msgstr "Корректировка запасов выполнена"
-
-msgid "Inventory Adjustments"
-msgstr "Корректировка запасов"
 
 msgid "is"
 msgstr "равно"
@@ -1110,9 +1104,6 @@ msgstr "Открыть NCR для решения MRB"
 
 msgid "Open Jobs"
 msgstr "Открытые производственные заказы"
-
-msgid "Operations"
-msgstr "Операции"
 
 msgid "Operations ended"
 msgstr "Операции завершены"
@@ -1686,9 +1677,6 @@ msgstr "Сегодня"
 
 msgid "Toggle the sidebar"
 msgstr "Открыть/закрыть боковую панель"
-
-msgid "Tools"
-msgstr "Инструменты"
 
 msgid "Total"
 msgstr "Итого"

@@ -354,9 +354,6 @@ msgstr "पूर्ण हो रहा है"
 msgid "Connecting"
 msgstr "जुड़ रहा है"
 
-msgid "Console"
-msgstr "कंसोल"
-
 msgid "Console Mode"
 msgstr "कंसोल मोड"
 
@@ -705,9 +702,6 @@ msgstr "अपर्याप्त मात्रा"
 
 msgid "Inventory adjustment completed"
 msgstr "इन्वेंटरी समायोजन पूर्ण हुआ"
-
-msgid "Inventory Adjustments"
-msgstr "इन्वेंटरी समायोजन"
 
 msgid "is"
 msgstr "है"
@@ -1110,9 +1104,6 @@ msgstr "MRB निपटान के लिए एक NCR खोलें"
 
 msgid "Open Jobs"
 msgstr "खुली जॉब्स"
-
-msgid "Operations"
-msgstr "ऑपरेशन"
 
 msgid "Operations ended"
 msgstr "ऑपरेशन समाप्त"
@@ -1686,9 +1677,6 @@ msgstr "आज"
 
 msgid "Toggle the sidebar"
 msgstr "साइडबार को टॉगल करें"
-
-msgid "Tools"
-msgstr "उपकरण"
 
 msgid "Total"
 msgstr "कुल"

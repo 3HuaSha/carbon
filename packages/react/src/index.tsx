@@ -239,6 +239,13 @@ import {
 } from "./ModalDrawer";
 import type { MultiSelectProps } from "./MultiSelect";
 import { MultiSelect } from "./MultiSelect";
+import {
+  NavRail,
+  NavRailDivider,
+  NavRailItem,
+  NavRailLink,
+  navRailItemClasses
+} from "./NavRail";
 import type { NumberFieldProps } from "./Number";
 import {
   NumberDecrementStepper,
@@ -546,6 +553,11 @@ export {
   NumberDecrementStepper,
   NumberField,
   NumberIncrementStepper,
+  NavRail,
+  NavRailDivider,
+  NavRailItem,
+  NavRailLink,
+  navRailItemClasses,
   NumberInput,
   NumberInputGroup,
   NumberInputStepper,
