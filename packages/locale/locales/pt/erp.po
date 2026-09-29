@@ -9211,6 +9211,9 @@ msgstr "As instruções são herdadas do procedimento."
 msgid "Integration"
 msgstr "Integração"
 
+msgid "Integration credentials"
+msgstr ""
+
 msgid "Integration not found"
 msgstr "Integração não encontrada"
 

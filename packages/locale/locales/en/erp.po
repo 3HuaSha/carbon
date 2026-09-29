@@ -9211,6 +9211,9 @@ msgstr "Instructions are inherited from the procedure."
 msgid "Integration"
 msgstr "Integration"
 
+msgid "Integration credentials"
+msgstr "Integration credentials"
+
 msgid "Integration not found"
 msgstr "Integration not found"
 

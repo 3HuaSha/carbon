@@ -9211,6 +9211,9 @@ msgstr "说明从程序文件继承。"
 msgid "Integration"
 msgstr "集成"
 
+msgid "Integration credentials"
+msgstr ""
+
 msgid "Integration not found"
 msgstr "集成未找到"
 

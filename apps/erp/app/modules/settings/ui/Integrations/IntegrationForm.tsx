@@ -21,6 +21,10 @@ import {
   ValidatedForm
 } from "@carbon/form";
 import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
   Badge,
   Button,
   cn,
@@ -566,6 +570,14 @@ export type IntegrationFormTab = {
 interface IntegrationFormProps {
   metadata: Record<string, unknown>;
   installed: boolean;
+  /**
+   * Collapse the settings and setup instructions behind a disclosure,
+   * labelled with `settingsLabel`, and move the actions above them. For an
+   * integration whose day-to-day surface is its actions: the credentials are
+   * entered once and then only re-read when something breaks.
+   */
+  collapseSettings?: boolean;
+  settingsLabel?: ReactNode;
   onClose: () => void;
   /** Dynamic options to merge into settings (e.g., fetched from external APIs) */
   dynamicOptions?: Record<
@@ -582,6 +594,8 @@ interface IntegrationFormProps {
 export function IntegrationForm({
   installed,
   metadata,
+  collapseSettings = false,
+  settingsLabel,
   onClose,
   dynamicOptions = {},
   tabs = [],
@@ -762,6 +776,95 @@ export function IntegrationForm({
 
   const hasTabs = tabs.length > 0;
 
+  // Rendered above the settings. When the settings are collapsed they move
+  // inside with them: the instructions exist to help fill those fields in, so
+  // they belong behind the same disclosure rather than above a section the
+  // reader has not opened.
+  const setupInstructions = SetupInstructions ? (
+    <div className="flex flex-col gap-2">
+      <Subheading variant="light" className="block">
+        <Trans>Setup instructions</Trans>
+      </Subheading>
+      <SetupInstructions
+        companyId={companyId}
+        metadata={metadata}
+        installed={installed}
+        mode={installMode?.id}
+      />
+    </div>
+  ) : null;
+
+  const settingsFields = (
+    <>
+      {/* Ungrouped settings appear first */}
+      {ungroupedSettings.length > 0 && (
+        <VStack spacing={4} className="w-full">
+          {ungroupedSettings.map((setting) => (
+            <SettingField key={setting.name} setting={setting} />
+          ))}
+        </VStack>
+      )}
+
+      {/* Grouped settings in flat sections */}
+      {groupNames.map((groupName) => (
+        <ConditionalSettingsGroup
+          key={groupName}
+          name={groupName}
+          description={groupDescriptions.get(groupName)}
+          settings={groupedSettings.get(groupName) ?? []}
+        />
+      ))}
+    </>
+  );
+
+  // Collapsed by default: the fields still mount, so the form posts every
+  // value whether or not the section is open.
+  const settingsBody = collapseSettings ? (
+    <Accordion type="single" collapsible className="w-full">
+      <AccordionItem value="settings" className="border-none">
+        <AccordionTrigger className="py-2 text-sm font-medium hover:no-underline">
+          {settingsLabel ?? <Trans>Settings</Trans>}
+        </AccordionTrigger>
+        <AccordionContent>
+          <VStack spacing={4} className="w-full pt-2">
+            {setupInstructions}
+            {settingsFields}
+          </VStack>
+        </AccordionContent>
+      </AccordionItem>
+    </Accordion>
+  ) : (
+    settingsFields
+  );
+
+  const actionsSection = installed && integrationActions.length > 0 && (
+    // `has-[button]` collapses the whole section (header included)
+    // when every gated action is hidden, so the toggle live-controls
+    // visibility without leaving an empty "Actions" header.
+    <div className="hidden has-[button]:flex w-full flex-col gap-3 border-t border-border pt-4">
+      <Subheading variant="light" className="block">
+        <Trans>Actions</Trans>
+      </Subheading>
+      <VStack spacing={2} className="w-full">
+        {integrationActions.map((action) =>
+          action.enabledWhenSetting ? (
+            <GatedIntegrationActionButton
+              key={action.id}
+              action={action}
+              isDisabled={isDisabled}
+            />
+          ) : (
+            <IntegrationActionButton
+              key={action.id}
+              action={action}
+              isDisabled={isDisabled}
+            />
+          )
+        )}
+      </VStack>
+    </div>
+  );
+
   const headerContent = (
     <div className="flex flex-col gap-3">
       <div className="flex items-center gap-3">
@@ -863,66 +966,13 @@ export function IntegrationForm({
                 integration.description}
             </p>
 
-            {SetupInstructions && (
-              <div className="flex flex-col gap-2">
-                <Subheading variant="light" className="block">
-                  <Trans>Setup instructions</Trans>
-                </Subheading>
-                <SetupInstructions
-                  companyId={companyId}
-                  metadata={metadata}
-                  installed={installed}
-                  mode={installMode?.id}
-                />
-              </div>
-            )}
+            {!collapseSettings && setupInstructions}
 
-            {/* Ungrouped settings appear first */}
-            {ungroupedSettings.length > 0 && (
-              <VStack spacing={4} className="w-full">
-                {ungroupedSettings.map((setting) => (
-                  <SettingField key={setting.name} setting={setting} />
-                ))}
-              </VStack>
-            )}
+            {collapseSettings && actionsSection}
 
-            {/* Grouped settings in flat sections */}
-            {groupNames.map((groupName) => (
-              <ConditionalSettingsGroup
-                key={groupName}
-                name={groupName}
-                description={groupDescriptions.get(groupName)}
-                settings={groupedSettings.get(groupName) ?? []}
-              />
-            ))}
+            {settingsBody}
 
-            {installed && integrationActions.length > 0 && (
-              // `has-[button]` collapses the whole section (header included)
-              // when every gated action is hidden, so the toggle live-controls
-              // visibility without leaving an empty "Actions" header.
-              <div className="hidden has-[button]:flex w-full flex-col gap-3 border-t border-border pt-4">
-                <Subheading variant="light" className="block">
-                  <Trans>Actions</Trans>
-                </Subheading>
-                <VStack spacing={2} className="w-full">
-                  {integrationActions.map((action) =>
-                    action.enabledWhenSetting ? (
-                      <GatedIntegrationActionButton
-                        key={action.id}
-                        action={action}
-                        isDisabled={isDisabled}
-                      />
-                    ) : (
-                      <IntegrationActionButton
-                        key={action.id}
-                        action={action}
-                        isDisabled={isDisabled}
-                      />
-                    )
-                  )}
-                </VStack>
-              </div>
-            )}
+            {!collapseSettings && actionsSection}
           </VStack>
         </ScrollArea>
         <div className="mt-2">

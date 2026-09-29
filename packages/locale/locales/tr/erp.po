@@ -9211,6 +9211,9 @@ msgstr "Talimatlar prosedürden miras alınır."
 msgid "Integration"
 msgstr "Entegrasyon"
 
+msgid "Integration credentials"
+msgstr ""
+
 msgid "Integration not found"
 msgstr "Entegrasyon bulunamadı"
 
