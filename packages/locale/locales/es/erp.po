@@ -200,6 +200,10 @@ msgstr "{0} recibido · {1} acreditado"
 msgid "{0} registered"
 msgstr "{0} registrado"
 
+#. placeholder {0}: integration.name
+msgid "{0} reports the ledger is held by"
+msgstr "{0} reporta que el libro mayor está en poder de"
+
 #. placeholder {0}: run.rows.toLocaleString()
 msgid "{0} rows"
 msgstr "{0} filas"
@@ -306,6 +310,9 @@ msgstr "{count, plural, one {# curso} other {# cursos}}"
 
 msgid "{days}d"
 msgstr "{days}d"
+
+msgid "{delegatedTo} posts this to your ledger, so Carbon doesn't push it. Your saved choice is kept in case that changes."
+msgstr "{delegatedTo} publica esto en tu libro mayor, por lo que Carbon no lo envía. Tu opción guardada se mantiene en caso de que eso cambie."
 
 msgid "{done} of {total} phases complete"
 msgstr "{done} de {total} fases completadas"
@@ -590,6 +597,12 @@ msgstr "Un contratista es un contacto de proveedor con habilidades particulares 
 msgid "A custom solution to meet your needs"
 msgstr "Una solución personalizada para satisfacer sus necesidades"
 
+msgid "A customer contact and location are optional"
+msgstr "Un contacto de cliente y una ubicación son opcionales"
+
+msgid "A customer contact and location are required"
+msgstr "Se requiere un contacto de cliente y una ubicación"
+
 msgid "A customer is a business or person who buys your parts or services."
 msgstr "Un cliente es una empresa o persona que compra tus piezas o servicios."
 
@@ -598,6 +611,9 @@ msgstr "Se crea un cliente"
 
 msgid "A customer is deleted"
 msgstr "Se elimina un cliente"
+
+msgid "A customer must have at least one contact with an email address and at least one location with a country — plus a state, for US addresses — before its quotes, orders and invoices can be issued or posted. The mirror of the supplier requirement under Purchasing; no integration requires it today."
+msgstr "Un cliente debe tener al menos un contacto con una dirección de correo electrónico y una ubicación con un país (más un estado para direcciones en EE. UU.) antes de que sus cotizaciones, pedidos y facturas puedan ser emitidas o contabilizadas. Es el equivalente del requisito de proveedor en Compras; ninguna integración lo requiere hoy."
 
 msgid "A customer's account manager changes"
 msgstr "El gestor de cuenta de un cliente cambia"
@@ -631,6 +647,9 @@ msgstr "Un método de depreciación que carga un porcentaje fijo del valor en li
 
 msgid "A depreciation method that charges an equal amount each period across the asset's useful life."
 msgstr "Un método de depreciación que carga una cantidad igual cada período durante la vida útil del activo."
+
+msgid "A different inspector is required"
+msgstr "Se requiere un inspector diferente"
 
 #. placeholder {0}: file.name
 msgid "A file named {0} already exists — delete or rename it first"
@@ -863,6 +882,12 @@ msgstr "El vendedor de una cotización cambia"
 msgid "A quote's status changes"
 msgstr "El estado de una cotización cambia"
 
+msgid "A readable Customer ID appears on lists, forms and dropdowns."
+msgstr "Un ID de cliente legible aparece en listas, formularios y menús desplegables."
+
+msgid "A readable Supplier ID appears on lists, forms and dropdowns."
+msgstr "Un ID de proveedor legible aparece en listas, formularios y menús desplegables."
+
 msgid "A receipt is created"
 msgstr "Se crea un recibo"
 
@@ -1016,11 +1041,20 @@ msgstr "Un paso necesita un nombre."
 msgid "A stored booking of a work center or operator for one operation's placed time span — the materialized output of a scheduling run, and what the Forecast draws."
 msgstr "Una reserva almacenada de un centro de trabajo u operario para el lapso de tiempo colocado de una operación — el resultado materializado de una ejecución de programación, y lo que el Pronóstico dibuja."
 
+msgid "A supplier contact and location are optional"
+msgstr "Un contacto de proveedor y una ubicación son opcionales"
+
+msgid "A supplier contact and location are required"
+msgstr "Se requiere un contacto de proveedor y una ubicación"
+
 msgid "A supplier is created"
 msgstr "Se crea un proveedor"
 
 msgid "A supplier is deleted"
 msgstr "Se elimina un proveedor"
+
+msgid "A supplier must have at least one contact with an email address and at least one location with a country — plus a state, for US addresses — before its quotes, orders and invoices can be issued or posted. Spend platforms cannot create a vendor without all of them, so a supplier missing any has its bills rejected after the fact."
+msgstr "Un proveedor debe tener al menos un contacto con una dirección de correo electrónico y una ubicación con un país (más un estado para direcciones en EE. UU.) antes de que sus cotizaciones, pedidos y facturas puedan ser emitidas o contabilizadas. Las plataformas de gastos no pueden crear un proveedor sin todos ellos, por lo que un proveedor que falte en alguno tiene sus facturas rechazadas después del hecho."
 
 msgid "A supplier return sends previously received goods back to the supplier for credit or replacement."
 msgstr "Una devolución de proveedor envía los bienes recibidos anteriormente de vuelta al proveedor para crédito o reemplazo."
@@ -1444,6 +1478,9 @@ msgstr "Agregar Artículo"
 msgid "Add Line"
 msgstr "Agregar Línea"
 
+msgid "Add line item"
+msgstr "Agregar línea de artículo"
+
 msgid "Add Line Item"
 msgstr "Agregar Artículo de Línea"
 
@@ -1792,6 +1829,12 @@ msgstr "Cantidad a aplicar para {0}"
 msgid "Amount Type"
 msgstr "Tipo de Cantidad"
 
+msgid "Amounts are padded to their currency's decimal places."
+msgstr "Los montos se rellenan a los lugares decimales de su moneda."
+
+msgid "Amounts show only the digits that carry value."
+msgstr "Los montos muestran solo los dígitos que tienen valor."
+
 msgid "An ability is a process's qualification. Only processes without one are listed."
 msgstr "Una habilidad es la calificación de un proceso. Solo se enumeran los procesos sin una."
 
@@ -1946,8 +1989,14 @@ msgstr "Anotación actualizada"
 msgid "Another cost center this one rolls up into, letting you nest a sub-department under its parent for hierarchical cost reporting."
 msgstr "Otro centro de costos al que este se agrupa, permitiéndole anidar un subcentro de costos bajo su principal para reportes de costos jerárquicos."
 
+msgid "Another spend integration is already active"
+msgstr "Otra integración de gastos ya está activa"
+
 msgid "Another storage unit this one nests inside (e.g. a bin within a rack); must be in the same location."
 msgstr "Otra unidad de almacenamiento dentro de la que está anidada esta (p. ej. un contenedor dentro de un estante); debe estar en la misma ubicación."
+
+msgid "Another system is connected to Ramp as its accounting system"
+msgstr "Otro sistema está conectado a Ramp como su sistema contable"
 
 msgid "Any item group"
 msgstr "Cualquier grupo de artículos"
@@ -1969,6 +2018,9 @@ msgstr "Antigüedad de Cuentas por pagar"
 
 msgid "AP Clerk"
 msgstr "Empleado de Cuentas por Pagar"
+
+msgid "AP invoices are routed to a single billing address."
+msgstr "Las facturas de Cuentas por pagar se enrutan a una sola dirección de facturación."
 
 msgid "AP Outstanding"
 msgstr "Cuentas por pagar pendientes"
@@ -2061,6 +2113,9 @@ msgstr "Aplicar a factura"
 msgid "Apply to invoices"
 msgstr "Aplicar a facturas"
 
+msgid "Apply to reimbursements"
+msgstr "Aplicar a reembolsos"
+
 msgid "Applying"
 msgstr "Aplicando"
 
@@ -2114,6 +2169,9 @@ msgstr "Antigüedad de Cuentas por cobrar"
 
 msgid "AR Clerk"
 msgstr "Empleado de Cuentas por Cobrar"
+
+msgid "AR invoices are routed to a single billing address."
+msgstr "Las facturas de Cuentas por cobrar se enrutan a una sola dirección de facturación."
 
 msgid "AR Outstanding"
 msgstr "Cuentas por Cobrar Pendientes"
@@ -2569,7 +2627,8 @@ msgstr "¿Estás seguro de que deseas enviar una invitación a estos usuarios?"
 msgid "Are you sure you want to send an invite to this user?"
 msgstr "¿Estás seguro de que deseas enviar una invitación a este usuario?"
 
-#. placeholder {0}: cardTransaction.cardTransactionId
+#. placeholder {0}: charge.chargeId
+#. placeholder {0}: reimbursement.reimbursementId
 msgid "Are you sure you want to void {0}? This posts a reversing journal entry and cannot be undone."
 msgstr "¿Estás seguro de que deseas anular {0}? Esto contabilizará un apunte de reversión y no se puede deshacer."
 
@@ -3520,9 +3579,6 @@ msgstr "Registro único de Carbon para cualquier cosa con un número de pieza �
 msgid "Card Holder"
 msgstr "Titular de la Tarjeta"
 
-msgid "Card Transactions"
-msgstr "Transacciones de Tarjeta"
-
 msgid "Cards"
 msgstr "Tarjetas"
 
@@ -3552,6 +3608,12 @@ msgstr "CC"
 
 msgid "Centralized Billing Address"
 msgstr "Dirección de Facturación Centralizada"
+
+msgid "Centralized billing is disabled"
+msgstr "La facturación centralizada está deshabilitada"
+
+msgid "Centralized billing is enabled"
+msgstr "La facturación centralizada está habilitada"
 
 msgid "Cert Version"
 msgstr "Versión de Certificado"
@@ -3634,6 +3696,9 @@ msgstr "Cambiar esto actualizará el ID de la pieza"
 msgid "Changing type resets this item's draft edits."
 msgstr "Cambiar el tipo restablece los borradores editados de este elemento."
 
+msgid "Charges"
+msgstr "Cargos"
+
 msgid "Chart"
 msgstr "Gráfico"
 
@@ -3700,6 +3765,9 @@ msgstr "Elija qué aparece en la hoja viajera de la orden de trabajo impresa."
 
 msgid "Choose your style"
 msgstr "Elige tu estilo"
+
+msgid "Chosen when you connected and fixed for this install. To change it, uninstall and reconnect in a different mode."
+msgstr "Elegido cuando te conectaste y fijado para esta instalación. Para cambiarlo, desinstala y reconecta en un modo diferente."
 
 msgid "City"
 msgstr "Ciudad"
@@ -3834,6 +3902,9 @@ msgstr "Contraer tabla de características"
 
 msgid "Collapse Labor"
 msgstr "Contraer mano de obra"
+
+msgid "Collapse line"
+msgstr "Contraer línea"
 
 msgid "Collapse Machine"
 msgstr "Contraer máquina"
@@ -4020,8 +4091,8 @@ msgstr "Configurar cuentas predeterminadas para transacciones de efectivo y banc
 msgid "Configure default accounts for inventory management"
 msgstr "Configurar cuentas predeterminadas para la gestión de inventario"
 
-msgid "Configure default accounts for vendor and supplier transactions"
-msgstr "Configurar cuentas predeterminadas para transacciones de proveedor y suministrador"
+msgid "Configure default accounts for supplier transactions"
+msgstr "Configurar cuentas predeterminadas para transacciones de proveedores"
 
 msgid "Configure default equity and retained earnings accounts"
 msgstr "Configure cuentas predeterminadas de patrimonio y resultados acumulados"
@@ -4947,9 +5018,6 @@ msgstr "Crédito ({0})"
 msgid "Credit / debit memo"
 msgstr "Nota de crédito / Nota de débito"
 
-msgid "Credit / Debit Memos"
-msgstr "Notas de crédito / Notas de débito"
-
 msgid "Credit Account"
 msgstr "Cuenta de Crédito"
 
@@ -4968,6 +5036,15 @@ msgstr "Los importes de crédito están expresados en la moneda base de la empre
 msgid "Credit Memo"
 msgstr "Nota de Crédito"
 
+msgid "Credit Memos"
+msgstr "Notas de crédito"
+
+msgid "Credit memos and supplier credits are gated separately from invoices and bills, so payables can be handled outside the sync while credits still reach the ledger. Enabling one pushes credits from the enable date forward — existing history is left alone, and bringing it across needs an explicit backfill."
+msgstr "Las notas de crédito y los créditos de proveedor se gestionan por separado de las facturas, para que las cuentas por pagar se puedan manejar fuera de la sincronización mientras los créditos aún alcanzan el libro mayor. Habilitar uno impulsa los créditos desde la fecha de habilitación en adelante — el historial existente se deja sin cambios, y traerlo requiere un relleno retroactivo explícito."
+
+msgid "Credit representation"
+msgstr "Representación de notas de crédito"
+
 msgid "Credit total"
 msgstr "Total de Crédito"
 
@@ -4976,9 +5053,6 @@ msgstr "Acreditado"
 
 msgid "Credits"
 msgstr "Créditos"
-
-msgid "Credits & Debits"
-msgstr "Haberes y débitos"
 
 msgid "Credits applied"
 msgstr "Créditos aplicados"
@@ -5105,6 +5179,12 @@ msgstr "ID de Cliente"
 
 msgid "Customer ID cannot be changed after creation"
 msgstr "El ID de cliente no se puede cambiar después de la creación"
+
+msgid "Customer IDs are hidden"
+msgstr "Los ID de cliente están ocultos"
+
+msgid "Customer IDs are shown"
+msgstr "Los ID de cliente se muestran"
 
 msgid "Customer Invoice Number"
 msgstr "Número de Factura del Cliente"
@@ -6872,6 +6952,9 @@ msgstr "Empleado"
 msgid "Employee Accounts"
 msgstr "Cuentas de Empleados"
 
+msgid "Employee Reimbursements Payable"
+msgstr "Cuentas por Pagar de Reembolsos a Empleados"
+
 msgid "Employee Type"
 msgstr "Tipo de Empleado"
 
@@ -6932,11 +7015,32 @@ msgstr "Habilitar para permitir el modo de estación de trabajo compartida."
 msgid "Enable to automatically post transactions to the general ledger."
 msgstr "Habilitar para publicar automáticamente transacciones en el libro mayor."
 
+msgid "Enable to block issuing or posting for a customer with no contact or no location."
+msgstr "Habilitar para bloquear la emisión o contabilización para un cliente sin contacto o sin ubicación."
+
+msgid "Enable to block issuing or posting for a supplier with no contact or no location."
+msgstr "Habilitar para bloquear la emisión o contabilización para un proveedor sin contacto o sin ubicación."
+
 msgid "Enable to configure tax-specific depreciation methods on asset classes (e.g., MACRS, accelerated)."
 msgstr "Habilitar para configurar métodos de depreciación específicos de impuestos en clases de activos (p. ej., MACRS, acelerado)."
 
 msgid "Enable to generate IDs and descriptions for raw materials."
 msgstr "Habilitar para generar IDs y descripciones para materias primas."
+
+msgid "Enable to require an authenticator app before anyone can open this company."
+msgstr "Habilitar para requerir una aplicación autenticadora antes de que alguien pueda abrir esta empresa."
+
+msgid "Enable to route all AP invoices to a single billing address."
+msgstr "Habilitar para enrutar todas las facturas de Cuentas por pagar a una sola dirección de facturación."
+
+msgid "Enable to route all AR invoices to a single billing address."
+msgstr "Habilitar para enrutar todas las facturas de Cuentas por cobrar a una sola dirección de facturación."
+
+msgid "Enable to show a readable Customer ID on lists, forms and dropdowns."
+msgstr "Habilitar para mostrar un ID de cliente legible en listas, formularios y menús desplegables."
+
+msgid "Enable to show a readable Supplier ID on lists, forms and dropdowns."
+msgstr "Habilitar para mostrar un ID de proveedor legible en listas, formularios y menús desplegables."
 
 msgid "Enable to start tracking changes to your data."
 msgstr "Habilita para comenzar a rastrear cambios en tus datos."
@@ -6944,8 +7048,14 @@ msgstr "Habilita para comenzar a rastrear cambios en tus datos."
 msgid "Enable to start tracking work shifts."
 msgstr "Habilitar para comenzar a rastrear turnos de trabajo."
 
+msgid "Enable to update part lead times from posted purchase receipts."
+msgstr "Habilitar para actualizar los plazos de entrega de piezas desde recepciones de compra contabilizadas."
+
 msgid "Enable to use metric units for material dimensions."
 msgstr "Habilitar para usar unidades métricas en las dimensiones del material."
+
+msgid "Enable to warn when the inspector also received the item."
+msgstr "Habilitar para advertir cuando el inspector también recibió el artículo."
 
 msgid "Enabled"
 msgstr "Habilitado"
@@ -7219,6 +7329,9 @@ msgstr "Cada tarea requerida debe estar Hecha u Omitida antes de que el período
 msgid "Every row was imported successfully."
 msgstr "Cada fila se importó correctamente."
 
+msgid "Everyone must set up an authenticator app before opening this company."
+msgstr "Todos deben configurar una aplicación autenticadora antes de abrir esta empresa."
+
 msgid "Everyone working any day of the week you pick stays on past their shift by the hours you set. Only the departments and shifts you're filtering by are affected."
 msgstr "Todos los que trabajen cualquier día de la semana que selecciones se quedan después de su turno las horas que establezcas. Solo se ven afectados los departamentos y turnos por los que filtras."
 
@@ -7293,6 +7406,9 @@ msgstr "Expandir tabla de características"
 
 msgid "Expand Labor"
 msgstr "Expandir mano de obra"
+
+msgid "Expand line"
+msgstr "Expandir línea"
 
 msgid "Expand Machine"
 msgstr "Expandir máquina"
@@ -8482,6 +8598,9 @@ msgstr "Implementación guiada"
 msgid "Handle recurring and reversing journal entries"
 msgstr "Gestionar asientos de diario recurrentes e inversores"
 
+msgid "Handled by {delegatedTo}"
+msgstr "Manejado por {delegatedTo}"
+
 msgid "Hands-on"
 msgstr "Práctico"
 
@@ -8715,6 +8834,9 @@ msgstr "Cómo Trabajamos"
 
 msgid "How We Work Together"
 msgstr "Cómo Trabajamos Juntos"
+
+msgid "How will you use {integrationName}?"
+msgstr "¿Cómo usarás {integrationName}?"
 
 msgid "How your company's process maps to Carbon"
 msgstr "Cómo los procesos de tu empresa se asignan a Carbon"
@@ -9029,6 +9151,9 @@ msgstr "Inspeccionar los Primeros N"
 msgid "Inspect Item"
 msgstr "Inspeccionar Artículo"
 
+msgid "Inspecting an item you received shows a warning."
+msgstr "Inspeccionar un artículo que recibiste muestra una advertencia."
+
 msgid "Inspection"
 msgstr "Inspección"
 
@@ -9064,6 +9189,9 @@ msgstr "Inspecciones: Requerir Inspector Diferente"
 
 msgid "Install"
 msgstr "Instalar"
+
+msgid "Install mode"
+msgstr "Modo de instalación"
 
 msgid "Installed"
 msgstr "Instalado"
@@ -9749,6 +9877,12 @@ msgstr "Plazo de entrega (días)"
 msgid "Lead Time (Days)"
 msgstr "Plazo de entrega (días)"
 
+msgid "Lead time updates are disabled"
+msgstr "Las actualizaciones de plazo de entrega están deshabilitadas"
+
+msgid "Lead time updates are enabled"
+msgstr "Las actualizaciones de plazo de entrega están habilitadas"
+
 msgid "Lead Time:"
 msgstr "Plazo de entrega:"
 
@@ -9812,6 +9946,9 @@ msgstr "Configuremos tu cuenta"
 msgid "Letter"
 msgstr "Letra"
 
+msgid "Liability account for amounts owed to employees for expense reimbursements. Falls back to Payables when unset"
+msgstr "Cuenta de pasivo para montos adeudados a empleados por reembolsos de gastos. Se devuelve a Cuentas por Pagar si no está establecido"
+
 msgid "Liability account for deferred taxes from accelerated depreciation"
 msgstr "Cuenta de pasivo para impuestos diferidos por depreciación acelerada"
 
@@ -9860,6 +9997,9 @@ msgstr "Descripción de línea (opcional)"
 
 msgid "Line Item Comparison"
 msgstr "Comparación de Artículos de Línea"
+
+msgid "Line items"
+msgstr "Líneas de artículos"
 
 msgid "Line options"
 msgstr "Opciones de línea"
@@ -10943,8 +11083,8 @@ msgstr "Nuevo Contratista"
 msgid "New Cost Center"
 msgstr "Nuevo Centro de Costos"
 
-msgid "New Credit / Debit Memo"
-msgstr "Nuevo memorando de crédito/débito"
+msgid "New Credit Memo"
+msgstr "Nueva Nota de crédito"
 
 msgid "New Currency"
 msgstr "Nueva Moneda"
@@ -11164,6 +11304,9 @@ msgstr "Nueva Unidad de Almacenamiento"
 
 msgid "New Supplier"
 msgstr "Nuevo Proveedor"
+
+msgid "New Supplier Credit"
+msgstr "Nuevo Crédito de Proveedor"
 
 msgid "New Supplier Part"
 msgstr "Nueva Parte de Proveedor"
@@ -11546,6 +11689,9 @@ msgstr "Sin memorandos abiertos"
 
 msgid "No open orders for this item are available to link."
 msgstr "No hay pedidos abiertos disponibles para este artículo."
+
+msgid "No open reimbursements"
+msgstr "Sin reembolsos abiertos"
 
 msgid "No open sales order lines"
 msgstr "Sin líneas de pedido de venta abiertas"
@@ -12116,6 +12262,9 @@ msgstr "Solo si difiere del nombre del cliente"
 msgid "Only if it differs from the supplier name"
 msgstr "Solo si difiere del nombre del proveedor"
 
+msgid "Only one spend integration can be active at a time. Uninstall the current one first, then connect Ramp."
+msgstr "Solo una integración de gastos puede estar activa a la vez. Desinstala la actual primero y luego conecta Ramp."
+
 msgid "Only qualified employees can be scheduled for and run this process"
 msgstr "Solo los empleados calificados pueden ser programados y ejecutar este proceso"
 
@@ -12479,8 +12628,8 @@ msgstr "Otro Ingreso"
 msgid "Other Income account for FX gains when a payment settles a foreign-currency invoice at a more favorable rate"
 msgstr "Cuenta de Otros Ingresos para ganancias de divisas cuando un pago liquida una factura en moneda extranjera a una tasa más favorable"
 
-msgid "Other Income account for vendor balances cleared without full payment on AP settlement"
-msgstr "Cuenta de Otros ingresos para saldos de proveedores compensados sin pago completo en la liquidación de Cuentas por pagar"
+msgid "Other Income account for supplier balances cleared without full payment on AP settlement"
+msgstr "Cuenta de Otros Ingresos para saldos de proveedor cancelados sin pago completo en la liquidación de cuentas por pagar"
 
 msgid "Other Type"
 msgstr "Otro Tipo"
@@ -12651,6 +12800,9 @@ msgstr "ID de Pieza"
 msgid "Part is configured for manufacturing"
 msgstr "La pieza está configurada para manufactura"
 
+msgid "Part lead times update from posted purchase receipts."
+msgstr "Los plazos de entrega de piezas se actualizan a partir de recepciones de compra contabilizadas."
+
 msgid "Part Number"
 msgstr "Número de pieza"
 
@@ -12684,9 +12836,6 @@ msgstr "Las piezas se ejecutan juntas en una sola carga, por ejemplo en un horno
 msgid "Parts, materials, and how you classify them."
 msgstr "Piezas, materiales y cómo los clasificas."
 
-msgid "Party Type"
-msgstr "Tipo de Parte"
-
 msgid "Pass"
 msgstr "Aprobar"
 
@@ -12713,6 +12862,12 @@ msgstr "Pegue el XML de metadatos si su proveedor de identidad no publica una UR
 
 msgid "Path"
 msgstr "Ruta"
+
+msgid "Pay"
+msgstr "Pagar"
+
+msgid "Pay expense"
+msgstr "Pagar gasto"
 
 msgid "Pay Rate"
 msgstr "Tasa de Pago"
@@ -13917,6 +14072,12 @@ msgstr "Cotizaciones"
 msgid "Quotes with Lines"
 msgstr "Cotizaciones con Líneas"
 
+msgid "Quotes, orders and invoices are blocked until the customer has a contact with an email address and a location with a country."
+msgstr "Las cotizaciones, pedidos y facturas se bloquean hasta que el cliente tenga un contacto con una dirección de correo electrónico y una ubicación con un país."
+
+msgid "Quotes, orders and invoices are blocked until the supplier has a contact with an email address and a location with a country."
+msgstr "Las cotizaciones, pedidos y facturas se bloquean hasta que el proveedor tenga un contacto con una dirección de correo electrónico y una ubicación con un país."
+
 msgid "Quotes, orders, invoices and RFQs"
 msgstr "Cotizaciones, pedidos, facturas y RFQ"
 
@@ -13934,6 +14095,9 @@ msgstr "plantéalo temprano y plantéalo claramente. Un problema identificado en
 
 msgid "Ramp"
 msgstr "Ramp"
+
+msgid "Ramp allows only one. Disconnect the other system in Ramp, or connect Carbon again choosing \"Another system posts my ledger\"."
+msgstr "Ramp permite solo uno. Desconecta el otro sistema en Ramp, o conecta Carbon nuevamente eligiendo \"Another system posts my ledger\"."
 
 msgid "Ramp authorized the connection but saving it failed. Try connecting again."
 msgstr "Ramp autorizó la conexión, pero no se pudo guardar. Vuelve a intentar la conexión."
@@ -14158,17 +14322,23 @@ msgstr "Conciliación de una orden de compra contra lo que se recibió y se fact
 msgid "Record"
 msgstr "Registro"
 
-msgid "Record a credit or debit memo against a customer or supplier. Applications to specific invoices are added after the memo is created."
-msgstr "Registrar una nota de crédito o débito contra un cliente o proveedor. Las aplicaciones a facturas específicas se agregan después de que se crea la nota."
+msgid "Record a credit from a supplier — it reduces what you owe them. Applications to specific invoices are added after it is created."
+msgstr "Registra un crédito de un proveedor — reduce lo que le debes. Las aplicaciones a facturas específicas se añaden después de su creación."
 
-msgid "Record a customer payment, supplier payment, or refund. Applications to invoices or memos are added after the payment is created."
-msgstr "Registre un pago del cliente, un pago al proveedor, o un reembolso. Las aplicaciones a facturas o memorandos se agregan después de que se crea el pago."
+msgid "Record a credit memo for a customer — it reduces what they owe. Applications to specific invoices are added after it is created."
+msgstr "Registra una nota de crédito para un cliente — reduce lo que te debe. Las aplicaciones a facturas específicas se añaden después de su creación."
+
+msgid "Record a customer payment, supplier payment, refund, or employee reimbursement. Applications to invoices, memos or reimbursements are added after the payment is created."
+msgstr "Registra un pago de cliente, pago de proveedor, reembolso o reembolso de empleado. Las asignaciones a facturas, memorandos o reembolsos se agregan después de crear el pago."
 
 msgid "Record deleted"
 msgstr "Registro eliminado"
 
 msgid "Record inspections tied to a part and a job"
 msgstr "Registrar inspecciones vinculadas a una parte y un trabajo"
+
+msgid "Record the payout of {displayId} to the employee. Pay less than the total due to settle it partially."
+msgstr "Registra el desembolso de {displayId} al empleado. Paga menos del total adeudado para resolverlo parcialmente."
 
 msgid "Record type"
 msgstr "Tipo de registro"
@@ -14244,6 +14414,21 @@ msgstr "Error en el registro"
 
 msgid "Registration Number"
 msgstr "Número de registro"
+
+msgid "Reimbursement"
+msgstr "Reembolso"
+
+msgid "Reimbursement Date"
+msgstr "Fecha de Reembolso"
+
+msgid "Reimbursement ID"
+msgstr "ID de Reembolso"
+
+msgid "Reimbursement to Employee"
+msgstr "Reembolso al Empleado"
+
+msgid "Reimbursements"
+msgstr "Reembolsos"
 
 msgid "Reject"
 msgstr "Rechazar"
@@ -14537,6 +14722,12 @@ msgstr "Fecha Solicitada"
 
 msgid "Require a 6-digit code from an authenticator app when signing in."
 msgstr "Requerir un código de 6 dígitos de una aplicación de autenticación al iniciar sesión."
+
+msgid "Require a Customer Contact and Location"
+msgstr "Requerir un contacto de cliente y una ubicación"
+
+msgid "Require a Supplier Contact and Location"
+msgstr "Requerir un contacto de proveedor y una ubicación"
 
 msgid "Require an assigned operator before the scheduler places work at a location. When on, unstaffed work centers get no work and an operation with no manned coverage shows as unschedulable. Lights-out (24×7) work centers are exempt."
 msgstr "Requerir un operario asignado antes de que el programador coloque trabajo en una ubicación. Cuando está activado, los centros de trabajo sin personal no reciben trabajo y una operación sin cobertura de personal se muestra como no programable. Los centros de trabajo automáticos (24×7) están exentos."
@@ -15260,6 +15451,9 @@ msgstr "Guardar y cerrar"
 
 msgid "Save and Overwrite"
 msgstr "Guardar y Sobrescribir"
+
+msgid "Save and post"
+msgstr "Guardar y contabilizar"
 
 msgid "Save applications"
 msgstr "Guardar aplicaciones"
@@ -16960,11 +17154,23 @@ msgstr "Contacto del proveedor"
 msgid "Supplier Contact"
 msgstr "Contacto del Proveedor"
 
+msgid "Supplier Credit"
+msgstr "Crédito de Proveedor"
+
+msgid "Supplier Credits"
+msgstr "Créditos de Proveedor"
+
 msgid "Supplier ID"
 msgstr "ID de Proveedor"
 
 msgid "Supplier ID cannot be changed after creation"
 msgstr "El ID del proveedor no se puede cambiar después de la creación"
+
+msgid "Supplier IDs are hidden"
+msgstr "Los ID de proveedor están ocultos"
+
+msgid "Supplier IDs are shown"
+msgstr "Los ID de proveedor se muestran"
 
 msgid "Supplier interaction"
 msgstr "Interacción con el proveedor"
@@ -17082,6 +17288,9 @@ msgstr "Precio Unitario del Proveedor"
 
 msgid "Supplier updated"
 msgstr "Proveedor actualizado"
+
+msgid "Supplier Write-Off Income"
+msgstr "Ingresos por Cancelación Contable de Proveedor"
 
 msgid "Supplier:"
 msgstr "Proveedor:"
@@ -17994,6 +18203,9 @@ msgstr "El número de revisión de la pieza"
 msgid "The sales order line this job was created to supply, tying the job to the customer demand behind it."
 msgstr "La línea de pedido de venta que esta orden de trabajo fue creada para surtir, vinculando la orden de trabajo a la demanda del cliente detrás de ella."
 
+msgid "The same person may inspect"
+msgstr "La misma persona puede inspeccionar"
+
 msgid "The SAML metadata URL published by your identity provider"
 msgstr "La URL de metadatos SAML publicada por su proveedor de identidad"
 
@@ -18265,6 +18477,9 @@ msgstr "Esta copia de seguridad no se pudo completar."
 
 msgid "This backup hasn't been checked yet. Any differences are found when the restore runs."
 msgstr "Esta copia de seguridad aún no ha sido verificada. Se encontrarán diferencias cuando se ejecute la restauración."
+
+msgid "This cannot be changed later — {integrationName} allows only one connected accounting system, so the choice decides what Carbon is permitted to do. To switch, you would uninstall and reconnect."
+msgstr "Esto no se puede cambiar más tarde — {integrationName} permite solo un sistema contable conectado, por lo que la opción decide qué puede hacer Carbon. Para cambiar, tendrías que desinstalar y reconectar."
 
 msgid "This Carbon instance is missing its Onshape OAuth credentials. Ask an administrator to set them."
 msgstr "Esta instancia de Carbon no tiene credenciales OAuth de Onshape. Pide a un administrador que las configure."
@@ -18751,6 +18966,9 @@ msgstr "Costo total capitalizado del activo (precio de compra más flete, instal
 msgid "Total discount"
 msgstr "Descuento total"
 
+msgid "Total Due"
+msgstr "Total Adeudado"
+
 msgid "Total expected production units for units-of-production depreciation; cost is spread per unit produced."
 msgstr "Unidades totales de producción esperadas para depreciación de unidades de producción; el costo se distribuye por unidad producida."
 
@@ -18868,6 +19086,12 @@ msgstr "Tipo de Seguimiento"
 msgid "Tracking URL"
 msgstr "URL de seguimiento"
 
+msgid "Trailing zeros are hidden"
+msgstr "Los ceros finales están ocultos"
+
+msgid "Trailing zeros are shown"
+msgstr "Los ceros finales se muestran"
+
 msgid "Train"
 msgstr "Capacitar"
 
@@ -18976,6 +19200,12 @@ msgstr "Cumplimiento de Autenticación de Dos Factores"
 msgid "Two-factor authentication is not enabled."
 msgstr "La autenticación de dos factores no está habilitada."
 
+msgid "Two-factor authentication is optional"
+msgstr "Autenticación de dos factores es opcional"
+
+msgid "Two-factor authentication is required"
+msgstr "Autenticación de dos factores es obligatoria"
+
 msgid "Type"
 msgstr "Tipo"
 
@@ -19027,6 +19257,9 @@ msgstr "Desasignar regla"
 msgid "Unassigned"
 msgstr "Sin asignar"
 
+msgid "Unbalanced"
+msgstr "Desequilibrado"
+
 msgid "Unballoon"
 msgstr "Desvinculación"
 
@@ -19050,6 +19283,9 @@ msgstr "Deshacer"
 
 msgid "Uninstall"
 msgstr "Desinstalar"
+
+msgid "Uninstall {conflictsWith} first"
+msgstr "Desinstala {conflictsWith} primero"
 
 msgid "Unique, uppercase, without spaces (max 10 characters)"
 msgstr "Único, en mayúsculas, sin espacios (máx. 10 caracteres)"
@@ -19538,9 +19774,6 @@ msgstr "Solo desviación"
 msgid "VAT Number"
 msgstr "Número de IVA"
 
-msgid "Vendor Write-Off Income"
-msgstr "Ingresos por cancelación contable de proveedor"
-
 msgid "Verdict"
 msgstr "Veredicto"
 
@@ -19796,8 +20029,8 @@ msgstr "Anular"
 msgid "Void {0}"
 msgstr "Anular {0}"
 
-msgid "Void Card Transaction"
-msgstr "Anular Transacción de Tarjeta"
+msgid "Void Charge"
+msgstr "Anular cargo"
 
 msgid "Void Invoice"
 msgstr "Anular Factura"
@@ -19807,6 +20040,9 @@ msgstr "Anular Factura de Compra"
 
 msgid "Void Receipt"
 msgstr "Anular Recibo"
+
+msgid "Void Reimbursement"
+msgstr "Anular Reembolso"
 
 msgid "Void Sales Invoice"
 msgstr "Anular Factura de Venta"
