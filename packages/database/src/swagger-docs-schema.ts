@@ -110903,7 +110903,8 @@ export default {
             "Sales Return Shipment",
             "Purchase Return Shipment",
             "Charge",
-            "Reimbursement"
+            "Reimbursement",
+            "Maintenance Event"
           ],
           format: 'public."journalEntrySourceType"',
           type: "string"
@@ -122934,7 +122935,8 @@ export default {
             "Scrap",
             "Batch Merge",
             "Charge",
-            "Reimbursement"
+            "Reimbursement",
+            "Maintenance Event"
           ],
           format: 'public."journalLineDocumentType"',
           type: "string"
@@ -123561,7 +123563,8 @@ export default {
             "Sales Return Shipment",
             "Purchase Return Shipment",
             "Charge",
-            "Reimbursement"
+            "Reimbursement",
+            "Maintenance Event"
           ],
           format: 'public."journalEntrySourceType"',
           type: "string"
@@ -136360,7 +136363,8 @@ export default {
             "Scrap",
             "Batch Merge",
             "Charge",
-            "Reimbursement"
+            "Reimbursement",
+            "Maintenance Event"
           ],
           format: 'public."journalLineDocumentType"',
           type: "string"
@@ -136474,7 +136478,8 @@ export default {
             "Sales Return Shipment",
             "Purchase Return Shipment",
             "Charge",
-            "Reimbursement"
+            "Reimbursement",
+            "Maintenance Event"
           ],
           format: 'public."journalEntrySourceType"',
           type: "string"
@@ -136549,7 +136554,8 @@ export default {
             "Scrap",
             "Batch Merge",
             "Charge",
-            "Reimbursement"
+            "Reimbursement",
+            "Maintenance Event"
           ],
           format: 'public."journalLineDocumentType"',
           type: "string"
