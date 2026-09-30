@@ -65,7 +65,10 @@ export function TimeCardButton({ openClockEntry }: TimeCardButtonProps) {
           disabled={fetcher.state !== "idle"}
           trailing={
             openClockEntry && (
-              <Badge variant="red">
+              <Badge
+                variant="red"
+                className="min-h-5 px-1 text-[10px] tabular-nums"
+              >
                 {formatElapsed(openClockEntry.clockIn)}
               </Badge>
             )

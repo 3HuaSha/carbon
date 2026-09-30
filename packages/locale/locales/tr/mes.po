@@ -703,6 +703,9 @@ msgstr "Yetersiz miktar"
 msgid "Inventory adjustment completed"
 msgstr "Stok düzeltme tamamlandı"
 
+msgid "Inventory Adjustments"
+msgstr "Stok düzeltmeleri"
+
 msgid "is"
 msgstr "eşittir"
 
@@ -1104,6 +1107,9 @@ msgstr "MRB kararı için NCR aç"
 
 msgid "Open Jobs"
 msgstr "Açık İş emirleri"
+
+msgid "Operations"
+msgstr "Operasyonlar"
 
 msgid "Operations ended"
 msgstr "Operasyonlar bitti"
@@ -1677,6 +1683,9 @@ msgstr "Bugün"
 
 msgid "Toggle the sidebar"
 msgstr "Kenar çubuğunu aç/kapat"
+
+msgid "Tools"
+msgstr "Araçlar"
 
 msgid "Total"
 msgstr "Toplam"

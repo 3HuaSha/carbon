@@ -3,12 +3,15 @@
 import type { Company } from "@carbon/auth";
 import {
   NavRail,
-  NavRailDivider,
+  NavRailBrand,
+  NavRailGroup,
   NavRailLink,
+  useMode,
   useShortcutKeyMap
 } from "@carbon/react";
 import { useLingui } from "@lingui/react/macro";
 import { Suspense, useMemo } from "react";
+import { BsFillHexagonFill } from "react-icons/bs";
 import {
   LuActivity,
   LuCalendarDays,
@@ -23,7 +26,7 @@ import { Await, useLocation, useNavigate } from "react-router";
 import type { Location } from "~/services/types";
 import { MES_NAV_SHORTCUTS } from "~/shortcuts";
 import type { PinnedInUser } from "~/types";
-import { path } from "~/utils/path";
+import { ERP_URL, path } from "~/utils/path";
 import { AdjustInventory } from "./AdjustInventory";
 import { EndShift } from "./EndShift";
 import Suggestion from "./Suggestion";
@@ -57,8 +60,11 @@ export function AppSidebar({
     data: { id: string; clockIn: string; [key: string]: unknown } | null;
   }> | null;
 }) {
+  const { t } = useLingui();
+
   return (
     <NavRail
+      header={<CompanyLink company={company} />}
       footer={
         <>
           {timeCardEnabled && (
@@ -91,19 +97,44 @@ export function AppSidebar({
         </>
       }
     >
-      <QueueLinks
-        counts={{
-          active: activeEvents,
-          maintenance: activeMaintenanceCount
-        }}
-      />
-      <NavRailDivider />
-      <AdjustInventory add={true} />
-      <AdjustInventory add={false} />
-      <EndShift />
-      <Suggestion />
-      <DisplaysLink />
+      <NavRailGroup label={t`Operations`}>
+        <QueueLinks
+          counts={{
+            active: activeEvents,
+            maintenance: activeMaintenanceCount
+          }}
+        />
+      </NavRailGroup>
+      <NavRailGroup label={t`Inventory Adjustments`}>
+        <AdjustInventory add={true} />
+        <AdjustInventory add={false} />
+      </NavRailGroup>
+      <NavRailGroup label={t`Tools`}>
+        <EndShift />
+        <Suggestion />
+        <DisplaysLink />
+      </NavRailGroup>
     </NavRail>
+  );
+}
+
+/** Leads back to the ERP. */
+function CompanyLink({ company }: { company: Company }) {
+  const mode = useMode();
+  const logo = mode === "dark" ? company.logoDarkIcon : company.logoLightIcon;
+
+  return (
+    <NavRailBrand
+      href={ERP_URL}
+      label={company.name ?? ""}
+      logo={
+        logo ? (
+          <img src={logo} alt="" className="size-6 rounded object-contain" />
+        ) : (
+          <BsFillHexagonFill />
+        )
+      }
+    />
   );
 }
 

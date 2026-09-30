@@ -241,7 +241,9 @@ import type { MultiSelectProps } from "./MultiSelect";
 import { MultiSelect } from "./MultiSelect";
 import {
   NavRail,
+  NavRailBrand,
   NavRailDivider,
+  NavRailGroup,
   NavRailItem,
   NavRailLink,
   navRailItemClasses
@@ -554,7 +556,9 @@ export {
   NumberField,
   NumberIncrementStepper,
   NavRail,
+  NavRailBrand,
   NavRailDivider,
+  NavRailGroup,
   NavRailItem,
   NavRailLink,
   navRailItemClasses,

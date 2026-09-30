@@ -703,6 +703,9 @@ msgstr "Niewystarczająca ilość"
 msgid "Inventory adjustment completed"
 msgstr "Korekta zapasów zakończona"
 
+msgid "Inventory Adjustments"
+msgstr "Korekty zapasów"
+
 msgid "is"
 msgstr "jest"
 
@@ -1104,6 +1107,9 @@ msgstr "Otwórz NCR dla dyspozycji MRB"
 
 msgid "Open Jobs"
 msgstr "Otwarte zlecenia produkcyjne"
+
+msgid "Operations"
+msgstr "Operacje"
 
 msgid "Operations ended"
 msgstr "Operacje zakończone"
@@ -1677,6 +1683,9 @@ msgstr "Dzisiaj"
 
 msgid "Toggle the sidebar"
 msgstr "Przełącz pasek boczny"
+
+msgid "Tools"
+msgstr "Narzędzia"
 
 msgid "Total"
 msgstr "Suma"

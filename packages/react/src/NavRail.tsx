@@ -3,7 +3,15 @@
 import { Trans } from "@lingui/react/macro";
 import { Slot, Slottable } from "@radix-ui/react-slot";
 import type { ButtonHTMLAttributes, ReactNode } from "react";
-import { forwardRef, useEffect, useState } from "react";
+import {
+  createContext,
+  forwardRef,
+  useCallback,
+  useContext,
+  useEffect,
+  useRef,
+  useState
+} from "react";
 import type { LinkProps } from "react-router";
 import { Link, useLocation } from "react-router";
 import { Drawer, DrawerContent, DrawerTitle } from "./Drawer";
@@ -11,6 +19,11 @@ import { Separator } from "./Separator";
 import { useSidebar } from "./Sidebar";
 import { cn } from "./utils/cn";
 import { VStack } from "./VStack";
+
+const focusRingClasses = [
+  "focus:!outline-none focus:!ring-0 active:!outline-none active:!ring-0",
+  "after:pointer-events-none after:absolute after:-inset-[3px] after:rounded-lg after:border after:border-blue-500 after:opacity-0 after:ring-2 after:ring-blue-500/20 after:transition-opacity focus-visible:after:opacity-100 active:after:opacity-0"
+];
 
 export const navRailItemClasses = [
   "relative text-foreground/70 hover:text-foreground",
@@ -21,8 +34,7 @@ export const navRailItemClasses = [
   "font-medium shrink-0 inline-flex items-center justify-center select-none",
   "disabled:opacity-50",
   "transition-[background-color,color,width] duration-100 ease-out",
-  "focus:!outline-none focus:!ring-0 active:!outline-none active:!ring-0",
-  "after:pointer-events-none after:absolute after:-inset-[3px] after:rounded-lg after:border after:border-blue-500 after:opacity-0 after:ring-2 after:ring-blue-500/20 after:transition-opacity focus-visible:after:opacity-100 active:after:opacity-0",
+  focusRingClasses,
   "group/item"
 ];
 
@@ -32,13 +44,21 @@ export const navRailItemClasses = [
  * open (⌘B / a `SidebarTrigger`), and a left drawer below `md`. Open state
  * comes from `SidebarProvider`, so it must be rendered inside one.
  */
+// A pointer only passing over the rail (on its way to the page) shouldn't open it.
+const HOVER_OPEN_DELAY_MS = 150;
+
+// Lets an item keep the rail open while a menu or popover it triggered is open.
+const NavRailHoldContext = createContext<(() => () => void) | null>(null);
+
 export function NavRail({
   children,
+  header,
   footer,
   forceExpanded = false,
   disableHover = false
 }: {
   children: ReactNode;
+  header?: ReactNode;
   footer?: ReactNode;
   /** Hold the rail open regardless of hover or pin (e.g. while rearranging). */
   forceExpanded?: boolean;
@@ -48,6 +68,18 @@ export function NavRail({
   const { open, isMobile, openMobile, setOpenMobile } = useSidebar();
   const { pathname } = useLocation();
   const [hovered, setHovered] = useState(false);
+  const navRef = useRef<HTMLElement>(null);
+  const openTimer = useRef<ReturnType<typeof setTimeout>>();
+  const cancelHoverOpen = useCallback(() => {
+    clearTimeout(openTimer.current);
+    openTimer.current = undefined;
+  }, []);
+  useEffect(() => cancelHoverOpen, [cancelHoverOpen]);
+  const [holds, setHolds] = useState(0);
+  const hold = useCallback(() => {
+    setHolds((n) => n + 1);
+    return () => setHolds((n) => n - 1);
+  }, []);
 
   // Links, go-to shortcuts and redirects all land here: whatever navigated,
   // the phone drawer must not stay over the destination.
@@ -56,21 +88,34 @@ export function NavRail({
     setOpenMobile(false);
   }, [pathname, setOpenMobile]);
 
-  // A Radix dialog toggles document.body pointer-events, and restoring them on
-  // close fires a phantom enter on the rail with no paired leave — leaving it
-  // stuck expanded. So hover is ignored while `disableHover` is set and cleared
-  // on the frame after it changes (after any phantom event has fired).
-  // biome-ignore lint/correctness/useExhaustiveDependencies: keyed on the toggle
+  // A Radix dialog or menu sets pointer-events: none on document.body while
+  // open, which fires a leave on the rail as it opens and a phantom enter as
+  // it closes, so pointer events are ignored while blocked. A modal (search)
+  // collapses the rail; a menu opened from the rail keeps it as it was. When
+  // the block lifts, hover is re-read from where the pointer really is.
+  const hoverBlocked = disableHover || holds > 0;
   useEffect(() => {
-    const raf = requestAnimationFrame(() => setHovered(false));
-    return () => cancelAnimationFrame(raf);
+    if (disableHover) setHovered(false);
   }, [disableHover]);
+  useEffect(() => {
+    cancelHoverOpen();
+    if (hoverBlocked) return;
+    const raf = requestAnimationFrame(() =>
+      setHovered(navRef.current?.matches(":hover") ?? false)
+    );
+    return () => cancelAnimationFrame(raf);
+  }, [hoverBlocked, cancelHoverOpen]);
 
   const content = (
-    <VStack spacing={1} className="flex flex-col justify-between h-full px-2">
-      <VStack spacing={1}>{children}</VStack>
-      {footer ? <VStack spacing={1}>{footer}</VStack> : null}
-    </VStack>
+    <NavRailHoldContext.Provider value={hold}>
+      <VStack spacing={1} className="flex flex-col justify-between h-full px-2">
+        <VStack spacing={1}>
+          {header ? <div className="w-full pb-2">{header}</div> : null}
+          {children}
+        </VStack>
+        {footer ? <VStack spacing={1}>{footer}</VStack> : null}
+      </VStack>
+    </NavRailHoldContext.Provider>
   );
 
   if (isMobile) {
@@ -95,7 +140,8 @@ export function NavRail({
     );
   }
 
-  const state = forceExpanded || open || hovered ? "expanded" : "collapsed";
+  const state =
+    forceExpanded || open || hovered || holds > 0 ? "expanded" : "collapsed";
 
   return (
     // The wrapper (not just the inner nav) grows on expand, so the rail pushes
@@ -110,18 +156,29 @@ export function NavRail({
       )}
     >
       <nav
+        ref={navRef}
         data-state={state}
         className={cn(
           "bg-background py-2 group z-10 h-full w-full",
           "flex flex-col justify-between",
           "hide-scrollbar overflow-y-auto scrollbar-thin scrollbar-track-transparent scrollbar-thumb-accent"
         )}
-        onPointerEnter={(event) => {
-          // Mouse only: a tap on a touch tablet must not expand the rail.
-          if (!disableHover && event.pointerType === "mouse") setHovered(true);
+        // Mouse only: a tap on a touch tablet must not expand the rail.
+        onPointerMove={(event) => {
+          if (hoverBlocked || hovered || openTimer.current) return;
+          if (event.pointerType !== "mouse") return;
+          openTimer.current = setTimeout(() => {
+            openTimer.current = undefined;
+            setHovered(true);
+          }, HOVER_OPEN_DELAY_MS);
         }}
         onPointerLeave={(event) => {
-          if (event.pointerType === "mouse") setHovered(false);
+          if (hoverBlocked || event.pointerType !== "mouse") return;
+          // The leave a Radix layer causes by disabling body pointer-events
+          // can arrive before this render knows about the hold.
+          if (document.body.style.pointerEvents === "none") return;
+          cancelHoverOpen();
+          setHovered(false);
         }}
       >
         {content}
@@ -166,6 +223,14 @@ export const NavRailItem = forwardRef<HTMLButtonElement, NavRailItemProps>(
   ) => {
     const Comp = asChild ? Slot : "button";
 
+    // Radix triggers (menus, popovers) pass their open state as `data-state`.
+    const isTriggerOpen =
+      (props as Record<string, unknown>)["data-state"] === "open";
+    const hold = useContext(NavRailHoldContext);
+    useEffect(() => {
+      if (isTriggerOpen && hold) return hold();
+    }, [isTriggerOpen, hold]);
+
     return (
       <Comp
         ref={ref}
@@ -190,26 +255,27 @@ export const NavRailItem = forwardRef<HTMLButtonElement, NavRailItemProps>(
             {tag}
           </span>
         ) : null}
+        {/* Label and trailing share one row so a long label truncates
+            before the trailing content instead of running under it. */}
         <span
-          aria-hidden
           className={cn(
-            "min-w-[128px] text-sm text-left",
-            "absolute left-7 group-data-[state=expanded]:left-12",
+            "absolute left-7 right-3 min-w-32 group-data-[state=expanded]:left-12",
+            "flex items-center gap-2",
             "opacity-0 group-data-[state=expanded]:opacity-100"
           )}
         >
-          {label}
-        </span>
-        {trailing ? (
           <span
-            className={cn(
-              "pointer-events-none absolute right-3 top-1/2 -translate-y-1/2",
-              "opacity-0 transition-opacity duration-100 group-data-[state=expanded]:opacity-100"
-            )}
+            aria-hidden
+            className="min-w-0 flex-1 truncate text-sm text-left"
           >
-            {trailing}
+            {label}
           </span>
-        ) : null}
+          {trailing ? (
+            <span className="pointer-events-none flex shrink-0 items-center">
+              {trailing}
+            </span>
+          ) : null}
+        </span>
         <Slottable>{children}</Slottable>
       </Comp>
     );
@@ -252,6 +318,64 @@ export function NavRailLink({
         prefetch={external ? "none" : "intent"}
       />
     </NavRailItem>
+  );
+}
+
+/** For `header`: the logo sits in the icon column, the name has equal margins. */
+export function NavRailBrand({
+  href,
+  logo,
+  label
+}: {
+  href: string;
+  logo: ReactNode;
+  label: string;
+}) {
+  return (
+    <a
+      href={href}
+      aria-label={label}
+      className={cn(
+        "relative flex h-10 w-full items-center gap-2 rounded-md px-2",
+        "text-sm font-medium text-foreground select-none",
+        "transition-[background-color] duration-100 ease-out hover:bg-active/60",
+        focusRingClasses
+      )}
+    >
+      <span className="flex size-6 shrink-0 items-center justify-center [&>svg]:size-4">
+        {logo}
+      </span>
+      <span
+        aria-hidden
+        className="min-w-0 flex-1 truncate opacity-0 transition-opacity duration-200 group-data-[state=expanded]:opacity-100"
+      >
+        {label}
+      </span>
+    </a>
+  );
+}
+
+/** A titled section; collapsed, its title turns into a divider. */
+export function NavRailGroup({
+  label,
+  children
+}: {
+  label: string;
+  children: ReactNode;
+}) {
+  return (
+    <VStack spacing={1}>
+      <div className="relative h-7 w-full shrink-0">
+        <span
+          aria-hidden
+          className="absolute inset-x-0 top-1/2 mx-auto h-px w-6 bg-border opacity-100 transition-opacity duration-200 group-data-[state=expanded]:opacity-0"
+        />
+        <span className="absolute inset-0 flex items-center px-2 text-[11px] font-medium uppercase tracking-wider text-foreground/50 whitespace-nowrap opacity-0 transition-opacity duration-200 group-data-[state=expanded]:opacity-100">
+          {label}
+        </span>
+      </div>
+      {children}
+    </VStack>
   );
 }
 
