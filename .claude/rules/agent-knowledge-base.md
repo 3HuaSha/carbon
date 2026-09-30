@@ -44,9 +44,26 @@ All three machine-readable consumers strip MDX through the one `stripComponents`
 
 `apps/erp/app/modules/agent/agent.kb.ts` answers `search_docs` with `createDocSearch` from
 `@carbon/ee/mcp` (`packages/ee/src/mcp/doc-search.ts`) — the MCP `search_tools` engine
-(zbsearch BM25 + prefix, `SEARCH_ALIASES` and `stemInflection` stems via `expandQueryTerm`, one-edit typo retry) over
-title/keywords/headings/description/body. It stays in `packages/ee` on purpose: the licence
-split is kept, so `@carbon/content` holds the corpus and ee holds the ranking. Pinned against
-the real corpus by `agent.kb.test.ts`. `read_doc` returns a page by its public URL
-(`https://docs.carbon.ms/<slug>`). The agent only ever sees URLs — slugs/file paths are never
-surfaced to the user.
+(zbsearch BM25 + prefix, `SEARCH_ALIASES` and `stemInflection` stems via `expandQueryTerm`,
+one-edit typo retry). It indexes SECTIONS (`splitSections`, `@carbon/content/corpus`: a page
+split at its `##`/`###` headings), not pages; each page's intro is weighted ×2 so its
+overview leads over troubleshooting sections that merely repeat the term, and at most two
+sections per page are returned. A hit is `{ title, section, url (with #anchor), snippet }`.
+It stays in `packages/ee` on purpose: the licence split is kept, so `@carbon/content` holds
+the corpus and ee holds the ranking.
+
+Everything the agent reads stays bounded, because every tool result is re-sent on every
+later step. `read_doc` returns one section for a `#anchor` url, a short page whole
+(≤ 12k chars), and a long page as its intro plus section links. Section anchors are the
+site's own (`headingAnchor`, github-slugger rules incl. `-1` suffixes), pinned by
+`links.test.ts`; the size bound on every page and section read is pinned by
+`agent.kb.test.ts`. `read_doc` and `search_docs` results from EARLIER turns are compacted to
+titles and urls before each request (`compactEarlierToolOutputs`, `agent.history.ts`).
+
+The model is `agentChatModel` in `packages/utils/src/llm.ts` (`gpt-4.1-mini`). It was plain
+`gpt-4` — an 8k-token window — and a single long page overflowed it
+(`context_length_exceeded`). `MAX_STEPS` is 6, requests share one OpenAI `promptCacheKey`,
+and each turn logs its steps and input / cached / output tokens ("Agent turn").
+
+The agent only ever sees URLs (`https://docs.carbon.ms/<slug>`, index pages at their
+folder) — slugs/file paths are never surfaced to the user.

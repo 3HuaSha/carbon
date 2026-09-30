@@ -161,6 +161,66 @@ export function keywords(title: string, slug: string): string[] {
   return Array.from(new Set(words));
 }
 
+/**
+ * A heading's URL anchor as github-slugger (and so Fumadocs) makes it:
+ * "Database — Supabase" -> "database--supabase".
+ */
+export function headingAnchor(heading: string): string {
+  return heading
+    .replace(/\[([^\]]*)\]\([^)]*\)/g, "$1")
+    .replace(/<[^>]+>/g, "")
+    .trim()
+    .toLowerCase()
+    .replace(/[^\p{L}\p{N}\p{M} _-]/gu, "")
+    .replace(/ /g, "-");
+}
+
+export type CorpusSection = {
+  /** `null` for the text before the first heading. */
+  heading: string | null;
+  anchor: string | null;
+  markdown: string;
+};
+
+/**
+ * Split stripped markdown at its `##` / `###` headings, ignoring code blocks. A repeated
+ * heading gets github-slugger's `-1`, `-2` suffix, so every anchor links on the site.
+ */
+export function splitSections(markdown: string): CorpusSection[] {
+  const sections: CorpusSection[] = [];
+  const seen = new Map<string, number>();
+  let heading: string | null = null;
+  let anchor: string | null = null;
+  let lines: string[] = [];
+  const flush = () => {
+    const text = lines.join("\n").trim();
+    if (text) sections.push({ heading, anchor, markdown: text });
+    lines = [];
+  };
+  for (const seg of splitByCodeFence(markdown)) {
+    if (seg.code) {
+      lines.push(seg.text);
+      continue;
+    }
+    for (const line of seg.text.split("\n")) {
+      const match = /^#{2,3}\s+(.+)$/.exec(line);
+      if (!match?.[1]) {
+        lines.push(line);
+        continue;
+      }
+      flush();
+      heading = match[1].trim();
+      const base = headingAnchor(heading);
+      const count = seen.get(base) ?? 0;
+      seen.set(base, count + 1);
+      anchor = count ? `${base}-${count}` : base;
+      lines.push(line);
+    }
+  }
+  flush();
+  return sections;
+}
+
 export type CorpusPage = {
   /** Content-relative slug, e.g. `docs/reference/quotes` or `guides/order`. */
   slug: string;

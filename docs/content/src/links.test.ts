@@ -2,7 +2,8 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { describe, expect, it } from "vitest";
-import { splitByCodeFence, splitFrontmatter } from "./corpus";
+import { agentDocs } from "./agent-kb";
+import { headingAnchor, splitByCodeFence, splitFrontmatter } from "./corpus";
 import { terms } from "./glossary";
 import { DOCS_URL } from "./links";
 
@@ -17,27 +18,24 @@ const mdxFiles = Object.entries(sources).map(([file, raw]) => ({
 }));
 const REPO_ROOT = fileURLToPath(new URL("../../..", import.meta.url));
 
-// Mirrors github-slugger, which fumadocs uses for heading ids.
-const slugify = (heading: string) =>
-  heading
-    .replace(/\[([^\]]*)\]\([^)]*\)/g, "$1")
-    .replace(/<[^>]+>/g, "")
-    .trim()
-    .toLowerCase()
-    .replace(/[^\p{L}\p{N}\p{M} _-]/gu, "")
-    .replace(/ /g, "-");
-
 /** Route (`/docs/reference/jobs`) → heading anchors on that page. */
 const pages = new Map<string, Set<string>>();
 for (const { file, raw } of mdxFiles) {
   const route = `/${file}`.replace(/\.mdx$/, "").replace(/\/index$/, "");
   const { body } = splitFrontmatter(raw);
+  // github-slugger suffixes a repeated heading's anchor: "fields", "fields-1", …
+  const seen = new Map<string, number>();
   const anchors = new Set(
     splitByCodeFence(body)
       .filter((seg) => !seg.code)
       .flatMap((seg) => seg.text.split("\n"))
       .filter((l) => /^#{1,6}\s/.test(l))
-      .map((l) => slugify(l.replace(/^#{1,6}\s+/, "")))
+      .map((l) => {
+        const base = headingAnchor(l.replace(/^#{1,6}\s+/, ""));
+        const count = seen.get(base) ?? 0;
+        seen.set(base, count + 1);
+        return count ? `${base}-${count}` : base;
+      })
   );
   pages.set(route, anchors);
 }
@@ -103,6 +101,19 @@ describe("doc links resolve to a real page and heading", () => {
       const reason = brokenReason(link);
       return reason ? [`${file}: ${link} (${reason})`] : [];
     });
+    expect(broken).toEqual([]);
+  });
+
+  it("every section the agent links to is a real heading", () => {
+    const broken = agentDocs.flatMap((doc) =>
+      doc.sections.flatMap(({ anchor }) => {
+        if (!anchor) return [];
+        const link = `/${doc.slug.replace(/(^|\/)index$/, "")}#${anchor}`;
+        const reason = brokenReason(link);
+        return reason ? [`${link} (${reason})`] : [];
+      })
+    );
+    expect(agentDocs.some((doc) => doc.sections.length > 3)).toBe(true);
     expect(broken).toEqual([]);
   });
 

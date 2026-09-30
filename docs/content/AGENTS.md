@@ -9,7 +9,8 @@ colocated with the site; the `docs/` Next app renders it, ERP/MES/packages impor
 - `docs/**`, `guides/**` — the docs pages (Fumadocs reads them via `docs/source.config.ts`).
 - `src/glossary/` — term definitions for ERP/MES field help and docs `<Term>` popovers.
 - `src/corpus.ts` — MDX → plain markdown (pure; callers bring the raw text).
-- `src/agent-kb.ts` — every page, stripped, for the in-app agent (Vite `import.meta.glob`).
+- `src/agent-kb.ts` — every page, stripped and split into sections, for the in-app agent
+  (Vite `import.meta.glob`).
 - `src/links.ts` — `DOCS_URL` and `docUrl()`.
 - `src/search.ts` — `stemInflection()`, the one stemmer for docs site search, MCP `search_tools`
   and the agent's `search_docs` (zbsearch's Porter, limited to plural/-ed/-ing/-e).
@@ -20,7 +21,7 @@ colocated with the site; the `docs/` Next app renders it, ERP/MES/packages impor
 import { terms, getEntry, lookupEntry, type TermId } from "@carbon/content/glossary";
 import { docUrl, DOCS_URL } from "@carbon/content/links";
 import { stemInflection } from "@carbon/content/search";
-import { parsePage, stripComponents } from "@carbon/content/corpus";   // pure, any bundle
+import { parsePage, splitSections, headingAnchor } from "@carbon/content/corpus"; // pure, any bundle
 import { agentDocs } from "@carbon/content/agent-kb";                  // Vite builds only (ERP)
 ```
 
