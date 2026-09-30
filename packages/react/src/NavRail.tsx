@@ -47,7 +47,8 @@ export const navRailItemClasses = [
 // A pointer only passing over the rail (on its way to the page) shouldn't open it.
 const HOVER_OPEN_DELAY_MS = 150;
 
-// Lets an item keep the rail open while a menu or popover it triggered is open.
+// Lets an item freeze the rail as it is (open or collapsed) while a menu or
+// popover it triggered is open, so a tap on a collapsed rail never opens it.
 const NavRailHoldContext = createContext<(() => () => void) | null>(null);
 
 export function NavRail({
@@ -69,6 +70,7 @@ export function NavRail({
   const { pathname } = useLocation();
   const [hovered, setHovered] = useState(false);
   const navRef = useRef<HTMLElement>(null);
+  const lastPointerType = useRef<string>();
   const openTimer = useRef<ReturnType<typeof setTimeout>>();
   const cancelHoverOpen = useCallback(() => {
     clearTimeout(openTimer.current);
@@ -100,8 +102,13 @@ export function NavRail({
   useEffect(() => {
     cancelHoverOpen();
     if (hoverBlocked) return;
+    // Touch browsers leave `:hover` stuck on the last tapped element, so only
+    // a mouse's `:hover` counts.
     const raf = requestAnimationFrame(() =>
-      setHovered(navRef.current?.matches(":hover") ?? false)
+      setHovered(
+        lastPointerType.current === "mouse" &&
+          (navRef.current?.matches(":hover") ?? false)
+      )
     );
     return () => cancelAnimationFrame(raf);
   }, [hoverBlocked, cancelHoverOpen]);
@@ -140,8 +147,7 @@ export function NavRail({
     );
   }
 
-  const state =
-    forceExpanded || open || hovered || holds > 0 ? "expanded" : "collapsed";
+  const state = forceExpanded || open || hovered ? "expanded" : "collapsed";
 
   return (
     // The wrapper (not just the inner nav) grows on expand, so the rail pushes
@@ -163,8 +169,12 @@ export function NavRail({
           "flex flex-col justify-between",
           "hide-scrollbar overflow-y-auto scrollbar-thin scrollbar-track-transparent scrollbar-thumb-accent"
         )}
+        onPointerDown={(event) => {
+          lastPointerType.current = event.pointerType;
+        }}
         // Mouse only: a tap on a touch tablet must not expand the rail.
         onPointerMove={(event) => {
+          lastPointerType.current = event.pointerType;
           if (hoverBlocked || hovered || openTimer.current) return;
           if (event.pointerType !== "mouse") return;
           openTimer.current = setTimeout(() => {
