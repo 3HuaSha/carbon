@@ -24880,6 +24880,9 @@ export default {
             $ref: "#/parameters/rowFilter.pricingRule.updatedAt"
           },
           {
+            $ref: "#/parameters/rowFilter.pricingRule.configurationPrices"
+          },
+          {
             $ref: "#/parameters/select"
           },
           {
@@ -24999,6 +25002,9 @@ export default {
             $ref: "#/parameters/rowFilter.pricingRule.updatedAt"
           },
           {
+            $ref: "#/parameters/rowFilter.pricingRule.configurationPrices"
+          },
+          {
             $ref: "#/parameters/preferReturn"
           }
         ],
@@ -25070,6 +25076,9 @@ export default {
           },
           {
             $ref: "#/parameters/rowFilter.pricingRule.updatedAt"
+          },
+          {
+            $ref: "#/parameters/rowFilter.pricingRule.configurationPrices"
           },
           {
             $ref: "#/parameters/body.pricingRule"
@@ -59467,6 +59476,9 @@ export default {
             $ref: "#/parameters/rowFilter.salesOrderLines.convertedNonTaxableAddOnCost"
           },
           {
+            $ref: "#/parameters/rowFilter.salesOrderLines.configuration"
+          },
+          {
             $ref: "#/parameters/rowFilter.salesOrderLines.itemReadableId"
           },
           {
@@ -71506,6 +71518,9 @@ export default {
             $ref: "#/parameters/rowFilter.salesOrderLine.convertedNonTaxableAddOnCost"
           },
           {
+            $ref: "#/parameters/rowFilter.salesOrderLine.configuration"
+          },
+          {
             $ref: "#/parameters/select"
           },
           {
@@ -71697,6 +71712,9 @@ export default {
             $ref: "#/parameters/rowFilter.salesOrderLine.convertedNonTaxableAddOnCost"
           },
           {
+            $ref: "#/parameters/rowFilter.salesOrderLine.configuration"
+          },
+          {
             $ref: "#/parameters/preferReturn"
           }
         ],
@@ -71840,6 +71858,9 @@ export default {
           },
           {
             $ref: "#/parameters/rowFilter.salesOrderLine.convertedNonTaxableAddOnCost"
+          },
+          {
+            $ref: "#/parameters/rowFilter.salesOrderLine.configuration"
           },
           {
             $ref: "#/parameters/body.salesOrderLine"
@@ -92446,6 +92467,9 @@ export default {
             $ref: "#/parameters/rowFilter.companySettings.requireCustomerContactAndLocation"
           },
           {
+            $ref: "#/parameters/rowFilter.companySettings.showBomExplorerReadableId"
+          },
+          {
             $ref: "#/parameters/select"
           },
           {
@@ -92661,6 +92685,9 @@ export default {
             $ref: "#/parameters/rowFilter.companySettings.requireCustomerContactAndLocation"
           },
           {
+            $ref: "#/parameters/rowFilter.companySettings.showBomExplorerReadableId"
+          },
+          {
             $ref: "#/parameters/preferReturn"
           }
         ],
@@ -92828,6 +92855,9 @@ export default {
           },
           {
             $ref: "#/parameters/rowFilter.companySettings.requireCustomerContactAndLocation"
+          },
+          {
+            $ref: "#/parameters/rowFilter.companySettings.showBomExplorerReadableId"
           },
           {
             $ref: "#/parameters/body.companySettings"
@@ -94762,6 +94792,10 @@ export default {
             required: true,
             schema: {
               properties: {
+                p_company_id: {
+                  format: "text",
+                  type: "string"
+                },
                 p_tracked_entity_ids: {
                   format: "text[]",
                   items: {
@@ -94770,7 +94804,7 @@ export default {
                   type: "array"
                 }
               },
-              required: ["p_tracked_entity_ids"],
+              required: ["p_tracked_entity_ids", "p_company_id"],
               type: "object"
             }
           },
@@ -97780,6 +97814,10 @@ export default {
             required: true,
             schema: {
               properties: {
+                p_company_id: {
+                  format: "text",
+                  type: "string"
+                },
                 p_tracked_entity_ids: {
                   format: "text[]",
                   items: {
@@ -97788,7 +97826,7 @@ export default {
                   type: "array"
                 }
               },
-              required: ["p_tracked_entity_ids"],
+              required: ["p_tracked_entity_ids", "p_company_id"],
               type: "object"
             }
           },
@@ -105955,12 +105993,16 @@ export default {
             required: true,
             schema: {
               properties: {
+                p_company_id: {
+                  format: "text",
+                  type: "string"
+                },
                 p_job_id: {
                   format: "text",
                   type: "string"
                 }
               },
-              required: ["p_job_id"],
+              required: ["p_job_id", "p_company_id"],
               type: "object"
             }
           },
@@ -110891,7 +110933,8 @@ export default {
             "Sales Return Shipment",
             "Purchase Return Shipment",
             "Charge",
-            "Reimbursement"
+            "Reimbursement",
+            "Maintenance Event"
           ],
           format: 'public."journalEntrySourceType"',
           type: "string"
@@ -118230,7 +118273,7 @@ export default {
           type: "string"
         },
         ruleType: {
-          enum: ["Discount", "Markup"],
+          enum: ["Discount", "Markup", "Configuration"],
           format: 'public."pricingRuleType"',
           type: "string"
         },
@@ -118323,6 +118366,9 @@ export default {
         updatedAt: {
           format: "timestamp with time zone",
           type: "string"
+        },
+        configurationPrices: {
+          format: "jsonb"
         }
       },
       type: "object"
@@ -122922,7 +122968,8 @@ export default {
             "Scrap",
             "Batch Merge",
             "Charge",
-            "Reimbursement"
+            "Reimbursement",
+            "Maintenance Event"
           ],
           format: 'public."journalLineDocumentType"',
           type: "string"
@@ -123549,7 +123596,8 @@ export default {
             "Sales Return Shipment",
             "Purchase Return Shipment",
             "Charge",
-            "Reimbursement"
+            "Reimbursement",
+            "Maintenance Event"
           ],
           format: 'public."journalEntrySourceType"',
           type: "string"
@@ -134407,6 +134455,9 @@ export default {
           format: "numeric",
           type: "number"
         },
+        configuration: {
+          format: "jsonb"
+        },
         itemReadableId: {
           format: "text",
           type: "string"
@@ -136348,7 +136399,8 @@ export default {
             "Scrap",
             "Batch Merge",
             "Charge",
-            "Reimbursement"
+            "Reimbursement",
+            "Maintenance Event"
           ],
           format: 'public."journalLineDocumentType"',
           type: "string"
@@ -136462,7 +136514,8 @@ export default {
             "Sales Return Shipment",
             "Purchase Return Shipment",
             "Charge",
-            "Reimbursement"
+            "Reimbursement",
+            "Maintenance Event"
           ],
           format: 'public."journalEntrySourceType"',
           type: "string"
@@ -136537,7 +136590,8 @@ export default {
             "Scrap",
             "Batch Merge",
             "Charge",
-            "Reimbursement"
+            "Reimbursement",
+            "Maintenance Event"
           ],
           format: 'public."journalLineDocumentType"',
           type: "string"
@@ -140648,6 +140702,9 @@ export default {
         convertedNonTaxableAddOnCost: {
           format: "numeric",
           type: "number"
+        },
+        configuration: {
+          format: "jsonb"
         }
       },
       type: "object"
@@ -150352,7 +150409,8 @@ export default {
         "allowLowercaseItemIds",
         "includeOperationsOnTraveler",
         "requireSupplierContactAndLocation",
-        "requireCustomerContactAndLocation"
+        "requireCustomerContactAndLocation",
+        "showBomExplorerReadableId"
       ],
       properties: {
         id: {
@@ -150637,6 +150695,11 @@ export default {
           default: false,
           description:
             "When true, a customer must have at least one contact with an email address AND at least one location whose address carries a country (plus a state when that country is US) before its quotes, sales orders and sales invoices can be released or posted.",
+          format: "boolean",
+          type: "boolean"
+        },
+        showBomExplorerReadableId: {
+          default: false,
           format: "boolean",
           type: "boolean"
         }
@@ -164466,6 +164529,12 @@ export default {
     },
     "rowFilter.pricingRule.updatedAt": {
       name: "updatedAt",
+      required: false,
+      in: "query",
+      type: "string"
+    },
+    "rowFilter.pricingRule.configurationPrices": {
+      name: "configurationPrices",
       required: false,
       in: "query",
       type: "string"
@@ -182415,6 +182484,12 @@ export default {
       in: "query",
       type: "string"
     },
+    "rowFilter.salesOrderLines.configuration": {
+      name: "configuration",
+      required: false,
+      in: "query",
+      type: "string"
+    },
     "rowFilter.salesOrderLines.itemReadableId": {
       name: "itemReadableId",
       required: false,
@@ -189352,6 +189427,12 @@ export default {
     },
     "rowFilter.salesOrderLine.convertedNonTaxableAddOnCost": {
       name: "convertedNonTaxableAddOnCost",
+      required: false,
+      in: "query",
+      type: "string"
+    },
+    "rowFilter.salesOrderLine.configuration": {
+      name: "configuration",
       required: false,
       in: "query",
       type: "string"
@@ -200428,6 +200509,12 @@ export default {
       name: "requireCustomerContactAndLocation",
       description:
         "When true, a customer must have at least one contact with an email address AND at least one location whose address carries a country (plus a state when that country is US) before its quotes, sales orders and sales invoices can be released or posted.",
+      required: false,
+      in: "query",
+      type: "string"
+    },
+    "rowFilter.companySettings.showBomExplorerReadableId": {
+      name: "showBomExplorerReadableId",
       required: false,
       in: "query",
       type: "string"
