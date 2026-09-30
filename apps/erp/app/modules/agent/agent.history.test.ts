@@ -1,4 +1,4 @@
-import type { UIMessage } from "ai";
+import { convertToModelMessages, modelMessageSchema, type UIMessage } from "ai";
 import { describe, expect, it } from "vitest";
 import { compactEarlierToolOutputs } from "./agent.history";
 
@@ -21,6 +21,11 @@ const assistantThatRead = (id: string): UIMessage =>
         state: "output-available",
         input: { query: "batching" },
         output: [
+          {
+            title: "Operation batching",
+            url: "https://docs.carbon.ms/docs/reference/batching",
+            snippet: "Operation batching groups unstarted operations…"
+          },
           {
             title: "Operation batching",
             section: "Building a batch",
@@ -62,12 +67,26 @@ describe("compactEarlierToolOutputs", () => {
     expect(search!.output).toEqual([
       {
         title: "Operation batching",
+        url: "https://docs.carbon.ms/docs/reference/batching"
+      },
+      {
+        title: "Operation batching",
         section: "Building a batch",
         url: "https://docs.carbon.ms/docs/reference/batching#building-a-batch"
       }
     ]);
     expect(text!.text).toBe("Batching groups operations.");
     expect(JSON.stringify(earlier).length).toBeLessThan(1_000);
+  });
+
+  it("produces a prompt the AI SDK accepts, including an intro hit with no section", () => {
+    const compacted = compactEarlierToolOutputs([
+      user("what is batching"),
+      assistantThatRead("a1"),
+      user("and how do I start one")
+    ]);
+    const prompt = convertToModelMessages(compacted);
+    expect(modelMessageSchema.array().safeParse(prompt).success).toBe(true);
   });
 
   it("leaves the current turn untouched", () => {

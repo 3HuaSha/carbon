@@ -29,7 +29,13 @@ function compactToolOutput(toolName: string, output: unknown): unknown {
       : output;
   }
   if (toolName === "search_docs" && Array.isArray(output)) {
-    return output.map(({ title, section, url }) => ({ title, section, url }));
+    // A tool result must be a JSON value: an intro hit has no section, and a key set to
+    // `undefined` fails the SDK's prompt validation for the whole request.
+    return output.map(({ title, section, url }) => ({
+      title,
+      url,
+      ...(section ? { section } : {})
+    }));
   }
   return output;
 }
