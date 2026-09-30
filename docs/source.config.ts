@@ -31,6 +31,19 @@ export const guide = defineDocs({
   },
 });
 
+// One file per dated entry. Carbon has no versions, so `date` is the ordering key.
+export const changelog = defineDocs({
+  dir: "content/changelog",
+  docs: {
+    schema: pageSchema.extend({
+      date: z.string().date(),
+      tags: z.array(z.string()).default([]),
+      // Optional hero image, a path under /public.
+      image: z.string().optional(),
+    }),
+  },
+});
+
 // Remove <AgentContext> blocks from the MDX AST before fumadocs' remark-structure
 // runs. AgentContext is agent-only: this keeps its content out of the rendered page
 // AND out of the site search index (structuredData). The in-app agent still receives

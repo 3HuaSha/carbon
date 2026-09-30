@@ -5478,6 +5478,30 @@ export type Database = {
           }
         ]
       }
+      changelogDispatch: {
+        Row: {
+          description: string | null
+          dispatchedAt: string
+          emailsSent: number
+          guid: string
+          title: string | null
+        }
+        Insert: {
+          description?: string | null
+          dispatchedAt?: string
+          emailsSent?: number
+          guid: string
+          title?: string | null
+        }
+        Update: {
+          description?: string | null
+          dispatchedAt?: string
+          emailsSent?: number
+          guid?: string
+          title?: string | null
+        }
+        Relationships: []
+      }
       changeOrder: {
         Row: {
           approvalRequirements: string[] | null
