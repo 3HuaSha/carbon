@@ -12,6 +12,7 @@
   },
   "exports": {
     ".": "./src/index.ts",
+    "./users": "./src/services/users.ts",
     "./auth.server": "./src/services/auth.server.ts",
     "./auth-events.server": "./src/services/auth-events.server.ts",
     "./client.server": "./src/lib/supabase/client.server.ts",

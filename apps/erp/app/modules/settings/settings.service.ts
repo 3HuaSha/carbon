@@ -838,16 +838,22 @@ export async function seedCompany(
     identityOnly: opts?.identityOnly ?? false
   };
 
-  const edge = await client.functions.invoke("seed-company", { body });
-  if (!edge.error) {
-    // Drop any pre-seed empty claims cached during onboarding login.
+  const clearPermissionCache = async () => {
     try {
       const { redis } = await import("@carbon/kv");
-      const { getPermissionCacheKey } = await import("@carbon/auth/users");
+      const { getPermissionCacheKey } = await import(
+        "~/modules/users/users.server"
+      );
       await redis.del(getPermissionCacheKey(userId));
     } catch {
       /* best-effort */
     }
+  };
+
+  const edge = await client.functions.invoke("seed-company", { body });
+  if (!edge.error) {
+    // Drop any pre-seed empty claims cached during onboarding login.
+    await clearPermissionCache();
     return edge;
   }
 
@@ -870,13 +876,7 @@ export async function seedCompany(
       "@carbon/database/seed-existing-company"
     );
     await seedCompanyViaDatabase({ companyId, userId });
-    try {
-      const { redis } = await import("@carbon/kv");
-      const { getPermissionCacheKey } = await import("@carbon/auth/users");
-      await redis.del(getPermissionCacheKey(userId));
-    } catch {
-      /* best-effort */
-    }
+    await clearPermissionCache();
     return { data: { success: true, via: "database" }, error: null };
   } catch (err) {
     return {
