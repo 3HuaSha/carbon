@@ -841,9 +841,7 @@ export async function seedCompany(
   const clearPermissionCache = async () => {
     try {
       const { redis } = await import("@carbon/kv");
-      const { getPermissionCacheKey } = await import(
-        "~/modules/users/users.server"
-      );
+      const { getPermissionCacheKey } = await import("@carbon/auth/users");
       await redis.del(getPermissionCacheKey(userId));
     } catch {
       /* best-effort */
