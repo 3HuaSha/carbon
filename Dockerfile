@@ -21,8 +21,9 @@ COPY patches ./patches
 COPY scripts ./scripts
 # @carbon/content (glossary, the agent's doc corpus) lives with the docs it serves.
 COPY docs/content ./docs/content
-RUN --mount=type=cache,id=pnpm-store,target=/pnpm/store,sharing=locked \
-    pnpm install --frozen-lockfile
+# No BuildKit cache mounts: Railway's Metal builder requires
+# `id=s/<service-id>-...` and rejects shared ids across services.
+RUN pnpm install --frozen-lockfile
 
 FROM deps AS build
 ARG APP
@@ -33,8 +34,8 @@ ARG ASSETS_URL
 ENV ASSETS_URL=${ASSETS_URL}
 ARG NODE_OPTIONS="--max-old-space-size=8024"
 ENV NODE_OPTIONS=${NODE_OPTIONS}
-RUN --mount=type=cache,id=turbo,target=/repo/.turbo,sharing=locked \
-    pnpm run build:${APP}
+# Same as above — avoid Railway Metal cache-mount id prefix requirement.
+RUN pnpm run build:${APP}
 # Build scratch `runner` must not inherit: .vite is the dep-optimizer cache,
 # .ignored_<name> is pnpm's per-importer copy of a side-effects-cached package.
 RUN rm -rf apps/${APP}/node_modules/.vite apps/${APP}/node_modules/.ignored_*
