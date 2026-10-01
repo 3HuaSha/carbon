@@ -839,7 +839,17 @@ export async function seedCompany(
   };
 
   const edge = await client.functions.invoke("seed-company", { body });
-  if (!edge.error) return edge;
+  if (!edge.error) {
+    // Drop any pre-seed empty claims cached during onboarding login.
+    try {
+      const { redis } = await import("@carbon/kv");
+      const { getPermissionCacheKey } = await import("@carbon/auth/users");
+      await redis.del(getPermissionCacheKey(userId));
+    } catch {
+      /* best-effort */
+    }
+    return edge;
+  }
 
   // Hosted Supabase without `supabase functions deploy` returns NOT_FOUND.
   // Root-company full seeds can run in-process against SUPABASE_DB_URL; subsidiary
@@ -860,6 +870,13 @@ export async function seedCompany(
       "@carbon/database/seed-existing-company"
     );
     await seedCompanyViaDatabase({ companyId, userId });
+    try {
+      const { redis } = await import("@carbon/kv");
+      const { getPermissionCacheKey } = await import("@carbon/auth/users");
+      await redis.del(getPermissionCacheKey(userId));
+    } catch {
+      /* best-effort */
+    }
     return { data: { success: true, via: "database" }, error: null };
   } catch (err) {
     return {
