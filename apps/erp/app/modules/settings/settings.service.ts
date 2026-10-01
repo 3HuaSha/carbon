@@ -831,14 +831,42 @@ export async function seedCompany(
   userId: string,
   opts?: { parentCompanyId?: string; identityOnly?: boolean }
 ) {
-  return client.functions.invoke("seed-company", {
-    body: {
-      companyId,
-      userId,
-      parentCompanyId: opts?.parentCompanyId,
-      identityOnly: opts?.identityOnly ?? false
-    }
-  });
+  const body = {
+    companyId,
+    userId,
+    parentCompanyId: opts?.parentCompanyId,
+    identityOnly: opts?.identityOnly ?? false
+  };
+
+  const edge = await client.functions.invoke("seed-company", { body });
+  if (!edge.error) return edge;
+
+  // Hosted Supabase without `supabase functions deploy` returns NOT_FOUND.
+  // Root-company full seeds can run in-process against SUPABASE_DB_URL; subsidiary
+  // / identity-only paths still need the edge function.
+  const msg = String(
+    (edge.error as { message?: string })?.message ?? edge.error
+  );
+  const missingFn =
+    /not found|NOT_FOUND|Failed to send|FunctionsRelayError|FunctionsFetchError/i.test(
+      msg
+    );
+  if (!missingFn || opts?.parentCompanyId || opts?.identityOnly) {
+    return edge;
+  }
+
+  try {
+    const { seedCompanyViaDatabase } = await import(
+      "@carbon/database/seed-existing-company"
+    );
+    await seedCompanyViaDatabase({ companyId, userId });
+    return { data: { success: true, via: "database" }, error: null };
+  } catch (err) {
+    return {
+      data: null,
+      error: err instanceof Error ? err : new Error(String(err))
+    };
+  }
 }
 
 export async function updateCompanyPlan(

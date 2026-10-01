@@ -29,6 +29,7 @@
     "./supersession-pick": "./src/supersession-pick.ts",
     "./picked-consumption": "./src/picked-consumption.ts",
     "./datasets": "./src/datasets/index.ts",
+    "./seed-existing-company": "./src/seed-existing-company.ts",
     "./event": "./src/event.ts",
     "./quality": "./src/quality.ts",
     "./ratelimit": "./src/ratelimit.ts",
