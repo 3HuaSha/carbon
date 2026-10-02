@@ -90,6 +90,9 @@ msgstr "{fails} zarejestrowanych niepowodzeń będzie NIEUKOŃCZONYCH — rozwi�
 msgid "{recorded}/{0} jobs"
 msgstr "{recorded}/{0} zleceń produkcyjnych"
 
+msgid "{total} machines"
+msgstr "{total} maszyn"
+
 msgid "+{overflow} more"
 msgstr "+{overflow} więcej"
 
@@ -142,6 +145,9 @@ msgstr "Dodaj próbkę"
 msgid "Add Spare Part"
 msgstr "Dodaj część zamienną"
 
+msgid "Add work centers for this location in Resources, then open Shop again. Machines on the computer MES will show here."
+msgstr "Dodaj stanowiska robocze dla tej lokalizacji w Zasobach, a następnie ponownie otwórz Halę produkcyjną. Maszyny skonfigurowane w MES na komputerze pojawią się tutaj."
+
 msgid "All"
 msgstr "Wszystkie"
 
@@ -187,6 +193,10 @@ msgstr "Kroki montażu"
 
 msgid "Assigned"
 msgstr "Przypisane"
+
+#. placeholder {0}: dispatch.assigneeName
+msgid "Assigned to {0}"
+msgstr "Przypisano do {0}"
 
 msgid "Assigned to Me"
 msgstr "Przypisane do mnie"
@@ -386,6 +396,9 @@ msgstr "Utwórz poprawkę"
 
 msgid "Current work"
 msgstr "Bieżąca praca"
+
+msgid "Current work order"
+msgstr "Bieżące zlecenie produkcyjne"
 
 msgid "Customer"
 msgstr "Klient"
@@ -619,6 +632,9 @@ msgstr "Filtr"
 msgid "Filter by location"
 msgstr "Filtruj według lokalizacji"
 
+msgid "Filter by status"
+msgstr "Filtruj według statusu"
+
 msgid "Finish"
 msgstr "Zakończ"
 
@@ -672,6 +688,9 @@ msgstr "Nadal pracuję"
 msgid "Ideas, suggestions or problems?"
 msgstr "Pomysły, propozycje czy problemy?"
 
+msgid "Idle"
+msgstr "Bezczynny"
+
 msgid "Idle for"
 msgstr "Bezczynny przez"
 
@@ -687,6 +706,9 @@ msgstr "za {0}"
 
 msgid "In Progress"
 msgstr "W toku"
+
+msgid "In repair"
+msgstr "W naprawie"
 
 msgid "Inspect Item"
 msgstr "Zbadaj artykuł"
@@ -965,6 +987,9 @@ msgstr "Brak wpływu"
 msgid "No issue types configured"
 msgstr "Nie skonfigurowano żadnych typów problemów"
 
+msgid "No machines match this filter."
+msgstr "Brak maszyn pasujących do tego filtra."
+
 msgid "No maintenance scheduled for today"
 msgstr "Brak zaplanowanego utrzymania ruchu na dziś"
 
@@ -977,8 +1002,14 @@ msgstr "Brak materiałów"
 msgid "No materials on this batch."
 msgstr "Brak materiałów w tej partii produkcyjnej."
 
+msgid "No open job"
+msgstr "Brak otwartego zlecenia produkcyjnego"
+
 msgid "No open jobs"
 msgstr "Brak otwartych zleceń produkcyjnych"
+
+msgid "No open maintenance dispatches."
+msgstr "Brak otwartych zleceń utrzymania ruchu."
 
 msgid "No open units to allocate"
 msgstr "Brak otwartych jednostek do przydzielenia"
@@ -1049,6 +1080,9 @@ msgstr "Brak zablokowanych stanowisk roboczych"
 msgid "No work centers exist"
 msgstr "Brak stanowisk roboczych"
 
+msgid "No work centers here"
+msgstr "Brak stanowisk roboczych w tym miejscu"
+
 msgid "None"
 msgstr "Brak"
 
@@ -1108,6 +1142,9 @@ msgstr "Otwórz NCR dla dyspozycji MRB"
 msgid "Open Jobs"
 msgstr "Otwarte zlecenia produkcyjne"
 
+msgid "Open maintenance"
+msgstr "Otwarte utrzymanie ruchu"
+
 msgid "Operations"
 msgstr "Operacje"
 
@@ -1125,6 +1162,9 @@ msgstr "Opcjonalnie"
 
 msgid "or"
 msgstr "lub"
+
+msgid "Other"
+msgstr "Inne"
 
 msgid "Output lot"
 msgstr "Partia wyrobu"
@@ -1509,6 +1549,9 @@ msgstr "Ustawiono, gdy partia produkcyjna została zaplanowana."
 msgid "Setup"
 msgstr "Ustawienie"
 
+msgid "Shop floor"
+msgstr "Hala produkcyjna"
+
 msgid "short"
 msgstr "krótkie"
 
@@ -1609,6 +1652,9 @@ msgstr "Zmień operatora"
 
 msgid "Tag"
 msgstr "Tag"
+
+msgid "Takes work center offline"
+msgstr "Wycofuje stanowisko robocze z pracy"
 
 msgid "The completed quantity for this operation is less than the required quantity of {targetQuantity}."
 msgstr "Ukończona ilość dla tej operacji jest mniejsza niż wymagana ilość {targetQuantity}."
@@ -1722,6 +1768,9 @@ msgstr "Wpisz wiadomość..."
 msgid "Unable to unlock"
 msgstr "Nie można odblokować"
 
+msgid "Unassigned"
+msgstr "Nieprzypisane"
+
 msgid "Unissued serial/batch materials"
 msgstr "Niewydane materiały seryjne/partyjne"
 
@@ -1790,6 +1839,12 @@ msgstr "Zweryfikuj"
 msgid "View maintenance dispatch"
 msgstr "Wyświetl zlecenie utrzymania ruchu"
 
+msgid "Waiting"
+msgstr "Oczekiwanie"
+
+msgid "Waiting repair"
+msgstr "Oczekuje na naprawę"
+
 msgid "We've sent you a magic link to sign in to your account."
 msgstr "Wysłaliśmy Ci link do logowania na Twoje konto."
 
@@ -1804,6 +1859,9 @@ msgstr "Produkcja w toku"
 
 msgid "Work Center"
 msgstr "Stanowisko robocze"
+
+msgid "Work center details"
+msgstr "Szczegóły stanowiska roboczego"
 
 msgid "Work Center Displays"
 msgstr "Wyświetlacze stanowiska roboczego"
