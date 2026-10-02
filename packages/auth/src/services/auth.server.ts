@@ -16,6 +16,7 @@ import { redirect } from "react-router";
 import {
   ALLOW_DEV_BYPASS,
   CarbonEdition,
+  DEV_BYPASS_EMAIL,
   IS_LOCAL_DEV,
   REFRESH_ACCESS_TOKEN_THRESHOLD,
   STRIPE_BYPASS_COMPANY_IDS,
@@ -496,6 +497,20 @@ export function getMagicLinkErrorMessage(error: { code?: string }): string {
     default:
       return "Failed to send magic link";
   }
+}
+
+/**
+ * True when this email is the configured magic-link-free bypass identity AND
+ * the deployment allows bypass (local stack or ALLOW_DEV_BYPASS). Login routes
+ * use this to skip IP rate limit / account lockout for the demo identity so a
+ * burst of retries (or a slow Supabase GET that falls through) cannot lock the
+ * operator out of the only passwordless path that works without SMTP.
+ */
+export function isDevBypassLoginEmail(email: string): boolean {
+  if (!IS_LOCAL_DEV && !ALLOW_DEV_BYPASS) return false;
+  const configured = (DEV_BYPASS_EMAIL ?? "").trim().toLowerCase();
+  if (!configured) return false;
+  return email.trim().toLowerCase() === configured;
 }
 
 // DEV_BYPASS_EMAIL signs a developer in with no magic link. Allowed on the

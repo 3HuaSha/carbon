@@ -3,7 +3,6 @@ import {
   CarbonEdition,
   CONTROLLED_ENVIRONMENT,
   carbonClient,
-  DEV_BYPASS_EMAIL,
   error,
   isAuthProviderEnabled,
   magicLinkValidator,
@@ -12,6 +11,7 @@ import {
 import {
   botProtection,
   getMagicLinkErrorMessage,
+  isDevBypassLoginEmail,
   logAuthEvent,
   sendMagicLink,
   signInWithBypassEmail,
@@ -112,20 +112,6 @@ export async function loader({ request }: LoaderFunctionArgs) {
 export async function action({ request }: ActionFunctionArgs) {
   assertIsPost(request);
   const ip = getClientIp(request) ?? "127.0.0.1";
-  const ratelimit = new Ratelimit({
-    redis,
-    limiter: Ratelimit.slidingWindow(RATE_LIMIT, "1 h"),
-    analytics: true
-  });
-  const { success } = await ratelimit.limit(ip);
-
-  if (!success) {
-    logAuthEvent("login_rate_limited", { ip });
-    return data(
-      error(null, "Rate limit exceeded"),
-      await flash(request, error(null, "Rate limit exceeded"))
-    );
-  }
 
   const validation = await validator(magicLinkValidator).validate(
     await request.formData()
@@ -136,28 +122,51 @@ export async function action({ request }: ActionFunctionArgs) {
   }
 
   const { email, botToken } = validation.data;
+  // Demo / local bypass identity: never burn IP or per-account quotas on the
+  // only path that can mint a session without SMTP. Failures still fall through
+  // to magic-link below after bypass is attempted.
+  const bypassLogin = isDevBypassLoginEmail(email);
+
+  if (!bypassLogin) {
+    const ratelimit = new Ratelimit({
+      redis,
+      limiter: Ratelimit.slidingWindow(RATE_LIMIT, "1 h"),
+      analytics: true
+    });
+    const { success } = await ratelimit.limit(ip);
+
+    if (!success) {
+      logAuthEvent("login_rate_limited", { ip });
+      return data(
+        error(null, "Rate limit exceeded"),
+        await flash(request, error(null, "Rate limit exceeded"))
+      );
+    }
+  }
 
   // Per-account lockout (NIST 800-171 3.1.8) — layered ON TOP of the IP limit
   // above. Keyed by the normalized email so an attacker rotating IPs, or
   // hammering one account to spam magic links / probe existence, is bounded per
   // account. The reply is deliberately GENERIC (never reveals whether the
-  // account exists) to avoid user enumeration.
+  // account exists) to avoid user enumeration. Skipped for the bypass identity.
   const lockout = new AccountLockout({ redis });
   const LOCKED_MESSAGE =
     "For your security, sign-in for this account is temporarily paused. Please try again later.";
 
-  const lockStatus = await lockout.status(email);
-  if (lockStatus.locked) {
-    logAuthEvent("login_locked", {
-      actor: email,
-      ip,
-      reason: "account temporarily locked",
-      retryAfterSeconds: lockStatus.retryAfterSeconds
-    });
-    return data(
-      { success: false, message: LOCKED_MESSAGE },
-      await flash(request, error(null, LOCKED_MESSAGE))
-    );
+  if (!bypassLogin) {
+    const lockStatus = await lockout.status(email);
+    if (lockStatus.locked) {
+      logAuthEvent("login_locked", {
+        actor: email,
+        ip,
+        reason: "account temporarily locked",
+        retryAfterSeconds: lockStatus.retryAfterSeconds
+      });
+      return data(
+        { success: false, message: LOCKED_MESSAGE },
+        await flash(request, error(null, LOCKED_MESSAGE))
+      );
+    }
   }
 
   const botError = await verifyBotProtection({
@@ -172,31 +181,13 @@ export async function action({ request }: ActionFunctionArgs) {
     );
   }
 
-  // Count this attempt against the account. If it tips the account past the
-  // window's allowance, an exponential-backoff lock engages now and we reject
-  // this request with the same generic message.
-  const attempt = await lockout.recordFailure(email);
-  if (attempt.locked) {
-    logAuthEvent("login_locked", {
-      actor: email,
-      ip,
-      reason: "account temporarily locked",
-      retryAfterSeconds: attempt.retryAfterSeconds
-    });
-    return data(
-      { success: false, message: LOCKED_MESSAGE },
-      await flash(request, error(null, LOCKED_MESSAGE))
-    );
-  }
-
   const user = await getUserByEmail(email);
 
-  const devBypassEmail = DEV_BYPASS_EMAIL;
-  if (
-    devBypassEmail &&
-    email.toLowerCase() === devBypassEmail.toLowerCase() &&
-    user.data?.active
-  ) {
+  // Attempt bypass when the posted email is the configured identity. Do not
+  // require a successful `user` lookup first — a hung PostgREST GET (≈76s then
+  // error) used to skip bypass entirely and fall through to magic-link / lockout.
+  // Still refuse an explicitly inactive row when the lookup did return.
+  if (bypassLogin && user.data?.active !== false) {
     const authSession = await signInWithBypassEmail(email);
     if (authSession) {
       // Genuine completed login — clear any accumulated lockout state.
@@ -206,6 +197,25 @@ export async function action({ request }: ActionFunctionArgs) {
       return redirect(path.to.authenticatedRoot, {
         headers: [["Set-Cookie", sessionCookie]]
       });
+    }
+  }
+
+  // Count this attempt against the account only AFTER bypass has been tried
+  // (aligned with MES). Recording before bypass locked the demo account whenever
+  // generateLink/verifyOtp or the user lookup timed out.
+  if (!bypassLogin) {
+    const attempt = await lockout.recordFailure(email);
+    if (attempt.locked) {
+      logAuthEvent("login_locked", {
+        actor: email,
+        ip,
+        reason: "account temporarily locked",
+        retryAfterSeconds: attempt.retryAfterSeconds
+      });
+      return data(
+        { success: false, message: LOCKED_MESSAGE },
+        await flash(request, error(null, LOCKED_MESSAGE))
+      );
     }
   }
 

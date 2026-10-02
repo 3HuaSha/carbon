@@ -172,7 +172,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
     integrations,
     companySettings,
     savedViews,
-    user,
+    userResult,
     claims,
     groups,
     defaults,
@@ -207,6 +207,24 @@ export async function loader({ request }: LoaderFunctionArgs) {
     // Whether this user dismissed it is a user flag, read client-side.
     getChangelogPanelEntry(getCarbonServiceRole()).catch(() => null)
   ]);
+
+  // Under PostgREST fan-out (this Promise.all) a user-scoped GET can 429/timeout
+  // while claims still resolve from Redis. Destroying the session on that blip
+  // is what produced `?reason=user-error` after a successful bypass login.
+  // Service-role fallback is safe here: requireAuthSession already proved the
+  // JWT, and we only need the active user row for the shell.
+  let user = userResult;
+  if (user.error || !user.data) {
+    const fallback = await getUser(getCarbonServiceRole(), userId);
+    if (fallback.data) {
+      log.warn("x+/_layout getUser fell back to service role", {
+        userId,
+        companyId,
+        userError: user.error?.message ?? null
+      });
+      user = fallback;
+    }
+  }
 
   // Empty groups is a valid pre-onboarding state (a first-run user with no
   // company yet has zero memberships → groups is []), NOT an auth failure —

@@ -129,10 +129,20 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
   const client = getCarbon(accessToken);
 
   // parallelize the requests
-  const [companies, user] = await Promise.all([
+  const [companies, userResult] = await Promise.all([
     getCompanies(client, userId),
     getUser(client, userId)
   ]);
+
+  // Same blip as ERP /x: a throttled/timed-out user-scoped GET must not destroy
+  // a freshly minted bypass session. Service role is fine after requireAuthSession.
+  let user = userResult;
+  if (user.error || !user.data) {
+    const fallback = await getUser(getCarbonServiceRole(), userId);
+    if (fallback.data) {
+      user = fallback;
+    }
+  }
 
   if (user.error || !user.data) {
     throw await destroyAuthSession(request);

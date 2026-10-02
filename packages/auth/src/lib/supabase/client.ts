@@ -12,7 +12,10 @@ import {
 const PER_ATTEMPT_TIMEOUT_MS = 25_000;
 const MAX_RETRIES = 2;
 const BACKOFF_MS = [500, 1000];
-const RETRYABLE_STATUS = new Set([500, 502, 503, 504, 512, 408, 524]);
+// 429: PostgREST / GoTrue throttle under fan-out (e.g. /x Promise.all). Without
+// this, a transient rate limit on a GET becomes a hard error and can bounce an
+// authenticated session (x+/_layout → reason=user-error).
+const RETRYABLE_STATUS = new Set([429, 500, 502, 503, 504, 512, 408, 524]);
 
 const sleep = (ms: number) =>
   new Promise<void>((resolve) => setTimeout(resolve, ms));

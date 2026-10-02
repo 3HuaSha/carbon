@@ -134,4 +134,18 @@ describe("fetchWithRetry", () => {
     expect(fetchSpy).toHaveBeenCalledTimes(1);
     expect(response.status).toBe(404);
   });
+
+  it("retries a normal GET on 429 (PostgREST throttle under fan-out)", async () => {
+    fetchSpy
+      .mockResolvedValueOnce(jsonResponse(429))
+      .mockResolvedValueOnce(jsonResponse(200));
+
+    const response = await fetchWithRetry(
+      "http://supabase.internal.test/rest/v1/user?id=eq.1",
+      { method: "GET" }
+    );
+
+    expect(fetchSpy).toHaveBeenCalledTimes(2);
+    expect(response.status).toBe(200);
+  });
 });
