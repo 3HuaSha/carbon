@@ -90,6 +90,9 @@ msgstr "{fails}件のサンプル不良が記録されており、完了され�
 msgid "{recorded}/{0} jobs"
 msgstr "{recorded}/{0}件の製造指図"
 
+msgid "{total} machines"
+msgstr ""
+
 msgid "+{overflow} more"
 msgstr "+{overflow} その他"
 
@@ -142,6 +145,9 @@ msgstr "サンプルを追加"
 msgid "Add Spare Part"
 msgstr "予備品を追加"
 
+msgid "Add work centers for this location in Resources, then open Shop again. Machines on the computer MES will show here."
+msgstr ""
+
 msgid "All"
 msgstr "すべて"
 
@@ -187,6 +193,10 @@ msgstr "組立ステップ"
 
 msgid "Assigned"
 msgstr "割当済み"
+
+#. placeholder {0}: dispatch.assigneeName
+msgid "Assigned to {0}"
+msgstr ""
 
 msgid "Assigned to Me"
 msgstr "自分に割当"
@@ -386,6 +396,9 @@ msgstr "手直しを作成"
 
 msgid "Current work"
 msgstr "現在の作業"
+
+msgid "Current work order"
+msgstr ""
 
 msgid "Customer"
 msgstr "得意先"
@@ -619,6 +632,9 @@ msgstr "絞り込み"
 msgid "Filter by location"
 msgstr "拠点で絞り込み"
 
+msgid "Filter by status"
+msgstr ""
+
 msgid "Finish"
 msgstr "完了"
 
@@ -672,6 +688,9 @@ msgstr "まだ作業中です"
 msgid "Ideas, suggestions or problems?"
 msgstr "アイデア、提案、または問題はありますか？"
 
+msgid "Idle"
+msgstr ""
+
 msgid "Idle for"
 msgstr "待機時間"
 
@@ -687,6 +706,9 @@ msgstr "{0}で"
 
 msgid "In Progress"
 msgstr "進行中"
+
+msgid "In repair"
+msgstr ""
 
 msgid "Inspect Item"
 msgstr "アイテムを検査"
@@ -965,6 +987,9 @@ msgstr "影響なし"
 msgid "No issue types configured"
 msgstr "構成されたイシュータイプがありません"
 
+msgid "No machines match this filter."
+msgstr ""
+
 msgid "No maintenance scheduled for today"
 msgstr "本日の保全予定はありません。"
 
@@ -977,8 +1002,14 @@ msgstr "材料なし"
 msgid "No materials on this batch."
 msgstr "このバッチに材料がありません。"
 
+msgid "No open job"
+msgstr ""
+
 msgid "No open jobs"
 msgstr "オープンな製造指図はありません。"
+
+msgid "No open maintenance dispatches."
+msgstr ""
 
 msgid "No open units to allocate"
 msgstr "割り当てるオープンユニットがありません"
@@ -1049,6 +1080,9 @@ msgstr "ブロックされた作業区はありません。"
 msgid "No work centers exist"
 msgstr "作業区が存在しません。"
 
+msgid "No work centers here"
+msgstr ""
+
 msgid "None"
 msgstr "なし"
 
@@ -1108,6 +1142,9 @@ msgstr "MRB処置のためにNCRを開く"
 msgid "Open Jobs"
 msgstr "オープンな製造指図"
 
+msgid "Open maintenance"
+msgstr ""
+
 msgid "Operations"
 msgstr "工程"
 
@@ -1125,6 +1162,9 @@ msgstr "オプション"
 
 msgid "or"
 msgstr "または"
+
+msgid "Other"
+msgstr ""
 
 msgid "Output lot"
 msgstr "出力ロット"
@@ -1509,6 +1549,9 @@ msgstr "バッチが計画されたときに設定します。"
 msgid "Setup"
 msgstr "段取り"
 
+msgid "Shop floor"
+msgstr ""
+
 msgid "short"
 msgstr "短縮"
 
@@ -1609,6 +1652,9 @@ msgstr "作業者を切り替える"
 
 msgid "Tag"
 msgstr "タグ"
+
+msgid "Takes work center offline"
+msgstr ""
 
 msgid "The completed quantity for this operation is less than the required quantity of {targetQuantity}."
 msgstr "この工程の完了数量が必要数量 {targetQuantity} を下回っています。"
@@ -1722,6 +1768,9 @@ msgstr "メッセージを入力..."
 msgid "Unable to unlock"
 msgstr "ロック解除できません"
 
+msgid "Unassigned"
+msgstr ""
+
 msgid "Unissued serial/batch materials"
 msgstr "未払出のシリアル/バッチ材料"
 
@@ -1790,6 +1839,12 @@ msgstr "確認"
 msgid "View maintenance dispatch"
 msgstr "保全指示を表示"
 
+msgid "Waiting"
+msgstr ""
+
+msgid "Waiting repair"
+msgstr ""
+
 msgid "We've sent you a magic link to sign in to your account."
 msgstr "アカウントにサインインするためのマジックリンクをお送りしました。"
 
@@ -1804,6 +1859,9 @@ msgstr "仕掛品"
 
 msgid "Work Center"
 msgstr "作業区"
+
+msgid "Work center details"
+msgstr ""
 
 msgid "Work Center Displays"
 msgstr "作業区ディスプレイ"

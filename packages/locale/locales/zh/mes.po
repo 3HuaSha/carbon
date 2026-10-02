@@ -90,6 +90,9 @@ msgstr "{fails} 个抽样不合格已被记录，将不会被完成 — 从操�
 msgid "{recorded}/{0} jobs"
 msgstr "{recorded}/{0} 个工单"
 
+msgid "{total} machines"
+msgstr ""
+
 msgid "+{overflow} more"
 msgstr "还有 +{overflow} 个"
 
@@ -142,6 +145,9 @@ msgstr "添加样本"
 msgid "Add Spare Part"
 msgstr "添加备件"
 
+msgid "Add work centers for this location in Resources, then open Shop again. Machines on the computer MES will show here."
+msgstr ""
+
 msgid "All"
 msgstr "全部"
 
@@ -187,6 +193,10 @@ msgstr "装配步骤"
 
 msgid "Assigned"
 msgstr "已分配"
+
+#. placeholder {0}: dispatch.assigneeName
+msgid "Assigned to {0}"
+msgstr ""
 
 msgid "Assigned to Me"
 msgstr "已分配给我"
@@ -386,6 +396,9 @@ msgstr "创建返工"
 
 msgid "Current work"
 msgstr "当前工作"
+
+msgid "Current work order"
+msgstr ""
 
 msgid "Customer"
 msgstr "客户"
@@ -619,6 +632,9 @@ msgstr "筛选"
 msgid "Filter by location"
 msgstr "按位置筛选"
 
+msgid "Filter by status"
+msgstr ""
+
 msgid "Finish"
 msgstr "完成"
 
@@ -672,6 +688,9 @@ msgstr "我还在工作"
 msgid "Ideas, suggestions or problems?"
 msgstr "有想法、建议或问题？"
 
+msgid "Idle"
+msgstr ""
+
 msgid "Idle for"
 msgstr "闲置时间"
 
@@ -687,6 +706,9 @@ msgstr "在 {0}"
 
 msgid "In Progress"
 msgstr "进行中"
+
+msgid "In repair"
+msgstr ""
 
 msgid "Inspect Item"
 msgstr "检验物品"
@@ -965,6 +987,9 @@ msgstr "无影响"
 msgid "No issue types configured"
 msgstr "未配置问题类型"
 
+msgid "No machines match this filter."
+msgstr ""
+
 msgid "No maintenance scheduled for today"
 msgstr "今天没有计划的维护"
 
@@ -977,8 +1002,14 @@ msgstr "没有原材料"
 msgid "No materials on this batch."
 msgstr "此生产批次上没有物料。"
 
+msgid "No open job"
+msgstr ""
+
 msgid "No open jobs"
 msgstr "没有未结的工单"
+
+msgid "No open maintenance dispatches."
+msgstr ""
 
 msgid "No open units to allocate"
 msgstr "没有未结的件可分配"
@@ -1049,6 +1080,9 @@ msgstr "无工作中心被阻塞"
 msgid "No work centers exist"
 msgstr "无工作中心"
 
+msgid "No work centers here"
+msgstr ""
+
 msgid "None"
 msgstr "无"
 
@@ -1108,6 +1142,9 @@ msgstr "为MRB处置打开NCR"
 msgid "Open Jobs"
 msgstr "未结工单"
 
+msgid "Open maintenance"
+msgstr ""
+
 msgid "Operations"
 msgstr "工序"
 
@@ -1125,6 +1162,9 @@ msgstr "可选"
 
 msgid "or"
 msgstr "或"
+
+msgid "Other"
+msgstr ""
 
 msgid "Output lot"
 msgstr "输出批次"
@@ -1509,6 +1549,9 @@ msgstr "在规划生产批次时设置。"
 msgid "Setup"
 msgstr "换型"
 
+msgid "Shop floor"
+msgstr ""
+
 msgid "short"
 msgstr "短缺"
 
@@ -1609,6 +1652,9 @@ msgstr "切换操作员"
 
 msgid "Tag"
 msgstr "标签"
+
+msgid "Takes work center offline"
+msgstr ""
 
 msgid "The completed quantity for this operation is less than the required quantity of {targetQuantity}."
 msgstr "此工序的完成数量小于所需数量 {targetQuantity}。"
@@ -1722,6 +1768,9 @@ msgstr "输入消息..."
 msgid "Unable to unlock"
 msgstr "无法解锁"
 
+msgid "Unassigned"
+msgstr ""
+
 msgid "Unissued serial/batch materials"
 msgstr "未领料的序列号/生产批次物料"
 
@@ -1790,6 +1839,12 @@ msgstr "验证"
 msgid "View maintenance dispatch"
 msgstr "查看维护工单"
 
+msgid "Waiting"
+msgstr ""
+
+msgid "Waiting repair"
+msgstr ""
+
 msgid "We've sent you a magic link to sign in to your account."
 msgstr "我们已向您发送了登录链接，请查收。"
 
@@ -1804,6 +1859,9 @@ msgstr "在制品"
 
 msgid "Work Center"
 msgstr "工作中心"
+
+msgid "Work center details"
+msgstr ""
 
 msgid "Work Center Displays"
 msgstr "工作中心显示屏"

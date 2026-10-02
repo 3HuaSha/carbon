@@ -90,6 +90,9 @@ msgstr "{fails} नमूना विफलता(एं) दर्ज की �
 msgid "{recorded}/{0} jobs"
 msgstr "{recorded}/{0} जॉब्स"
 
+msgid "{total} machines"
+msgstr ""
+
 msgid "+{overflow} more"
 msgstr "+{overflow} अधिक"
 
@@ -142,6 +145,9 @@ msgstr "नमूना जोड़ें"
 msgid "Add Spare Part"
 msgstr "स्पेयर पार्ट जोड़ें"
 
+msgid "Add work centers for this location in Resources, then open Shop again. Machines on the computer MES will show here."
+msgstr ""
+
 msgid "All"
 msgstr "सभी"
 
@@ -187,6 +193,10 @@ msgstr "असेंबली चरण"
 
 msgid "Assigned"
 msgstr "निर्दिष्ट"
+
+#. placeholder {0}: dispatch.assigneeName
+msgid "Assigned to {0}"
+msgstr ""
 
 msgid "Assigned to Me"
 msgstr "मुझे असाइन किया गया"
@@ -386,6 +396,9 @@ msgstr "पुनः कार्य बनाएँ"
 
 msgid "Current work"
 msgstr "वर्तमान कार्य"
+
+msgid "Current work order"
+msgstr ""
 
 msgid "Customer"
 msgstr "ग्राहक"
@@ -619,6 +632,9 @@ msgstr "फ़िल्टर करें"
 msgid "Filter by location"
 msgstr "स्थान के अनुसार फ़िल्टर करें"
 
+msgid "Filter by status"
+msgstr ""
+
 msgid "Finish"
 msgstr "समाप्त करें"
 
@@ -672,6 +688,9 @@ msgstr "मैं अभी भी काम कर रहा हूँ"
 msgid "Ideas, suggestions or problems?"
 msgstr "विचार, सुझाव या समस्याएं?"
 
+msgid "Idle"
+msgstr ""
+
 msgid "Idle for"
 msgstr "के लिए निष्क्रिय"
 
@@ -687,6 +706,9 @@ msgstr "{0} में"
 
 msgid "In Progress"
 msgstr "प्रगति में"
+
+msgid "In repair"
+msgstr ""
 
 msgid "Inspect Item"
 msgstr "आइटम का निरीक्षण करें"
@@ -965,6 +987,9 @@ msgstr "कोई प्रभाव नहीं"
 msgid "No issue types configured"
 msgstr "कोई समस्या प्रकार कॉन्फ़िगर नहीं किया गया"
 
+msgid "No machines match this filter."
+msgstr ""
+
 msgid "No maintenance scheduled for today"
 msgstr "आज के लिए कोई रखरखाव निर्धारित नहीं है"
 
@@ -977,8 +1002,14 @@ msgstr "कोई सामग्री नहीं"
 msgid "No materials on this batch."
 msgstr "इस बैच पर कोई सामग्री नहीं है।"
 
+msgid "No open job"
+msgstr ""
+
 msgid "No open jobs"
 msgstr "कोई खुली जॉब नहीं"
+
+msgid "No open maintenance dispatches."
+msgstr ""
 
 msgid "No open units to allocate"
 msgstr "आवंटित करने के लिए कोई खुली इकाई नहीं"
@@ -1049,6 +1080,9 @@ msgstr "कोई वर्क सेंटर अवरुद्ध नही�
 msgid "No work centers exist"
 msgstr "कोई वर्क सेंटर मौजूद नहीं है"
 
+msgid "No work centers here"
+msgstr ""
+
 msgid "None"
 msgstr "कोई नहीं"
 
@@ -1108,6 +1142,9 @@ msgstr "MRB निपटान के लिए एक NCR खोलें"
 msgid "Open Jobs"
 msgstr "खुली जॉब्स"
 
+msgid "Open maintenance"
+msgstr ""
+
 msgid "Operations"
 msgstr "ऑपरेशन"
 
@@ -1125,6 +1162,9 @@ msgstr "वैकल्पिक"
 
 msgid "or"
 msgstr "या"
+
+msgid "Other"
+msgstr ""
 
 msgid "Output lot"
 msgstr "आउटपुट लॉट"
@@ -1509,6 +1549,9 @@ msgstr "जब बैच की योजना बनाई गई थी त�
 msgid "Setup"
 msgstr "सेटअप"
 
+msgid "Shop floor"
+msgstr ""
+
 msgid "short"
 msgstr "छोटा"
 
@@ -1609,6 +1652,9 @@ msgstr "ऑपरेटर स्विच करें"
 
 msgid "Tag"
 msgstr "टैग"
+
+msgid "Takes work center offline"
+msgstr ""
 
 msgid "The completed quantity for this operation is less than the required quantity of {targetQuantity}."
 msgstr "इस ऑपरेशन के लिए पूर्ण मात्रा आवश्यक मात्रा {targetQuantity} से कम है।"
@@ -1722,6 +1768,9 @@ msgstr "एक संदेश लिखें..."
 msgid "Unable to unlock"
 msgstr "अनलॉक करने में असमर्थ"
 
+msgid "Unassigned"
+msgstr ""
+
 msgid "Unissued serial/batch materials"
 msgstr "अजारी सीरीज़/बैच सामग्री"
 
@@ -1790,6 +1839,12 @@ msgstr "सत्यापित करें"
 msgid "View maintenance dispatch"
 msgstr "रखरखाव कार्य देखें"
 
+msgid "Waiting"
+msgstr ""
+
+msgid "Waiting repair"
+msgstr ""
+
 msgid "We've sent you a magic link to sign in to your account."
 msgstr "हमने आपके खाते में साइन इन करने के लिए आपको एक जादुई लिंक भेजा है।"
 
@@ -1804,6 +1859,9 @@ msgstr "WIP"
 
 msgid "Work Center"
 msgstr "वर्क सेंटर"
+
+msgid "Work center details"
+msgstr ""
 
 msgid "Work Center Displays"
 msgstr "वर्क सेंटर डिस्प्ले"

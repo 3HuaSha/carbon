@@ -90,6 +90,9 @@ msgstr "{fails} fallo(s) muestreado(s) registrado(s) y NO serán completado(s) �
 msgid "{recorded}/{0} jobs"
 msgstr "{recorded}/{0} órdenes de trabajo"
 
+msgid "{total} machines"
+msgstr ""
+
 msgid "+{overflow} more"
 msgstr "+{overflow} más"
 
@@ -142,6 +145,9 @@ msgstr "Agregar muestra"
 msgid "Add Spare Part"
 msgstr "Agregar repuesto"
 
+msgid "Add work centers for this location in Resources, then open Shop again. Machines on the computer MES will show here."
+msgstr ""
+
 msgid "All"
 msgstr "Todos"
 
@@ -187,6 +193,10 @@ msgstr "Pasos de montaje"
 
 msgid "Assigned"
 msgstr "Asignado"
+
+#. placeholder {0}: dispatch.assigneeName
+msgid "Assigned to {0}"
+msgstr ""
 
 msgid "Assigned to Me"
 msgstr "Asignado a mí"
@@ -386,6 +396,9 @@ msgstr "Crear retrabajo"
 
 msgid "Current work"
 msgstr "Trabajo actual"
+
+msgid "Current work order"
+msgstr ""
 
 msgid "Customer"
 msgstr "Cliente"
@@ -619,6 +632,9 @@ msgstr "Filtrar"
 msgid "Filter by location"
 msgstr "Filtrar por ubicación"
 
+msgid "Filter by status"
+msgstr ""
+
 msgid "Finish"
 msgstr "Finalizar"
 
@@ -672,6 +688,9 @@ msgstr "Sigo trabajando"
 msgid "Ideas, suggestions or problems?"
 msgstr "¿Ideas, sugerencias o problemas?"
 
+msgid "Idle"
+msgstr ""
+
 msgid "Idle for"
 msgstr "Inactivo durante"
 
@@ -687,6 +706,9 @@ msgstr "en {0}"
 
 msgid "In Progress"
 msgstr "En curso"
+
+msgid "In repair"
+msgstr ""
 
 msgid "Inspect Item"
 msgstr "Inspeccionar artículo"
@@ -965,6 +987,9 @@ msgstr "Sin impacto"
 msgid "No issue types configured"
 msgstr "No hay tipos de problema configurados"
 
+msgid "No machines match this filter."
+msgstr ""
+
 msgid "No maintenance scheduled for today"
 msgstr "No hay mantenimiento programado para hoy"
 
@@ -977,8 +1002,14 @@ msgstr "Sin materiales"
 msgid "No materials on this batch."
 msgstr "Sin materiales en este lote de producción."
 
+msgid "No open job"
+msgstr ""
+
 msgid "No open jobs"
 msgstr "Sin órdenes de trabajo abiertas"
+
+msgid "No open maintenance dispatches."
+msgstr ""
 
 msgid "No open units to allocate"
 msgstr "No hay unidades abiertas para asignar"
@@ -1049,6 +1080,9 @@ msgstr "No hay centros de trabajo bloqueados"
 msgid "No work centers exist"
 msgstr "No existen centros de trabajo"
 
+msgid "No work centers here"
+msgstr ""
+
 msgid "None"
 msgstr "Ninguno"
 
@@ -1108,6 +1142,9 @@ msgstr "Abrir un NCR para la disposición de MRB"
 msgid "Open Jobs"
 msgstr "Órdenes de trabajo abiertas"
 
+msgid "Open maintenance"
+msgstr ""
+
 msgid "Operations"
 msgstr "Operaciones"
 
@@ -1125,6 +1162,9 @@ msgstr "Opcional"
 
 msgid "or"
 msgstr "o"
+
+msgid "Other"
+msgstr ""
 
 msgid "Output lot"
 msgstr "Lote de salida"
@@ -1509,6 +1549,9 @@ msgstr "Se establece cuando el lote de producción fue planificado."
 msgid "Setup"
 msgstr "Preparación"
 
+msgid "Shop floor"
+msgstr ""
+
 msgid "short"
 msgstr "corto"
 
@@ -1609,6 +1652,9 @@ msgstr "Cambiar operador"
 
 msgid "Tag"
 msgstr "Etiqueta"
+
+msgid "Takes work center offline"
+msgstr ""
 
 msgid "The completed quantity for this operation is less than the required quantity of {targetQuantity}."
 msgstr "La cantidad completada para esta operación es menor que la cantidad requerida de {targetQuantity}."
@@ -1722,6 +1768,9 @@ msgstr "Escriba un mensaje..."
 msgid "Unable to unlock"
 msgstr "No se puede desbloquear"
 
+msgid "Unassigned"
+msgstr ""
+
 msgid "Unissued serial/batch materials"
 msgstr "Materiales de serie/lote no emitidos"
 
@@ -1790,6 +1839,12 @@ msgstr "Verificar"
 msgid "View maintenance dispatch"
 msgstr "Ver orden de mantenimiento"
 
+msgid "Waiting"
+msgstr ""
+
+msgid "Waiting repair"
+msgstr ""
+
 msgid "We've sent you a magic link to sign in to your account."
 msgstr "Le hemos enviado un enlace mágico para iniciar sesión en su cuenta."
 
@@ -1804,6 +1859,9 @@ msgstr "Producto en proceso"
 
 msgid "Work Center"
 msgstr "Centro de trabajo"
+
+msgid "Work center details"
+msgstr ""
 
 msgid "Work Center Displays"
 msgstr "Pantallas del Centro de Trabajo"
