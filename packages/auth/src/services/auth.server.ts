@@ -516,13 +516,25 @@ export async function signInWithBypassEmail(
   const { data: linkData, error: linkError } =
     await client.auth.admin.generateLink({ type: "magiclink", email });
 
-  if (linkError || !linkData?.properties?.hashed_token) return null;
+  if (linkError || !linkData?.properties?.hashed_token) {
+    log.error("DEV_BYPASS_EMAIL generateLink failed", {
+      actor: email,
+      error: linkError?.message
+    });
+    return null;
+  }
 
   const { data: sessionData, error: verifyError } = await client.auth.verifyOtp(
     { token_hash: linkData.properties.hashed_token, type: "magiclink" }
   );
 
-  if (verifyError || !sessionData?.session) return null;
+  if (verifyError || !sessionData?.session) {
+    log.error("DEV_BYPASS_EMAIL verifyOtp failed", {
+      actor: email,
+      error: verifyError?.message
+    });
+    return null;
+  }
 
   const companies = await getCompaniesForUser(
     client,
