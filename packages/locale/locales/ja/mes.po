@@ -91,7 +91,7 @@ msgid "{recorded}/{0} jobs"
 msgstr "{recorded}/{0}件の製造指図"
 
 msgid "{total} machines"
-msgstr ""
+msgstr "{total}台の機械"
 
 msgid "+{overflow} more"
 msgstr "+{overflow} その他"
@@ -146,7 +146,7 @@ msgid "Add Spare Part"
 msgstr "予備品を追加"
 
 msgid "Add work centers for this location in Resources, then open Shop again. Machines on the computer MES will show here."
-msgstr ""
+msgstr "リソースでこの拠点の作業区を追加し、再度製造現場を開いてください。コンピューター版MESに登録された機械がここに表示されます。"
 
 msgid "All"
 msgstr "すべて"
@@ -196,7 +196,7 @@ msgstr "割当済み"
 
 #. placeholder {0}: dispatch.assigneeName
 msgid "Assigned to {0}"
-msgstr ""
+msgstr "{0}に割当"
 
 msgid "Assigned to Me"
 msgstr "自分に割当"
@@ -398,7 +398,7 @@ msgid "Current work"
 msgstr "現在の作業"
 
 msgid "Current work order"
-msgstr ""
+msgstr "現在の製造指図"
 
 msgid "Customer"
 msgstr "得意先"
@@ -633,7 +633,7 @@ msgid "Filter by location"
 msgstr "拠点で絞り込み"
 
 msgid "Filter by status"
-msgstr ""
+msgstr "ステータスで絞り込み"
 
 msgid "Finish"
 msgstr "完了"
@@ -689,7 +689,7 @@ msgid "Ideas, suggestions or problems?"
 msgstr "アイデア、提案、または問題はありますか？"
 
 msgid "Idle"
-msgstr ""
+msgstr "待機"
 
 msgid "Idle for"
 msgstr "待機時間"
@@ -708,7 +708,7 @@ msgid "In Progress"
 msgstr "進行中"
 
 msgid "In repair"
-msgstr ""
+msgstr "修理中"
 
 msgid "Inspect Item"
 msgstr "アイテムを検査"
@@ -988,7 +988,7 @@ msgid "No issue types configured"
 msgstr "構成されたイシュータイプがありません"
 
 msgid "No machines match this filter."
-msgstr ""
+msgstr "この絞り込み条件に一致する機械がありません。"
 
 msgid "No maintenance scheduled for today"
 msgstr "本日の保全予定はありません。"
@@ -1003,13 +1003,13 @@ msgid "No materials on this batch."
 msgstr "このバッチに材料がありません。"
 
 msgid "No open job"
-msgstr ""
+msgstr "オープンの製造指図がありません"
 
 msgid "No open jobs"
 msgstr "オープンな製造指図はありません。"
 
 msgid "No open maintenance dispatches."
-msgstr ""
+msgstr "オープンの保全指示がありません。"
 
 msgid "No open units to allocate"
 msgstr "割り当てるオープンユニットがありません"
@@ -1081,7 +1081,7 @@ msgid "No work centers exist"
 msgstr "作業区が存在しません。"
 
 msgid "No work centers here"
-msgstr ""
+msgstr "作業区がありません"
 
 msgid "None"
 msgstr "なし"
@@ -1143,7 +1143,7 @@ msgid "Open Jobs"
 msgstr "オープンな製造指図"
 
 msgid "Open maintenance"
-msgstr ""
+msgstr "オープンの保全"
 
 msgid "Operations"
 msgstr "工程"
@@ -1164,7 +1164,7 @@ msgid "or"
 msgstr "または"
 
 msgid "Other"
-msgstr ""
+msgstr "その他"
 
 msgid "Output lot"
 msgstr "出力ロット"
@@ -1550,7 +1550,7 @@ msgid "Setup"
 msgstr "段取り"
 
 msgid "Shop floor"
-msgstr ""
+msgstr "製造現場"
 
 msgid "short"
 msgstr "短縮"
@@ -1654,7 +1654,7 @@ msgid "Tag"
 msgstr "タグ"
 
 msgid "Takes work center offline"
-msgstr ""
+msgstr "作業区をオフラインにします"
 
 msgid "The completed quantity for this operation is less than the required quantity of {targetQuantity}."
 msgstr "この工程の完了数量が必要数量 {targetQuantity} を下回っています。"
@@ -1769,7 +1769,7 @@ msgid "Unable to unlock"
 msgstr "ロック解除できません"
 
 msgid "Unassigned"
-msgstr ""
+msgstr "未割当"
 
 msgid "Unissued serial/batch materials"
 msgstr "未払出のシリアル/バッチ材料"
@@ -1840,10 +1840,10 @@ msgid "View maintenance dispatch"
 msgstr "保全指示を表示"
 
 msgid "Waiting"
-msgstr ""
+msgstr "待ち"
 
 msgid "Waiting repair"
-msgstr ""
+msgstr "修理待ち"
 
 msgid "We've sent you a magic link to sign in to your account."
 msgstr "アカウントにサインインするためのマジックリンクをお送りしました。"
@@ -1861,7 +1861,7 @@ msgid "Work Center"
 msgstr "作業区"
 
 msgid "Work center details"
-msgstr ""
+msgstr "作業区の詳細"
 
 msgid "Work Center Displays"
 msgstr "作業区ディスプレイ"

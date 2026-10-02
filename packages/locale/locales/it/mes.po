@@ -91,7 +91,7 @@ msgid "{recorded}/{0} jobs"
 msgstr "Registrato/{0} ordini di produzione"
 
 msgid "{total} machines"
-msgstr ""
+msgstr "{total} macchine"
 
 msgid "+{overflow} more"
 msgstr "+{overflow} altri"
@@ -146,7 +146,7 @@ msgid "Add Spare Part"
 msgstr "Aggiungi Ricambio"
 
 msgid "Add work centers for this location in Resources, then open Shop again. Machines on the computer MES will show here."
-msgstr ""
+msgstr "Aggiungi centri di lavoro per questa ubicazione in Risorse, quindi apri di nuovo Officina. Le macchine sul MES del computer verranno visualizzate qui."
 
 msgid "All"
 msgstr "Tutti"
@@ -196,7 +196,7 @@ msgstr "Assegnato"
 
 #. placeholder {0}: dispatch.assigneeName
 msgid "Assigned to {0}"
-msgstr ""
+msgstr "Assegnato a {0}"
 
 msgid "Assigned to Me"
 msgstr "Assegnato a Me"
@@ -398,7 +398,7 @@ msgid "Current work"
 msgstr "Lavoro attuale"
 
 msgid "Current work order"
-msgstr ""
+msgstr "Ordine di produzione corrente"
 
 msgid "Customer"
 msgstr "Cliente"
@@ -633,7 +633,7 @@ msgid "Filter by location"
 msgstr "Filtra per ubicazione"
 
 msgid "Filter by status"
-msgstr ""
+msgstr "Filtra per stato"
 
 msgid "Finish"
 msgstr "Termina"
@@ -689,7 +689,7 @@ msgid "Ideas, suggestions or problems?"
 msgstr "Idee, proposte o problemi?"
 
 msgid "Idle"
-msgstr ""
+msgstr "Inattivo"
 
 msgid "Idle for"
 msgstr "Inattivo per"
@@ -708,7 +708,7 @@ msgid "In Progress"
 msgstr "In Corso"
 
 msgid "In repair"
-msgstr ""
+msgstr "In riparazione"
 
 msgid "Inspect Item"
 msgstr "Ispeziona Articolo"
@@ -988,7 +988,7 @@ msgid "No issue types configured"
 msgstr "Nessun tipo di problema configurato"
 
 msgid "No machines match this filter."
-msgstr ""
+msgstr "Nessuna macchina corrisponde a questo filtro."
 
 msgid "No maintenance scheduled for today"
 msgstr "Nessuna manutenzione programmata per oggi"
@@ -1003,13 +1003,13 @@ msgid "No materials on this batch."
 msgstr "Nessun materiale in questo Lotto di produzione."
 
 msgid "No open job"
-msgstr ""
+msgstr "Nessun ordine di produzione aperto"
 
 msgid "No open jobs"
 msgstr "Nessun ordine di produzione aperto"
 
 msgid "No open maintenance dispatches."
-msgstr ""
+msgstr "Nessun intervento di manutenzione aperto."
 
 msgid "No open units to allocate"
 msgstr "Nessuna unità aperta da allocare"
@@ -1081,7 +1081,7 @@ msgid "No work centers exist"
 msgstr "Nessun centro di lavoro esistente"
 
 msgid "No work centers here"
-msgstr ""
+msgstr "Nessun centro di lavoro qui"
 
 msgid "None"
 msgstr "Nessuno"
@@ -1143,7 +1143,7 @@ msgid "Open Jobs"
 msgstr "Ordini di produzione aperti"
 
 msgid "Open maintenance"
-msgstr ""
+msgstr "Manutenzione aperta"
 
 msgid "Operations"
 msgstr "Operazioni"
@@ -1164,7 +1164,7 @@ msgid "or"
 msgstr "o"
 
 msgid "Other"
-msgstr ""
+msgstr "Altro"
 
 msgid "Output lot"
 msgstr "Lotto di output"
@@ -1550,7 +1550,7 @@ msgid "Setup"
 msgstr "Attrezzaggio"
 
 msgid "Shop floor"
-msgstr ""
+msgstr "Officina"
 
 msgid "short"
 msgstr "breve"
@@ -1654,7 +1654,7 @@ msgid "Tag"
 msgstr "Etichetta"
 
 msgid "Takes work center offline"
-msgstr ""
+msgstr "Mette offline il centro di lavoro"
 
 msgid "The completed quantity for this operation is less than the required quantity of {targetQuantity}."
 msgstr "La quantità completata per questa operazione è inferiore alla quantità richiesta di {targetQuantity}."
@@ -1769,7 +1769,7 @@ msgid "Unable to unlock"
 msgstr "Impossibile sbloccare"
 
 msgid "Unassigned"
-msgstr ""
+msgstr "Non assegnato"
 
 msgid "Unissued serial/batch materials"
 msgstr "Materiali seriali/lotto non prelevati"
@@ -1840,10 +1840,10 @@ msgid "View maintenance dispatch"
 msgstr "Visualizza intervento di manutenzione"
 
 msgid "Waiting"
-msgstr ""
+msgstr "In attesa"
 
 msgid "Waiting repair"
-msgstr ""
+msgstr "In attesa di riparazione"
 
 msgid "We've sent you a magic link to sign in to your account."
 msgstr "Ti abbiamo inviato un link di accesso al tuo account."
@@ -1861,7 +1861,7 @@ msgid "Work Center"
 msgstr "Centro di Lavoro"
 
 msgid "Work center details"
-msgstr ""
+msgstr "Dettagli centro di lavoro"
 
 msgid "Work Center Displays"
 msgstr "Display del Centro di Lavoro"

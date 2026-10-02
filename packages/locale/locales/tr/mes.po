@@ -91,7 +91,7 @@ msgid "{recorded}/{0} jobs"
 msgstr "{recorded}/{0} iş emirleri"
 
 msgid "{total} machines"
-msgstr ""
+msgstr "{total} makine"
 
 msgid "+{overflow} more"
 msgstr "+{overflow} daha fazla"
@@ -146,7 +146,7 @@ msgid "Add Spare Part"
 msgstr "Yedek Parça Ekle"
 
 msgid "Add work centers for this location in Resources, then open Shop again. Machines on the computer MES will show here."
-msgstr ""
+msgstr "Bu lokasyon için Kaynaklar'da iş merkezi ekleyin, ardından Atölye'yi tekrar açın. Bilgisayar MES'indeki makineler burada görüntülenir."
 
 msgid "All"
 msgstr "Tümü"
@@ -196,7 +196,7 @@ msgstr "Atanmış"
 
 #. placeholder {0}: dispatch.assigneeName
 msgid "Assigned to {0}"
-msgstr ""
+msgstr "{0}'e atandı"
 
 msgid "Assigned to Me"
 msgstr "Bana Atananlar"
@@ -398,7 +398,7 @@ msgid "Current work"
 msgstr "Mevcut iş"
 
 msgid "Current work order"
-msgstr ""
+msgstr "Geçerli iş emri"
 
 msgid "Customer"
 msgstr "Müşteri"
@@ -633,7 +633,7 @@ msgid "Filter by location"
 msgstr "Konuma göre filtrele"
 
 msgid "Filter by status"
-msgstr ""
+msgstr "Duruma göre filtrele"
 
 msgid "Finish"
 msgstr "Bitir"
@@ -689,7 +689,7 @@ msgid "Ideas, suggestions or problems?"
 msgstr "Fikirler, öneriler veya sorunlar?"
 
 msgid "Idle"
-msgstr ""
+msgstr "Boşta"
 
 msgid "Idle for"
 msgstr "Boş olma süresi"
@@ -708,7 +708,7 @@ msgid "In Progress"
 msgstr "Devam Ediyor"
 
 msgid "In repair"
-msgstr ""
+msgstr "Onarımda"
 
 msgid "Inspect Item"
 msgstr "Ürünü İncele"
@@ -988,7 +988,7 @@ msgid "No issue types configured"
 msgstr "Sorun türü yapılandırılmadı"
 
 msgid "No machines match this filter."
-msgstr ""
+msgstr "Bu filtreyle eşleşen makine yok."
 
 msgid "No maintenance scheduled for today"
 msgstr "Bugün planlanmış bakım yok"
@@ -1003,13 +1003,13 @@ msgid "No materials on this batch."
 msgstr "Bu Partide Malzeme yok."
 
 msgid "No open job"
-msgstr ""
+msgstr "Açık iş emri yok"
 
 msgid "No open jobs"
 msgstr "Açık iş emirleri yok"
 
 msgid "No open maintenance dispatches."
-msgstr ""
+msgstr "Açık bakım emri yok."
 
 msgid "No open units to allocate"
 msgstr "Tahsis edilecek açık birim yok"
@@ -1081,7 +1081,7 @@ msgid "No work centers exist"
 msgstr "Çalışma merkezi bulunmamaktadır"
 
 msgid "No work centers here"
-msgstr ""
+msgstr "Burada iş merkezi yok"
 
 msgid "None"
 msgstr "Hiçbiri"
@@ -1143,7 +1143,7 @@ msgid "Open Jobs"
 msgstr "Açık İş emirleri"
 
 msgid "Open maintenance"
-msgstr ""
+msgstr "Açık bakım"
 
 msgid "Operations"
 msgstr "Operasyonlar"
@@ -1164,7 +1164,7 @@ msgid "or"
 msgstr "veya"
 
 msgid "Other"
-msgstr ""
+msgstr "Diğer"
 
 msgid "Output lot"
 msgstr "Çıktı Lotu"
@@ -1550,7 +1550,7 @@ msgid "Setup"
 msgstr "Kurulum"
 
 msgid "Shop floor"
-msgstr ""
+msgstr "Atölye"
 
 msgid "short"
 msgstr "kısa"
@@ -1654,7 +1654,7 @@ msgid "Tag"
 msgstr "Etiket"
 
 msgid "Takes work center offline"
-msgstr ""
+msgstr "İş merkezini çevrimdışı yapar"
 
 msgid "The completed quantity for this operation is less than the required quantity of {targetQuantity}."
 msgstr "Bu işlem için tamamlanan miktar, gerekli miktar olan {targetQuantity}'dan azdır."
@@ -1769,7 +1769,7 @@ msgid "Unable to unlock"
 msgstr "Kilit açılamıyor"
 
 msgid "Unassigned"
-msgstr ""
+msgstr "Atanmamış"
 
 msgid "Unissued serial/batch materials"
 msgstr "Yayımlanmamış seri/parti malzemeleri"
@@ -1840,10 +1840,10 @@ msgid "View maintenance dispatch"
 msgstr "Bakım emrini Görüntüle"
 
 msgid "Waiting"
-msgstr ""
+msgstr "Beklemede"
 
 msgid "Waiting repair"
-msgstr ""
+msgstr "Onarım bekliyor"
 
 msgid "We've sent you a magic link to sign in to your account."
 msgstr "Hesabınıza giriş yapmak için size bir sihirli bağlantı gönderdik."
@@ -1861,7 +1861,7 @@ msgid "Work Center"
 msgstr "İş Merkezi"
 
 msgid "Work center details"
-msgstr ""
+msgstr "İş merkezi ayrıntıları"
 
 msgid "Work Center Displays"
 msgstr "İş Merkezi Ekranları"

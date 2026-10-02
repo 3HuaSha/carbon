@@ -91,7 +91,7 @@ msgid "{recorded}/{0} jobs"
 msgstr "{recorded}/{0} ordens de produção"
 
 msgid "{total} machines"
-msgstr ""
+msgstr "{total} máquinas"
 
 msgid "+{overflow} more"
 msgstr "+{overflow} mais"
@@ -146,7 +146,7 @@ msgid "Add Spare Part"
 msgstr "Adicionar peça de reposição"
 
 msgid "Add work centers for this location in Resources, then open Shop again. Machines on the computer MES will show here."
-msgstr ""
+msgstr "Adicione centros de trabalho para este local em Recursos e abra o Shop novamente. As máquinas no MES do computador serão exibidas aqui."
 
 msgid "All"
 msgstr "Todos"
@@ -196,7 +196,7 @@ msgstr "Atribuído"
 
 #. placeholder {0}: dispatch.assigneeName
 msgid "Assigned to {0}"
-msgstr ""
+msgstr "Atribuído a {0}"
 
 msgid "Assigned to Me"
 msgstr "Atribuído a Mim"
@@ -398,7 +398,7 @@ msgid "Current work"
 msgstr "Trabalho atual"
 
 msgid "Current work order"
-msgstr ""
+msgstr "Ordem de produção atual"
 
 msgid "Customer"
 msgstr "Cliente"
@@ -633,7 +633,7 @@ msgid "Filter by location"
 msgstr "Filtrar por localização"
 
 msgid "Filter by status"
-msgstr ""
+msgstr "Filtrar por status"
 
 msgid "Finish"
 msgstr "Concluir"
@@ -689,7 +689,7 @@ msgid "Ideas, suggestions or problems?"
 msgstr "Ideias, sugestões ou problemas?"
 
 msgid "Idle"
-msgstr ""
+msgstr "Inativo"
 
 msgid "Idle for"
 msgstr "Inativo por"
@@ -708,7 +708,7 @@ msgid "In Progress"
 msgstr "Em Andamento"
 
 msgid "In repair"
-msgstr ""
+msgstr "Em reparo"
 
 msgid "Inspect Item"
 msgstr "Inspecionar Item"
@@ -988,7 +988,7 @@ msgid "No issue types configured"
 msgstr "Nenhum tipo de problema configurado"
 
 msgid "No machines match this filter."
-msgstr ""
+msgstr "Nenhuma máquina corresponde a este filtro."
 
 msgid "No maintenance scheduled for today"
 msgstr "Nenhuma manutenção programada para hoje"
@@ -1003,13 +1003,13 @@ msgid "No materials on this batch."
 msgstr "Nenhum material neste lote de produção."
 
 msgid "No open job"
-msgstr ""
+msgstr "Nenhuma ordem de produção aberta"
 
 msgid "No open jobs"
 msgstr "Nenhuma ordem de produção aberta"
 
 msgid "No open maintenance dispatches."
-msgstr ""
+msgstr "Nenhuma ordem de manutenção aberta."
 
 msgid "No open units to allocate"
 msgstr "Nenhuma unidade aberta para alocar"
@@ -1081,7 +1081,7 @@ msgid "No work centers exist"
 msgstr "Nenhum centro de trabalho encontrado"
 
 msgid "No work centers here"
-msgstr ""
+msgstr "Nenhum centro de trabalho aqui"
 
 msgid "None"
 msgstr "Nenhum"
@@ -1143,7 +1143,7 @@ msgid "Open Jobs"
 msgstr "Ordens de produção abertas"
 
 msgid "Open maintenance"
-msgstr ""
+msgstr "Manutenção aberta"
 
 msgid "Operations"
 msgstr "Operações"
@@ -1164,7 +1164,7 @@ msgid "or"
 msgstr "ou"
 
 msgid "Other"
-msgstr ""
+msgstr "Outros"
 
 msgid "Output lot"
 msgstr "Lote de saída"
@@ -1550,7 +1550,7 @@ msgid "Setup"
 msgstr "Setup"
 
 msgid "Shop floor"
-msgstr ""
+msgstr "Chão de fábrica"
 
 msgid "short"
 msgstr "curto"
@@ -1654,7 +1654,7 @@ msgid "Tag"
 msgstr "Etiqueta"
 
 msgid "Takes work center offline"
-msgstr ""
+msgstr "Coloca o centro de trabalho offline"
 
 msgid "The completed quantity for this operation is less than the required quantity of {targetQuantity}."
 msgstr "A quantidade concluída para esta operação é menor que a quantidade requerida de {targetQuantity}."
@@ -1769,7 +1769,7 @@ msgid "Unable to unlock"
 msgstr "Não é possível desbloquear"
 
 msgid "Unassigned"
-msgstr ""
+msgstr "Não atribuído"
 
 msgid "Unissued serial/batch materials"
 msgstr "Materiais de série/lote não emitidos"
@@ -1840,10 +1840,10 @@ msgid "View maintenance dispatch"
 msgstr "Visualizar ordem de manutenção"
 
 msgid "Waiting"
-msgstr ""
+msgstr "Aguardando"
 
 msgid "Waiting repair"
-msgstr ""
+msgstr "Aguardando reparo"
 
 msgid "We've sent you a magic link to sign in to your account."
 msgstr "Enviamos um link mágico para você entrar na sua conta."
@@ -1861,7 +1861,7 @@ msgid "Work Center"
 msgstr "Centro de Trabalho"
 
 msgid "Work center details"
-msgstr ""
+msgstr "Detalhes do centro de trabalho"
 
 msgid "Work Center Displays"
 msgstr "Exibições do Centro de Trabalho"
