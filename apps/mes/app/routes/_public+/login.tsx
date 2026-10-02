@@ -3,6 +3,7 @@ import {
   CarbonEdition,
   CONTROLLED_ENVIRONMENT,
   carbonClient,
+  DEV_BYPASS_EMAIL,
   error,
   getMESUrl,
   isAuthProviderEnabled,
@@ -164,7 +165,7 @@ export async function action({ request }: ActionFunctionArgs) {
 
   const user = await getUserByEmail(email);
 
-  const devBypassEmail = process.env.DEV_BYPASS_EMAIL;
+  const devBypassEmail = DEV_BYPASS_EMAIL;
   if (
     devBypassEmail &&
     email.toLowerCase() === devBypassEmail.toLowerCase() &&

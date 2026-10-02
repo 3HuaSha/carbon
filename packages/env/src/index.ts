@@ -488,6 +488,14 @@ export const ALLOW_DEV_BYPASS = parseAllowDevBypassFlag(
   })
 );
 
+// Email that skips the magic link when posted to /login (see login actions).
+// Must be read via getEnv (dynamic key) — a static `process.env.DEV_BYPASS_EMAIL`
+// access can be inlined away at Docker build time when the var is unset.
+export const DEV_BYPASS_EMAIL = getEnv("DEV_BYPASS_EMAIL", {
+  isRequired: false,
+  isSecret: true
+});
+
 // Turnstile guards login wherever BotID can't run (anything not on Vercel).
 // Both keys or neither: a site key alone would render a widget nobody checks.
 // A local stack always uses Cloudflare's always-pass test pair, so login works
