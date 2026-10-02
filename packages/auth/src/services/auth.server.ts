@@ -14,6 +14,7 @@ import type {
 import { createHash } from "crypto";
 import { redirect } from "react-router";
 import {
+  ALLOW_DEV_BYPASS,
   CarbonEdition,
   IS_LOCAL_DEV,
   REFRESH_ACCESS_TOKEN_THRESHOLD,
@@ -497,14 +498,14 @@ export function getMagicLinkErrorMessage(error: { code?: string }): string {
   }
 }
 
-// DEV_BYPASS_EMAIL signs a developer in with no magic link, so it is a local
-// stack's convenience and nothing else: refuse it anywhere the env says this
-// is a real deployment (production, preview, or self-hosted), whatever the
-// variable happens to be set to there.
+// DEV_BYPASS_EMAIL signs a developer in with no magic link. Allowed on the
+// local stack (IS_LOCAL_DEV) or when an operator explicitly opts in with
+// ALLOW_DEV_BYPASS=1 (Railway demo / staging only — never on a real prod
+// tenant). Refuse everywhere else, even if DEV_BYPASS_EMAIL happens to be set.
 export async function signInWithBypassEmail(
   email: string
 ): Promise<AuthSession | null> {
-  if (!IS_LOCAL_DEV) {
+  if (!IS_LOCAL_DEV && !ALLOW_DEV_BYPASS) {
     log.error("DEV_BYPASS_EMAIL sign-in refused outside local development", {
       actor: email
     });

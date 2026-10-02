@@ -1,5 +1,8 @@
 /// <reference types="node" />
 import { Edition, isBrowser, parseBoolean } from "@carbon/utils";
+import { parseAllowDevBypassFlag } from "./allow-dev-bypass";
+
+export { parseAllowDevBypassFlag } from "./allow-dev-bypass";
 
 declare global {
   interface Window {
@@ -473,6 +476,17 @@ export const IS_LOCAL_DEV =
   NODE_ENV !== "production" &&
   VERCEL_ENV !== "production" &&
   VERCEL_ENV !== "preview";
+
+// Explicit operator opt-in for magic-link-free sign-in via DEV_BYPASS_EMAIL on
+// a non-local deploy (Railway demo, staging, BYOC test). Never set this on a
+// real production tenant with customer data — anyone who knows the bypass
+// email can mint a session. "1" or "true" (case-insensitive).
+export const ALLOW_DEV_BYPASS = parseAllowDevBypassFlag(
+  getEnv("ALLOW_DEV_BYPASS", {
+    isRequired: false,
+    isSecret: false
+  })
+);
 
 // Turnstile guards login wherever BotID can't run (anything not on Vercel).
 // Both keys or neither: a site key alone would render a widget nobody checks.

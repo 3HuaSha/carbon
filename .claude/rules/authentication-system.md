@@ -59,6 +59,12 @@ out every Cloud user), while an unreachable Turnstile siteverify fails CLOSED (a
 chose Turnstile by setting its keys). The rate limit and lockout apply either way.
 Turnstile is verified in-app only; Supabase Auth captcha (Attack Protection) must stay OFF,
 because the magic-link call forwards no token to GoTrue.
+- **Dev / demo bypass.** When the posted email matches `DEV_BYPASS_EMAIL` and the
+  `user` row is active, `signInWithBypassEmail` mints a session via service-role
+  `generateLink` + `verifyOtp` (no email sent). Allowed only when `IS_LOCAL_DEV`
+  or `ALLOW_DEV_BYPASS=1`/`true` — the latter is the explicit opt-in for Railway
+  demo/staging deploys. Without that flag, a production `NODE_ENV` refuses the
+  bypass even if `DEV_BYPASS_EMAIL` is set.
 - Unknown user (non-Enterprise) → `sendVerificationCode`, redirect to `/verify` (email
   verification-code signup). Enterprise edition rejects unknown users.
 
