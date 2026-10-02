@@ -74,6 +74,10 @@ single-use `carbon-oauth-state` cookie in `@carbon/auth/oauth-state.server`), `A
 Vercel's own `VERCEL=1`. `BOT_PROTECTION` (`botid` | `turnstile`, unset = BotID for
 Cloud on Vercel, else Turnstile if keyed) picks the login bot check (see
 `authentication-system.md`).
+`DEV_BYPASS_EMAIL` (set by `crbn up` locally) skips the magic link when the
+posted email matches an active user; `signInWithBypassEmail` refuses unless
+`IS_LOCAL_DEV` **or** `ALLOW_DEV_BYPASS=1`/`true` (operator opt-in for
+Railway/demo/staging — never on a real production tenant).
 `SAML_ENABLED` / `SAML_PRIVATE_KEY` are NOT `@carbon/env` vars — they live in
 root `.env` and reach GoTrue via docker-compose substitution (`GOTRUE_SAML_*`).
 Both `crbn up` and `crbn reload` preload `.env.local` then `.env` into
