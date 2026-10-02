@@ -6217,6 +6217,10 @@ export async function setPeopleAbsenceRange(
  * Reactive replanning: notify that a scheduling INPUT changed (shift,
  * qualification, work center, location). Marks the company's active jobs
  * schedule-outdated immediately and schedules a debounced replan wave.
+ *
+ * Never throws into the caller — a lost schedule notify must not fail the
+ * business write that raised it (create/activate work center, shift edits,
+ * etc.). Same contract as `raiseMoment`.
  */
 export async function notifyScheduleInputsChanged(
   companyId: string,
@@ -6231,13 +6235,25 @@ export async function notifyScheduleInputsChanged(
   reason: string,
   entityId?: string
 ) {
-  const { trigger } = await import("@carbon/jobs");
-  await trigger("schedule-inputs-changed", {
-    companyId,
-    kind,
-    reason,
-    entityId
-  });
+  try {
+    const { trigger } = await import("@carbon/jobs");
+    await trigger("schedule-inputs-changed", {
+      companyId,
+      kind,
+      reason,
+      entityId
+    });
+  } catch (err) {
+    // Railway/demo often runs with INNGEST_DEV and no reachable Inngest
+    // server; cloud keys may also be absent. Log and continue.
+    logger.error("Failed to notify schedule inputs changed", {
+      companyId,
+      kind,
+      reason,
+      entityId,
+      err
+    });
+  }
 }
 
 // --- Job operation batching (spec: .ai/specs/2026-08-21-job-operation-batching.md) ---
