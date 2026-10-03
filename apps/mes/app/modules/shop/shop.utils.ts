@@ -1,10 +1,39 @@
 import type {
+  ShopCrewKind,
   ShopDispatchKind,
   ShopMachine,
   ShopMachineStatus,
   ShopOpenDispatch,
   ShopStatusFilter
 } from "./shop.types";
+
+/**
+ * Configurable `employeeType.name` aliases for the repair / mold crew boards.
+ * Match is case-insensitive; the type name matches if it equals an alias or
+ * contains one (so "机修班" matches "机修"). Bowen sets these names in ERP
+ * Users → Employee types, then assigns people to that type.
+ */
+export const SHOP_CREW_TYPE_ALIASES: Record<ShopCrewKind, readonly string[]> = {
+  repair: ["维修", "机修", "repair", "maintenance", "machine repair"],
+  mold: ["模房", "模具", "mold", "mould", "mold shop", "mould shop"]
+};
+
+function normalizeTypeName(name: string): string {
+  return name.trim().toLowerCase().replace(/\s+/g, " ");
+}
+
+/** True when an `employeeType.name` belongs on the given crew board. */
+export function matchesShopCrewEmployeeType(
+  employeeTypeName: string | null | undefined,
+  crew: ShopCrewKind
+): boolean {
+  if (!employeeTypeName?.trim()) return false;
+  const normalized = normalizeTypeName(employeeTypeName);
+  return SHOP_CREW_TYPE_ALIASES[crew].some((alias) => {
+    const needle = normalizeTypeName(alias);
+    return normalized === needle || normalized.includes(needle);
+  });
+}
 
 type DispatchSignals = Pick<
   ShopOpenDispatch,
@@ -229,9 +258,7 @@ export type FloorPlanCell =
 export function layoutShopMachinesByFloorPlan(
   machines: ShopMachine[]
 ): FloorPlanCell[] {
-  const byName = new Map(
-    machines.map((m) => [m.name.trim().toUpperCase(), m])
-  );
+  const byName = new Map(machines.map((m) => [m.name.trim().toUpperCase(), m]));
   const seen = new Set<string>();
   const cells: FloorPlanCell[] = [];
 

@@ -207,6 +207,10 @@ export const path = {
     shop,
     shopMachine: (workCenterId: string) =>
       generatePath(`${shop}/${workCenterId}`),
+    /** Mold-room crew board — assigned incomplete dispatches by 模房 type. */
+    shopMold: `${shop}/mold`,
+    /** Repair crew board — assigned incomplete dispatches by 机修/维修 type. */
+    shopRepair: `${shop}/repair`,
     startOperation: (id: string) => generatePath(`${x}/start/${id}`),
     suggestion: `${x}/suggestion`,
     switchCompany: (companyId: string) =>

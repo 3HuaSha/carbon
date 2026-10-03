@@ -64,6 +64,14 @@ msgstr "{0} में से {1} पूर्ण"
 msgid "{0} of {1} completed"
 msgstr "{0} में से {1} पूर्ण"
 
+#. placeholder {0}: member.tasks.length
+msgid "{0} open tasks"
+msgstr ""
+
+#. placeholder {0}: board.members.length
+msgid "{0} people · {busyCount} busy"
+msgstr ""
+
 #. placeholder {0}: rows.length
 msgid "{0} queued"
 msgstr "{0} कतार में"
@@ -210,6 +218,9 @@ msgstr "क्या आप वाकई इस पृष्ठ को छोड
 
 msgid "Assembly steps"
 msgstr "असेंबली चरण"
+
+msgid "Assign active employees to one of the matched employee types."
+msgstr ""
 
 msgid "Assign person"
 msgstr "व्यक्ति असाइन करें"
@@ -462,6 +473,12 @@ msgstr "अनियोजित रखरखाव की लागत, पि�
 msgid "Create {0}"
 msgstr "{0} बनाएं"
 
+msgid "Create an employee type named 模房 (or Mold) in ERP Users → Employee types, then assign people to it."
+msgstr ""
+
+msgid "Create an employee type named 维修 or 机修 (or Repair / Maintenance) in ERP Users → Employee types, then assign people to it."
+msgstr ""
+
 msgid "Create Issue"
 msgstr "समस्या बनाएं"
 
@@ -698,6 +715,9 @@ msgid "Failed to upload image"
 msgstr "इमेज अपलोड करने में विफल"
 
 msgid "Failed to upload media"
+msgstr ""
+
+msgid "Fault"
 msgstr ""
 
 msgid "Fault downtime"
@@ -991,6 +1011,9 @@ msgstr "मशीन अब रखरखाव के लिए बंद है
 msgid "Machine status"
 msgstr "मशीन स्थिति"
 
+msgid "Machines"
+msgstr ""
+
 msgid "Maintenance"
 msgstr "रखरखाव"
 
@@ -1035,6 +1058,9 @@ msgstr "मीट्रिक"
 
 msgid "Model"
 msgstr "मॉडल"
+
+msgid "Mold shop"
+msgstr ""
 
 msgid "More actions"
 msgstr "अधिक क्रियाएं"
@@ -1133,6 +1159,9 @@ msgstr "आज के लिए कोई रखरखाव निर्धा�
 msgid "No matches. Type to create one."
 msgstr "कोई मेल नहीं। एक बनाने के लिए टाइप करें।"
 
+msgid "No matching employee type"
+msgstr ""
+
 msgid "No materials"
 msgstr "कोई सामग्री नहीं"
 
@@ -1162,6 +1191,9 @@ msgstr "कोई विकल्प नहीं मिला।"
 
 msgid "No people found"
 msgstr "कोई व्यक्ति नहीं मिला"
+
+msgid "No people on this crew"
+msgstr ""
 
 msgid "No photos or videos yet"
 msgstr ""
@@ -1544,6 +1576,9 @@ msgstr "पार्ट निकालें"
 
 msgid "Reopen the subassembly and create a replacement unit"
 msgstr "सब-असेंबली को फिर से खोलें और एक रिप्लेसमेंट इकाई बनाएँ"
+
+msgid "Repair"
+msgstr ""
 
 msgid "Report downtime to put this machine into waiting repair."
 msgstr "डाउनटाइम रिपोर्ट करके इस मशीन को मरम्मत प्रतीक्षा में डालें।"

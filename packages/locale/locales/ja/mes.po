@@ -64,6 +64,14 @@ msgstr "{0} / {1} 完了"
 msgid "{0} of {1} completed"
 msgstr "{0} / {1} 完了済み"
 
+#. placeholder {0}: member.tasks.length
+msgid "{0} open tasks"
+msgstr ""
+
+#. placeholder {0}: board.members.length
+msgid "{0} people · {busyCount} busy"
+msgstr ""
+
 #. placeholder {0}: rows.length
 msgid "{0} queued"
 msgstr "{0}件がキュー待ちです"
@@ -210,6 +218,9 @@ msgstr "このページを離れてもよろしいですか？"
 
 msgid "Assembly steps"
 msgstr "組立ステップ"
+
+msgid "Assign active employees to one of the matched employee types."
+msgstr ""
 
 msgid "Assign person"
 msgstr "担当者を割り当て"
@@ -462,6 +473,12 @@ msgstr "過去{0}日間の未計画保全原価"
 msgid "Create {0}"
 msgstr "{0}を作成"
 
+msgid "Create an employee type named 模房 (or Mold) in ERP Users → Employee types, then assign people to it."
+msgstr ""
+
+msgid "Create an employee type named 维修 or 机修 (or Repair / Maintenance) in ERP Users → Employee types, then assign people to it."
+msgstr ""
+
 msgid "Create Issue"
 msgstr "問題を作成"
 
@@ -698,6 +715,9 @@ msgid "Failed to upload image"
 msgstr "画像のアップロードに失敗しました"
 
 msgid "Failed to upload media"
+msgstr ""
+
+msgid "Fault"
 msgstr ""
 
 msgid "Fault downtime"
@@ -991,6 +1011,9 @@ msgstr "機械が今保全中ですか？"
 msgid "Machine status"
 msgstr "機械ステータス"
 
+msgid "Machines"
+msgstr ""
+
 msgid "Maintenance"
 msgstr "保全"
 
@@ -1035,6 +1058,9 @@ msgstr "メートル法"
 
 msgid "Model"
 msgstr "モデル"
+
+msgid "Mold shop"
+msgstr ""
 
 msgid "More actions"
 msgstr "その他のアクション"
@@ -1133,6 +1159,9 @@ msgstr "本日の保全予定はありません。"
 msgid "No matches. Type to create one."
 msgstr "一致するものがありません。入力して新しく作成してください。"
 
+msgid "No matching employee type"
+msgstr ""
+
 msgid "No materials"
 msgstr "材料なし"
 
@@ -1162,6 +1191,9 @@ msgstr "オプションが見つかりません。"
 
 msgid "No people found"
 msgstr "該当する人がいません"
+
+msgid "No people on this crew"
+msgstr ""
 
 msgid "No photos or videos yet"
 msgstr ""
@@ -1544,6 +1576,9 @@ msgstr "部品を除去"
 
 msgid "Reopen the subassembly and create a replacement unit"
 msgstr "サブアセンブリを再オープンし、代替品を作成"
+
+msgid "Repair"
+msgstr ""
 
 msgid "Report downtime to put this machine into waiting repair."
 msgstr "ダウンタイムを報告して、この機械を修理待ちにします。"

@@ -64,6 +64,14 @@ msgstr "{0} adet / {1} adet tamamlandı"
 msgid "{0} of {1} completed"
 msgstr "{0} adet tamamlandı"
 
+#. placeholder {0}: member.tasks.length
+msgid "{0} open tasks"
+msgstr ""
+
+#. placeholder {0}: board.members.length
+msgid "{0} people · {busyCount} busy"
+msgstr ""
+
 #. placeholder {0}: rows.length
 msgid "{0} queued"
 msgstr "{0} kuyrukta"
@@ -210,6 +218,9 @@ msgstr "Bu sayfadan ayrılmak istediğinizden emin misiniz?"
 
 msgid "Assembly steps"
 msgstr "Montaj adımları"
+
+msgid "Assign active employees to one of the matched employee types."
+msgstr ""
 
 msgid "Assign person"
 msgstr "Kişi ata"
@@ -462,6 +473,12 @@ msgstr "Planlanmamış bakım maliyeti, son {0} gün"
 msgid "Create {0}"
 msgstr "{0} Oluştur"
 
+msgid "Create an employee type named 模房 (or Mold) in ERP Users → Employee types, then assign people to it."
+msgstr ""
+
+msgid "Create an employee type named 维修 or 机修 (or Repair / Maintenance) in ERP Users → Employee types, then assign people to it."
+msgstr ""
+
 msgid "Create Issue"
 msgstr "Sorun Oluştur"
 
@@ -698,6 +715,9 @@ msgid "Failed to upload image"
 msgstr "Görsel yüklenemedi"
 
 msgid "Failed to upload media"
+msgstr ""
+
+msgid "Fault"
 msgstr ""
 
 msgid "Fault downtime"
@@ -991,6 +1011,9 @@ msgstr "Makine şu anda bakım için kapalı mı?"
 msgid "Machine status"
 msgstr "Makine durumu"
 
+msgid "Machines"
+msgstr ""
+
 msgid "Maintenance"
 msgstr "Bakım"
 
@@ -1035,6 +1058,9 @@ msgstr "Metrik"
 
 msgid "Model"
 msgstr "Model"
+
+msgid "Mold shop"
+msgstr ""
 
 msgid "More actions"
 msgstr "Daha fazla işlem"
@@ -1133,6 +1159,9 @@ msgstr "Bugün planlanmış bakım yok"
 msgid "No matches. Type to create one."
 msgstr "Eşleşme yok. Bir tane oluşturmak için yazın."
 
+msgid "No matching employee type"
+msgstr ""
+
 msgid "No materials"
 msgstr "Malzeme yok"
 
@@ -1162,6 +1191,9 @@ msgstr "Seçenek bulunamadı."
 
 msgid "No people found"
 msgstr "Kişi bulunamadı"
+
+msgid "No people on this crew"
+msgstr ""
 
 msgid "No photos or videos yet"
 msgstr ""
@@ -1544,6 +1576,9 @@ msgstr "Parçayı kaldır"
 
 msgid "Reopen the subassembly and create a replacement unit"
 msgstr "Alt montajı yeniden aç ve bir yedek birim oluştur"
+
+msgid "Repair"
+msgstr ""
 
 msgid "Report downtime to put this machine into waiting repair."
 msgstr "Bu makineyi onarım beklemeye almak için duruş bildirin."

@@ -5,6 +5,7 @@ import { LuDownload, LuMonitor, LuShare } from "react-icons/lu";
 import type { ShopMachineStatus, ShopStatusFilter } from "../shop.types";
 import { shopStatusFilters } from "../shop.types";
 import { PwaInstallSheet } from "./PwaInstallSheet";
+import { ShopTabNav } from "./ShopTabNav";
 import { usePwaInstall } from "./usePwaInstall";
 
 const FILTER_LABELS: Record<ShopStatusFilter, () => ReactNode> = {
@@ -158,6 +159,10 @@ export function ShopHeader({
             <Count count={counts.inRepair} variant="red" />
           </div>
         </div>
+      </div>
+
+      <div className="mt-3">
+        <ShopTabNav active="machines" />
       </div>
 
       <div

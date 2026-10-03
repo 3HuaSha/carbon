@@ -24,6 +24,11 @@ export async function loader({ context, request, params }: LoaderFunctionArgs) {
 
   const workCenterId = params.workCenterId;
   if (!workCenterId) throw notFound("Work center not found");
+  // Static crew boards live at /shop/repair and /shop/mold — never treat those
+  // reserved segments as work-center ids if routing ever falls through here.
+  if (workCenterId === "repair" || workCenterId === "mold") {
+    throw notFound("Work center not found");
+  }
 
   const serviceRole = getCarbonServiceRole();
   const detail = await getShopMachineDetail(serviceRole, {

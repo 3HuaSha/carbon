@@ -64,6 +64,14 @@ msgstr "{0} из {1} завершено"
 msgid "{0} of {1} completed"
 msgstr "{0} из {1} завершено"
 
+#. placeholder {0}: member.tasks.length
+msgid "{0} open tasks"
+msgstr ""
+
+#. placeholder {0}: board.members.length
+msgid "{0} people · {busyCount} busy"
+msgstr ""
+
 #. placeholder {0}: rows.length
 msgid "{0} queued"
 msgstr "{0} в очереди"
@@ -210,6 +218,9 @@ msgstr "Вы уверены, что хотите покинуть эту стр�
 
 msgid "Assembly steps"
 msgstr "Шаги сборки"
+
+msgid "Assign active employees to one of the matched employee types."
+msgstr ""
 
 msgid "Assign person"
 msgstr "Назначить человека"
@@ -462,6 +473,12 @@ msgstr "Себестоимость внепланового техобслужи
 msgid "Create {0}"
 msgstr "Создать {0}"
 
+msgid "Create an employee type named 模房 (or Mold) in ERP Users → Employee types, then assign people to it."
+msgstr ""
+
+msgid "Create an employee type named 维修 or 机修 (or Repair / Maintenance) in ERP Users → Employee types, then assign people to it."
+msgstr ""
+
 msgid "Create Issue"
 msgstr "Создать проблему"
 
@@ -698,6 +715,9 @@ msgid "Failed to upload image"
 msgstr "Не удалось загрузить изображение"
 
 msgid "Failed to upload media"
+msgstr ""
+
+msgid "Fault"
 msgstr ""
 
 msgid "Fault downtime"
@@ -991,6 +1011,9 @@ msgstr "Станок на техобслуживание сейчас?"
 msgid "Machine status"
 msgstr "Статус машины"
 
+msgid "Machines"
+msgstr ""
+
 msgid "Maintenance"
 msgstr "Техобслуживание"
 
@@ -1035,6 +1058,9 @@ msgstr "Метрическая"
 
 msgid "Model"
 msgstr "Модель"
+
+msgid "Mold shop"
+msgstr ""
 
 msgid "More actions"
 msgstr "Дополнительные действия"
@@ -1133,6 +1159,9 @@ msgstr "На сегодня техобслуживание не запланир
 msgid "No matches. Type to create one."
 msgstr "Совпадений не найдено. Введите текст для создания."
 
+msgid "No matching employee type"
+msgstr ""
+
 msgid "No materials"
 msgstr "Нет материалов"
 
@@ -1162,6 +1191,9 @@ msgstr "Варианты не найдены."
 
 msgid "No people found"
 msgstr "Люди не найдены"
+
+msgid "No people on this crew"
+msgstr ""
 
 msgid "No photos or videos yet"
 msgstr ""
@@ -1544,6 +1576,9 @@ msgstr "Убрать деталь"
 
 msgid "Reopen the subassembly and create a replacement unit"
 msgstr "Открыть заново узел и создать единицу для замены"
+
+msgid "Repair"
+msgstr ""
 
 msgid "Report downtime to put this machine into waiting repair."
 msgstr "Сообщите о простое, чтобы перевести машину в ожидание ремонта."
