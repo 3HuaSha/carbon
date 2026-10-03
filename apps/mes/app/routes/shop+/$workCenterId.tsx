@@ -34,7 +34,9 @@ export async function loader({ context, request, params }: LoaderFunctionArgs) {
   });
 
   if (!detail) throw notFound("Work center not found");
-  return detail;
+  // companyId must ride the loader — `/shop` is a sibling of `/x`, so
+  // `useUser()` (which reads authenticated-root route data) cannot supply it.
+  return { ...detail, companyId };
 }
 
 export async function action({ request }: ActionFunctionArgs) {
@@ -118,6 +120,7 @@ export default function ShopMachineDetailRoute() {
   return (
     <MachineDetailPage
       machine={detail.machine}
+      companyId={detail.companyId}
       userId={detail.userId}
       people={detail.people}
       commentsByDispatchId={detail.commentsByDispatchId}
