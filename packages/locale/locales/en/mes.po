@@ -29,6 +29,10 @@ msgstr "{0} ago"
 msgid "{0} customers"
 msgstr "{0} customers"
 
+#. placeholder {0}: files.length
+msgid "{0} file(s) selected"
+msgstr "{0} file(s) selected"
+
 #. placeholder {0}: unplanned .map( (m) => (m.job as { jobId?: string | null } | null)?.jobId ) .filter(Boolean) .join(", ")
 msgid "{0} has no lot number. Set it on the batch or job in Carbon, then complete."
 msgstr "{0} has no lot number. Set it on the batch or job in Carbon, then complete."
@@ -77,6 +81,10 @@ msgstr "{0} runs in batch {1}"
 msgid "{0} Scrapped"
 msgstr "{0} Scrapped"
 
+#. placeholder {0}: file.name
+msgid "{0} uploaded"
+msgstr "{0} uploaded"
+
 msgid "{completed} of {quantity}"
 msgstr "{completed} of {quantity}"
 
@@ -121,6 +129,9 @@ msgstr "Acknowledge & finish"
 msgid "across {0} jobs"
 msgstr "across {0} jobs"
 
+msgid "Actions"
+msgstr "Actions"
+
 msgid "Active"
 msgstr "Active"
 
@@ -138,6 +149,9 @@ msgstr "Add a printer in the printing settings to print labels directly."
 
 msgid "Add Inventory"
 msgstr "Add Inventory"
+
+msgid "Add photo / video"
+msgstr "Add photo / video"
 
 msgid "Add Sample"
 msgstr "Add Sample"
@@ -199,6 +213,9 @@ msgstr "Assembly steps"
 
 msgid "Assign person"
 msgstr "Assign person"
+
+msgid "Assign person (optional)"
+msgstr "Assign person (optional)"
 
 msgid "Assign to me"
 msgstr "Assign to me"
@@ -275,6 +292,12 @@ msgstr "Blocking"
 msgid "Board view"
 msgstr "Board view"
 
+msgid "Break"
+msgstr "Break"
+
+msgid "Break / Away"
+msgstr "Break / Away"
+
 msgid "But don't worry. You can use the forgot password flow to request a new magic link."
 msgstr "But don't worry. You can use the forgot password flow to request a new magic link."
 
@@ -290,11 +313,17 @@ msgstr "Cancel"
 msgid "Cancelled"
 msgstr "Cancelled"
 
+msgid "Carbon client not available"
+msgstr "Carbon client not available"
+
 msgid "Carbon Logo"
 msgstr "Carbon Logo"
 
 msgid "Cards"
 msgstr "Cards"
+
+msgid "Change assignee"
+msgstr "Change assignee"
 
 msgid "Chat"
 msgstr "Chat"
@@ -373,6 +402,9 @@ msgstr "Column: {0}"
 msgid "Columns"
 msgstr "Columns"
 
+msgid "Coming in a later update"
+msgstr "Coming in a later update"
+
 msgid "Company"
 msgstr "Company"
 
@@ -396,6 +428,9 @@ msgstr "Completed"
 
 msgid "Completing"
 msgstr "Completing"
+
+msgid "Confirm"
+msgstr "Confirm"
 
 msgid "Connecting"
 msgstr "Connecting"
@@ -436,6 +471,12 @@ msgstr "Create Quality Issue"
 msgid "Create Rework"
 msgstr "Create Rework"
 
+msgid "Created ticket, but media upload failed"
+msgstr "Created ticket, but media upload failed"
+
+msgid "Current production"
+msgstr "Current production"
+
 msgid "Current work"
 msgstr "Current work"
 
@@ -468,6 +509,9 @@ msgstr "Delete Step"
 
 msgid "Delete Timecard (<0/>)"
 msgstr "Delete Timecard (<0/>)"
+
+msgid "Describe the fault. Notes required; photos/videos recommended."
+msgstr "Describe the fault. Notes required; photos/videos recommended."
 
 msgid "Describe the problem..."
 msgstr "Describe the problem..."
@@ -653,6 +697,12 @@ msgstr "Failed to upload file: {0}"
 msgid "Failed to upload image"
 msgstr "Failed to upload image"
 
+msgid "Failed to upload media"
+msgstr "Failed to upload media"
+
+msgid "Fault downtime"
+msgstr "Fault downtime"
+
 msgid "Feature"
 msgstr "Feature"
 
@@ -730,6 +780,9 @@ msgstr "How many?"
 msgid "I understand and want to complete without issuing"
 msgstr "I understand and want to complete without issuing"
 
+msgid "I'm back"
+msgstr "I'm back"
+
 msgid "I'm Still Working"
 msgstr "I'm Still Working"
 
@@ -787,6 +840,9 @@ msgstr "Instructions"
 
 msgid "Insufficient quantity"
 msgstr "Insufficient quantity"
+
+msgid "Invalid file name"
+msgstr "Invalid file name"
 
 msgid "Inventory adjustment completed"
 msgstr "Inventory adjustment completed"
@@ -940,6 +996,9 @@ msgstr "Maintenance"
 
 msgid "Maintenance Completed"
 msgstr "Maintenance Completed"
+
+msgid "Maintenance history"
+msgstr "Maintenance history"
 
 msgid "Maintenance overdue"
 msgstr "Maintenance overdue"
@@ -1104,11 +1163,17 @@ msgstr "No options found."
 msgid "No people found"
 msgstr "No people found"
 
+msgid "No photos or videos yet"
+msgstr "No photos or videos yet"
+
 msgid "No picking lists assigned"
 msgstr "No picking lists assigned"
 
 msgid "No printer configured"
 msgstr "No printer configured"
+
+msgid "No recent closed tickets"
+msgstr "No recent closed tickets"
 
 msgid "No recent operations"
 msgstr "No recent operations"
@@ -1169,6 +1234,9 @@ msgstr "None"
 
 msgid "Notes"
 msgstr "Notes"
+
+msgid "Notes and photos recommended (changeover / PM window)."
+msgstr "Notes and photos recommended (changeover / PM window)."
 
 msgid "Nothing running"
 msgstr "Nothing running"
@@ -1262,11 +1330,20 @@ msgstr "Operator Performed"
 msgid "Optional"
 msgstr "Optional"
 
+msgid "Optional note"
+msgstr "Optional note"
+
+msgid "Optional short note (lunch, bathroom, away)."
+msgstr "Optional short note (lunch, bathroom, away)."
+
 msgid "or"
 msgstr "or"
 
 msgid "Other"
 msgstr "Other"
+
+msgid "Other open tickets"
+msgstr "Other open tickets"
 
 msgid "Output lot"
 msgstr "Output lot"
@@ -1340,6 +1417,9 @@ msgstr "Pin Out"
 
 msgid "Planned"
 msgstr "Planned"
+
+msgid "Planned downtime"
+msgstr "Planned downtime"
 
 msgid "Please record all steps for this operation before closing."
 msgstr "Please record all steps for this operation before closing."
@@ -1479,6 +1559,9 @@ msgstr "Required"
 
 msgid "Result"
 msgstr "Result"
+
+msgid "Resume / Complete"
+msgstr "Resume / Complete"
 
 msgid "Retry Completion"
 msgstr "Retry Completion"
@@ -1886,6 +1969,9 @@ msgstr "To run"
 msgid "Today"
 msgstr "Today"
 
+msgid "Today's yield"
+msgstr "Today's yield"
+
 msgid "Toggle the sidebar"
 msgstr "Toggle the sidebar"
 
@@ -1983,6 +2069,9 @@ msgstr "Uploaded: {0}"
 msgid "Uploading {0}"
 msgstr "Uploading {0}"
 
+msgid "Uploading…"
+msgstr "Uploading…"
+
 msgid "Use a different account"
 msgstr "Use a different account"
 
@@ -2009,6 +2098,9 @@ msgstr "We've sent you a magic link to sign in to your account."
 
 msgid "WeChat / QQ / UC cannot install MES. Open this link in Chrome, then tap Install."
 msgstr "WeChat / QQ / UC cannot install MES. Open this link in Chrome, then tap Install."
+
+msgid "What happened? (required)"
+msgstr "What happened? (required)"
 
 msgid "What is {translatedTerm}?"
 msgstr "What is {translatedTerm}?"

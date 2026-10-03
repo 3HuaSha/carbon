@@ -11,6 +11,8 @@ const FILTER_LABELS: Record<ShopStatusFilter, () => ReactNode> = {
   all: () => <Trans>All</Trans>,
   running: () => <Trans>Running</Trans>,
   idle: () => <Trans>Idle</Trans>,
+  break: () => <Trans>Break</Trans>,
+  planned: () => <Trans>Planned</Trans>,
   waitingRepair: () => <Trans>Waiting</Trans>,
   inRepair: () => <Trans>In repair</Trans>
 };
@@ -50,7 +52,6 @@ export function ShopHeader({
   const [retryHint, setRetryHint] = useState(false);
 
   const onInstallClick = async () => {
-    // In-app WebView (WeChat etc.): never pretend Install failed — guide out.
     if (isInAppBrowser) {
       setAlreadyInstalledHelp(false);
       setInAppBrowserHelp(true);
@@ -58,7 +59,6 @@ export function ShopHeader({
       return;
     }
 
-    // iOS: Add to Home Screen is the primary action (no BIP ever).
     if (isIos) {
       setInAppBrowserHelp(false);
       setAlreadyInstalledHelp(false);
@@ -66,7 +66,6 @@ export function ShopHeader({
       return;
     }
 
-    // Known-installed browser tab: open sheet with open / reinstall steps.
     if (knownInstalled) {
       openInstalledApp();
       setInAppBrowserHelp(false);
@@ -90,7 +89,6 @@ export function ShopHeader({
       return;
     }
     if (result === "ready-retry") {
-      // BIP arrived after wait — gesture is gone; ask for a second tap.
       setRetryHint(true);
       return;
     }
@@ -154,6 +152,8 @@ export function ShopHeader({
           <div className="flex flex-wrap justify-end gap-1.5 text-xs tabular-nums">
             <Count count={counts.running} variant="green" />
             <Count count={counts.idle} variant="gray" />
+            <Count count={counts.break} variant="blue" />
+            <Count count={counts.planned} variant="yellow" />
             <Count count={counts.waitingRepair} variant="orange" />
             <Count count={counts.inRepair} variant="red" />
           </div>

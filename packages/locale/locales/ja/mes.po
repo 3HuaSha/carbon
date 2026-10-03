@@ -29,6 +29,10 @@ msgstr "{0}前"
 msgid "{0} customers"
 msgstr "{0}件の得意先"
 
+#. placeholder {0}: files.length
+msgid "{0} file(s) selected"
+msgstr ""
+
 #. placeholder {0}: unplanned .map( (m) => (m.job as { jobId?: string | null } | null)?.jobId ) .filter(Boolean) .join(", ")
 msgid "{0} has no lot number. Set it on the batch or job in Carbon, then complete."
 msgstr "{0}にはロット番号がありません。Carbonでバッチまたは製造指図に設定してから、完了してください。"
@@ -77,6 +81,10 @@ msgstr "{0}がバッチ{1}内で実行"
 msgid "{0} Scrapped"
 msgstr "{0} スクラップ"
 
+#. placeholder {0}: file.name
+msgid "{0} uploaded"
+msgstr ""
+
 msgid "{completed} of {quantity}"
 msgstr "{completed} / {quantity}"
 
@@ -121,6 +129,9 @@ msgstr "確認して完了"
 msgid "across {0} jobs"
 msgstr "{0}個の製造指図にわたって"
 
+msgid "Actions"
+msgstr ""
+
 msgid "Active"
 msgstr "アクティブ"
 
@@ -138,6 +149,9 @@ msgstr "印刷設定でプリンターを追加して、ラベルを直接印刷
 
 msgid "Add Inventory"
 msgstr "在庫追加"
+
+msgid "Add photo / video"
+msgstr ""
 
 msgid "Add Sample"
 msgstr "サンプルを追加"
@@ -199,6 +213,9 @@ msgstr "組立ステップ"
 
 msgid "Assign person"
 msgstr "担当者を割り当て"
+
+msgid "Assign person (optional)"
+msgstr ""
 
 msgid "Assign to me"
 msgstr "自分に割り当て"
@@ -275,6 +292,12 @@ msgstr "ブロック中"
 msgid "Board view"
 msgstr "ボード表示"
 
+msgid "Break"
+msgstr ""
+
+msgid "Break / Away"
+msgstr ""
+
 msgid "But don't worry. You can use the forgot password flow to request a new magic link."
 msgstr "ご心配なく。パスワード忘却フローを使用して新しいマジックリンクをリクエストできます。"
 
@@ -290,11 +313,17 @@ msgstr "キャンセル"
 msgid "Cancelled"
 msgstr "キャンセル済み"
 
+msgid "Carbon client not available"
+msgstr ""
+
 msgid "Carbon Logo"
 msgstr "Carbonロゴ"
 
 msgid "Cards"
 msgstr "カード"
+
+msgid "Change assignee"
+msgstr ""
 
 msgid "Chat"
 msgstr "チャット"
@@ -373,6 +402,9 @@ msgstr "カラム: {0}"
 msgid "Columns"
 msgstr "列"
 
+msgid "Coming in a later update"
+msgstr ""
+
 msgid "Company"
 msgstr "会社"
 
@@ -396,6 +428,9 @@ msgstr "完了済み"
 
 msgid "Completing"
 msgstr "完了処理中"
+
+msgid "Confirm"
+msgstr ""
 
 msgid "Connecting"
 msgstr "接続中"
@@ -436,6 +471,12 @@ msgstr "品質問題を作成"
 msgid "Create Rework"
 msgstr "手直しを作成"
 
+msgid "Created ticket, but media upload failed"
+msgstr ""
+
+msgid "Current production"
+msgstr ""
+
 msgid "Current work"
 msgstr "現在の作業"
 
@@ -468,6 +509,9 @@ msgstr "ステップを削除"
 
 msgid "Delete Timecard (<0/>)"
 msgstr "タイムカードを削除 (<0/>)"
+
+msgid "Describe the fault. Notes required; photos/videos recommended."
+msgstr ""
 
 msgid "Describe the problem..."
 msgstr "問題を説明してください..."
@@ -653,6 +697,12 @@ msgstr "ファイルのアップロードに失敗しました: {0}"
 msgid "Failed to upload image"
 msgstr "画像のアップロードに失敗しました"
 
+msgid "Failed to upload media"
+msgstr ""
+
+msgid "Fault downtime"
+msgstr ""
+
 msgid "Feature"
 msgstr "機能"
 
@@ -730,6 +780,9 @@ msgstr "いくつ?"
 msgid "I understand and want to complete without issuing"
 msgstr "理解した上で払出なしで完了します"
 
+msgid "I'm back"
+msgstr ""
+
 msgid "I'm Still Working"
 msgstr "まだ作業中です"
 
@@ -787,6 +840,9 @@ msgstr "作業手順"
 
 msgid "Insufficient quantity"
 msgstr "数量が不足しています"
+
+msgid "Invalid file name"
+msgstr ""
 
 msgid "Inventory adjustment completed"
 msgstr "在庫調整が完了しました"
@@ -940,6 +996,9 @@ msgstr "保全"
 
 msgid "Maintenance Completed"
 msgstr "保全完了"
+
+msgid "Maintenance history"
+msgstr ""
 
 msgid "Maintenance overdue"
 msgstr "保全が期限超過"
@@ -1104,11 +1163,17 @@ msgstr "オプションが見つかりません。"
 msgid "No people found"
 msgstr "該当する人がいません"
 
+msgid "No photos or videos yet"
+msgstr ""
+
 msgid "No picking lists assigned"
 msgstr "ピッキングリストが割り当てられていません"
 
 msgid "No printer configured"
 msgstr "プリンターが設定されていません"
+
+msgid "No recent closed tickets"
+msgstr ""
 
 msgid "No recent operations"
 msgstr "最近の工程はありません"
@@ -1169,6 +1234,9 @@ msgstr "なし"
 
 msgid "Notes"
 msgstr "メモ"
+
+msgid "Notes and photos recommended (changeover / PM window)."
+msgstr ""
 
 msgid "Nothing running"
 msgstr "稼働中の作業はありません"
@@ -1262,11 +1330,20 @@ msgstr "作業者が実施"
 msgid "Optional"
 msgstr "オプション"
 
+msgid "Optional note"
+msgstr ""
+
+msgid "Optional short note (lunch, bathroom, away)."
+msgstr ""
+
 msgid "or"
 msgstr "または"
 
 msgid "Other"
 msgstr "その他"
+
+msgid "Other open tickets"
+msgstr ""
 
 msgid "Output lot"
 msgstr "出力ロット"
@@ -1340,6 +1417,9 @@ msgstr "ピンアウト"
 
 msgid "Planned"
 msgstr "計画済み"
+
+msgid "Planned downtime"
+msgstr ""
 
 msgid "Please record all steps for this operation before closing."
 msgstr "クローズする前にこの工程のすべてのステップを記録してください。"
@@ -1479,6 +1559,9 @@ msgstr "必須"
 
 msgid "Result"
 msgstr "結果"
+
+msgid "Resume / Complete"
+msgstr ""
 
 msgid "Retry Completion"
 msgstr "完了を再試行"
@@ -1886,6 +1969,9 @@ msgstr "実行待ち"
 msgid "Today"
 msgstr "今日"
 
+msgid "Today's yield"
+msgstr ""
+
 msgid "Toggle the sidebar"
 msgstr "サイドバーの表示/非表示を切り替える"
 
@@ -1983,6 +2069,9 @@ msgstr "アップロード完了: {0}"
 msgid "Uploading {0}"
 msgstr "{0} をアップロード中"
 
+msgid "Uploading…"
+msgstr ""
+
 msgid "Use a different account"
 msgstr "別のアカウントを使用"
 
@@ -2009,6 +2098,9 @@ msgstr "アカウントにサインインするためのマジックリンクを
 
 msgid "WeChat / QQ / UC cannot install MES. Open this link in Chrome, then tap Install."
 msgstr "WeChat / QQ / UC cannot install MES. Open this link in Chrome, then tap Install."
+
+msgid "What happened? (required)"
+msgstr ""
 
 msgid "What is {translatedTerm}?"
 msgstr "{translatedTerm}とは何ですか?"

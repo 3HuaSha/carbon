@@ -29,6 +29,10 @@ msgstr "{0} назад"
 msgid "{0} customers"
 msgstr "{0} покупателей"
 
+#. placeholder {0}: files.length
+msgid "{0} file(s) selected"
+msgstr ""
+
 #. placeholder {0}: unplanned .map( (m) => (m.job as { jobId?: string | null } | null)?.jobId ) .filter(Boolean) .join(", ")
 msgid "{0} has no lot number. Set it on the batch or job in Carbon, then complete."
 msgstr "{0} не имеет номера партии. Установите его в серии или производственном заказе в Carbon, затем завершите."
@@ -77,6 +81,10 @@ msgstr "{0} запусков в серии {1}"
 msgid "{0} Scrapped"
 msgstr "{0} Списано"
 
+#. placeholder {0}: file.name
+msgid "{0} uploaded"
+msgstr ""
+
 msgid "{completed} of {quantity}"
 msgstr "{completed} из {quantity}"
 
@@ -121,6 +129,9 @@ msgstr "Подтвердить и завершить"
 msgid "across {0} jobs"
 msgstr "в {0} производственных заказах"
 
+msgid "Actions"
+msgstr ""
+
 msgid "Active"
 msgstr "Активные"
 
@@ -138,6 +149,9 @@ msgstr "Добавьте принтер в настройки печати, чт
 
 msgid "Add Inventory"
 msgstr "Добавить запас"
+
+msgid "Add photo / video"
+msgstr ""
 
 msgid "Add Sample"
 msgstr "Добавить образец"
@@ -199,6 +213,9 @@ msgstr "Шаги сборки"
 
 msgid "Assign person"
 msgstr "Назначить человека"
+
+msgid "Assign person (optional)"
+msgstr ""
 
 msgid "Assign to me"
 msgstr "Назначить мне"
@@ -275,6 +292,12 @@ msgstr "Блокирующие"
 msgid "Board view"
 msgstr "Вид доски"
 
+msgid "Break"
+msgstr ""
+
+msgid "Break / Away"
+msgstr ""
+
 msgid "But don't worry. You can use the forgot password flow to request a new magic link."
 msgstr "Но не волнуйтесь. Вы можете использовать функцию восстановления пароля, чтобы запросить новую волшебную ссылку."
 
@@ -290,11 +313,17 @@ msgstr "Отмена"
 msgid "Cancelled"
 msgstr "Отменено"
 
+msgid "Carbon client not available"
+msgstr ""
+
 msgid "Carbon Logo"
 msgstr "Логотип Carbon"
 
 msgid "Cards"
 msgstr "Карточки"
+
+msgid "Change assignee"
+msgstr ""
 
 msgid "Chat"
 msgstr "Чат"
@@ -373,6 +402,9 @@ msgstr "Столбец: {0}"
 msgid "Columns"
 msgstr "Столбцы"
 
+msgid "Coming in a later update"
+msgstr ""
+
 msgid "Company"
 msgstr "Организация"
 
@@ -396,6 +428,9 @@ msgstr "Завершено"
 
 msgid "Completing"
 msgstr "Завершение"
+
+msgid "Confirm"
+msgstr ""
 
 msgid "Connecting"
 msgstr "Подключение"
@@ -436,6 +471,12 @@ msgstr "Создать проблему качества"
 msgid "Create Rework"
 msgstr "Создать доработку"
 
+msgid "Created ticket, but media upload failed"
+msgstr ""
+
+msgid "Current production"
+msgstr ""
+
 msgid "Current work"
 msgstr "Текущая работа"
 
@@ -468,6 +509,9 @@ msgstr "Удалить шаг"
 
 msgid "Delete Timecard (<0/>)"
 msgstr "Удалить табель учета рабочего времени (<0/>)"
+
+msgid "Describe the fault. Notes required; photos/videos recommended."
+msgstr ""
 
 msgid "Describe the problem..."
 msgstr "Опишите проблему..."
@@ -653,6 +697,12 @@ msgstr "Не удалось загрузить файл: {0}"
 msgid "Failed to upload image"
 msgstr "Не удалось загрузить изображение"
 
+msgid "Failed to upload media"
+msgstr ""
+
+msgid "Fault downtime"
+msgstr ""
+
 msgid "Feature"
 msgstr "Функция"
 
@@ -730,6 +780,9 @@ msgstr "Сколько?"
 msgid "I understand and want to complete without issuing"
 msgstr "Я понимаю и хочу завершить без выдачи"
 
+msgid "I'm back"
+msgstr ""
+
 msgid "I'm Still Working"
 msgstr "Я ещё работаю"
 
@@ -787,6 +840,9 @@ msgstr "Инструкции"
 
 msgid "Insufficient quantity"
 msgstr "Недостаточное количество"
+
+msgid "Invalid file name"
+msgstr ""
 
 msgid "Inventory adjustment completed"
 msgstr "Корректировка запасов выполнена"
@@ -940,6 +996,9 @@ msgstr "Техобслуживание"
 
 msgid "Maintenance Completed"
 msgstr "Техобслуживание завершено"
+
+msgid "Maintenance history"
+msgstr ""
 
 msgid "Maintenance overdue"
 msgstr "Техобслуживание просрочено"
@@ -1104,11 +1163,17 @@ msgstr "Варианты не найдены."
 msgid "No people found"
 msgstr "Люди не найдены"
 
+msgid "No photos or videos yet"
+msgstr ""
+
 msgid "No picking lists assigned"
 msgstr "Листы отбора не назначены"
 
 msgid "No printer configured"
 msgstr "Принтер не настроен"
+
+msgid "No recent closed tickets"
+msgstr ""
 
 msgid "No recent operations"
 msgstr "Нет недавних операций"
@@ -1169,6 +1234,9 @@ msgstr "Нет"
 
 msgid "Notes"
 msgstr "Примечания"
+
+msgid "Notes and photos recommended (changeover / PM window)."
+msgstr ""
 
 msgid "Nothing running"
 msgstr "Ничего не работает"
@@ -1262,11 +1330,20 @@ msgstr "Выполнено оператором"
 msgid "Optional"
 msgstr "Опционально"
 
+msgid "Optional note"
+msgstr ""
+
+msgid "Optional short note (lunch, bathroom, away)."
+msgstr ""
+
 msgid "or"
 msgstr "или"
 
 msgid "Other"
 msgstr "Прочее"
+
+msgid "Other open tickets"
+msgstr ""
 
 msgid "Output lot"
 msgstr "Партия выпуска"
@@ -1340,6 +1417,9 @@ msgstr "Выход по PIN"
 
 msgid "Planned"
 msgstr "Плановое"
+
+msgid "Planned downtime"
+msgstr ""
 
 msgid "Please record all steps for this operation before closing."
 msgstr "Пожалуйста, зафиксируйте все шаги этой операции перед закрытием."
@@ -1479,6 +1559,9 @@ msgstr "Требуется"
 
 msgid "Result"
 msgstr "Результат"
+
+msgid "Resume / Complete"
+msgstr ""
 
 msgid "Retry Completion"
 msgstr "Повторить выполнение"
@@ -1886,6 +1969,9 @@ msgstr "Для запуска"
 msgid "Today"
 msgstr "Сегодня"
 
+msgid "Today's yield"
+msgstr ""
+
 msgid "Toggle the sidebar"
 msgstr "Открыть/закрыть боковую панель"
 
@@ -1983,6 +2069,9 @@ msgstr "Загружено: {0}"
 msgid "Uploading {0}"
 msgstr "Загрузка {0}"
 
+msgid "Uploading…"
+msgstr ""
+
 msgid "Use a different account"
 msgstr "Использовать другой аккаунт"
 
@@ -2009,6 +2098,9 @@ msgstr "Мы отправили вам ссылку для входа в ваш 
 
 msgid "WeChat / QQ / UC cannot install MES. Open this link in Chrome, then tap Install."
 msgstr "WeChat / QQ / UC cannot install MES. Open this link in Chrome, then tap Install."
+
+msgid "What happened? (required)"
+msgstr ""
 
 msgid "What is {translatedTerm}?"
 msgstr "Что такое {translatedTerm}?"

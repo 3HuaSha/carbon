@@ -4,10 +4,12 @@ import type { ShopMachine, ShopMachineStatus } from "../shop.types";
 
 const STATUS_COLOR: Record<
   ShopMachineStatus,
-  "green" | "gray" | "orange" | "red"
+  "green" | "gray" | "orange" | "red" | "blue" | "yellow"
 > = {
   running: "green",
   idle: "gray",
+  break: "blue",
+  planned: "yellow",
   waitingRepair: "orange",
   inRepair: "red"
 };
@@ -18,6 +20,10 @@ function StatusLabel({ status }: { status: ShopMachineStatus }) {
       return <Trans>Running</Trans>;
     case "idle":
       return <Trans>Idle</Trans>;
+    case "break":
+      return <Trans>Break / Away</Trans>;
+    case "planned":
+      return <Trans>Planned downtime</Trans>;
     case "waitingRepair":
       return <Trans>Waiting repair</Trans>;
     case "inRepair":
@@ -51,11 +57,15 @@ export function MachineTile({ machine, onSelect }: MachineTileProps) {
   const accent =
     machine.status === "running"
       ? "border-l-emerald-500"
-      : machine.status === "waitingRepair"
-        ? "border-l-orange-500"
-        : machine.status === "inRepair"
-          ? "border-l-red-500"
-          : "border-l-muted-foreground/40";
+      : machine.status === "break"
+        ? "border-l-sky-500"
+        : machine.status === "planned"
+          ? "border-l-amber-400"
+          : machine.status === "waitingRepair"
+            ? "border-l-orange-500"
+            : machine.status === "inRepair"
+              ? "border-l-red-500"
+              : "border-l-muted-foreground/40";
 
   return (
     <button
@@ -84,7 +94,9 @@ export function MachineTile({ machine, onSelect }: MachineTileProps) {
       </div>
 
       <div className="truncate text-xs tabular-nums text-muted-foreground">
-        {machine.currentJobReadableId ? (
+        {machine.openDispatches[0]?.note ? (
+          <span>{machine.openDispatches[0].note}</span>
+        ) : machine.currentJobReadableId ? (
           <span>{machine.currentJobReadableId}</span>
         ) : (
           <Trans>No open job</Trans>
