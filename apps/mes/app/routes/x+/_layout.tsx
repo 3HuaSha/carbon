@@ -4,15 +4,20 @@ import {
   CONTROLLED_ENVIRONMENT,
   getAppUrl,
   getCarbon,
+  getCarbonSingleAttempt,
   getCompanies,
   getUser,
   hasPermission,
   ITAR_RIDER_PDF_PATH,
   isAuthProviderEnabled,
   SESSION_HEARTBEAT_MS,
-  SESSION_IDLE_LOCK_MS
+  SESSION_IDLE_LOCK_MS,
+  shellUserReadGate
 } from "@carbon/auth";
-import { getCarbonServiceRole } from "@carbon/auth/client.server";
+import {
+  getCarbonServiceRole,
+  getCarbonServiceRoleSingleAttempt
+} from "@carbon/auth/client.server";
 import { setConsolePinIn } from "@carbon/auth/console-pin.server";
 import { userHasVerifiedTotpFactor } from "@carbon/auth/mfa.server";
 import {
@@ -21,6 +26,7 @@ import {
 } from "@carbon/auth/session.server";
 import { getUserClaims } from "@carbon/auth/users.server";
 import { isConsoleModeEnabledForCompany } from "@carbon/ee/console.server";
+import { getLogger } from "@carbon/logger";
 import type { PrintingSettings } from "@carbon/printing";
 import { getPrinterRoutes } from "@carbon/printing";
 import { PrintingProvider } from "@carbon/printing/ui";
@@ -78,6 +84,8 @@ import {
 import { getOpenClockEntry } from "~/services/people.service";
 import { ERP_URL, MES_URL, path } from "~/utils/path";
 
+const log = getLogger("mes", "auth");
+
 export const shouldRevalidate: ShouldRevalidateFunction = ({
   currentUrl,
   nextUrl,
@@ -127,12 +135,43 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
 
   // share a client between requests
   const client = getCarbon(accessToken);
+  const shellUserClient = getCarbonSingleAttempt(accessToken);
 
   // parallelize the requests
-  const [companies, user] = await Promise.all([
+  const [companies, userResult] = await Promise.all([
     getCompanies(client, userId),
-    getUser(client, userId)
+    getUser(shellUserClient, userId)
   ]);
+
+  // One attempt already ran out the 25s cap. A timeout is not a missing user.
+  if (shellUserReadGate(userResult) === "unavailable") {
+    log.warn("Shell user read timed out; keeping the session", {
+      userId,
+      companyId
+    });
+    throw new Response("User profile is temporarily unavailable", {
+      status: 503
+    });
+  }
+
+  // A non-timeout failure can still be a blip. Service role is fine after
+  // requireAuthSession. A missing or inactive row still logs out below.
+  let user = userResult;
+  if (user.error || !user.data) {
+    const fallback = await getUser(getCarbonServiceRoleSingleAttempt(), userId);
+    if (shellUserReadGate(fallback) === "unavailable") {
+      log.warn("Shell user read timed out; keeping the session", {
+        userId,
+        companyId
+      });
+      throw new Response("User profile is temporarily unavailable", {
+        status: 503
+      });
+    }
+    if (fallback.data) {
+      user = fallback;
+    }
+  }
 
   if (user.error || !user.data) {
     throw await destroyAuthSession(request);

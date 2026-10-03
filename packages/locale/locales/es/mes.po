@@ -90,6 +90,9 @@ msgstr "{fails} fallo(s) muestreado(s) registrado(s) y NO serán completado(s) �
 msgid "{recorded}/{0} jobs"
 msgstr "{recorded}/{0} órdenes de trabajo"
 
+msgid "{total} machines"
+msgstr "{total} máquinas"
+
 msgid "+{overflow} more"
 msgstr "+{overflow} más"
 
@@ -142,6 +145,9 @@ msgstr "Agregar muestra"
 msgid "Add Spare Part"
 msgstr "Agregar repuesto"
 
+msgid "Add work centers for this location in Resources, then open Shop again. Machines on the computer MES will show here."
+msgstr "Agregue centros de trabajo para esta ubicación en Recursos y, a continuación, abra Shop de nuevo. Las máquinas del MES en este equipo se mostrarán aquí."
+
 msgid "All"
 msgstr "Todos"
 
@@ -185,11 +191,21 @@ msgstr "¿Estás seguro de que quieres salir de esta página?"
 msgid "Assembly steps"
 msgstr "Pasos de montaje"
 
+msgid "Assign to me"
+msgstr "Asignarme"
+
 msgid "Assigned"
 msgstr "Asignado"
 
+#. placeholder {0}: dispatch.assigneeName
+msgid "Assigned to {0}"
+msgstr "Asignado a {0}"
+
 msgid "Assigned to Me"
 msgstr "Asignado a mí"
+
+msgid "Assigned to you"
+msgstr "Asignado a ti"
 
 msgid "Assignee"
 msgstr "Asignado"
@@ -386,6 +402,9 @@ msgstr "Crear retrabajo"
 
 msgid "Current work"
 msgstr "Trabajo actual"
+
+msgid "Current work order"
+msgstr "Orden de trabajo actual"
 
 msgid "Customer"
 msgstr "Cliente"
@@ -619,6 +638,9 @@ msgstr "Filtrar"
 msgid "Filter by location"
 msgstr "Filtrar por ubicación"
 
+msgid "Filter by status"
+msgstr "Filtrar por estado"
+
 msgid "Finish"
 msgstr "Finalizar"
 
@@ -672,6 +694,9 @@ msgstr "Sigo trabajando"
 msgid "Ideas, suggestions or problems?"
 msgstr "¿Ideas, sugerencias o problemas?"
 
+msgid "Idle"
+msgstr "Inactivo"
+
 msgid "Idle for"
 msgstr "Inactivo durante"
 
@@ -687,6 +712,9 @@ msgstr "en {0}"
 
 msgid "In Progress"
 msgstr "En curso"
+
+msgid "In repair"
+msgstr "En reparación"
 
 msgid "Inspect Item"
 msgstr "Inspeccionar artículo"
@@ -962,8 +990,14 @@ msgstr "Sin archivos"
 msgid "No Impact"
 msgstr "Sin impacto"
 
+msgid "No inspection"
+msgstr "Sin inspección"
+
 msgid "No issue types configured"
 msgstr "No hay tipos de problema configurados"
+
+msgid "No machines match this filter."
+msgstr "Ninguna máquina coincide con este filtro."
 
 msgid "No maintenance scheduled for today"
 msgstr "No hay mantenimiento programado para hoy"
@@ -977,8 +1011,14 @@ msgstr "Sin materiales"
 msgid "No materials on this batch."
 msgstr "Sin materiales en este lote de producción."
 
+msgid "No open job"
+msgstr "Sin orden de trabajo abierta"
+
 msgid "No open jobs"
 msgstr "Sin órdenes de trabajo abiertas"
+
+msgid "No open maintenance dispatches."
+msgstr "No hay órdenes de mantenimiento abiertas."
 
 msgid "No open units to allocate"
 msgstr "No hay unidades abiertas para asignar"
@@ -1049,6 +1089,9 @@ msgstr "No hay centros de trabajo bloqueados"
 msgid "No work centers exist"
 msgstr "No existen centros de trabajo"
 
+msgid "No work centers here"
+msgstr "No hay centros de trabajo aquí"
+
 msgid "None"
 msgstr "Ninguno"
 
@@ -1105,8 +1148,14 @@ msgstr "Abrir una orden de trabajo en este lote de producción"
 msgid "Open an NCR for MRB disposition"
 msgstr "Abrir un NCR para la disposición de MRB"
 
+msgid "Open inspection"
+msgstr "Abrir inspección"
+
 msgid "Open Jobs"
 msgstr "Órdenes de trabajo abiertas"
+
+msgid "Open maintenance"
+msgstr "Mantenimiento abierto"
 
 msgid "Operations"
 msgstr "Operaciones"
@@ -1125,6 +1174,9 @@ msgstr "Opcional"
 
 msgid "or"
 msgstr "o"
+
+msgid "Other"
+msgstr "Otros"
 
 msgid "Output lot"
 msgstr "Lote de salida"
@@ -1254,6 +1306,12 @@ msgstr "Progreso"
 #. placeholder {0}: formatDate(projectedCompletionDate)
 msgid "Proj. {0}"
 msgstr "Proy. {0}"
+
+msgid "QC / Inspection"
+msgstr "QC / Inspección"
+
+msgid "QC: {status}"
+msgstr "QC: {status}"
 
 msgid "Quality Issue"
 msgstr "Problema de Calidad"
@@ -1509,6 +1567,9 @@ msgstr "Se establece cuando el lote de producción fue planificado."
 msgid "Setup"
 msgstr "Preparación"
 
+msgid "Shop floor"
+msgstr "Planta"
+
 msgid "short"
 msgstr "corto"
 
@@ -1609,6 +1670,9 @@ msgstr "Cambiar operador"
 
 msgid "Tag"
 msgstr "Etiqueta"
+
+msgid "Takes work center offline"
+msgstr "Pone el centro de trabajo fuera de línea"
 
 msgid "The completed quantity for this operation is less than the required quantity of {targetQuantity}."
 msgstr "La cantidad completada para esta operación es menor que la cantidad requerida de {targetQuantity}."
@@ -1722,6 +1786,9 @@ msgstr "Escriba un mensaje..."
 msgid "Unable to unlock"
 msgstr "No se puede desbloquear"
 
+msgid "Unassigned"
+msgstr "Sin asignar"
+
 msgid "Unissued serial/batch materials"
 msgstr "Materiales de serie/lote no emitidos"
 
@@ -1790,6 +1857,12 @@ msgstr "Verificar"
 msgid "View maintenance dispatch"
 msgstr "Ver orden de mantenimiento"
 
+msgid "Waiting"
+msgstr "En espera"
+
+msgid "Waiting repair"
+msgstr "Pendiente de reparación"
+
 msgid "We've sent you a magic link to sign in to your account."
 msgstr "Le hemos enviado un enlace mágico para iniciar sesión en su cuenta."
 
@@ -1804,6 +1877,9 @@ msgstr "Producto en proceso"
 
 msgid "Work Center"
 msgstr "Centro de trabajo"
+
+msgid "Work center details"
+msgstr "Detalles del centro de trabajo"
 
 msgid "Work Center Displays"
 msgstr "Pantallas del Centro de Trabajo"

@@ -1,5 +1,6 @@
 export * from "./config/env";
 export * from "./lib/supabase";
+export * from "./services/shell-user";
 export * from "./services/users";
 export * from "./types";
 export * from "./utils/cookie";

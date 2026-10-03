@@ -90,6 +90,9 @@ msgstr "{fails} sampled failure(s) are recorded and will NOT be completed — re
 msgid "{recorded}/{0} jobs"
 msgstr "{recorded}/{0} jobs"
 
+msgid "{total} machines"
+msgstr "{total} machines"
+
 msgid "+{overflow} more"
 msgstr "+{overflow} more"
 
@@ -142,6 +145,9 @@ msgstr "Add Sample"
 msgid "Add Spare Part"
 msgstr "Add Spare Part"
 
+msgid "Add work centers for this location in Resources, then open Shop again. Machines on the computer MES will show here."
+msgstr "Add work centers for this location in Resources, then open Shop again. Machines on the computer MES will show here."
+
 msgid "All"
 msgstr "All"
 
@@ -185,11 +191,21 @@ msgstr "Are you sure you want to leave this page?"
 msgid "Assembly steps"
 msgstr "Assembly steps"
 
+msgid "Assign to me"
+msgstr "Assign to me"
+
 msgid "Assigned"
 msgstr "Assigned"
 
+#. placeholder {0}: dispatch.assigneeName
+msgid "Assigned to {0}"
+msgstr "Assigned to {0}"
+
 msgid "Assigned to Me"
 msgstr "Assigned to Me"
+
+msgid "Assigned to you"
+msgstr "Assigned to you"
 
 msgid "Assignee"
 msgstr "Assignee"
@@ -386,6 +402,9 @@ msgstr "Create Rework"
 
 msgid "Current work"
 msgstr "Current work"
+
+msgid "Current work order"
+msgstr "Current work order"
 
 msgid "Customer"
 msgstr "Customer"
@@ -619,6 +638,9 @@ msgstr "Filter"
 msgid "Filter by location"
 msgstr "Filter by location"
 
+msgid "Filter by status"
+msgstr "Filter by status"
+
 msgid "Finish"
 msgstr "Finish"
 
@@ -672,6 +694,9 @@ msgstr "I'm Still Working"
 msgid "Ideas, suggestions or problems?"
 msgstr "Ideas, suggestions or problems?"
 
+msgid "Idle"
+msgstr "Idle"
+
 msgid "Idle for"
 msgstr "Idle for"
 
@@ -687,6 +712,9 @@ msgstr "in {0}"
 
 msgid "In Progress"
 msgstr "In Progress"
+
+msgid "In repair"
+msgstr "In repair"
 
 msgid "Inspect Item"
 msgstr "Inspect Item"
@@ -962,8 +990,14 @@ msgstr "No files"
 msgid "No Impact"
 msgstr "No Impact"
 
+msgid "No inspection"
+msgstr "No inspection"
+
 msgid "No issue types configured"
 msgstr "No issue types configured"
+
+msgid "No machines match this filter."
+msgstr "No machines match this filter."
 
 msgid "No maintenance scheduled for today"
 msgstr "No maintenance scheduled for today"
@@ -977,8 +1011,14 @@ msgstr "No materials"
 msgid "No materials on this batch."
 msgstr "No materials on this batch."
 
+msgid "No open job"
+msgstr "No open job"
+
 msgid "No open jobs"
 msgstr "No open jobs"
+
+msgid "No open maintenance dispatches."
+msgstr "No open maintenance dispatches."
 
 msgid "No open units to allocate"
 msgstr "No open units to allocate"
@@ -1049,6 +1089,9 @@ msgstr "No work centers are blocked"
 msgid "No work centers exist"
 msgstr "No work centers exist"
 
+msgid "No work centers here"
+msgstr "No work centers here"
+
 msgid "None"
 msgstr "None"
 
@@ -1105,8 +1148,14 @@ msgstr "Open a job in this batch"
 msgid "Open an NCR for MRB disposition"
 msgstr "Open an NCR for MRB disposition"
 
+msgid "Open inspection"
+msgstr "Open inspection"
+
 msgid "Open Jobs"
 msgstr "Open Jobs"
+
+msgid "Open maintenance"
+msgstr "Open maintenance"
 
 msgid "Operations"
 msgstr "Operations"
@@ -1125,6 +1174,9 @@ msgstr "Optional"
 
 msgid "or"
 msgstr "or"
+
+msgid "Other"
+msgstr "Other"
 
 msgid "Output lot"
 msgstr "Output lot"
@@ -1254,6 +1306,12 @@ msgstr "Progress"
 #. placeholder {0}: formatDate(projectedCompletionDate)
 msgid "Proj. {0}"
 msgstr "Proj. {0}"
+
+msgid "QC / Inspection"
+msgstr "QC / Inspection"
+
+msgid "QC: {status}"
+msgstr "QC: {status}"
 
 msgid "Quality Issue"
 msgstr "Quality Issue"
@@ -1509,6 +1567,9 @@ msgstr "Set when the batch was planned."
 msgid "Setup"
 msgstr "Setup"
 
+msgid "Shop floor"
+msgstr "Shop floor"
+
 msgid "short"
 msgstr "short"
 
@@ -1609,6 +1670,9 @@ msgstr "Switch Operator"
 
 msgid "Tag"
 msgstr "Tag"
+
+msgid "Takes work center offline"
+msgstr "Takes work center offline"
 
 msgid "The completed quantity for this operation is less than the required quantity of {targetQuantity}."
 msgstr "The completed quantity for this operation is less than the required quantity of {targetQuantity}."
@@ -1722,6 +1786,9 @@ msgstr "Type a message..."
 msgid "Unable to unlock"
 msgstr "Unable to unlock"
 
+msgid "Unassigned"
+msgstr "Unassigned"
+
 msgid "Unissued serial/batch materials"
 msgstr "Unissued serial/batch materials"
 
@@ -1790,6 +1857,12 @@ msgstr "Verify"
 msgid "View maintenance dispatch"
 msgstr "View maintenance dispatch"
 
+msgid "Waiting"
+msgstr "Waiting"
+
+msgid "Waiting repair"
+msgstr "Waiting repair"
+
 msgid "We've sent you a magic link to sign in to your account."
 msgstr "We've sent you a magic link to sign in to your account."
 
@@ -1804,6 +1877,9 @@ msgstr "WIP"
 
 msgid "Work Center"
 msgstr "Work Center"
+
+msgid "Work center details"
+msgstr "Work center details"
 
 msgid "Work Center Displays"
 msgstr "Work Center Displays"

@@ -71,6 +71,7 @@ export function logAuthEvent(
     (fields.actor != null ? ` actor=${fields.actor}` : "") +
     (target != null ? ` target=${String(target)}` : "") +
     (fields.ip != null ? ` ip=${fields.ip}` : "") +
+    (fields.reason != null ? ` reason=${fields.reason}` : "") +
     (fields.outcome != null || failed ? ` outcome=${outcome}` : "");
   if (outcome === "failure") {
     log.warn(message, payload);

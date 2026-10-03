@@ -5,11 +5,16 @@ import {
   SUPABASE_JWT_SECRET,
   SUPABASE_SERVICE_ROLE_KEY
 } from "../../config/env";
-import { getCarbon, getCarbonClient } from "./client";
+import { fetchOnce, getCarbon, getCarbonClient } from "./client";
 
 export const getCarbonServiceRole = (): SupabaseClient<Database> => {
   return getCarbonClient(SUPABASE_SERVICE_ROLE_KEY!);
 };
+
+export const getCarbonServiceRoleSingleAttempt =
+  (): SupabaseClient<Database> => {
+    return getCarbonClient(SUPABASE_SERVICE_ROLE_KEY!, undefined, fetchOnce);
+  };
 
 export async function getUserScopedClient(
   userId: string,

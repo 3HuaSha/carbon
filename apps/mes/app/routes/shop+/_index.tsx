@@ -1,0 +1,144 @@
+import { assertIsPost, error, notFound, success } from "@carbon/auth";
+import { requirePermissions } from "@carbon/auth/auth.server";
+import { getCarbonServiceRole } from "@carbon/auth/client.server";
+import { flash } from "@carbon/auth/session.server";
+import { useCallback, useEffect, useState } from "react";
+import type { ActionFunctionArgs, LoaderFunctionArgs } from "react-router";
+import { data, useFetcher, useLoaderData, useRevalidator } from "react-router";
+import { userContext } from "~/context";
+import {
+  countShopStatuses,
+  filterShopMachines,
+  type ShopMachine,
+  type ShopMaintenanceAction,
+  type ShopStatusFilter,
+  shopMaintenanceActions
+} from "~/modules/shop";
+import { runShopMaintenanceAction } from "~/modules/shop/shop.action.server";
+import { getShopOverview } from "~/modules/shop/shop.server";
+import {
+  MachineDetailSheet,
+  MachineGrid,
+  ShopEmptyState,
+  ShopHeader
+} from "~/modules/shop/ui";
+
+/**
+ * Phone PWA machine overview. Lists every active work center at the session
+ * location with status derived from open production events and maintenance
+ * dispatches — the same signals as the desktop MES / wall displays.
+ *
+ * POST actions (Assign / Start / End / Complete) reuse the same maintenance
+ * service writes as `x+/maintenance-event`, then revalidate this page.
+ */
+export async function loader({ context, request }: LoaderFunctionArgs) {
+  const { companyId, userId } = await requirePermissions(request, {});
+  const locationId = context.get(userContext)?.locationId;
+  if (!locationId) throw notFound("Location not found");
+
+  const serviceRole = getCarbonServiceRole();
+  const overview = await getShopOverview(serviceRole, {
+    companyId,
+    locationId,
+    userId
+  });
+
+  return overview;
+}
+
+export async function action({ request }: ActionFunctionArgs) {
+  assertIsPost(request);
+  const { companyId, userId } = await requirePermissions(request, {});
+
+  const formData = await request.formData();
+  const rawAction = String(formData.get("action") ?? "");
+  const dispatchId = String(formData.get("dispatchId") ?? "");
+  const workCenterId = String(formData.get("workCenterId") ?? "") || null;
+
+  if (
+    !shopMaintenanceActions.includes(rawAction as ShopMaintenanceAction) ||
+    !dispatchId
+  ) {
+    return data(
+      { ok: false as const },
+      await flash(request, error(null, "Invalid maintenance action"))
+    );
+  }
+
+  const serviceRole = getCarbonServiceRole();
+  const result = await runShopMaintenanceAction(serviceRole, {
+    action: rawAction as ShopMaintenanceAction,
+    dispatchId,
+    workCenterId,
+    companyId,
+    userId
+  });
+
+  if (!result.ok) {
+    return data(
+      { ok: false as const },
+      await flash(request, error(null, result.message))
+    );
+  }
+
+  return data(
+    { ok: true as const, action: result.action },
+    await flash(
+      request,
+      result.warning ? error(null, result.message) : success(result.message)
+    )
+  );
+}
+
+export default function ShopIndexRoute() {
+  const { locationName, machines, userId } = useLoaderData<typeof loader>();
+  const [filter, setFilter] = useState<ShopStatusFilter>("all");
+  const [selectedId, setSelectedId] = useState<string | null>(null);
+  const fetcher = useFetcher<typeof action>();
+  const revalidator = useRevalidator();
+
+  const counts = countShopStatuses(machines);
+  const visible = filterShopMachines(machines, filter);
+  const selected =
+    selectedId === null
+      ? null
+      : (machines.find((m) => m.id === selectedId) ?? null);
+
+  const onSelect = useCallback((machine: ShopMachine) => {
+    setSelectedId(machine.id);
+  }, []);
+
+  useEffect(() => {
+    if (fetcher.state === "idle" && fetcher.data?.ok) {
+      revalidator.revalidate();
+    }
+  }, [fetcher.state, fetcher.data, revalidator]);
+
+  return (
+    <div className="mx-auto flex min-h-dvh w-full max-w-3xl flex-col">
+      <ShopHeader
+        locationName={locationName}
+        total={machines.length}
+        counts={counts}
+        filter={filter}
+        onFilterChange={setFilter}
+      />
+
+      {machines.length === 0 ? (
+        <ShopEmptyState />
+      ) : (
+        <MachineGrid machines={visible} onSelect={onSelect} />
+      )}
+
+      <MachineDetailSheet
+        machine={selected}
+        userId={userId}
+        open={selectedId !== null}
+        onOpenChange={(open) => {
+          if (!open) setSelectedId(null);
+        }}
+        fetcher={fetcher}
+      />
+    </div>
+  );
+}

@@ -10,6 +10,8 @@ const file = `/file`;
 // Wall-mounted work center displays live outside `/x` so they don't inherit the
 // operator chrome (sidebar, pin-in overlay, time-card warning).
 const display = "/display";
+// Phone PWA machine overview — same chrome-free shell as `/display`.
+const shop = "/shop";
 
 export const path = {
   to: {
@@ -202,6 +204,7 @@ export const path = {
     },
     scrapReasons: `${api}/scrap-reasons`,
     setupRequired: "/setup-required",
+    shop,
     startOperation: (id: string) => generatePath(`${x}/start/${id}`),
     suggestion: `${x}/suggestion`,
     switchCompany: (companyId: string) =>

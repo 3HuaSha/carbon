@@ -12,7 +12,10 @@ import {
 const PER_ATTEMPT_TIMEOUT_MS = 25_000;
 const MAX_RETRIES = 2;
 const BACKOFF_MS = [500, 1000];
-const RETRYABLE_STATUS = new Set([500, 502, 503, 504, 512, 408, 524]);
+// 429: PostgREST / GoTrue throttle under fan-out (e.g. /x Promise.all). Without
+// this, a transient rate limit on a GET becomes a hard error and can bounce an
+// authenticated session (x+/_layout → reason=user-error).
+const RETRYABLE_STATUS = new Set([429, 500, 502, 503, 504, 512, 408, 524]);
 
 const sleep = (ms: number) =>
   new Promise<void>((resolve) => setTimeout(resolve, ms));
@@ -53,6 +56,17 @@ const isReplayable = (input: RequestInfo | URL, init?: RequestInit) => {
   return method === "GET" || method === "HEAD";
 };
 
+// One attempt, same 25s cap as fetchWithRetry, no replay. The shell user read
+// uses this so a hung PostgREST GET cannot become three timeouts (~76s) and a
+// false logout.
+export const fetchOnce: typeof fetch = async (input, init) => {
+  const timeoutSignal = AbortSignal.timeout(PER_ATTEMPT_TIMEOUT_MS);
+  const signal = init?.signal
+    ? AbortSignal.any([init.signal, timeoutSignal])
+    : timeoutSignal;
+  return fetch(input, { ...init, signal });
+};
+
 export const fetchWithRetry: typeof fetch = async (input, init) => {
   if (isStorageUpload(input, init) || isEdgeFunctionInvoke(input)) {
     return fetch(input, init);
@@ -86,7 +100,8 @@ export const fetchWithRetry: typeof fetch = async (input, init) => {
 
 export const getCarbonClient = (
   supabaseKey: string,
-  accessToken?: string
+  accessToken?: string,
+  fetchImpl: typeof fetch = fetchWithRetry
 ): SupabaseClient<Database, "public"> => {
   const headers = accessToken
     ? { Authorization: `Bearer ${accessToken}` }
@@ -101,7 +116,7 @@ export const getCarbonClient = (
         persistSession: false
       },
       global: {
-        fetch: fetchWithRetry,
+        fetch: fetchImpl,
         ...(headers ? { headers } : {})
       }
     }
@@ -148,6 +163,12 @@ export const getCarbon = (
   accessToken?: string
 ): SupabaseClient<Database, "public"> => {
   return getCarbonClient(SUPABASE_ANON_KEY!, accessToken);
+};
+
+export const getCarbonSingleAttempt = (
+  accessToken?: string
+): SupabaseClient<Database, "public"> => {
+  return getCarbonClient(SUPABASE_ANON_KEY!, accessToken, fetchOnce);
 };
 
 export const carbonClient = getCarbon();
