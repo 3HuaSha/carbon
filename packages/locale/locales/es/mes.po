@@ -197,6 +197,9 @@ msgstr "¿Estás seguro de que quieres salir de esta página?"
 msgid "Assembly steps"
 msgstr "Pasos de montaje"
 
+msgid "Assign person"
+msgstr "Asignar persona"
+
 msgid "Assign to me"
 msgstr "Asignarme"
 
@@ -920,6 +923,9 @@ msgstr "Máquina"
 msgid "Machine down for maintenance now?"
 msgstr "¿Máquina fuera de servicio por mantenimiento ahora?"
 
+msgid "Machine status"
+msgstr "Estado de la máquina"
+
 msgid "Maintenance"
 msgstr "Mantenimiento"
 
@@ -1085,6 +1091,9 @@ msgstr "No se encontró ninguna opción."
 
 msgid "No options found."
 msgstr "No se encontraron opciones."
+
+msgid "No people found"
+msgstr "No se encontraron personas"
 
 msgid "No picking lists assigned"
 msgstr "Sin listas de picking asignadas"
@@ -1450,6 +1459,9 @@ msgstr "Quitar pieza"
 msgid "Reopen the subassembly and create a replacement unit"
 msgstr "Reabrir el subensamble y crear una unidad de reemplazo"
 
+msgid "Report downtime to put this machine into waiting repair."
+msgstr "Informe de parada para poner esta máquina en espera de reparación."
+
 msgid "Required"
 msgstr "Requerido"
 
@@ -1545,6 +1557,9 @@ msgstr "Buscar por ID de trabajo o artículo"
 
 msgid "Search operators..."
 msgstr "Buscar operadores..."
+
+msgid "Search people…"
+msgstr "Buscar personas…"
 
 msgid "Search..."
 msgstr "Buscar..."

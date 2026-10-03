@@ -28,8 +28,8 @@ import {
  * location with status derived from open production events and maintenance
  * dispatches — the same signals as the desktop MES / wall displays.
  *
- * POST actions (Assign / Start / End / Complete) reuse the same maintenance
- * service writes as `x+/maintenance-event`, then revalidate this page.
+ * POST actions (ReportDowntime / Assign / Start / End / Complete) reuse the
+ * same maintenance service writes as desktop, then revalidate this page.
  */
 export async function loader({ context, request }: LoaderFunctionArgs) {
   const { companyId, userId } = await requirePermissions(request, {});
@@ -52,16 +52,28 @@ export async function action({ request }: ActionFunctionArgs) {
 
   const formData = await request.formData();
   const rawAction = String(formData.get("action") ?? "");
-  const dispatchId = String(formData.get("dispatchId") ?? "");
+  const dispatchId = String(formData.get("dispatchId") ?? "") || null;
   const workCenterId = String(formData.get("workCenterId") ?? "") || null;
+  const assigneeId = String(formData.get("assigneeId") ?? "") || null;
 
-  if (
-    !shopMaintenanceActions.includes(rawAction as ShopMaintenanceAction) ||
-    !dispatchId
-  ) {
+  if (!shopMaintenanceActions.includes(rawAction as ShopMaintenanceAction)) {
     return data(
       { ok: false as const },
       await flash(request, error(null, "Invalid maintenance action"))
+    );
+  }
+
+  if (rawAction !== "ReportDowntime" && !dispatchId) {
+    return data(
+      { ok: false as const },
+      await flash(request, error(null, "Invalid maintenance action"))
+    );
+  }
+
+  if (rawAction === "ReportDowntime" && !workCenterId) {
+    return data(
+      { ok: false as const },
+      await flash(request, error(null, "Work center is required"))
     );
   }
 
@@ -70,6 +82,7 @@ export async function action({ request }: ActionFunctionArgs) {
     action: rawAction as ShopMaintenanceAction,
     dispatchId,
     workCenterId,
+    assigneeId,
     companyId,
     userId
   });
@@ -91,7 +104,8 @@ export async function action({ request }: ActionFunctionArgs) {
 }
 
 export default function ShopIndexRoute() {
-  const { locationName, machines, userId } = useLoaderData<typeof loader>();
+  const { locationName, machines, userId, people } =
+    useLoaderData<typeof loader>();
   const [filter, setFilter] = useState<ShopStatusFilter>("all");
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const fetcher = useFetcher<typeof action>();
@@ -133,6 +147,7 @@ export default function ShopIndexRoute() {
       <MachineDetailSheet
         machine={selected}
         userId={userId}
+        people={people}
         open={selectedId !== null}
         onOpenChange={(open) => {
           if (!open) setSelectedId(null);

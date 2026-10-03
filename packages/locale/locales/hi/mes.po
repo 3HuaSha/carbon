@@ -197,6 +197,9 @@ msgstr "क्या आप वाकई इस पृष्ठ को छोड
 msgid "Assembly steps"
 msgstr "असेंबली चरण"
 
+msgid "Assign person"
+msgstr "व्यक्ति असाइन करें"
+
 msgid "Assign to me"
 msgstr "मुझे असाइन करें"
 
@@ -920,6 +923,9 @@ msgstr "मशीन"
 msgid "Machine down for maintenance now?"
 msgstr "मशीन अब रखरखाव के लिए बंद है?"
 
+msgid "Machine status"
+msgstr "मशीन स्थिति"
+
 msgid "Maintenance"
 msgstr "रखरखाव"
 
@@ -1085,6 +1091,9 @@ msgstr "कोई विकल्प नहीं मिला।"
 
 msgid "No options found."
 msgstr "कोई विकल्प नहीं मिला।"
+
+msgid "No people found"
+msgstr "कोई व्यक्ति नहीं मिला"
 
 msgid "No picking lists assigned"
 msgstr "कोई पिकिंग सूची असाइन नहीं की गई"
@@ -1450,6 +1459,9 @@ msgstr "पार्ट निकालें"
 msgid "Reopen the subassembly and create a replacement unit"
 msgstr "सब-असेंबली को फिर से खोलें और एक रिप्लेसमेंट इकाई बनाएँ"
 
+msgid "Report downtime to put this machine into waiting repair."
+msgstr "डाउनटाइम रिपोर्ट करके इस मशीन को मरम्मत प्रतीक्षा में डालें।"
+
 msgid "Required"
 msgstr "आवश्यक"
 
@@ -1545,6 +1557,9 @@ msgstr "जॉब या आइटम आईडी से खोजें"
 
 msgid "Search operators..."
 msgstr "ऑपरेटर खोजें..."
+
+msgid "Search people…"
+msgstr "लोग खोजें…"
 
 msgid "Search..."
 msgstr "खोजें..."

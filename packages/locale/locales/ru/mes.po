@@ -197,6 +197,9 @@ msgstr "Вы уверены, что хотите покинуть эту стр�
 msgid "Assembly steps"
 msgstr "Шаги сборки"
 
+msgid "Assign person"
+msgstr "Назначить человека"
+
 msgid "Assign to me"
 msgstr "Назначить мне"
 
@@ -920,6 +923,9 @@ msgstr "Станок"
 msgid "Machine down for maintenance now?"
 msgstr "Станок на техобслуживание сейчас?"
 
+msgid "Machine status"
+msgstr "Статус машины"
+
 msgid "Maintenance"
 msgstr "Техобслуживание"
 
@@ -1085,6 +1091,9 @@ msgstr "Опция не найдена."
 
 msgid "No options found."
 msgstr "Варианты не найдены."
+
+msgid "No people found"
+msgstr "Люди не найдены"
 
 msgid "No picking lists assigned"
 msgstr "Листы отбора не назначены"
@@ -1450,6 +1459,9 @@ msgstr "Убрать деталь"
 msgid "Reopen the subassembly and create a replacement unit"
 msgstr "Открыть заново узел и создать единицу для замены"
 
+msgid "Report downtime to put this machine into waiting repair."
+msgstr "Сообщите о простое, чтобы перевести машину в ожидание ремонта."
+
 msgid "Required"
 msgstr "Требуется"
 
@@ -1545,6 +1557,9 @@ msgstr "Поиск по номеру работы или товара"
 
 msgid "Search operators..."
 msgstr "Поиск операторов..."
+
+msgid "Search people…"
+msgstr "Поиск людей…"
 
 msgid "Search..."
 msgstr "Поиск..."

@@ -197,6 +197,9 @@ msgstr "Are you sure you want to leave this page?"
 msgid "Assembly steps"
 msgstr "Assembly steps"
 
+msgid "Assign person"
+msgstr "Assign person"
+
 msgid "Assign to me"
 msgstr "Assign to me"
 
@@ -920,6 +923,9 @@ msgstr "Machine"
 msgid "Machine down for maintenance now?"
 msgstr "Machine down for maintenance now?"
 
+msgid "Machine status"
+msgstr "Machine status"
+
 msgid "Maintenance"
 msgstr "Maintenance"
 
@@ -1085,6 +1091,9 @@ msgstr "No option found."
 
 msgid "No options found."
 msgstr "No options found."
+
+msgid "No people found"
+msgstr "No people found"
 
 msgid "No picking lists assigned"
 msgstr "No picking lists assigned"
@@ -1450,6 +1459,9 @@ msgstr "Remove part"
 msgid "Reopen the subassembly and create a replacement unit"
 msgstr "Reopen the subassembly and create a replacement unit"
 
+msgid "Report downtime to put this machine into waiting repair."
+msgstr "Report downtime to put this machine into waiting repair."
+
 msgid "Required"
 msgstr "Required"
 
@@ -1545,6 +1557,9 @@ msgstr "Search by job or item ID"
 
 msgid "Search operators..."
 msgstr "Search operators..."
+
+msgid "Search people…"
+msgstr "Search people…"
 
 msgid "Search..."
 msgstr "Search..."

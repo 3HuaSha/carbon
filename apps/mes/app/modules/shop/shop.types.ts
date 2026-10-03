@@ -56,14 +56,26 @@ export type ShopMachine = {
   openDispatches: ShopOpenDispatch[];
 };
 
+/** Employee row for the `/shop` assign-person picker. */
+export type ShopPerson = {
+  id: string;
+  name: string;
+  avatarUrl: string | null;
+  locationId: string | null;
+};
+
 export type ShopOverview = {
   locationId: string;
   locationName: string | null;
   userId: string;
   machines: ShopMachine[];
+  /** Active employees in the company (location peers sorted first in the UI). */
+  people: ShopPerson[];
 };
 
+/** Mutations from the `/shop` BottomSheet. ReportDowntime creates a dispatch. */
 export const shopMaintenanceActions = [
+  "ReportDowntime",
   "Assign",
   "Start",
   "End",

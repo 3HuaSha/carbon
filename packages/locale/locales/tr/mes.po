@@ -197,6 +197,9 @@ msgstr "Bu sayfadan ayrılmak istediğinizden emin misiniz?"
 msgid "Assembly steps"
 msgstr "Montaj adımları"
 
+msgid "Assign person"
+msgstr "Kişi ata"
+
 msgid "Assign to me"
 msgstr "Bana ata"
 
@@ -920,6 +923,9 @@ msgstr "Makine"
 msgid "Machine down for maintenance now?"
 msgstr "Makine şu anda bakım için kapalı mı?"
 
+msgid "Machine status"
+msgstr "Makine durumu"
+
 msgid "Maintenance"
 msgstr "Bakım"
 
@@ -1085,6 +1091,9 @@ msgstr "Hiç seçenek bulunamadı."
 
 msgid "No options found."
 msgstr "Seçenek bulunamadı."
+
+msgid "No people found"
+msgstr "Kişi bulunamadı"
 
 msgid "No picking lists assigned"
 msgstr "Atanmış toplama listesi yok"
@@ -1450,6 +1459,9 @@ msgstr "Parçayı kaldır"
 msgid "Reopen the subassembly and create a replacement unit"
 msgstr "Alt montajı yeniden aç ve bir yedek birim oluştur"
 
+msgid "Report downtime to put this machine into waiting repair."
+msgstr "Bu makineyi onarım beklemeye almak için duruş bildirin."
+
 msgid "Required"
 msgstr "Gerekli"
 
@@ -1545,6 +1557,9 @@ msgstr "İş veya ürün kimliği ile ara"
 
 msgid "Search operators..."
 msgstr "Operatörleri ara..."
+
+msgid "Search people…"
+msgstr "Kişi ara…"
 
 msgid "Search..."
 msgstr "Ara..."

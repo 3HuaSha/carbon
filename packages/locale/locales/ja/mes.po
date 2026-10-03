@@ -197,6 +197,9 @@ msgstr "このページを離れてもよろしいですか？"
 msgid "Assembly steps"
 msgstr "組立ステップ"
 
+msgid "Assign person"
+msgstr "担当者を割り当て"
+
 msgid "Assign to me"
 msgstr "自分に割り当て"
 
@@ -920,6 +923,9 @@ msgstr "機械"
 msgid "Machine down for maintenance now?"
 msgstr "機械が今保全中ですか？"
 
+msgid "Machine status"
+msgstr "機械ステータス"
+
 msgid "Maintenance"
 msgstr "保全"
 
@@ -1085,6 +1091,9 @@ msgstr "オプションが見つかりません。"
 
 msgid "No options found."
 msgstr "オプションが見つかりません。"
+
+msgid "No people found"
+msgstr "該当する人がいません"
 
 msgid "No picking lists assigned"
 msgstr "ピッキングリストが割り当てられていません"
@@ -1450,6 +1459,9 @@ msgstr "部品を除去"
 msgid "Reopen the subassembly and create a replacement unit"
 msgstr "サブアセンブリを再オープンし、代替品を作成"
 
+msgid "Report downtime to put this machine into waiting repair."
+msgstr "ダウンタイムを報告して、この機械を修理待ちにします。"
+
 msgid "Required"
 msgstr "必須"
 
@@ -1545,6 +1557,9 @@ msgstr "ジョブまたはアイテムIDで検索"
 
 msgid "Search operators..."
 msgstr "作業者を検索..."
+
+msgid "Search people…"
+msgstr "担当者を検索…"
 
 msgid "Search..."
 msgstr "検索..."

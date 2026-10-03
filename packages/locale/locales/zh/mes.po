@@ -197,6 +197,9 @@ msgstr "您确定要离开此页面吗？"
 msgid "Assembly steps"
 msgstr "装配步骤"
 
+msgid "Assign person"
+msgstr "分配人员"
+
 msgid "Assign to me"
 msgstr "分配给我"
 
@@ -920,6 +923,9 @@ msgstr "机器"
 msgid "Machine down for maintenance now?"
 msgstr "机器现在正在维护吗？"
 
+msgid "Machine status"
+msgstr "机器状态"
+
 msgid "Maintenance"
 msgstr "维护"
 
@@ -1085,6 +1091,9 @@ msgstr "未找到选项。"
 
 msgid "No options found."
 msgstr "未找到选项。"
+
+msgid "No people found"
+msgstr "未找到人员"
 
 msgid "No picking lists assigned"
 msgstr "没有分配的拣货单"
@@ -1450,6 +1459,9 @@ msgstr "移除零件"
 msgid "Reopen the subassembly and create a replacement unit"
 msgstr "重新打开子装配件并创建替代件"
 
+msgid "Report downtime to put this machine into waiting repair."
+msgstr "上报停机可将此机器设为待维修。"
+
 msgid "Required"
 msgstr "必填"
 
@@ -1545,6 +1557,9 @@ msgstr "按工作或项目ID搜索"
 
 msgid "Search operators..."
 msgstr "搜索操作员..."
+
+msgid "Search people…"
+msgstr "搜索人员…"
 
 msgid "Search..."
 msgstr "搜索..."
