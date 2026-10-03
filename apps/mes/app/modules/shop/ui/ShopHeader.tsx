@@ -1,7 +1,7 @@
 import { Count, cn, IconButton } from "@carbon/react";
 import { Trans, useLingui } from "@lingui/react/macro";
 import { type ReactNode, useState } from "react";
-import { LuDownload } from "react-icons/lu";
+import { LuDownload, LuMonitor } from "react-icons/lu";
 import type { ShopMachineStatus, ShopStatusFilter } from "../shop.types";
 import { shopStatusFilters } from "../shop.types";
 import { PwaInstallSheet } from "./PwaInstallSheet";
@@ -31,13 +31,30 @@ export function ShopHeader({
   onFilterChange
 }: ShopHeaderProps) {
   const { t } = useLingui();
-  const { installed, requestInstall, isIos, preparing } = usePwaInstall();
+  const {
+    installed,
+    knownInstalled,
+    requestInstall,
+    openInstalledApp,
+    isIos,
+    preparing
+  } = usePwaInstall();
   const [helpOpen, setHelpOpen] = useState(false);
   const [alreadyInstalledHelp, setAlreadyInstalledHelp] = useState(false);
 
   const onInstallClick = async () => {
+    // Known-installed browser tab: open sheet with Open in app / pin steps.
+    // Pages cannot programmatically trigger Chrome's omnibox Open in app.
+    if (knownInstalled) {
+      openInstalledApp();
+      setAlreadyInstalledHelp(true);
+      setHelpOpen(true);
+      return;
+    }
+
     const result = await requestInstall();
     if (result === "already-installed") {
+      openInstalledApp();
       setAlreadyInstalledHelp(true);
       setHelpOpen(true);
       return;
@@ -65,14 +82,18 @@ export function ShopHeader({
               aria-label={
                 preparing
                   ? t`Preparing install…`
-                  : t`Install / Add to Home Screen`
+                  : knownInstalled
+                    ? t`Open app — Already installed`
+                    : t`Install / Add to Home Screen`
               }
               title={
                 preparing
                   ? t`Preparing install…`
-                  : t`Install / Add to Home Screen`
+                  : knownInstalled
+                    ? t`Open app — Already installed`
+                    : t`Install / Add to Home Screen`
               }
-              icon={<LuDownload />}
+              icon={knownInstalled ? <LuMonitor /> : <LuDownload />}
               variant="secondary"
               size="md"
               isDisabled={preparing}

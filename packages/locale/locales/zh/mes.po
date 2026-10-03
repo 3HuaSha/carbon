@@ -176,8 +176,8 @@ msgstr "分配不合格单位"
 msgid "Allocate units"
 msgstr "分配单位"
 
-msgid "App already installed"
-msgstr "应用已安装"
+msgid "Already installed"
+msgstr "已安装"
 
 msgid "Are you sure you want to delete this step?"
 msgstr "确定要删除此步骤吗？"
@@ -293,23 +293,14 @@ msgstr "卡片"
 msgid "Chat"
 msgstr "聊天"
 
-msgid "Check ⋮ — if Install app is missing or greyed out, the app is already installed: open chrome://apps or uninstall from ⋮."
-msgstr "检查 ⋮ — 如果“安装应用”缺失或呈灰色，说明应用已安装：打开 chrome://apps，或通过 ⋮ 卸载。"
-
 msgid "Check your email"
 msgstr "请查收邮件"
 
 msgid "Choose a job"
 msgstr "选择工单"
 
-msgid "Chrome did not offer a one-tap install. If you already installed this site, Install app is unavailable until you uninstall or clear site data."
-msgstr "Chrome 未提供一键安装。如果您已安装此网站，在卸载或清除网站数据之前，“安装应用”将不可用。"
-
-msgid "Chrome may fire beforeinstallprompt only once per engagement window. After dismiss or install, reload or clear site data before retrying."
-msgstr "Chrome 可能在每个互动窗口内仅触发一次 beforeinstallprompt。拒绝或安装后，请重新加载或清除网站数据再试。"
-
-msgid "Chrome only fires the install prompt when the site is not already installed and installability criteria are met."
-msgstr "仅当网站尚未安装且满足可安装条件时，Chrome 才会显示安装提示。"
+msgid "Chrome did not offer a one-tap install yet. Use the menu below — or if the address bar shows Open in app, the PWA is already installed."
+msgstr "Chrome 尚未提供一键安装提示。请使用下方菜单 — 或者如果地址栏显示“在应用中打开”，则表示 PWA 已安装。"
 
 msgid "Chrome, Firefox, and Edge on iOS cannot native-install this app."
 msgstr "iOS 上的 Chrome、Firefox 和 Edge 无法原生安装此应用。"
@@ -462,9 +453,6 @@ msgstr "描述需要返工的内容..."
 
 msgid "Description"
 msgstr "描述"
-
-msgid "Desktop Chrome will not show Install again while this site is already an installed app. Open the app from chrome://apps, or uninstall it to reinstall."
-msgstr "只要此网站已作为应用安装，桌面版 Chrome 就不会再次显示“安装”。请从 chrome://apps 打开应用，或先卸载再重新安装。"
 
 msgid "Details"
 msgstr "详情"
@@ -742,6 +730,12 @@ msgstr "进行中"
 
 msgid "In repair"
 msgstr "维修中"
+
+msgid "In that app window: menu ⋮ → Cast, save, and share (投屏、保存和分享) → Create shortcut (创建快捷方式) / Pin to taskbar (固定到任务栏)."
+msgstr "在该应用窗口中：菜单 ⋮ → Cast, save, and share (投屏、保存和分享) → Create shortcut (创建快捷方式) / Pin to taskbar (固定到任务栏)。"
+
+msgid "In the Chrome address bar, click Open in app (打开应用) to launch the installed Carbon MES window."
+msgstr "在 Chrome 地址栏中，点击 Open in app (打开应用) 以启动已安装的 Carbon MES 窗口。"
 
 msgid "Inspect Item"
 msgstr "检验物品"
@@ -1166,6 +1160,9 @@ msgstr "一次拣货覆盖整个生产批次 — 自动分配给各工单。"
 msgid "Only {0} available"
 msgstr "仅 {0} 可用"
 
+msgid "Only Chromium fires the one-tap Install prompt. After install, use Open in app to pin to the desktop."
+msgstr "仅 Chromium 会弹出“一键安装”提示。安装后，请使用“在应用中打开”将其固定到桌面。"
+
 msgid "Oops. You shouldn't see this page. Eventually it will be a landing page."
 msgstr "抱歉，您不应该看到此页面。此页面最终将成为首页。"
 
@@ -1181,8 +1178,8 @@ msgstr "打开此生产批次中的工单"
 msgid "Open an NCR for MRB disposition"
 msgstr "为MRB处置打开NCR"
 
-msgid "Open chrome://apps in the address bar and launch Carbon MES."
-msgstr "在地址栏打开 chrome://apps 并启动 Carbon MES。"
+msgid "Open app — Already installed"
+msgstr "打开应用 — 已安装"
 
 msgid "Open inspection"
 msgstr "打开检验"
@@ -1213,6 +1210,9 @@ msgstr "可选"
 
 msgid "or"
 msgstr "或"
+
+msgid "Or open chrome://apps → right-click Carbon MES → Create shortcut → choose Pin to taskbar / Create desktop shortcut."
+msgstr "或者打开 chrome://apps → 右键点击 Carbon MES → 创建快捷方式 → 选择“固定到任务栏” / “创建桌面快捷方式”。"
 
 msgid "Other"
 msgstr "其他"
@@ -1695,6 +1695,9 @@ msgstr "步骤"
 msgid "Steps are missing"
 msgstr "缺少步骤"
 
+msgid "Still missing Install? Stay on this page a few seconds and try again, or use Open in app / chrome://apps → Create shortcut."
+msgstr "仍未看到“安装”？请在此页面停留几秒后重试，或使用“在应用中打开” / chrome://apps → 创建快捷方式。"
+
 msgid "Storage Unit"
 msgstr "存储单元"
 
@@ -1722,6 +1725,9 @@ msgstr "点按“添加到主屏幕”，然后点按“添加”。"
 msgid "Tap Share (square with an arrow)."
 msgstr "点按“共享”（带箭头的方框）。"
 
+msgid "Tap the menu (⋮). If you see Install app, use it. If you see Open in app in the address bar instead, the app is already installed — follow Open app help."
+msgstr "点击菜单 (⋮)。如果看到“安装应用”，请使用该功能。如果地址栏中显示的是“在应用中打开”，则表示应用已安装 — 请参阅“打开应用”帮助。"
+
 msgid "The completed quantity for this operation is less than the required quantity of {targetQuantity}."
 msgstr "此工序的完成数量小于所需数量 {targetQuantity}。"
 
@@ -1744,9 +1750,6 @@ msgstr "计时器和完成状态由所有 {0} 个工单共享。此处的步骤�
 msgid "then"
 msgstr "然后"
 
-msgid "Then open chrome://settings/content/all, find this MES host, delete site data, reload /shop, and tap Install again."
-msgstr "然后打开 chrome://settings/content/all，找到此 MES 主机，删除网站数据，重新加载 /shop，并再次点按“安装”。"
-
 msgid "There are no available or consumed tracked parts for this material."
 msgstr "此原材料没有可用或已消耗的受追踪零件。"
 
@@ -1767,6 +1770,9 @@ msgstr "此零件是按订单制造的。将其报废可重新打开其工艺路
 
 msgid "This part will be scrapped from stock. Its requirement stays open so you can issue a replacement."
 msgstr "此零件将从库存报废。其要求保持未结，以便您可以领料替代品。"
+
+msgid "This site is already installed. Chrome will not show Install again. Use Open in app, then pin a desktop / taskbar shortcut."
+msgstr "此站点已安装。Chrome 将不再显示“安装”。请使用“在应用中打开”，然后固定桌面/任务栏快捷方式。"
 
 msgid "This unit will be permanently scrapped and a replacement serial number will be created."
 msgstr "此单元将被永久报废，并将创建替换序列号。"
@@ -1789,12 +1795,6 @@ msgstr "工作时间：{0}"
 
 msgid "To pick"
 msgstr "待拣货"
-
-msgid "To reinstall: in chrome://apps, right-click the app → Remove from Chrome. Or use ⋮ → Uninstall Carbon MES on an open app window."
-msgstr "要重新安装：在 chrome://apps 中右键点击应用 → 从 Chrome 中移除。或在打开的应用窗口中使用 ⋮ → 卸载 Carbon MES。"
-
-msgid "To reset: chrome://settings/content/all → remove site data for this MES host → reload, then try Install again."
-msgstr "要重置：chrome://settings/content/all → 移除此 MES 主机的网站数据 → 重新加载，然后再次尝试安装。"
 
 msgid "To run"
 msgstr "待启动"
@@ -1925,6 +1925,9 @@ msgstr "等待维修"
 
 msgid "We've sent you a magic link to sign in to your account."
 msgstr "我们已向您发送了登录链接，请查收。"
+
+msgid "Web pages cannot trigger Chrome’s Open in app automatically — use the address-bar control or chrome://apps."
+msgstr "网页无法自动触发 Chrome 的“在应用中打开” — 请使用地址栏控件或 chrome://apps。"
 
 msgid "What is {translatedTerm}?"
 msgstr "{translatedTerm}是什么?"

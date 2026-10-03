@@ -176,8 +176,8 @@ msgstr "Başarısız birimleri tahsis et"
 msgid "Allocate units"
 msgstr "Birimleri tahsis et"
 
-msgid "App already installed"
-msgstr "Uygulama zaten yüklü"
+msgid "Already installed"
+msgstr "Zaten yüklendi"
 
 msgid "Are you sure you want to delete this step?"
 msgstr "Bu adımı silmek istediğinizden emin misiniz?"
@@ -293,23 +293,14 @@ msgstr "Kartlar"
 msgid "Chat"
 msgstr "Sohbet"
 
-msgid "Check ⋮ — if Install app is missing or greyed out, the app is already installed: open chrome://apps or uninstall from ⋮."
-msgstr "⋮ öğesini kontrol edin — Uygulamayı yükle yoksa veya soluksa uygulama zaten yüklüdür: chrome://apps açın veya ⋮ üzerinden kaldırın."
-
 msgid "Check your email"
 msgstr "E-postanızı kontrol edin"
 
 msgid "Choose a job"
 msgstr "İş emri seç"
 
-msgid "Chrome did not offer a one-tap install. If you already installed this site, Install app is unavailable until you uninstall or clear site data."
-msgstr "Chrome tek dokunuşla yükleme sunmadı. Bu siteyi zaten yüklediyseniz, kaldırana veya site verilerini silene kadar Uygulamayı yükle kullanılamaz."
-
-msgid "Chrome may fire beforeinstallprompt only once per engagement window. After dismiss or install, reload or clear site data before retrying."
-msgstr "Chrome, beforeinstallprompt olayını etkileşim penceresi başına yalnızca bir kez tetikleyebilir. Reddetme veya yüklemeden sonra yeniden denemeden önce yenileyin veya site verilerini temizleyin."
-
-msgid "Chrome only fires the install prompt when the site is not already installed and installability criteria are met."
-msgstr "Chrome yükleme istemini yalnızca site henüz yüklü değilse ve yüklenebilirlik ölçütleri karşılandığında gösterir."
+msgid "Chrome did not offer a one-tap install yet. Use the menu below — or if the address bar shows Open in app, the PWA is already installed."
+msgstr "Chrome henüz tek dokunuşla yükleme sunmadı. Aşağıdaki menüyü kullanın veya adres çubuğunda Uygulamada aç görünüyorsa PWA zaten yüklenmiştir."
 
 msgid "Chrome, Firefox, and Edge on iOS cannot native-install this app."
 msgstr "iOS’ta Chrome, Firefox ve Edge bu uygulamayı yerel olarak yükleyemez."
@@ -462,9 +453,6 @@ msgstr "Yeniden işlenmesi gerekeni açıklayın..."
 
 msgid "Description"
 msgstr "Açıklama"
-
-msgid "Desktop Chrome will not show Install again while this site is already an installed app. Open the app from chrome://apps, or uninstall it to reinstall."
-msgstr "Masaüstü Chrome, bu site zaten yüklü bir uygulama iken Yükle’yi yeniden göstermez. Uygulamayı chrome://apps üzerinden açın veya yeniden yüklemek için kaldırın."
 
 msgid "Details"
 msgstr "Detaylar"
@@ -742,6 +730,12 @@ msgstr "Devam Ediyor"
 
 msgid "In repair"
 msgstr "Onarımda"
+
+msgid "In that app window: menu ⋮ → Cast, save, and share (投屏、保存和分享) → Create shortcut (创建快捷方式) / Pin to taskbar (固定到任务栏)."
+msgstr "Bu uygulama penceresinde: menü ⋮ → Yayınla, kaydet ve paylaş (Cast, save, and share) → Kısayol oluştur (Create shortcut) / Görev çubuğuna sabitle (Pin to taskbar)."
+
+msgid "In the Chrome address bar, click Open in app (打开应用) to launch the installed Carbon MES window."
+msgstr "Yüklenen Carbon MES penceresini başlatmak için Chrome adres çubuğunda Uygulamada aç (Open in app) öğesine tıklayın."
 
 msgid "Inspect Item"
 msgstr "Ürünü İncele"
@@ -1166,6 +1160,9 @@ msgstr "Bir toplama tüm partiyi kapsar — iş emirlerine otomatik olarak dağ�
 msgid "Only {0} available"
 msgstr "Sadece {0} kullanılabilir"
 
+msgid "Only Chromium fires the one-tap Install prompt. After install, use Open in app to pin to the desktop."
+msgstr "Tek dokunuşla Yükle istemini yalnızca Chromium tetikler. Yüklemeden sonra masaüstüne sabitlemek için Uygulamada aç seçeneğini kullanın."
+
 msgid "Oops. You shouldn't see this page. Eventually it will be a landing page."
 msgstr "Üzgünüz. Bu sayfayı görmemelisiniz. Sonunda bir açılış sayfası olacak."
 
@@ -1181,8 +1178,8 @@ msgstr "Bu partizeki bir iş emrini aç"
 msgid "Open an NCR for MRB disposition"
 msgstr "MRB kararı için NCR aç"
 
-msgid "Open chrome://apps in the address bar and launch Carbon MES."
-msgstr "Adres çubuğunda chrome://apps açın ve Carbon MES’i başlatın."
+msgid "Open app — Already installed"
+msgstr "Uygulamayı aç — Zaten yüklendi"
 
 msgid "Open inspection"
 msgstr "Muayeneyi aç"
@@ -1213,6 +1210,9 @@ msgstr "İsteğe bağlı"
 
 msgid "or"
 msgstr "veya"
+
+msgid "Or open chrome://apps → right-click Carbon MES → Create shortcut → choose Pin to taskbar / Create desktop shortcut."
+msgstr "Veya chrome://apps adresini açın → Carbon MES öğesine sağ tıklayın → Kısayol oluştur → Görev çubuğuna sabitle / Masaüstü kısayolu oluştur seçeneğini belirleyin."
 
 msgid "Other"
 msgstr "Diğer"
@@ -1695,6 +1695,9 @@ msgstr "Adımlar"
 msgid "Steps are missing"
 msgstr "Adımlar eksik"
 
+msgid "Still missing Install? Stay on this page a few seconds and try again, or use Open in app / chrome://apps → Create shortcut."
+msgstr "Yükle seçeneği hâlâ görünmüyor mu? Bu sayfada birkaç saniye bekleyip tekrar deneyin veya Uygulamada aç / chrome://apps → Kısayol oluştur yolunu kullanın."
+
 msgid "Storage Unit"
 msgstr "Depolama Birimi"
 
@@ -1722,6 +1725,9 @@ msgstr "Ana ekrana ekle’ye, ardından Ekle’ye dokunun."
 msgid "Tap Share (square with an arrow)."
 msgstr "Paylaş’a dokunun (oklu kare)."
 
+msgid "Tap the menu (⋮). If you see Install app, use it. If you see Open in app in the address bar instead, the app is already installed — follow Open app help."
+msgstr "Menüye (⋮) dokunun. Uygulamayı yükle seçeneğini görürseniz bunu kullanın. Bunun yerine adres çubuğunda Uygulamada aç görünüyorsa uygulama zaten yüklenmiştir; Uygulamayı aç yardımını takip edin."
+
 msgid "The completed quantity for this operation is less than the required quantity of {targetQuantity}."
 msgstr "Bu işlem için tamamlanan miktar, gerekli miktar olan {targetQuantity}'dan azdır."
 
@@ -1744,9 +1750,6 @@ msgstr "Zamanlayıcı ve tamamlama tüm {0} iş emirleri tarafından paylaşıl�
 msgid "then"
 msgstr "sonra"
 
-msgid "Then open chrome://settings/content/all, find this MES host, delete site data, reload /shop, and tap Install again."
-msgstr "Ardından chrome://settings/content/all açın, bu MES ana bilgisayarını bulun, site verilerini silin, /shop sayfasını yenileyin ve yeniden Yükle’ye dokunun."
-
 msgid "There are no available or consumed tracked parts for this material."
 msgstr "Bu malzeme için hiçbir kullanılabilir veya tüketilmiş izlenmiş parça yoktur."
 
@@ -1767,6 +1770,9 @@ msgstr "Bu parça siparişe göre yapılmıştır. Hurdalaması, bir yedek yapma
 
 msgid "This part will be scrapped from stock. Its requirement stays open so you can issue a replacement."
 msgstr "Bu parça stoktan hurdaya ayrılacak. Gerekliliği açık kalacak, böylece bir yedek sağlayabilirsiniz."
+
+msgid "This site is already installed. Chrome will not show Install again. Use Open in app, then pin a desktop / taskbar shortcut."
+msgstr "Bu site zaten yüklendi. Chrome, Yükle seçeneğini tekrar göstermez. Uygulamada aç seçeneğini kullanın, ardından masaüstü / görev çubuğu kısayolu sabitleyin."
 
 msgid "This unit will be permanently scrapped and a replacement serial number will be created."
 msgstr "Bu birim kalıcı olarak hurdaya çıkarılacak ve yedek bir seri numarası oluşturulacaktır."
@@ -1789,12 +1795,6 @@ msgstr "Çalışma Süresi: {0}"
 
 msgid "To pick"
 msgstr "Toplanacak"
-
-msgid "To reinstall: in chrome://apps, right-click the app → Remove from Chrome. Or use ⋮ → Uninstall Carbon MES on an open app window."
-msgstr "Yeniden yüklemek için: chrome://apps içinde uygulamaya sağ tıklayın → Chrome’dan kaldır. Veya açık bir uygulama penceresinde ⋮ → Carbon MES’i kaldır."
-
-msgid "To reset: chrome://settings/content/all → remove site data for this MES host → reload, then try Install again."
-msgstr "Sıfırlamak için: chrome://settings/content/all → bu MES ana bilgisayarının site verilerini kaldır → yenile, sonra yeniden Yükle’yi deneyin."
 
 msgid "To run"
 msgstr "Çalıştırılacak"
@@ -1925,6 +1925,9 @@ msgstr "Onarım bekliyor"
 
 msgid "We've sent you a magic link to sign in to your account."
 msgstr "Hesabınıza giriş yapmak için size bir sihirli bağlantı gönderdik."
+
+msgid "Web pages cannot trigger Chrome’s Open in app automatically — use the address-bar control or chrome://apps."
+msgstr "Web sayfaları Chrome'un Uygulamada aç özelliğini otomatik olarak tetikleyemez; adres çubuğu denetimini veya chrome://apps sayfasını kullanın."
 
 msgid "What is {translatedTerm}?"
 msgstr "{translatedTerm} nedir?"

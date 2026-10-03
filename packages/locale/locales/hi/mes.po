@@ -176,8 +176,8 @@ msgstr "विफल इकाइयों को आवंटित करे�
 msgid "Allocate units"
 msgstr "इकाइयों को आवंटित करें"
 
-msgid "App already installed"
-msgstr "ऐप पहले से इंस्टॉल है"
+msgid "Already installed"
+msgstr "पहले से इंस्टॉल है"
 
 msgid "Are you sure you want to delete this step?"
 msgstr "क्या आप वाकई इस चरण को हटाना चाहते हैं?"
@@ -293,23 +293,14 @@ msgstr "कार्ड"
 msgid "Chat"
 msgstr "चैट"
 
-msgid "Check ⋮ — if Install app is missing or greyed out, the app is already installed: open chrome://apps or uninstall from ⋮."
-msgstr "⋮ जाँचें — यदि “ऐप इंस्टॉल करें” गायब या धूसर है, तो ऐप पहले से इंस्टॉल है: chrome://apps खोलें या ⋮ से अनइंस्टॉल करें।"
-
 msgid "Check your email"
 msgstr "अपना ईमेल जांचें"
 
 msgid "Choose a job"
 msgstr "एक जॉब चुनें"
 
-msgid "Chrome did not offer a one-tap install. If you already installed this site, Install app is unavailable until you uninstall or clear site data."
-msgstr "Chrome ने एक-टैप इंस्टॉल नहीं दिया। यदि आपने यह साइट पहले इंस्टॉल कर ली है, तो अनइंस्टॉल करने या साइट डेटा साफ़ करने तक “ऐप इंस्टॉल करें” उपलब्ध नहीं होगा।"
-
-msgid "Chrome may fire beforeinstallprompt only once per engagement window. After dismiss or install, reload or clear site data before retrying."
-msgstr "Chrome प्रति एंगेजमेंट विंडो में beforeinstallprompt केवल एक बार चला सकता है। अस्वीकार या इंस्टॉल के बाद पुनः प्रयास से पहले रीलोड करें या साइट डेटा साफ़ करें।"
-
-msgid "Chrome only fires the install prompt when the site is not already installed and installability criteria are met."
-msgstr "Chrome इंस्टॉल प्रॉम्प्ट तभी दिखाता है जब साइट पहले से इंस्टॉल न हो और इंस्टॉल योग्यता पूरी हो।"
+msgid "Chrome did not offer a one-tap install yet. Use the menu below — or if the address bar shows Open in app, the PWA is already installed."
+msgstr "Chrome ने अभी तक एक-टैप इंस्टॉल की पेशकश नहीं की है। नीचे दिए गए मेनू का उपयोग करें — या यदि एड्रेस बार में ऐप में खोलें (Open in app) दिखाई देता है, तो PWA पहले से इंस्टॉल है।"
 
 msgid "Chrome, Firefox, and Edge on iOS cannot native-install this app."
 msgstr "iOS पर Chrome, Firefox और Edge इस ऐप को नेटिव रूप से इंस्टॉल नहीं कर सकते।"
@@ -462,9 +453,6 @@ msgstr "वर्णन करें कि क्या रीवर्क क�
 
 msgid "Description"
 msgstr "विवरण"
-
-msgid "Desktop Chrome will not show Install again while this site is already an installed app. Open the app from chrome://apps, or uninstall it to reinstall."
-msgstr "जब तक यह साइट पहले से इंस्टॉल ऐप है, डेस्कटॉप Chrome फिर से इंस्टॉल नहीं दिखाएगा। chrome://apps से ऐप खोलें, या फिर से इंस्टॉल करने के लिए अनइंस्टॉल करें।"
 
 msgid "Details"
 msgstr "विवरण"
@@ -742,6 +730,12 @@ msgstr "प्रगति में"
 
 msgid "In repair"
 msgstr "मरम्मत में"
+
+msgid "In that app window: menu ⋮ → Cast, save, and share (投屏、保存和分享) → Create shortcut (创建快捷方式) / Pin to taskbar (固定到任务栏)."
+msgstr "उस ऐप विंडो में: मेनू ⋮ → Cast, save, and share (कास्ट करें, सहेजें और शेयर करें) → Create shortcut (शॉर्टकट बनाएँ) / Pin to taskbar (टास्कबार पर पिन करें)।"
+
+msgid "In the Chrome address bar, click Open in app (打开应用) to launch the installed Carbon MES window."
+msgstr "Chrome एड्रेस बार में, इंस्टॉल की गई Carbon MES विंडो लॉन्च करने के लिए ऐप में खोलें (Open in app) पर क्लिक करें।"
 
 msgid "Inspect Item"
 msgstr "आइटम का निरीक्षण करें"
@@ -1166,6 +1160,9 @@ msgstr "एक पिकिंग पूरे बैच को कवर कर
 msgid "Only {0} available"
 msgstr "केवल {0} उपलब्ध"
 
+msgid "Only Chromium fires the one-tap Install prompt. After install, use Open in app to pin to the desktop."
+msgstr "केवल Chromium ही एक-टैप इंस्टॉल प्रॉम्प्ट दिखाता है। इंस्टॉल करने के बाद, डेस्कटॉप पर पिन करने के लिए ऐप में खोलें (Open in app) का उपयोग करें।"
+
 msgid "Oops. You shouldn't see this page. Eventually it will be a landing page."
 msgstr "अरे। आपको यह पृष्ठ नहीं देखना चाहिए। आखिरकार यह एक लैंडिंग पृष्ठ होगा।"
 
@@ -1181,8 +1178,8 @@ msgstr "इस बैच में एक जॉब खोलें"
 msgid "Open an NCR for MRB disposition"
 msgstr "MRB निपटान के लिए एक NCR खोलें"
 
-msgid "Open chrome://apps in the address bar and launch Carbon MES."
-msgstr "एड्रेस बार में chrome://apps खोलें और Carbon MES लॉन्च करें।"
+msgid "Open app — Already installed"
+msgstr "ऐप खोलें — पहले से इंस्टॉल है"
 
 msgid "Open inspection"
 msgstr "निरीक्षण खोलें"
@@ -1213,6 +1210,9 @@ msgstr "वैकल्पिक"
 
 msgid "or"
 msgstr "या"
+
+msgid "Or open chrome://apps → right-click Carbon MES → Create shortcut → choose Pin to taskbar / Create desktop shortcut."
+msgstr "या chrome://apps खोलें → Carbon MES पर राइट-क्लिक करें → Create shortcut → Pin to taskbar / Create desktop shortcut चुनें।"
 
 msgid "Other"
 msgstr "अन्य"
@@ -1695,6 +1695,9 @@ msgstr "चरण"
 msgid "Steps are missing"
 msgstr "चरण गायब हैं"
 
+msgid "Still missing Install? Stay on this page a few seconds and try again, or use Open in app / chrome://apps → Create shortcut."
+msgstr "क्या अभी भी इंस्टॉल नहीं दिख रहा है? इस पृष्ठ पर कुछ सेकंड रुकें और पुनः प्रयास करें, या Open in app / chrome://apps → Create shortcut का उपयोग करें।"
+
 msgid "Storage Unit"
 msgstr "भंडारण इकाई"
 
@@ -1722,6 +1725,9 @@ msgstr "“होम स्क्रीन पर जोड़ें” टै�
 msgid "Tap Share (square with an arrow)."
 msgstr "शेयर टैप करें (तीर वाला वर्ग)।"
 
+msgid "Tap the menu (⋮). If you see Install app, use it. If you see Open in app in the address bar instead, the app is already installed — follow Open app help."
+msgstr "मेनू (⋮) पर टैप करें। यदि आपको ऐप इंस्टॉल करें (Install app) दिखाई देता है, तो इसका उपयोग करें। यदि आपको इसके बजाय एड्रेस बार में ऐप में खोलें (Open in app) दिखाई देता है, तो ऐप पहले से इंस्टॉल है — ऐप खोलें (Open app) सहायता का पालन करें।"
+
 msgid "The completed quantity for this operation is less than the required quantity of {targetQuantity}."
 msgstr "इस ऑपरेशन के लिए पूर्ण मात्रा आवश्यक मात्रा {targetQuantity} से कम है।"
 
@@ -1744,9 +1750,6 @@ msgstr "टाइमर और पूर्णता सभी {0} जॉब्�
 msgid "then"
 msgstr "फिर"
 
-msgid "Then open chrome://settings/content/all, find this MES host, delete site data, reload /shop, and tap Install again."
-msgstr "फिर chrome://settings/content/all खोलें, यह MES होस्ट खोजें, साइट डेटा हटाएँ, /shop रीलोड करें, और फिर से इंस्टॉल टैप करें।"
-
 msgid "There are no available or consumed tracked parts for this material."
 msgstr "इस सामग्री के लिए कोई उपलब्ध या उपयोग की गई ट्रैक की गई पार्ट नहीं है।"
 
@@ -1767,6 +1770,9 @@ msgstr "यह पार्ट ऑर्डर के अनुसार बन�
 
 msgid "This part will be scrapped from stock. Its requirement stays open so you can issue a replacement."
 msgstr "यह हिस्सा स्टॉक से स्क्रैप किया जाएगा। इसकी आवश्यकता खुली रहती है ताकि आप एक प्रतिस्थापन जारी कर सकें।"
+
+msgid "This site is already installed. Chrome will not show Install again. Use Open in app, then pin a desktop / taskbar shortcut."
+msgstr "यह साइट पहले से इंस्टॉल है। Chrome दोबारा इंस्टॉल नहीं दिखाएगा। ऐप में खोलें (Open in app) का उपयोग करें, फिर डेस्कटॉप / टास्कबार शॉर्टकट पिन करें।"
 
 msgid "This unit will be permanently scrapped and a replacement serial number will be created."
 msgstr "इस इकाई को स्थायी रूप से स्क्रैप किया जाएगा और एक रिप्लेसमेंट सीरियल नंबर बनाया जाएगा।"
@@ -1789,12 +1795,6 @@ msgstr "समय काम किया: {0}"
 
 msgid "To pick"
 msgstr "पिकिंग के लिए"
-
-msgid "To reinstall: in chrome://apps, right-click the app → Remove from Chrome. Or use ⋮ → Uninstall Carbon MES on an open app window."
-msgstr "फिर से इंस्टॉल करने के लिए: chrome://apps में ऐप पर राइट-क्लिक → Chrome से हटाएँ। या खुली ऐप विंडो में ⋮ → Carbon MES अनइंस्टॉल करें।"
-
-msgid "To reset: chrome://settings/content/all → remove site data for this MES host → reload, then try Install again."
-msgstr "रीसेट के लिए: chrome://settings/content/all → इस MES होस्ट का साइट डेटा हटाएँ → रीलोड करें, फिर फिर से इंस्टॉल आज़माएँ।"
 
 msgid "To run"
 msgstr "चलाने के लिए"
@@ -1925,6 +1925,9 @@ msgstr "मरम्मत की प्रतीक्षा में"
 
 msgid "We've sent you a magic link to sign in to your account."
 msgstr "हमने आपके खाते में साइन इन करने के लिए आपको एक जादुई लिंक भेजा है।"
+
+msgid "Web pages cannot trigger Chrome’s Open in app automatically — use the address-bar control or chrome://apps."
+msgstr "वेब पेज Chrome का ऐप में खोलें (Open in app) स्वचालित रूप से ट्रिगर नहीं कर सकते — एड्रेस-बार कंट्रोल या chrome://apps का उपयोग करें।"
 
 msgid "What is {translatedTerm}?"
 msgstr "{translatedTerm} क्या है?"

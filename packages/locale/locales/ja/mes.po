@@ -176,8 +176,8 @@ msgstr "不合格ユニットを割り当てる"
 msgid "Allocate units"
 msgstr "ユニットを割り当てる"
 
-msgid "App already installed"
-msgstr "アプリは既にインストール済みです"
+msgid "Already installed"
+msgstr "インストール済み"
 
 msgid "Are you sure you want to delete this step?"
 msgstr "このステップを削除してもよろしいですか？"
@@ -293,23 +293,14 @@ msgstr "カード"
 msgid "Chat"
 msgstr "チャット"
 
-msgid "Check ⋮ — if Install app is missing or greyed out, the app is already installed: open chrome://apps or uninstall from ⋮."
-msgstr "⋮ を確認してください。「アプリをインストール」がない、または灰色の場合は既にインストール済みです。chrome://apps を開くか、⋮ からアンインストールしてください。"
-
 msgid "Check your email"
 msgstr "メールを確認してください"
 
 msgid "Choose a job"
 msgstr "製造指図を選択"
 
-msgid "Chrome did not offer a one-tap install. If you already installed this site, Install app is unavailable until you uninstall or clear site data."
-msgstr "Chrome はワンタップインストールを提示しませんでした。このサイトを既にインストールしている場合、アンインストールまたはサイトデータを消去するまで「アプリをインストール」は利用できません。"
-
-msgid "Chrome may fire beforeinstallprompt only once per engagement window. After dismiss or install, reload or clear site data before retrying."
-msgstr "Chrome はエンゲージメント期間ごとに beforeinstallprompt を一度しか発火しない場合があります。却下またはインストール後は、再試行前に再読み込みするかサイトデータを消去してください。"
-
-msgid "Chrome only fires the install prompt when the site is not already installed and installability criteria are met."
-msgstr "Chrome はサイトが未インストールで、かつインストール可能条件を満たす場合にのみインストールプロンプトを表示します。"
+msgid "Chrome did not offer a one-tap install yet. Use the menu below — or if the address bar shows Open in app, the PWA is already installed."
+msgstr "Chrome でワンタップインストールのメッセージがまだ表示されていません。以下のメニューを使用してください。または、アドレスバーに「アプリで開く」と表示されている場合は、PWA はすでにインストールされています。"
 
 msgid "Chrome, Firefox, and Edge on iOS cannot native-install this app."
 msgstr "iOS の Chrome、Firefox、Edge ではこのアプリをネイティブインストールできません。"
@@ -462,9 +453,6 @@ msgstr "再加工が必要な内容を説明してください..."
 
 msgid "Description"
 msgstr "説明"
-
-msgid "Desktop Chrome will not show Install again while this site is already an installed app. Open the app from chrome://apps, or uninstall it to reinstall."
-msgstr "デスクトップ版 Chrome では、このサイトが既にインストール済みアプリの間は再度「インストール」を表示しません。chrome://apps から開くか、再インストールするにはアンインストールしてください。"
 
 msgid "Details"
 msgstr "詳細"
@@ -742,6 +730,12 @@ msgstr "進行中"
 
 msgid "In repair"
 msgstr "修理中"
+
+msgid "In that app window: menu ⋮ → Cast, save, and share (投屏、保存和分享) → Create shortcut (创建快捷方式) / Pin to taskbar (固定到任务栏)."
+msgstr "そのアプリウィンドウで：メニュー ⋮ → [保存して共有] (または [キャスト、保存、共有]) → [ショートカットを作成] / [タスクバーに固定]。"
+
+msgid "In the Chrome address bar, click Open in app (打开应用) to launch the installed Carbon MES window."
+msgstr "Chrome のアドレスバーで [アプリで開く] をクリックして、インストールされている Carbon MES ウィンドウを起動します。"
 
 msgid "Inspect Item"
 msgstr "アイテムを検査"
@@ -1166,6 +1160,9 @@ msgstr "1回のピッキングがバッチ全体をカバーし、各製造指�
 msgid "Only {0} available"
 msgstr "{0} のみ利用可能"
 
+msgid "Only Chromium fires the one-tap Install prompt. After install, use Open in app to pin to the desktop."
+msgstr "Chromium のみがワンタップのインストールプロンプトを表示します。インストール後は、[アプリで開く] を使用してデスクトップに固定してください。"
+
 msgid "Oops. You shouldn't see this page. Eventually it will be a landing page."
 msgstr "このページは表示されないはずです。最終的にはランディングページになります。"
 
@@ -1181,8 +1178,8 @@ msgstr "このバッチの製造指図を開く"
 msgid "Open an NCR for MRB disposition"
 msgstr "MRB処置のためにNCRを開く"
 
-msgid "Open chrome://apps in the address bar and launch Carbon MES."
-msgstr "アドレスバーで chrome://apps を開き、Carbon MES を起動してください。"
+msgid "Open app — Already installed"
+msgstr "アプリを開く — インストール済み"
 
 msgid "Open inspection"
 msgstr "検査を開く"
@@ -1213,6 +1210,9 @@ msgstr "オプション"
 
 msgid "or"
 msgstr "または"
+
+msgid "Or open chrome://apps → right-click Carbon MES → Create shortcut → choose Pin to taskbar / Create desktop shortcut."
+msgstr "または chrome://apps を開き、Carbon MES を右クリック → [ショートカットを作成] → [タスクバーに固定] または [デスクトップ ショートカットを作成] を選択します。"
 
 msgid "Other"
 msgstr "その他"
@@ -1695,6 +1695,9 @@ msgstr "ステップ"
 msgid "Steps are missing"
 msgstr "ステップが未記録です"
 
+msgid "Still missing Install? Stay on this page a few seconds and try again, or use Open in app / chrome://apps → Create shortcut."
+msgstr "[インストール] がまだ表示されませんか？このページで数秒待ってから再試行するか、[アプリで開く] または chrome://apps → [ショートカットを作成] を使用してください。"
+
 msgid "Storage Unit"
 msgstr "保管ユニット"
 
@@ -1722,6 +1725,9 @@ msgstr "「ホーム画面に追加」をタップし、続けて「追加」を
 msgid "Tap Share (square with an arrow)."
 msgstr "共有（矢印付きの四角）をタップします。"
 
+msgid "Tap the menu (⋮). If you see Install app, use it. If you see Open in app in the address bar instead, the app is already installed — follow Open app help."
+msgstr "メニュー (⋮) をタップします。[アプリをインストール] が表示されたら、それを実行します。代わりにアドレスバーに [アプリで開く] が表示されている場合は、アプリはすでにインストールされています。「アプリを開く」のヘルプに従ってください。"
+
 msgid "The completed quantity for this operation is less than the required quantity of {targetQuantity}."
 msgstr "この工程の完了数量が必要数量 {targetQuantity} を下回っています。"
 
@@ -1744,9 +1750,6 @@ msgstr "タイマーと完了はすべての{0}製造指図で共有されます
 msgid "then"
 msgstr "その後"
 
-msgid "Then open chrome://settings/content/all, find this MES host, delete site data, reload /shop, and tap Install again."
-msgstr "次に chrome://settings/content/all を開き、この MES ホストを見つけてサイトデータを削除し、/shop を再読み込みしてから再度インストールをタップしてください。"
-
 msgid "There are no available or consumed tracked parts for this material."
 msgstr "このマテリアルについて、利用可能または消費済みの追跡部品がありません。"
 
@@ -1767,6 +1770,9 @@ msgstr "この部品は受注生産で製造されました。スクラップす
 
 msgid "This part will be scrapped from stock. Its requirement stays open so you can issue a replacement."
 msgstr "この部品は在庫からスクラップされます。その要求事項は開いたままなので、代替品を出庫できます。"
+
+msgid "This site is already installed. Chrome will not show Install again. Use Open in app, then pin a desktop / taskbar shortcut."
+msgstr "このサイトはすでにインストールされています。Chrome で [インストール] は再表示されません。[アプリで開く] を使用して、デスクトップまたはタスクバーのショートカットを固定してください。"
 
 msgid "This unit will be permanently scrapped and a replacement serial number will be created."
 msgstr "このユニットは永久にスクラップされ、代替シリアル番号が作成されます。"
@@ -1789,12 +1795,6 @@ msgstr "作業時間: {0}"
 
 msgid "To pick"
 msgstr "ピッキング待ち"
-
-msgid "To reinstall: in chrome://apps, right-click the app → Remove from Chrome. Or use ⋮ → Uninstall Carbon MES on an open app window."
-msgstr "再インストールするには: chrome://apps でアプリを右クリック → Chrome から削除。または開いているアプリウィンドウで ⋮ → Carbon MES をアンインストール。"
-
-msgid "To reset: chrome://settings/content/all → remove site data for this MES host → reload, then try Install again."
-msgstr "リセットするには: chrome://settings/content/all → この MES ホストのサイトデータを削除 → 再読み込みし、再度インストールを試してください。"
 
 msgid "To run"
 msgstr "実行待ち"
@@ -1925,6 +1925,9 @@ msgstr "修理待ち"
 
 msgid "We've sent you a magic link to sign in to your account."
 msgstr "アカウントにサインインするためのマジックリンクをお送りしました。"
+
+msgid "Web pages cannot trigger Chrome’s Open in app automatically — use the address-bar control or chrome://apps."
+msgstr "ウェブページから Chrome の [アプリで開く] を自動的にトリガーすることはできません。アドレスバーのコントロールまたは chrome://apps を使用してください。"
 
 msgid "What is {translatedTerm}?"
 msgstr "{translatedTerm}とは何ですか?"
