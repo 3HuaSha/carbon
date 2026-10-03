@@ -1,14 +1,14 @@
 /**
  * Inline <head> bootstrap for MES PWA installability.
  *
- * Must run before the entry.client module graph loads: on Android Chrome with
- * an already-active service worker, `beforeinstallprompt` can fire during HTML
- * parse — before React / entry.client hydrates. Capturing only in entry.client
- * therefore misses the event and every Install tap falls through to the help
- * sheet.
+ * Injected near the top of <head> (before CSS/module links) so Android Chrome
+ * registers the SW and captures `beforeinstallprompt` during HTML parse —
+ * before the entry.client bundle downloads. Capturing only in entry.client
+ * misses BIP when an already-active SW fires it early; Install then always
+ * opens the help sheet.
  *
- * Also registers `/serviceWorker.js` with scope `/` so `/login` and `/shop`
- * both become controlled as early as possible.
+ * Registers `/serviceWorker.js` with scope `/` so `/login` and `/shop` both
+ * become controlled as early as possible.
  *
  * Injected from `root.tsx` with the document CSP nonce.
  */

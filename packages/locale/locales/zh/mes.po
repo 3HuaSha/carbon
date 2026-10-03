@@ -299,26 +299,23 @@ msgstr "请查收邮件"
 msgid "Choose a job"
 msgstr "选择工单"
 
-msgid "Choose Open in Chrome (or Open in browser)."
-msgstr "选择“在 Chrome 中打开”（或“在浏览器中打开”）。"
+msgid "Choose Open in browser / Open in Chrome (用浏览器打开)."
+msgstr ""
 
 msgid "Choose Open in Safari."
 msgstr "选择“在 Safari 中打开”。"
 
-msgid "Chrome did not offer a one-tap install yet. Stay on this page a few seconds, tap Install again, or use the Chrome menu below."
-msgstr "Chrome 尚未提供一键安装。请在此页面停留几秒后再次点“安装”，或使用下方的 Chrome 菜单。"
+msgid "Chrome did not offer a one-tap install yet. Use the menu below."
+msgstr ""
 
-msgid "Chrome did not offer a one-tap install yet. Use the menu below — or if the address bar shows Open in app, the PWA is already installed."
-msgstr "Chrome 尚未提供一键安装提示。请使用下方菜单 — 或者如果地址栏显示“在应用中打开”，则表示 PWA 已安装。"
+msgid "Chrome did not offer one-tap Install yet. You must use Chrome (not WeChat), hard-refresh, and confirm the service worker is controlling this page."
+msgstr ""
 
-msgid "Chrome on this phone will not offer Install again while MES is already on your home screen. Open the app, or uninstall it to reinstall."
-msgstr "只要 MES 已在主屏幕上，此手机上的 Chrome 不会再次提供“安装”。请打开应用，或卸载后重新安装。"
+msgid "Chrome only fires beforeinstallprompt when the site is not already installed and installability criteria are met."
+msgstr ""
 
-msgid "Chrome only fires the install prompt when the site is not already installed and installability criteria are met."
-msgstr "仅当网站尚未安装且满足可安装条件时，Chrome 才会显示安装提示。"
-
-msgid "Chrome, Firefox, and Edge on iOS cannot native-install this app — they all use WebKit without beforeinstallprompt."
-msgstr "iOS 上的 Chrome、Firefox 和 Edge 无法原生安装此应用——它们都使用没有 beforeinstallprompt 的 WebKit。"
+msgid "Chrome will not offer Install again while MES is already on your home screen. Open the app, or uninstall it to reinstall."
+msgstr ""
 
 msgid "Clear"
 msgstr "清除"
@@ -408,6 +405,12 @@ msgstr "已消耗已过期"
 
 msgid "Continue"
 msgstr "继续"
+
+msgid "Controlled: no — Chrome will not fire the install prompt until a service worker controls this page. Hard refresh and wait a few seconds."
+msgstr ""
+
+msgid "Controlled: yes — this page has an active service worker (required for Install)."
+msgstr ""
 
 #. placeholder {0}: board.unplannedCost.days
 msgid "Cost of unplanned maintenance, last {0} days"
@@ -706,6 +709,9 @@ msgstr "前往入门"
 msgid "Got it"
 msgstr "知道了"
 
+msgid "Hard refresh this page: Chrome ⋮ → refresh, or close the tab and open /shop again. Wait 3–5 seconds after Shop loads."
+msgstr ""
+
 msgid "Hide description"
 msgstr "隐藏描述"
 
@@ -730,9 +736,6 @@ msgstr "空闲"
 msgid "Idle for"
 msgstr "闲置时间"
 
-msgid "If Install app is missing, wait a few seconds on Shop and tap the download button again — or clear site data for this host and retry."
-msgstr "若没有“安装应用”，请在 Shop 停留几秒后再次点下载按钮，或清除此主机的网站数据后重试。"
-
 msgid "Impact"
 msgstr "影响"
 
@@ -743,8 +746,8 @@ msgstr "英制"
 msgid "in {0}"
 msgstr "在 {0}"
 
-msgid "In Chrome, tap ⋮ → Settings → Site settings → All sites → this MES host → Clear and reset, then reload /shop and tap Install again."
-msgstr "在 Chrome 中点 ⋮ → 设置 → 网站设置 → 所有网站 → 此 MES 主机 → 清除并重置，然后重新加载 /shop 并再次点“安装”。"
+msgid "In Chrome: ⋮ → Settings → Site settings → All sites → this MES host → Clear and reset. Reload /shop, wait a few seconds, tap Install."
+msgstr ""
 
 msgid "In Progress"
 msgstr "进行中"
@@ -752,14 +755,8 @@ msgstr "进行中"
 msgid "In repair"
 msgstr "维修中"
 
-msgid "In that app window: menu ⋮ → Cast, save, and share (投屏、保存和分享) → Create shortcut (创建快捷方式) / Pin to taskbar (固定到任务栏)."
-msgstr "在该应用窗口中：菜单 ⋮ → Cast, save, and share (投屏、保存和分享) → Create shortcut (创建快捷方式) / Pin to taskbar (固定到任务栏)。"
-
-msgid "In the Chrome address bar, click Open in app (打开应用) to launch the installed Carbon MES window."
-msgstr "在 Chrome 地址栏中，点击 Open in app (打开应用) 以启动已安装的 Carbon MES 窗口。"
-
-msgid "In-app browsers (WeChat, Instagram, etc.) block Progressive Web App install."
-msgstr "应用内浏览器（微信、Instagram 等）会阻止 Progressive Web App 安装。"
+msgid "In-app browsers (WeChat, QQ, UC, Instagram) block Progressive Web App install."
+msgstr ""
 
 msgid "Inspect Item"
 msgstr "检验物品"
@@ -767,8 +764,14 @@ msgstr "检验物品"
 msgid "inspected"
 msgstr "已检验"
 
-msgid "Install / Add to Home Screen"
-msgstr "安装 / 添加到主屏幕"
+msgid "Install"
+msgstr ""
+
+msgid "Install MES"
+msgstr ""
+
+msgid "Install ready — tap again"
+msgstr ""
 
 msgid "Instructions"
 msgstr "作业指导"
@@ -782,8 +785,8 @@ msgstr "库存调整已完成"
 msgid "Inventory Adjustments"
 msgstr "库存调整"
 
-msgid "iPhone and iPad never show a one-tap Install button. Use Safari’s Share menu — the steps below take about 15 seconds."
-msgstr "iPhone 和 iPad 从不显示一键“安装”按钮。请使用 Safari 的共享菜单——下列步骤大约需要 15 秒。"
+msgid "iPhone and iPad never show a one-tap Install button (Apple policy). Use Safari’s Share menu — about 15 seconds."
+msgstr ""
 
 msgid "is"
 msgstr "是"
@@ -902,8 +905,8 @@ msgstr "记录 {0} 的报废"
 msgid "Login"
 msgstr "登录"
 
-msgid "Look for the MES / Carbon MES icon on your home screen or in the app drawer and open it."
-msgstr "在主屏幕或应用抽屉中找到 MES / Carbon MES 图标并打开。"
+msgid "Look for the MES icon on your home screen or in the app drawer and open it."
+msgstr ""
 
 msgid "Lot"
 msgstr "批次"
@@ -1174,6 +1177,9 @@ msgstr "/"
 msgid "Oldest first"
 msgstr "最早优先"
 
+msgid "On iPhone, one-tap system install is impossible by Apple policy — Safari Add to Home Screen is the only path."
+msgstr ""
+
 msgid "one combined lot · planned"
 msgstr "一个组合批次 · 已计划"
 
@@ -1187,8 +1193,8 @@ msgstr "一次拣货覆盖整个生产批次 — 自动分配给各工单。"
 msgid "Only {0} available"
 msgstr "仅 {0} 可用"
 
-msgid "Only Chromium fires the one-tap Install prompt. After install on desktop, use Open in app to pin to the taskbar."
-msgstr "只有 Chromium 会弹出一键安装提示。在桌面安装后，请使用“打开应用”固定到任务栏。"
+msgid "Only Android Chrome fires the one-tap Install prompt (beforeinstallprompt)."
+msgstr ""
 
 msgid "Oops. You shouldn't see this page. Eventually it will be a landing page."
 msgstr "抱歉，您不应该看到此页面。此页面最终将成为首页。"
@@ -1208,8 +1214,8 @@ msgstr "为MRB处置打开NCR"
 msgid "Open app — Already installed"
 msgstr "打开应用 — 已安装"
 
-msgid "Open in your browser"
-msgstr "在浏览器中打开"
+msgid "Open in Chrome"
+msgstr ""
 
 msgid "Open inspection"
 msgstr "打开检验"
@@ -1240,9 +1246,6 @@ msgstr "可选"
 
 msgid "or"
 msgstr "或"
-
-msgid "Or open chrome://apps → right-click Carbon MES → Create shortcut → choose Pin to taskbar / Create desktop shortcut."
-msgstr "或者打开 chrome://apps → 右键点击 Carbon MES → 创建快捷方式 → 选择“固定到任务栏” / “创建桌面快捷方式”。"
 
 msgid "Other"
 msgstr "其他"
@@ -1624,6 +1627,9 @@ msgstr "序列号"
 msgid "Serialized"
 msgstr "已序列号化"
 
+msgid "Service worker check"
+msgstr ""
+
 msgid "Session locked"
 msgstr "会话已锁定"
 
@@ -1660,8 +1666,8 @@ msgstr "显示描述"
 msgid "Show keyboard shortcuts"
 msgstr "显示键盘快捷键"
 
-msgid "Sign in if needed, open Shop, then tap Install again."
-msgstr "如需登录请先登录，打开 Shop，然后再次点“安装”。"
+msgid "Sign in if needed, open Shop, wait a few seconds, then tap Install."
+msgstr ""
 
 msgid "Sign in with Google"
 msgstr "使用 Google 登录"
@@ -1722,8 +1728,8 @@ msgstr "状态"
 msgid "Statuses"
 msgstr "状态"
 
-msgid "Stay in Chrome on Android (not Samsung Internet)."
-msgstr "请继续使用 Android 上的 Chrome（不要用 Samsung Internet）。"
+msgid "Stay in Android Chrome — not WeChat, QQ, UC, or Samsung Internet."
+msgstr ""
 
 msgid "Stay on this page"
 msgstr "留在此页面"
@@ -1734,8 +1740,8 @@ msgstr "步骤"
 msgid "Steps are missing"
 msgstr "缺少步骤"
 
-msgid "Still missing Install? Stay on this page a few seconds and try again, or use Open in app / chrome://apps → Create shortcut."
-msgstr "仍未看到“安装”？请在此页面停留几秒后重试，或使用“在应用中打开” / chrome://apps → 创建快捷方式。"
+msgid "Still missing? Chrome ⋮ → Settings → Site settings → All sites → this host → Clear and reset, then retry."
+msgstr ""
 
 msgid "Storage Unit"
 msgstr "存储单元"
@@ -1761,11 +1767,11 @@ msgstr "使工作中心离线"
 msgid "Tap Add in the top right. Launch MES from your Home Screen icon afterward."
 msgstr "点右上角的“添加”。之后从主屏幕图标启动 MES。"
 
-msgid "Tap the Chrome menu (⋮) at the top right, then Install app or Add to Home screen."
-msgstr "点右上角的 Chrome 菜单（⋮），然后点“安装应用”或“添加到主屏幕”。"
+msgid "Tap Install again for the system install dialog. Or Chrome ⋮ → Install app / Add to Home screen."
+msgstr ""
 
-msgid "Tap the menu (⋯ or Share) in this in-app browser."
-msgstr "在此应用内浏览器中点菜单（⋯ 或共享）。"
+msgid "Tap the menu (⋯) in this in-app browser."
+msgstr ""
 
 msgid "Tap the Share button at the bottom of Safari (square with an upward arrow)."
 msgstr "点 Safari 底部的共享按钮（带向上箭头的方框）。"
@@ -1804,9 +1810,6 @@ msgstr "这些物料仍有原材料需要拣货。现在完成将标记列表为
 msgid "This batch has no work instructions."
 msgstr "此生产批次没有作业指导书。"
 
-msgid "This in-app browser cannot install MES. Open the link in Chrome, then tap Install."
-msgstr "此应用内浏览器无法安装 MES。请在 Chrome 中打开链接，然后点“安装”。"
-
 msgid "This in-app browser cannot install MES. Open the link in Safari, then Add to Home Screen."
 msgstr "此应用内浏览器无法安装 MES。请在 Safari 中打开链接，然后添加到主屏幕。"
 
@@ -1819,8 +1822,8 @@ msgstr "此零件是按订单制造的。将其报废可重新打开其工艺路
 msgid "This part will be scrapped from stock. Its requirement stays open so you can issue a replacement."
 msgstr "此零件将从库存报废。其要求保持未结，以便您可以领料替代品。"
 
-msgid "This site is already installed. Chrome will not show Install again. Use Open in app, then pin a desktop / taskbar shortcut."
-msgstr "此站点已安装。Chrome 将不再显示“安装”。请使用“在应用中打开”，然后固定桌面/任务栏快捷方式。"
+msgid "This site is already installed. Chrome will not show Install again."
+msgstr ""
 
 msgid "This unit will be permanently scrapped and a replacement serial number will be created."
 msgstr "此单元将被永久报废，并将创建替换序列号。"
@@ -1849,6 +1852,9 @@ msgstr "要重新安装：长按图标 → 应用信息 → 卸载（或移除�
 
 msgid "To run"
 msgstr "待启动"
+
+msgid "To verify yourself: Chrome ⋮ → More tools → Developer tools (if available), or chrome://serviceworker-internals on desktop. On phone, hard refresh is usually enough."
+msgstr ""
 
 msgid "Today"
 msgstr "今天"
@@ -1953,9 +1959,6 @@ msgstr "正在上传 {0}"
 msgid "Use a different account"
 msgstr "使用不同的帐户"
 
-msgid "Use Chrome on Android (or desktop Chrome)."
-msgstr "请使用 Android 上的 Chrome（或桌面版 Chrome）。"
-
 msgid "Used automatically at completion"
 msgstr "在完成时自动使用"
 
@@ -1977,8 +1980,8 @@ msgstr "等待维修"
 msgid "We've sent you a magic link to sign in to your account."
 msgstr "我们已向您发送了登录链接，请查收。"
 
-msgid "Web pages cannot trigger Chrome’s Open in app automatically — use the address-bar control or chrome://apps."
-msgstr "网页无法自动触发 Chrome 的“在应用中打开” — 请使用地址栏控件或 chrome://apps。"
+msgid "WeChat / QQ / UC cannot install MES. Open this link in Chrome, then tap Install."
+msgstr ""
 
 msgid "What is {translatedTerm}?"
 msgstr "{translatedTerm}是什么?"

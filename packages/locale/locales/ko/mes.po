@@ -299,26 +299,23 @@ msgstr "이메일을 확인하세요"
 msgid "Choose a job"
 msgstr "작업 지시 선택"
 
-msgid "Choose Open in Chrome (or Open in browser)."
-msgstr "Chrome에서 열기(또는 브라우저에서 열기)를 선택하세요."
+msgid "Choose Open in browser / Open in Chrome (用浏览器打开)."
+msgstr ""
 
 msgid "Choose Open in Safari."
 msgstr "Safari에서 열기를 선택하세요."
 
-msgid "Chrome did not offer a one-tap install yet. Stay on this page a few seconds, tap Install again, or use the Chrome menu below."
-msgstr "Chrome이 아직 원탭 설치를 제안하지 않았습니다. 이 페이지에서 몇 초 기다린 뒤 설치를 다시 누르거나 아래 Chrome 메뉴를 사용하세요."
+msgid "Chrome did not offer a one-tap install yet. Use the menu below."
+msgstr ""
 
-msgid "Chrome did not offer a one-tap install yet. Use the menu below — or if the address bar shows Open in app, the PWA is already installed."
-msgstr "Chrome에서 아직 원클릭 설치를 제공하지 않았습니다. 아래 메뉴를 사용하거나, 주소 표시줄에 '앱에서 열기'가 표시되면 PWA가 이미 설치된 것입니다."
+msgid "Chrome did not offer one-tap Install yet. You must use Chrome (not WeChat), hard-refresh, and confirm the service worker is controlling this page."
+msgstr ""
 
-msgid "Chrome on this phone will not offer Install again while MES is already on your home screen. Open the app, or uninstall it to reinstall."
-msgstr "MES가 이미 홈 화면에 있으면 이 휴대전화의 Chrome은 다시 설치를 제안하지 않습니다. 앱을 열거나 재설치하려면 제거하세요."
+msgid "Chrome only fires beforeinstallprompt when the site is not already installed and installability criteria are met."
+msgstr ""
 
-msgid "Chrome only fires the install prompt when the site is not already installed and installability criteria are met."
-msgstr "Chrome은 사이트가 아직 설치되지 않았고 설치 가능 조건을 충족할 때만 설치 프롬프트를 표시합니다."
-
-msgid "Chrome, Firefox, and Edge on iOS cannot native-install this app — they all use WebKit without beforeinstallprompt."
-msgstr "iOS의 Chrome, Firefox, Edge는 이 앱을 네이티브로 설치할 수 없습니다. 모두 beforeinstallprompt 없는 WebKit을 사용합니다."
+msgid "Chrome will not offer Install again while MES is already on your home screen. Open the app, or uninstall it to reinstall."
+msgstr ""
 
 msgid "Clear"
 msgstr "지우기"
@@ -408,6 +405,12 @@ msgstr "소모됨 만료됨"
 
 msgid "Continue"
 msgstr "계속"
+
+msgid "Controlled: no — Chrome will not fire the install prompt until a service worker controls this page. Hard refresh and wait a few seconds."
+msgstr ""
+
+msgid "Controlled: yes — this page has an active service worker (required for Install)."
+msgstr ""
 
 #. placeholder {0}: board.unplannedCost.days
 msgid "Cost of unplanned maintenance, last {0} days"
@@ -706,6 +709,9 @@ msgstr "온보딩으로 이동"
 msgid "Got it"
 msgstr "확인"
 
+msgid "Hard refresh this page: Chrome ⋮ → refresh, or close the tab and open /shop again. Wait 3–5 seconds after Shop loads."
+msgstr ""
+
 msgid "Hide description"
 msgstr "설명 숨기기"
 
@@ -730,9 +736,6 @@ msgstr "유휴"
 msgid "Idle for"
 msgstr "유휴 상태"
 
-msgid "If Install app is missing, wait a few seconds on Shop and tap the download button again — or clear site data for this host and retry."
-msgstr "앱 설치가 없으면 Shop에서 몇 초 기다린 뒤 다운로드 버튼을 다시 누르거나, 이 호스트의 사이트 데이터를 지운 후 다시 시도하세요."
-
 msgid "Impact"
 msgstr "영향"
 
@@ -743,8 +746,8 @@ msgstr "야드파운드법"
 msgid "in {0}"
 msgstr "{0} 후"
 
-msgid "In Chrome, tap ⋮ → Settings → Site settings → All sites → this MES host → Clear and reset, then reload /shop and tap Install again."
-msgstr "Chrome에서 ⋮ → 설정 → 사이트 설정 → 모든 사이트 → 이 MES 호스트 → 삭제 및 재설정을 누른 뒤 /shop을 새로고침하고 설치를 다시 누르세요."
+msgid "In Chrome: ⋮ → Settings → Site settings → All sites → this MES host → Clear and reset. Reload /shop, wait a few seconds, tap Install."
+msgstr ""
 
 msgid "In Progress"
 msgstr "진행 중"
@@ -752,14 +755,8 @@ msgstr "진행 중"
 msgid "In repair"
 msgstr "수리 중"
 
-msgid "In that app window: menu ⋮ → Cast, save, and share (投屏、保存和分享) → Create shortcut (创建快捷方式) / Pin to taskbar (固定到任务栏)."
-msgstr "해당 앱 창에서: 메뉴 ⋮ → 전송, 저장 및 공유 → 바로가기 만들기 / 작업 표시줄에 고정."
-
-msgid "In the Chrome address bar, click Open in app (打开应用) to launch the installed Carbon MES window."
-msgstr "Chrome 주소 표시줄에서 '앱에서 열기'를 클릭하여 설치된 Carbon MES 창을 실행합니다."
-
-msgid "In-app browsers (WeChat, Instagram, etc.) block Progressive Web App install."
-msgstr "인앱 브라우저(WeChat, Instagram 등)는 Progressive Web App 설치를 차단합니다."
+msgid "In-app browsers (WeChat, QQ, UC, Instagram) block Progressive Web App install."
+msgstr ""
 
 msgid "Inspect Item"
 msgstr "항목 검사"
@@ -767,8 +764,14 @@ msgstr "항목 검사"
 msgid "inspected"
 msgstr "검사됨"
 
-msgid "Install / Add to Home Screen"
-msgstr "설치 / 홈 화면에 추가"
+msgid "Install"
+msgstr ""
+
+msgid "Install MES"
+msgstr ""
+
+msgid "Install ready — tap again"
+msgstr ""
 
 msgid "Instructions"
 msgstr "작업 지침"
@@ -782,8 +785,8 @@ msgstr "재고 조정이 완료되었습니다"
 msgid "Inventory Adjustments"
 msgstr "재고 조정"
 
-msgid "iPhone and iPad never show a one-tap Install button. Use Safari’s Share menu — the steps below take about 15 seconds."
-msgstr "iPhone과 iPad에는 원탭 설치 버튼이 없습니다. Safari 공유 메뉴를 사용하세요. 아래 단계는 약 15초 걸립니다."
+msgid "iPhone and iPad never show a one-tap Install button (Apple policy). Use Safari’s Share menu — about 15 seconds."
+msgstr ""
 
 msgid "is"
 msgstr "같음"
@@ -902,8 +905,8 @@ msgstr "{0} 스크랩 기록"
 msgid "Login"
 msgstr "로그인"
 
-msgid "Look for the MES / Carbon MES icon on your home screen or in the app drawer and open it."
-msgstr "홈 화면이나 앱 서랍에서 MES / Carbon MES 아이콘을 찾아 여세요."
+msgid "Look for the MES icon on your home screen or in the app drawer and open it."
+msgstr ""
 
 msgid "Lot"
 msgstr "로트"
@@ -1174,6 +1177,9 @@ msgstr "/{0}"
 msgid "Oldest first"
 msgstr "오래된순"
 
+msgid "On iPhone, one-tap system install is impossible by Apple policy — Safari Add to Home Screen is the only path."
+msgstr ""
+
 msgid "one combined lot · planned"
 msgstr "결합된 로트 하나 · 계획됨"
 
@@ -1187,8 +1193,8 @@ msgstr "하나의 피킹이 전체 배치를 커버합니다 — 자동으로 �
 msgid "Only {0} available"
 msgstr "{0}개만 가용합니다"
 
-msgid "Only Chromium fires the one-tap Install prompt. After install on desktop, use Open in app to pin to the taskbar."
-msgstr "원탭 설치 프롬프트는 Chromium만 표시합니다. 데스크톱에 설치한 뒤 앱에서 열기를 사용해 작업 표시줄에 고정하세요."
+msgid "Only Android Chrome fires the one-tap Install prompt (beforeinstallprompt)."
+msgstr ""
 
 msgid "Oops. You shouldn't see this page. Eventually it will be a landing page."
 msgstr "이런. 이 페이지가 보이면 안 됩니다. 나중에 랜딩 페이지가 될 예정입니다."
@@ -1208,8 +1214,8 @@ msgstr "MRB 처분 결정을 위해 NCR을 여세요"
 msgid "Open app — Already installed"
 msgstr "앱 열기 — 이미 설치됨"
 
-msgid "Open in your browser"
-msgstr "브라우저에서 열기"
+msgid "Open in Chrome"
+msgstr ""
 
 msgid "Open inspection"
 msgstr "검사 열기"
@@ -1240,9 +1246,6 @@ msgstr "선택 사항"
 
 msgid "or"
 msgstr "또는"
-
-msgid "Or open chrome://apps → right-click Carbon MES → Create shortcut → choose Pin to taskbar / Create desktop shortcut."
-msgstr "또는 chrome://apps를 열고 → Carbon MES 우클릭 → 바로가기 만들기 → 작업 표시줄에 고정 / 바탕화면 바로가기 만들기를 선택하세요."
 
 msgid "Other"
 msgstr "기타"
@@ -1624,6 +1627,9 @@ msgstr "시리얼 번호"
 msgid "Serialized"
 msgstr "일련화됨"
 
+msgid "Service worker check"
+msgstr ""
+
 msgid "Session locked"
 msgstr "세션 잠김"
 
@@ -1660,8 +1666,8 @@ msgstr "설명 표시"
 msgid "Show keyboard shortcuts"
 msgstr "키보드 바로가기 표시"
 
-msgid "Sign in if needed, open Shop, then tap Install again."
-msgstr "필요하면 로그인한 뒤 Shop을 열고 설치를 다시 누르세요."
+msgid "Sign in if needed, open Shop, wait a few seconds, then tap Install."
+msgstr ""
 
 msgid "Sign in with Google"
 msgstr "Google로 로그인"
@@ -1722,8 +1728,8 @@ msgstr "상태"
 msgid "Statuses"
 msgstr "상태"
 
-msgid "Stay in Chrome on Android (not Samsung Internet)."
-msgstr "Android에서는 Chrome을 사용하세요(Samsung Internet 아님)."
+msgid "Stay in Android Chrome — not WeChat, QQ, UC, or Samsung Internet."
+msgstr ""
 
 msgid "Stay on this page"
 msgstr "이 페이지에 머무르기"
@@ -1734,8 +1740,8 @@ msgstr "단계"
 msgid "Steps are missing"
 msgstr "단계가 누락되었습니다"
 
-msgid "Still missing Install? Stay on this page a few seconds and try again, or use Open in app / chrome://apps → Create shortcut."
-msgstr "설치가 여전히 표시되지 않나요? 이 페이지에서 몇 초간 기다린 후 다시 시도하거나, '앱에서 열기' / chrome://apps → 바로가기 만들기를 사용하세요."
+msgid "Still missing? Chrome ⋮ → Settings → Site settings → All sites → this host → Clear and reset, then retry."
+msgstr ""
 
 msgid "Storage Unit"
 msgstr "보관 단위"
@@ -1761,11 +1767,11 @@ msgstr "작업장을 오프라인으로 전환"
 msgid "Tap Add in the top right. Launch MES from your Home Screen icon afterward."
 msgstr "오른쪽 위에서 추가를 누르세요. 이후 홈 화면 아이콘에서 MES를 실행하세요."
 
-msgid "Tap the Chrome menu (⋮) at the top right, then Install app or Add to Home screen."
-msgstr "오른쪽 위 Chrome 메뉴(⋮)를 누른 뒤 앱 설치 또는 홈 화면에 추가를 선택하세요."
+msgid "Tap Install again for the system install dialog. Or Chrome ⋮ → Install app / Add to Home screen."
+msgstr ""
 
-msgid "Tap the menu (⋯ or Share) in this in-app browser."
-msgstr "이 인앱 브라우저에서 메뉴(⋯ 또는 공유)를 누르세요."
+msgid "Tap the menu (⋯) in this in-app browser."
+msgstr ""
 
 msgid "Tap the Share button at the bottom of Safari (square with an upward arrow)."
 msgstr "Safari 하단의 공유 버튼(위쪽 화살표가 있는 사각형)을 누르세요."
@@ -1804,9 +1810,6 @@ msgstr "이 항목들은 아직 선택할 재료가 있습니다. 지금 완료�
 msgid "This batch has no work instructions."
 msgstr "이 배치는 작업 표준서가 없습니다."
 
-msgid "This in-app browser cannot install MES. Open the link in Chrome, then tap Install."
-msgstr "이 인앱 브라우저는 MES를 설치할 수 없습니다. 링크를 Chrome에서 연 뒤 설치를 누르세요."
-
 msgid "This in-app browser cannot install MES. Open the link in Safari, then Add to Home Screen."
 msgstr "이 인앱 브라우저는 MES를 설치할 수 없습니다. 링크를 Safari에서 연 뒤 홈 화면에 추가하세요."
 
@@ -1819,8 +1822,8 @@ msgstr "이 부품은 주문 제작되었습니다. 이를 스크랩하면 라�
 msgid "This part will be scrapped from stock. Its requirement stays open so you can issue a replacement."
 msgstr "이 부품은 재고에서 폐기됩니다. 요구사항은 열려있으므로 교체품을 발급할 수 있습니다."
 
-msgid "This site is already installed. Chrome will not show Install again. Use Open in app, then pin a desktop / taskbar shortcut."
-msgstr "이 사이트는 이미 설치되어 있습니다. Chrome에 설치가 다시 표시되지 않습니다. '앱에서 열기'를 사용한 다음 바탕화면/작업 표시줄 바로가기를 고정하세요."
+msgid "This site is already installed. Chrome will not show Install again."
+msgstr ""
 
 msgid "This unit will be permanently scrapped and a replacement serial number will be created."
 msgstr "이 개가 영구적으로 스크랩되고 대체 시리얼 번호가 생성됩니다."
@@ -1849,6 +1852,9 @@ msgstr "재설치: 아이콘을 길게 누름 → 앱 정보 → 제거(또는 �
 
 msgid "To run"
 msgstr "실행할"
+
+msgid "To verify yourself: Chrome ⋮ → More tools → Developer tools (if available), or chrome://serviceworker-internals on desktop. On phone, hard refresh is usually enough."
+msgstr ""
 
 msgid "Today"
 msgstr "오늘"
@@ -1953,9 +1959,6 @@ msgstr "{0} 업로드 중"
 msgid "Use a different account"
 msgstr "다른 계정 사용"
 
-msgid "Use Chrome on Android (or desktop Chrome)."
-msgstr "Android의 Chrome(또는 데스크톱 Chrome)을 사용하세요."
-
 msgid "Used automatically at completion"
 msgstr "완료 시 자동으로 사용됨"
 
@@ -1977,8 +1980,8 @@ msgstr "수리 대기"
 msgid "We've sent you a magic link to sign in to your account."
 msgstr "계정에 로그인할 수 있는 매직 링크를 보내드렸습니다."
 
-msgid "Web pages cannot trigger Chrome’s Open in app automatically — use the address-bar control or chrome://apps."
-msgstr "웹 페이지는 Chrome의 '앱에서 열기'를 자동으로 실행할 수 없습니다. 주소 표시줄 컨트롤이나 chrome://apps를 사용하세요."
+msgid "WeChat / QQ / UC cannot install MES. Open this link in Chrome, then tap Install."
+msgstr ""
 
 msgid "What is {translatedTerm}?"
 msgstr "{translatedTerm}란 무엇인가요?"

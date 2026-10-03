@@ -232,13 +232,10 @@ function Document({
           name="viewport"
           content="width=device-width, initial-scale=1, maximum-scale=1"
         />
-        <Meta />
-        <title>{title}</title>
-        <Links />
-        {/* PWA: capture beforeinstallprompt + register SW before entry.client
-            downloads. Android Chrome can fire BIP while the module graph is
-            still loading; waiting until entry.client misses it permanently for
-            that page load. CSP nonce required (same pattern as window.env). */}
+        {/* PWA bootstrap FIRST after viewport: register SW + capture
+            beforeinstallprompt before CSS/modulegraph download. Android Chrome
+            can fire BIP during HTML parse; later capture misses it for that
+            load. CSP nonce required (same pattern as window.env). */}
         <script
           nonce={nonce}
           suppressHydrationWarning
@@ -246,6 +243,9 @@ function Document({
             __html: PWA_BOOTSTRAP_INLINE_SCRIPT
           }}
         />
+        <Meta />
+        <title>{title}</title>
+        <Links />
       </head>
       <body className="h-full bg-background antialiased selection:bg-primary/10 selection:text-primary">
         {children}

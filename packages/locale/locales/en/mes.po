@@ -299,26 +299,23 @@ msgstr "Check your email"
 msgid "Choose a job"
 msgstr "Choose a job"
 
-msgid "Choose Open in Chrome (or Open in browser)."
-msgstr "Choose Open in Chrome (or Open in browser)."
+msgid "Choose Open in browser / Open in Chrome (用浏览器打开)."
+msgstr "Choose Open in browser / Open in Chrome (用浏览器打开)."
 
 msgid "Choose Open in Safari."
 msgstr "Choose Open in Safari."
 
-msgid "Chrome did not offer a one-tap install yet. Stay on this page a few seconds, tap Install again, or use the Chrome menu below."
-msgstr "Chrome did not offer a one-tap install yet. Stay on this page a few seconds, tap Install again, or use the Chrome menu below."
+msgid "Chrome did not offer a one-tap install yet. Use the menu below."
+msgstr "Chrome did not offer a one-tap install yet. Use the menu below."
 
-msgid "Chrome did not offer a one-tap install yet. Use the menu below — or if the address bar shows Open in app, the PWA is already installed."
-msgstr "Chrome did not offer a one-tap install yet. Use the menu below — or if the address bar shows Open in app, the PWA is already installed."
+msgid "Chrome did not offer one-tap Install yet. You must use Chrome (not WeChat), hard-refresh, and confirm the service worker is controlling this page."
+msgstr "Chrome did not offer one-tap Install yet. You must use Chrome (not WeChat), hard-refresh, and confirm the service worker is controlling this page."
 
-msgid "Chrome on this phone will not offer Install again while MES is already on your home screen. Open the app, or uninstall it to reinstall."
-msgstr "Chrome on this phone will not offer Install again while MES is already on your home screen. Open the app, or uninstall it to reinstall."
+msgid "Chrome only fires beforeinstallprompt when the site is not already installed and installability criteria are met."
+msgstr "Chrome only fires beforeinstallprompt when the site is not already installed and installability criteria are met."
 
-msgid "Chrome only fires the install prompt when the site is not already installed and installability criteria are met."
-msgstr "Chrome only fires the install prompt when the site is not already installed and installability criteria are met."
-
-msgid "Chrome, Firefox, and Edge on iOS cannot native-install this app — they all use WebKit without beforeinstallprompt."
-msgstr "Chrome, Firefox, and Edge on iOS cannot native-install this app — they all use WebKit without beforeinstallprompt."
+msgid "Chrome will not offer Install again while MES is already on your home screen. Open the app, or uninstall it to reinstall."
+msgstr "Chrome will not offer Install again while MES is already on your home screen. Open the app, or uninstall it to reinstall."
 
 msgid "Clear"
 msgstr "Clear"
@@ -408,6 +405,12 @@ msgstr "Consumed expired"
 
 msgid "Continue"
 msgstr "Continue"
+
+msgid "Controlled: no — Chrome will not fire the install prompt until a service worker controls this page. Hard refresh and wait a few seconds."
+msgstr "Controlled: no — Chrome will not fire the install prompt until a service worker controls this page. Hard refresh and wait a few seconds."
+
+msgid "Controlled: yes — this page has an active service worker (required for Install)."
+msgstr "Controlled: yes — this page has an active service worker (required for Install)."
 
 #. placeholder {0}: board.unplannedCost.days
 msgid "Cost of unplanned maintenance, last {0} days"
@@ -706,6 +709,9 @@ msgstr "Go to onboarding"
 msgid "Got it"
 msgstr "Got it"
 
+msgid "Hard refresh this page: Chrome ⋮ → refresh, or close the tab and open /shop again. Wait 3–5 seconds after Shop loads."
+msgstr "Hard refresh this page: Chrome ⋮ → refresh, or close the tab and open /shop again. Wait 3–5 seconds after Shop loads."
+
 msgid "Hide description"
 msgstr "Hide description"
 
@@ -730,9 +736,6 @@ msgstr "Idle"
 msgid "Idle for"
 msgstr "Idle for"
 
-msgid "If Install app is missing, wait a few seconds on Shop and tap the download button again — or clear site data for this host and retry."
-msgstr "If Install app is missing, wait a few seconds on Shop and tap the download button again — or clear site data for this host and retry."
-
 msgid "Impact"
 msgstr "Impact"
 
@@ -743,8 +746,8 @@ msgstr "Imperial"
 msgid "in {0}"
 msgstr "in {0}"
 
-msgid "In Chrome, tap ⋮ → Settings → Site settings → All sites → this MES host → Clear and reset, then reload /shop and tap Install again."
-msgstr "In Chrome, tap ⋮ → Settings → Site settings → All sites → this MES host → Clear and reset, then reload /shop and tap Install again."
+msgid "In Chrome: ⋮ → Settings → Site settings → All sites → this MES host → Clear and reset. Reload /shop, wait a few seconds, tap Install."
+msgstr "In Chrome: ⋮ → Settings → Site settings → All sites → this MES host → Clear and reset. Reload /shop, wait a few seconds, tap Install."
 
 msgid "In Progress"
 msgstr "In Progress"
@@ -752,14 +755,8 @@ msgstr "In Progress"
 msgid "In repair"
 msgstr "In repair"
 
-msgid "In that app window: menu ⋮ → Cast, save, and share (投屏、保存和分享) → Create shortcut (创建快捷方式) / Pin to taskbar (固定到任务栏)."
-msgstr "In that app window: menu ⋮ → Cast, save, and share (投屏、保存和分享) → Create shortcut (创建快捷方式) / Pin to taskbar (固定到任务栏)."
-
-msgid "In the Chrome address bar, click Open in app (打开应用) to launch the installed Carbon MES window."
-msgstr "In the Chrome address bar, click Open in app (打开应用) to launch the installed Carbon MES window."
-
-msgid "In-app browsers (WeChat, Instagram, etc.) block Progressive Web App install."
-msgstr "In-app browsers (WeChat, Instagram, etc.) block Progressive Web App install."
+msgid "In-app browsers (WeChat, QQ, UC, Instagram) block Progressive Web App install."
+msgstr "In-app browsers (WeChat, QQ, UC, Instagram) block Progressive Web App install."
 
 msgid "Inspect Item"
 msgstr "Inspect Item"
@@ -767,8 +764,14 @@ msgstr "Inspect Item"
 msgid "inspected"
 msgstr "inspected"
 
-msgid "Install / Add to Home Screen"
-msgstr "Install / Add to Home Screen"
+msgid "Install"
+msgstr "Install"
+
+msgid "Install MES"
+msgstr "Install MES"
+
+msgid "Install ready — tap again"
+msgstr "Install ready — tap again"
 
 msgid "Instructions"
 msgstr "Instructions"
@@ -782,8 +785,8 @@ msgstr "Inventory adjustment completed"
 msgid "Inventory Adjustments"
 msgstr "Inventory Adjustments"
 
-msgid "iPhone and iPad never show a one-tap Install button. Use Safari’s Share menu — the steps below take about 15 seconds."
-msgstr "iPhone and iPad never show a one-tap Install button. Use Safari’s Share menu — the steps below take about 15 seconds."
+msgid "iPhone and iPad never show a one-tap Install button (Apple policy). Use Safari’s Share menu — about 15 seconds."
+msgstr "iPhone and iPad never show a one-tap Install button (Apple policy). Use Safari’s Share menu — about 15 seconds."
 
 msgid "is"
 msgstr "is"
@@ -902,8 +905,8 @@ msgstr "Log scrap for {0}"
 msgid "Login"
 msgstr "Login"
 
-msgid "Look for the MES / Carbon MES icon on your home screen or in the app drawer and open it."
-msgstr "Look for the MES / Carbon MES icon on your home screen or in the app drawer and open it."
+msgid "Look for the MES icon on your home screen or in the app drawer and open it."
+msgstr "Look for the MES icon on your home screen or in the app drawer and open it."
 
 msgid "Lot"
 msgstr "Lot"
@@ -1174,6 +1177,9 @@ msgstr "of {0}"
 msgid "Oldest first"
 msgstr "Oldest first"
 
+msgid "On iPhone, one-tap system install is impossible by Apple policy — Safari Add to Home Screen is the only path."
+msgstr "On iPhone, one-tap system install is impossible by Apple policy — Safari Add to Home Screen is the only path."
+
 msgid "one combined lot · planned"
 msgstr "one combined lot · planned"
 
@@ -1187,8 +1193,8 @@ msgstr "One pick covers the whole batch — it is shared out to the jobs automat
 msgid "Only {0} available"
 msgstr "Only {0} available"
 
-msgid "Only Chromium fires the one-tap Install prompt. After install on desktop, use Open in app to pin to the taskbar."
-msgstr "Only Chromium fires the one-tap Install prompt. After install on desktop, use Open in app to pin to the taskbar."
+msgid "Only Android Chrome fires the one-tap Install prompt (beforeinstallprompt)."
+msgstr "Only Android Chrome fires the one-tap Install prompt (beforeinstallprompt)."
 
 msgid "Oops. You shouldn't see this page. Eventually it will be a landing page."
 msgstr "Oops. You shouldn't see this page. Eventually it will be a landing page."
@@ -1208,8 +1214,8 @@ msgstr "Open an NCR for MRB disposition"
 msgid "Open app — Already installed"
 msgstr "Open app — Already installed"
 
-msgid "Open in your browser"
-msgstr "Open in your browser"
+msgid "Open in Chrome"
+msgstr "Open in Chrome"
 
 msgid "Open inspection"
 msgstr "Open inspection"
@@ -1240,9 +1246,6 @@ msgstr "Optional"
 
 msgid "or"
 msgstr "or"
-
-msgid "Or open chrome://apps → right-click Carbon MES → Create shortcut → choose Pin to taskbar / Create desktop shortcut."
-msgstr "Or open chrome://apps → right-click Carbon MES → Create shortcut → choose Pin to taskbar / Create desktop shortcut."
 
 msgid "Other"
 msgstr "Other"
@@ -1624,6 +1627,9 @@ msgstr "Serial Numbers"
 msgid "Serialized"
 msgstr "Serialized"
 
+msgid "Service worker check"
+msgstr "Service worker check"
+
 msgid "Session locked"
 msgstr "Session locked"
 
@@ -1660,8 +1666,8 @@ msgstr "Show description"
 msgid "Show keyboard shortcuts"
 msgstr "Show keyboard shortcuts"
 
-msgid "Sign in if needed, open Shop, then tap Install again."
-msgstr "Sign in if needed, open Shop, then tap Install again."
+msgid "Sign in if needed, open Shop, wait a few seconds, then tap Install."
+msgstr "Sign in if needed, open Shop, wait a few seconds, then tap Install."
 
 msgid "Sign in with Google"
 msgstr "Sign in with Google"
@@ -1722,8 +1728,8 @@ msgstr "Status"
 msgid "Statuses"
 msgstr "Statuses"
 
-msgid "Stay in Chrome on Android (not Samsung Internet)."
-msgstr "Stay in Chrome on Android (not Samsung Internet)."
+msgid "Stay in Android Chrome — not WeChat, QQ, UC, or Samsung Internet."
+msgstr "Stay in Android Chrome — not WeChat, QQ, UC, or Samsung Internet."
 
 msgid "Stay on this page"
 msgstr "Stay on this page"
@@ -1734,8 +1740,8 @@ msgstr "Steps"
 msgid "Steps are missing"
 msgstr "Steps are missing"
 
-msgid "Still missing Install? Stay on this page a few seconds and try again, or use Open in app / chrome://apps → Create shortcut."
-msgstr "Still missing Install? Stay on this page a few seconds and try again, or use Open in app / chrome://apps → Create shortcut."
+msgid "Still missing? Chrome ⋮ → Settings → Site settings → All sites → this host → Clear and reset, then retry."
+msgstr "Still missing? Chrome ⋮ → Settings → Site settings → All sites → this host → Clear and reset, then retry."
 
 msgid "Storage Unit"
 msgstr "Storage Unit"
@@ -1761,11 +1767,11 @@ msgstr "Takes work center offline"
 msgid "Tap Add in the top right. Launch MES from your Home Screen icon afterward."
 msgstr "Tap Add in the top right. Launch MES from your Home Screen icon afterward."
 
-msgid "Tap the Chrome menu (⋮) at the top right, then Install app or Add to Home screen."
-msgstr "Tap the Chrome menu (⋮) at the top right, then Install app or Add to Home screen."
+msgid "Tap Install again for the system install dialog. Or Chrome ⋮ → Install app / Add to Home screen."
+msgstr "Tap Install again for the system install dialog. Or Chrome ⋮ → Install app / Add to Home screen."
 
-msgid "Tap the menu (⋯ or Share) in this in-app browser."
-msgstr "Tap the menu (⋯ or Share) in this in-app browser."
+msgid "Tap the menu (⋯) in this in-app browser."
+msgstr "Tap the menu (⋯) in this in-app browser."
 
 msgid "Tap the Share button at the bottom of Safari (square with an upward arrow)."
 msgstr "Tap the Share button at the bottom of Safari (square with an upward arrow)."
@@ -1804,9 +1810,6 @@ msgstr "These items still have material to pick. Finishing now marks the list Pa
 msgid "This batch has no work instructions."
 msgstr "This batch has no work instructions."
 
-msgid "This in-app browser cannot install MES. Open the link in Chrome, then tap Install."
-msgstr "This in-app browser cannot install MES. Open the link in Chrome, then tap Install."
-
 msgid "This in-app browser cannot install MES. Open the link in Safari, then Add to Home Screen."
 msgstr "This in-app browser cannot install MES. Open the link in Safari, then Add to Home Screen."
 
@@ -1819,8 +1822,8 @@ msgstr "This part was made to order. Scrapping it can reopen its routing to make
 msgid "This part will be scrapped from stock. Its requirement stays open so you can issue a replacement."
 msgstr "This part will be scrapped from stock. Its requirement stays open so you can issue a replacement."
 
-msgid "This site is already installed. Chrome will not show Install again. Use Open in app, then pin a desktop / taskbar shortcut."
-msgstr "This site is already installed. Chrome will not show Install again. Use Open in app, then pin a desktop / taskbar shortcut."
+msgid "This site is already installed. Chrome will not show Install again."
+msgstr "This site is already installed. Chrome will not show Install again."
 
 msgid "This unit will be permanently scrapped and a replacement serial number will be created."
 msgstr "This unit will be permanently scrapped and a replacement serial number will be created."
@@ -1849,6 +1852,9 @@ msgstr "To reinstall: long-press the icon → App info → Uninstall (or Remove)
 
 msgid "To run"
 msgstr "To run"
+
+msgid "To verify yourself: Chrome ⋮ → More tools → Developer tools (if available), or chrome://serviceworker-internals on desktop. On phone, hard refresh is usually enough."
+msgstr "To verify yourself: Chrome ⋮ → More tools → Developer tools (if available), or chrome://serviceworker-internals on desktop. On phone, hard refresh is usually enough."
 
 msgid "Today"
 msgstr "Today"
@@ -1953,9 +1959,6 @@ msgstr "Uploading {0}"
 msgid "Use a different account"
 msgstr "Use a different account"
 
-msgid "Use Chrome on Android (or desktop Chrome)."
-msgstr "Use Chrome on Android (or desktop Chrome)."
-
 msgid "Used automatically at completion"
 msgstr "Used automatically at completion"
 
@@ -1977,8 +1980,8 @@ msgstr "Waiting repair"
 msgid "We've sent you a magic link to sign in to your account."
 msgstr "We've sent you a magic link to sign in to your account."
 
-msgid "Web pages cannot trigger Chrome’s Open in app automatically — use the address-bar control or chrome://apps."
-msgstr "Web pages cannot trigger Chrome’s Open in app automatically — use the address-bar control or chrome://apps."
+msgid "WeChat / QQ / UC cannot install MES. Open this link in Chrome, then tap Install."
+msgstr "WeChat / QQ / UC cannot install MES. Open this link in Chrome, then tap Install."
 
 msgid "What is {translatedTerm}?"
 msgstr "What is {translatedTerm}?"

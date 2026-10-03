@@ -18,12 +18,17 @@ type PwaInstallSheetProps = {
   alreadyInstalled?: boolean;
   /** WeChat / in-app WebView — must open in system browser first. */
   inAppBrowser?: boolean;
+  /** `navigator.serviceWorker.controller` script URL when known. */
+  swControllerUrl?: string | null;
 };
 
 /**
  * Manual install / open-app steps when `beforeinstallprompt` is unavailable
  * (iOS Safari, in-app WebViews, already installed, or Chrome without
  * an installable state for this engagement window).
+ *
+ * Mobile-first: Android Chrome diagnostics are primary. Desktop chrome://apps
+ * copy is omitted on Android / iOS.
  */
 export function PwaInstallSheet({
   open,
@@ -31,35 +36,40 @@ export function PwaInstallSheet({
   isIos,
   isAndroid = false,
   alreadyInstalled = false,
-  inAppBrowser = false
+  inAppBrowser = false,
+  swControllerUrl = null
 }: PwaInstallSheetProps) {
   const { t } = useLingui();
+  const swControlled = Boolean(swControllerUrl);
+  const mobile = isIos || isAndroid;
 
   const title = inAppBrowser
-    ? t`Open in your browser`
+    ? t`Open in Chrome`
     : alreadyInstalled
       ? t`Already installed`
-      : t`Add to Home Screen`;
+      : isIos
+        ? t`Add to Home Screen`
+        : t`Install MES`;
 
   const description = inAppBrowser
     ? isIos
       ? t`This in-app browser cannot install MES. Open the link in Safari, then Add to Home Screen.`
-      : t`This in-app browser cannot install MES. Open the link in Chrome, then tap Install.`
+      : t`WeChat / QQ / UC cannot install MES. Open this link in Chrome, then tap Install.`
     : isIos
-      ? t`iPhone and iPad never show a one-tap Install button. Use Safari’s Share menu — the steps below take about 15 seconds.`
+      ? t`iPhone and iPad never show a one-tap Install button (Apple policy). Use Safari’s Share menu — about 15 seconds.`
       : alreadyInstalled
         ? isAndroid
-          ? t`Chrome on this phone will not offer Install again while MES is already on your home screen. Open the app, or uninstall it to reinstall.`
-          : t`This site is already installed. Chrome will not show Install again. Use Open in app, then pin a desktop / taskbar shortcut.`
+          ? t`Chrome will not offer Install again while MES is already on your home screen. Open the app, or uninstall it to reinstall.`
+          : t`This site is already installed. Chrome will not show Install again.`
         : isAndroid
-          ? t`Chrome did not offer a one-tap install yet. Stay on this page a few seconds, tap Install again, or use the Chrome menu below.`
-          : t`Chrome did not offer a one-tap install yet. Use the menu below — or if the address bar shows Open in app, the PWA is already installed.`;
+          ? t`Chrome did not offer one-tap Install yet. You must use Chrome (not WeChat), hard-refresh, and confirm the service worker is controlling this page.`
+          : t`Chrome did not offer a one-tap install yet. Use the menu below.`;
 
   return (
     <BottomSheet open={open} onOpenChange={onOpenChange}>
       <BottomSheetContent
         className={
-          isIos || inAppBrowser
+          mobile || inAppBrowser
             ? "mx-auto max-h-[90vh] min-h-[70vh] max-w-lg overflow-y-auto pb-[env(safe-area-inset-bottom)]"
             : "mx-auto max-w-lg pb-[env(safe-area-inset-bottom)]"
         }
@@ -76,20 +86,21 @@ export function PwaInstallSheet({
           {inAppBrowser ? (
             <ol className="list-decimal space-y-3 pl-5 text-base leading-relaxed text-foreground">
               <li>
-                <Trans>
-                  Tap the menu (⋯ or Share) in this in-app browser.
-                </Trans>
+                <Trans>Tap the menu (⋯) in this in-app browser.</Trans>
               </li>
               <li>
                 {isIos ? (
                   <Trans>Choose Open in Safari.</Trans>
                 ) : (
-                  <Trans>Choose Open in Chrome (or Open in browser).</Trans>
+                  <Trans>
+                    Choose Open in browser / Open in Chrome (用浏览器打开).
+                  </Trans>
                 )}
               </li>
               <li>
                 <Trans>
-                  Sign in if needed, open Shop, then tap Install again.
+                  Sign in if needed, open Shop, wait a few seconds, then tap
+                  Install.
                 </Trans>
               </li>
             </ol>
@@ -120,93 +131,98 @@ export function PwaInstallSheet({
               </li>
             </ol>
           ) : alreadyInstalled ? (
-            isAndroid ? (
-              <ol className="list-decimal space-y-3 pl-5 text-sm text-foreground">
-                <li>
-                  <Trans>
-                    Look for the MES / Carbon MES icon on your home screen or in
-                    the app drawer and open it.
-                  </Trans>
-                </li>
-                <li>
-                  <Trans>
-                    To reinstall: long-press the icon → App info → Uninstall (or
-                    Remove).
-                  </Trans>
-                </li>
-                <li>
-                  <Trans>
-                    In Chrome, tap ⋮ → Settings → Site settings → All sites →
-                    this MES host → Clear and reset, then reload /shop and tap
-                    Install again.
-                  </Trans>
-                </li>
-              </ol>
-            ) : (
-              <ol className="list-decimal space-y-2 pl-5 text-sm text-foreground">
-                <li>
-                  <Trans>
-                    In the Chrome address bar, click Open in app (打开应用) to
-                    launch the installed Carbon MES window.
-                  </Trans>
-                </li>
-                <li>
-                  <Trans>
-                    In that app window: menu ⋮ → Cast, save, and share
-                    (投屏、保存和分享) → Create shortcut (创建快捷方式) / Pin to
-                    taskbar (固定到任务栏).
-                  </Trans>
-                </li>
-                <li>
-                  <Trans>
-                    Or open chrome://apps → right-click Carbon MES → Create
-                    shortcut → choose Pin to taskbar / Create desktop shortcut.
-                  </Trans>
-                </li>
-              </ol>
-            )
-          ) : (
-            <ol className="list-decimal space-y-3 pl-5 text-sm text-foreground">
-              <li>
-                {isAndroid ? (
-                  <Trans>Stay in Chrome on Android (not Samsung Internet).</Trans>
-                ) : (
-                  <Trans>Use Chrome on Android (or desktop Chrome).</Trans>
-                )}
-              </li>
+            <ol className="list-decimal space-y-3 pl-5 text-base leading-relaxed text-foreground">
               <li>
                 <Trans>
-                  Tap the Chrome menu (⋮) at the top right, then Install app or
-                  Add to Home screen.
+                  Look for the MES icon on your home screen or in the app drawer
+                  and open it.
                 </Trans>
               </li>
               <li>
-                {isAndroid ? (
-                  <Trans>
-                    If Install app is missing, wait a few seconds on Shop and tap
-                    the download button again — or clear site data for this host
-                    and retry.
-                  </Trans>
-                ) : (
-                  <Trans>
-                    Still missing Install? Stay on this page a few seconds and
-                    try again, or use Open in app / chrome://apps → Create
-                    shortcut.
-                  </Trans>
-                )}
+                <Trans>
+                  To reinstall: long-press the icon → App info → Uninstall (or
+                  Remove).
+                </Trans>
+              </li>
+              <li>
+                <Trans>
+                  In Chrome: ⋮ → Settings → Site settings → All sites → this MES
+                  host → Clear and reset. Reload /shop, wait a few seconds, tap
+                  Install.
+                </Trans>
+              </li>
+            </ol>
+          ) : (
+            <ol className="list-decimal space-y-3 pl-5 text-base leading-relaxed text-foreground">
+              <li>
+                <Trans>
+                  Stay in Android Chrome — not WeChat, QQ, UC, or Samsung
+                  Internet.
+                </Trans>
+              </li>
+              <li>
+                <Trans>
+                  Hard refresh this page: Chrome ⋮ → refresh, or close the tab
+                  and open /shop again. Wait 3–5 seconds after Shop loads.
+                </Trans>
+              </li>
+              <li>
+                <Trans>
+                  Tap Install again for the system install dialog. Or Chrome ⋮ →
+                  Install app / Add to Home screen.
+                </Trans>
+              </li>
+              <li>
+                <Trans>
+                  Still missing? Chrome ⋮ → Settings → Site settings → All sites
+                  → this host → Clear and reset, then retry.
+                </Trans>
               </li>
             </ol>
           )}
+
+          {isAndroid && !inAppBrowser && !alreadyInstalled ? (
+            <div className="rounded-md border border-border bg-muted/40 px-3 py-3 text-sm text-foreground space-y-1">
+              <p className="font-medium">
+                <Trans>Service worker check</Trans>
+              </p>
+              <p className="text-muted-foreground">
+                {swControlled ? (
+                  <Trans>
+                    Controlled: yes — this page has an active service worker
+                    (required for Install).
+                  </Trans>
+                ) : (
+                  <Trans>
+                    Controlled: no — Chrome will not fire the install prompt
+                    until a service worker controls this page. Hard refresh and
+                    wait a few seconds.
+                  </Trans>
+                )}
+              </p>
+              {swControllerUrl ? (
+                <p className="break-all font-mono text-xs text-muted-foreground">
+                  {swControllerUrl}
+                </p>
+              ) : null}
+              <p className="text-xs text-muted-foreground pt-1">
+                <Trans>
+                  To verify yourself: Chrome ⋮ → More tools → Developer tools
+                  (if available), or chrome://serviceworker-internals on
+                  desktop. On phone, hard refresh is usually enough.
+                </Trans>
+              </p>
+            </div>
+          ) : null}
+
           <p className="text-xs text-muted-foreground">
             {inAppBrowser
-              ? t`In-app browsers (WeChat, Instagram, etc.) block Progressive Web App install.`
+              ? t`In-app browsers (WeChat, QQ, UC, Instagram) block Progressive Web App install.`
               : isIos
-                ? t`Chrome, Firefox, and Edge on iOS cannot native-install this app — they all use WebKit without beforeinstallprompt.`
+                ? t`On iPhone, one-tap system install is impossible by Apple policy — Safari Add to Home Screen is the only path.`
                 : alreadyInstalled
-                  ? isAndroid
-                    ? t`Chrome only fires the install prompt when the site is not already installed and installability criteria are met.`
-                    : t`Web pages cannot trigger Chrome’s Open in app automatically — use the address-bar control or chrome://apps.`
-                  : t`Only Chromium fires the one-tap Install prompt. After install on desktop, use Open in app to pin to the taskbar.`}
+                  ? t`Chrome only fires beforeinstallprompt when the site is not already installed and installability criteria are met.`
+                  : t`Only Android Chrome fires the one-tap Install prompt (beforeinstallprompt).`}
           </p>
           <Button
             type="button"

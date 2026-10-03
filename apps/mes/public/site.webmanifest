@@ -17,20 +17,15 @@
       "type": "image/png",
       "sizes": "512x512",
       "purpose": "any"
-    },
-    {
-      "src": "/icons/192.png",
-      "type": "image/png",
-      "sizes": "192x192",
-      "purpose": "maskable"
-    },
-    {
-      "src": "/icons/512.png",
-      "type": "image/png",
-      "sizes": "512x512",
-      "purpose": "maskable"
     }
   ],
+  "related_applications": [
+    {
+      "platform": "webapp",
+      "url": "/site.webmanifest"
+    }
+  ],
+  "prefer_related_applications": false,
   "theme_color": "#ffffff",
   "background_color": "#ffffff"
 }
