@@ -13,16 +13,24 @@ import posthog from "posthog-js";
 import { startTransition } from "react";
 import { hydrateRoot } from "react-dom/client";
 import { HydratedRouter } from "react-router/dom";
+import { ensurePwaInstallCapture } from "~/modules/shop/ui/pwaInstallCapture";
 import { preloadCatalog } from "~/services/lingui";
 
 ensureLoggingConfigured();
+
+// Capture beforeinstallprompt before React hydrates — Chrome often fires it
+// as soon as the SW is active, which can be before any useEffect listener.
+ensurePwaInstallCapture();
 
 // Register a minimal service worker so Chromium can offer "Install app"
 // for the MES shop PWA. Scope `/` covers `/shop` (start_url). Browser-only;
 // never block hydration if registration fails.
 if ("serviceWorker" in navigator) {
   void navigator.serviceWorker
-    .register("/serviceWorker.js", { scope: "/" })
+    .register("/serviceWorker.js", {
+      scope: "/",
+      updateViaCache: "none"
+    })
     .catch(() => {
       // Best-effort installability — ignore registration errors.
     });

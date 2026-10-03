@@ -296,6 +296,12 @@ msgstr "Check your email"
 msgid "Choose a job"
 msgstr "Choose a job"
 
+msgid "Chrome did not offer a one-tap install yet. Use the menu below, or stay on this page a few seconds and try Install again."
+msgstr "Chrome did not offer a one-tap install yet. Use the menu below, or stay on this page a few seconds and try Install again."
+
+msgid "Chrome, Firefox, and Edge on iOS cannot native-install this app."
+msgstr "Chrome, Firefox, and Edge on iOS cannot native-install this app."
+
 msgid "Clear"
 msgstr "Clear"
 
@@ -660,6 +666,9 @@ msgstr "Finish setting up your account"
 msgid "Finish with material unpicked?"
 msgstr "Finish with material unpicked?"
 
+msgid "Firefox and Safari on desktop also use manual Add to Home Screen — only Chromium fires the Install prompt."
+msgstr "Firefox and Safari on desktop also use manual Add to Home Screen — only Chromium fires the Install prompt."
+
 #. placeholder {0}: formatRelativeTime( convertDateStringToIsoString(batchFacts.dueDate) )
 msgid "First due {0}"
 msgstr "First due {0}"
@@ -731,12 +740,6 @@ msgstr "inspected"
 msgid "Install / Add to Home Screen"
 msgstr "Install / Add to Home Screen"
 
-msgid "Install this shop view from Chrome so it opens like an app."
-msgstr "Install this shop view from Chrome so it opens like an app."
-
-msgid "Install this shop view so it opens like an app."
-msgstr "Install this shop view so it opens like an app."
-
 msgid "Instructions"
 msgstr "Instructions"
 
@@ -748,6 +751,9 @@ msgstr "Inventory adjustment completed"
 
 msgid "Inventory Adjustments"
 msgstr "Inventory Adjustments"
+
+msgid "iPhone and iPad never show a native Install button — use Safari’s Share menu."
+msgstr "iPhone and iPad never show a native Install button — use Safari’s Share menu."
 
 msgid "is"
 msgstr "is"
@@ -1172,11 +1178,8 @@ msgstr "Open Jobs"
 msgid "Open maintenance"
 msgstr "Open maintenance"
 
-msgid "Open this page in Chrome on Android."
-msgstr "Open this page in Chrome on Android."
-
-msgid "Open this page in Safari (not Chrome)."
-msgstr "Open this page in Safari (not Chrome)."
+msgid "Open this page in Safari (not Chrome on iOS)."
+msgstr "Open this page in Safari (not Chrome on iOS)."
 
 msgid "Operations"
 msgstr "Operations"
@@ -1280,6 +1283,9 @@ msgstr "Please select an item"
 
 msgid "PM schedule lapsed"
 msgstr "PM schedule lapsed"
+
+msgid "Preparing install…"
+msgstr "Preparing install…"
 
 msgid "Press ? on any page to open this list. Shortcuts are ignored while you type in a field."
 msgstr "Press ? on any page to open this list. Shortcuts are ignored while you type in a field."
@@ -1877,6 +1883,9 @@ msgstr "Uploading {0}"
 
 msgid "Use a different account"
 msgstr "Use a different account"
+
+msgid "Use Chrome on Android (or desktop Chrome)."
+msgstr "Use Chrome on Android (or desktop Chrome)."
 
 msgid "Used automatically at completion"
 msgstr "Used automatically at completion"

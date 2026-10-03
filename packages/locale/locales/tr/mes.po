@@ -296,6 +296,12 @@ msgstr "E-postanızı kontrol edin"
 msgid "Choose a job"
 msgstr "İş emri seç"
 
+msgid "Chrome did not offer a one-tap install yet. Use the menu below, or stay on this page a few seconds and try Install again."
+msgstr ""
+
+msgid "Chrome, Firefox, and Edge on iOS cannot native-install this app."
+msgstr ""
+
 msgid "Clear"
 msgstr "Temizle"
 
@@ -660,6 +666,9 @@ msgstr "Hesabınızı ayarlamayı tamamlayın"
 msgid "Finish with material unpicked?"
 msgstr "Malzeme seçilmeden bitir?"
 
+msgid "Firefox and Safari on desktop also use manual Add to Home Screen — only Chromium fires the Install prompt."
+msgstr ""
+
 #. placeholder {0}: formatRelativeTime( convertDateStringToIsoString(batchFacts.dueDate) )
 msgid "First due {0}"
 msgstr "İlk vade {0}"
@@ -731,12 +740,6 @@ msgstr "incelendi"
 msgid "Install / Add to Home Screen"
 msgstr ""
 
-msgid "Install this shop view from Chrome so it opens like an app."
-msgstr ""
-
-msgid "Install this shop view so it opens like an app."
-msgstr ""
-
 msgid "Instructions"
 msgstr "Talimatlar"
 
@@ -748,6 +751,9 @@ msgstr "Stok düzeltme tamamlandı"
 
 msgid "Inventory Adjustments"
 msgstr "Stok düzeltmeleri"
+
+msgid "iPhone and iPad never show a native Install button — use Safari’s Share menu."
+msgstr ""
 
 msgid "is"
 msgstr "eşittir"
@@ -1172,10 +1178,7 @@ msgstr "Açık İş emirleri"
 msgid "Open maintenance"
 msgstr "Açık bakım"
 
-msgid "Open this page in Chrome on Android."
-msgstr ""
-
-msgid "Open this page in Safari (not Chrome)."
+msgid "Open this page in Safari (not Chrome on iOS)."
 msgstr ""
 
 msgid "Operations"
@@ -1280,6 +1283,9 @@ msgstr "Lütfen bir ürün seçin"
 
 msgid "PM schedule lapsed"
 msgstr "PM zamanlaması süresi doldu"
+
+msgid "Preparing install…"
+msgstr ""
 
 msgid "Press ? on any page to open this list. Shortcuts are ignored while you type in a field."
 msgstr "Herhangi bir sayfada bu listeyi açmak için ? tuşuna basın. Bir alan içinde yazarken kısayollar yoksayılır."
@@ -1877,6 +1883,9 @@ msgstr "Yükleniyor {0}"
 
 msgid "Use a different account"
 msgstr "Farklı bir hesap kullan"
+
+msgid "Use Chrome on Android (or desktop Chrome)."
+msgstr ""
 
 msgid "Used automatically at completion"
 msgstr "Tamamlama sırasında otomatik olarak kullanılır"

@@ -296,6 +296,12 @@ msgstr "이메일을 확인하세요"
 msgid "Choose a job"
 msgstr "작업 지시 선택"
 
+msgid "Chrome did not offer a one-tap install yet. Use the menu below, or stay on this page a few seconds and try Install again."
+msgstr ""
+
+msgid "Chrome, Firefox, and Edge on iOS cannot native-install this app."
+msgstr ""
+
 msgid "Clear"
 msgstr "지우기"
 
@@ -660,6 +666,9 @@ msgstr "계정 설정을 완료하세요"
 msgid "Finish with material unpicked?"
 msgstr "미선택 재료가 있는 상태로 완료하시겠습니까?"
 
+msgid "Firefox and Safari on desktop also use manual Add to Home Screen — only Chromium fires the Install prompt."
+msgstr ""
+
 #. placeholder {0}: formatRelativeTime( convertDateStringToIsoString(batchFacts.dueDate) )
 msgid "First due {0}"
 msgstr "첫 번째 기한 {0}"
@@ -731,12 +740,6 @@ msgstr "검사됨"
 msgid "Install / Add to Home Screen"
 msgstr ""
 
-msgid "Install this shop view from Chrome so it opens like an app."
-msgstr ""
-
-msgid "Install this shop view so it opens like an app."
-msgstr ""
-
 msgid "Instructions"
 msgstr "작업 지침"
 
@@ -748,6 +751,9 @@ msgstr "재고 조정이 완료되었습니다"
 
 msgid "Inventory Adjustments"
 msgstr "재고 조정"
+
+msgid "iPhone and iPad never show a native Install button — use Safari’s Share menu."
+msgstr ""
 
 msgid "is"
 msgstr "같음"
@@ -1172,10 +1178,7 @@ msgstr "작업 지시 열기"
 msgid "Open maintenance"
 msgstr "미결 유지보수"
 
-msgid "Open this page in Chrome on Android."
-msgstr ""
-
-msgid "Open this page in Safari (not Chrome)."
+msgid "Open this page in Safari (not Chrome on iOS)."
 msgstr ""
 
 msgid "Operations"
@@ -1280,6 +1283,9 @@ msgstr "품목을 선택하세요"
 
 msgid "PM schedule lapsed"
 msgstr "PM 일정 만료됨"
+
+msgid "Preparing install…"
+msgstr ""
 
 msgid "Press ? on any page to open this list. Shortcuts are ignored while you type in a field."
 msgstr "어느 페이지에서나 ?를 누르세요. 필드에 입력하는 동안 단축키가 무시됩니다."
@@ -1877,6 +1883,9 @@ msgstr "{0} 업로드 중"
 
 msgid "Use a different account"
 msgstr "다른 계정 사용"
+
+msgid "Use Chrome on Android (or desktop Chrome)."
+msgstr ""
 
 msgid "Used automatically at completion"
 msgstr "완료 시 자동으로 사용됨"
