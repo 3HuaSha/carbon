@@ -135,7 +135,7 @@ export async function setTelegramWebhook(args: {
     {
       url: args.url,
       secret_token: args.secretToken,
-      allowed_updates: ["message", "callback_query"],
+      allowed_updates: ["message", "callback_query", "my_chat_member"],
       drop_pending_updates: true
     },
     args.token

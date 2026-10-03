@@ -375,6 +375,15 @@ export const TELEGRAM_BOT_USERNAME =
 export const TELEGRAM_COMPANY_ID = getEnv("TELEGRAM_COMPANY_ID", {
   isRequired: false
 });
+/**
+ * Maintenance group chat id for dual notify (assign → private DM + group).
+ * Negative for groups/supergroups. Get via bot `/chatid` or `/groupid` in the
+ * group after adding `@vivahealthmedia_bot`. When unset, only DMs are sent.
+ */
+export const TELEGRAM_MAINTENANCE_GROUP_CHAT_ID = getEnv(
+  "TELEGRAM_MAINTENANCE_GROUP_CHAT_ID",
+  { isRequired: false }
+);
 export const CARBON_TELEGRAM_ENABLED = isBrowser
   ? window.env?.CARBON_TELEGRAM_ENABLED === "true"
   : Boolean(TELEGRAM_BOT_TOKEN);
