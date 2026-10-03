@@ -191,6 +191,9 @@ msgstr "क्या आप वाकई इस पृष्ठ को छोड
 msgid "Assembly steps"
 msgstr "असेंबली चरण"
 
+msgid "Assign to me"
+msgstr "मुझे असाइन करें"
+
 msgid "Assigned"
 msgstr "निर्दिष्ट"
 
@@ -200,6 +203,9 @@ msgstr "{0} को असाइन"
 
 msgid "Assigned to Me"
 msgstr "मुझे असाइन किया गया"
+
+msgid "Assigned to you"
+msgstr "आपको असाइन किया गया"
 
 msgid "Assignee"
 msgstr "असाइनी"
@@ -984,6 +990,9 @@ msgstr "कोई फ़ाइलें नहीं"
 msgid "No Impact"
 msgstr "कोई प्रभाव नहीं"
 
+msgid "No inspection"
+msgstr "कोई निरीक्षण नहीं"
+
 msgid "No issue types configured"
 msgstr "कोई समस्या प्रकार कॉन्फ़िगर नहीं किया गया"
 
@@ -1138,6 +1147,9 @@ msgstr "इस बैच में एक जॉब खोलें"
 
 msgid "Open an NCR for MRB disposition"
 msgstr "MRB निपटान के लिए एक NCR खोलें"
+
+msgid "Open inspection"
+msgstr "निरीक्षण खोलें"
 
 msgid "Open Jobs"
 msgstr "खुली जॉब्स"
@@ -1294,6 +1306,12 @@ msgstr "प्रगति"
 #. placeholder {0}: formatDate(projectedCompletionDate)
 msgid "Proj. {0}"
 msgstr "प्रोज. {0}"
+
+msgid "QC / Inspection"
+msgstr "QC / निरीक्षण"
+
+msgid "QC: {status}"
+msgstr "QC: {status}"
 
 msgid "Quality Issue"
 msgstr "गुणवत्ता समस्या"

@@ -25,6 +25,23 @@ function StatusLabel({ status }: { status: ShopMachineStatus }) {
   }
 }
 
+function QcChip({ status }: { status: string | null | undefined }) {
+  if (!status) return null;
+  const color =
+    status === "Passed"
+      ? "green"
+      : status === "Failed"
+        ? "red"
+        : status === "In Progress" || status === "Partial"
+          ? "orange"
+          : "gray";
+  return (
+    <Status color={color} disableTooltip>
+      <Trans>QC: {status}</Trans>
+    </Status>
+  );
+}
+
 type MachineTileProps = {
   machine: ShopMachine;
   onSelect: (machine: ShopMachine) => void;
@@ -59,9 +76,12 @@ export function MachineTile({ machine, onSelect }: MachineTileProps) {
         ) : null}
       </div>
 
-      <Status color={STATUS_COLOR[machine.status]} disableTooltip>
-        <StatusLabel status={machine.status} />
-      </Status>
+      <div className="flex flex-wrap items-center gap-1.5">
+        <Status color={STATUS_COLOR[machine.status]} disableTooltip>
+          <StatusLabel status={machine.status} />
+        </Status>
+        <QcChip status={machine.currentWork?.inspectionStatus} />
+      </div>
 
       <div className="truncate text-xs tabular-nums text-muted-foreground">
         {machine.currentJobReadableId ? (

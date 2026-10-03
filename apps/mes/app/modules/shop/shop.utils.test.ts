@@ -14,6 +14,7 @@ const machine = (
   subtitle: null,
   departmentName: null,
   currentJobReadableId: null,
+  currentWork: null,
   isBlocked: false,
   openDispatches: [],
   ...overrides

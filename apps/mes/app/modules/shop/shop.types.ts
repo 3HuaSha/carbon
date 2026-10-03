@@ -26,6 +26,21 @@ export type ShopOpenDispatch = {
   assigneeName: string | null;
   oeeImpact: string | null;
   priority: string | null;
+  workCenterId: string | null;
+  /** True when the signed-in user has an open maintenanceDispatchEvent. */
+  isWorking: boolean;
+};
+
+/** Linked job + inspection for the open production event on a machine. */
+export type ShopCurrentWork = {
+  jobReadableId: string | null;
+  /** Internal job row id — for ERP deep links when present. */
+  jobId: string | null;
+  jobOperationId: string | null;
+  operationStatus: string | null;
+  operationType: string | null;
+  inspectionId: string | null;
+  inspectionStatus: string | null;
 };
 
 export type ShopMachine = {
@@ -36,6 +51,7 @@ export type ShopMachine = {
   departmentName: string | null;
   status: ShopMachineStatus;
   currentJobReadableId: string | null;
+  currentWork: ShopCurrentWork | null;
   isBlocked: boolean;
   openDispatches: ShopOpenDispatch[];
 };
@@ -43,5 +59,15 @@ export type ShopMachine = {
 export type ShopOverview = {
   locationId: string;
   locationName: string | null;
+  userId: string;
   machines: ShopMachine[];
 };
+
+export const shopMaintenanceActions = [
+  "Assign",
+  "Start",
+  "End",
+  "Complete"
+] as const;
+
+export type ShopMaintenanceAction = (typeof shopMaintenanceActions)[number];
