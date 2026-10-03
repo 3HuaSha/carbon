@@ -263,7 +263,7 @@ msgid "Between {0} and {1} {2}"
 msgstr "{0}から{1} {2}まで"
 
 msgid "Bind Telegram"
-msgstr ""
+msgstr "Telegramを連携"
 
 #. placeholder {0}: column.blockingDispatchReadableId
 msgid "Blocked by {0}"

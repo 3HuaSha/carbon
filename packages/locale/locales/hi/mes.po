@@ -263,7 +263,7 @@ msgid "Between {0} and {1} {2}"
 msgstr "{0} और {1} के बीच {2}"
 
 msgid "Bind Telegram"
-msgstr ""
+msgstr "Telegram बाँधें"
 
 #. placeholder {0}: column.blockingDispatchReadableId
 msgid "Blocked by {0}"

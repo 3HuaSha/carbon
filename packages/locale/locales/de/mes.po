@@ -263,7 +263,7 @@ msgid "Between {0} and {1} {2}"
 msgstr "Zwischen {0} und {1} {2}"
 
 msgid "Bind Telegram"
-msgstr ""
+msgstr "Telegram verbinden"
 
 #. placeholder {0}: column.blockingDispatchReadableId
 msgid "Blocked by {0}"

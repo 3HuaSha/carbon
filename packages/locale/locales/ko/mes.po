@@ -263,7 +263,7 @@ msgid "Between {0} and {1} {2}"
 msgstr "{0}과 {1} 사이의 {2}"
 
 msgid "Bind Telegram"
-msgstr ""
+msgstr "Telegram 연결"
 
 #. placeholder {0}: column.blockingDispatchReadableId
 msgid "Blocked by {0}"
