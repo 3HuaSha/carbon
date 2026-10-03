@@ -55,7 +55,8 @@ import {
 import {
   notifyFunction,
   sendEmailFunction,
-  sendSlackFunction
+  sendSlackFunction,
+  sendTelegramFunction
 } from "./functions/notifications";
 import {
   auditArchiveFunction,
@@ -108,6 +109,7 @@ export const functions = [
   notifyFunction,
   sendEmailFunction,
   sendSlackFunction,
+  sendTelegramFunction,
   // Event handlers
   auditFunction,
   eventQueueFunction,

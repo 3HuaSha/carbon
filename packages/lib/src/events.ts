@@ -47,6 +47,21 @@ export type Events = {
     };
   };
 
+  // Telegram message dispatch (MVP: maintenance assign + inline buttons)
+  "carbon/send-telegram": {
+    data: {
+      chatId: string;
+      text: string;
+      companyId: string;
+      parseMode?: "HTML" | "Markdown" | "MarkdownV2";
+      replyMarkup?: {
+        inline_keyboard: Array<
+          Array<{ text: string; callback_data?: string; url?: string }>
+        >;
+      };
+    };
+  };
+
   // Email events
   "carbon/send-email": {
     data: {

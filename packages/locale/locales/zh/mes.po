@@ -262,6 +262,9 @@ msgstr "落后于目标 {daysBehindTarget} 天"
 msgid "Between {0} and {1} {2}"
 msgstr "{0} 至 {1} {2}"
 
+msgid "Bind Telegram"
+msgstr "绑定 Telegram"
+
 #. placeholder {0}: column.blockingDispatchReadableId
 msgid "Blocked by {0}"
 msgstr "被 {0} 阻塞"

@@ -262,6 +262,9 @@ msgstr "목표에서 {daysBehindTarget}일 뒤짐"
 msgid "Between {0} and {1} {2}"
 msgstr "{0}과 {1} 사이의 {2}"
 
+msgid "Bind Telegram"
+msgstr "Telegram 연결"
+
 #. placeholder {0}: column.blockingDispatchReadableId
 msgid "Blocked by {0}"
 msgstr "{0}에 의해 차단됨"

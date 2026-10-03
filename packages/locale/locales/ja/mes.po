@@ -262,6 +262,9 @@ msgstr "目標より{daysBehindTarget}日遅れ"
 msgid "Between {0} and {1} {2}"
 msgstr "{0}から{1} {2}まで"
 
+msgid "Bind Telegram"
+msgstr "Telegramを連携"
+
 #. placeholder {0}: column.blockingDispatchReadableId
 msgid "Blocked by {0}"
 msgstr "{0} によりブロック中"

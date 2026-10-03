@@ -24,7 +24,7 @@ import {
   useSidebar
 } from "@carbon/react";
 import { Trans } from "@lingui/react/macro";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import {
   LuBuilding,
   LuChevronDown,
@@ -32,6 +32,7 @@ import {
   LuMapPin,
   LuMonitor,
   LuMoon,
+  LuSend,
   LuShieldCheck,
   LuSun,
   LuUser,
@@ -40,6 +41,7 @@ import {
 import { Form, Link, useFetcher } from "react-router";
 import { useUser } from "~/hooks";
 import type { action } from "~/root";
+import type { action as telegramBindAction } from "~/routes/x+/telegram.bind";
 import type { Location } from "~/services/types";
 import type { PinnedInUser } from "~/types";
 import { path } from "~/utils/path";
@@ -71,12 +73,36 @@ export function UserNav({
   const consoleSubmitRef = useRef<HTMLButtonElement>(null);
 
   const fetcher = useFetcher<typeof action>();
+  const telegramBindFetcher = useFetcher<typeof telegramBindAction>();
 
   const updateLocation = (value: string) => {
     const formData = new FormData();
     formData.append("location", value);
     fetcher.submit(formData, { method: "POST", action: path.to.location });
   };
+
+  const onBindTelegram = () => {
+    telegramBindFetcher.submit(null, {
+      method: "POST",
+      action: path.to.telegramBind
+    });
+  };
+
+  useEffect(() => {
+    if (
+      telegramBindFetcher.state === "idle" &&
+      telegramBindFetcher.data &&
+      "ok" in telegramBindFetcher.data &&
+      telegramBindFetcher.data.ok &&
+      telegramBindFetcher.data.url
+    ) {
+      window.open(
+        telegramBindFetcher.data.url,
+        "_blank",
+        "noopener,noreferrer"
+      );
+    }
+  }, [telegramBindFetcher.state, telegramBindFetcher.data]);
 
   const optimisticLocation =
     (fetcher.formData?.get("location") as string | undefined) ?? location;
@@ -137,6 +163,16 @@ export function UserNav({
                 <DropdownMenuIcon icon={<LuUsers />} />
                 <Trans>Switch Operator</Trans>
               </DropdownMenuItem>
+              <DropdownMenuItem
+                onSelect={(event) => {
+                  event.preventDefault();
+                  onBindTelegram();
+                }}
+                disabled={telegramBindFetcher.state !== "idle"}
+              >
+                <DropdownMenuIcon icon={<LuSend />} />
+                <Trans>Bind Telegram</Trans>
+              </DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuLabel className="text-xs font-normal text-muted-foreground">
                 <Trans>Station: {stationName}</Trans>
@@ -153,6 +189,16 @@ export function UserNav({
                   <DropdownMenuIcon icon={<LuUser />} />
                   <Trans>Account Settings</Trans>
                 </Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                onSelect={(event) => {
+                  event.preventDefault();
+                  onBindTelegram();
+                }}
+                disabled={telegramBindFetcher.state !== "idle"}
+              >
+                <DropdownMenuIcon icon={<LuSend />} />
+                <Trans>Bind Telegram</Trans>
               </DropdownMenuItem>
               <DropdownMenuSeparator />
 
