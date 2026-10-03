@@ -1,3 +1,7 @@
+// SPDX-License-Identifier: AGPL-3.0-only
+// Carbon (github.com/crbnos/carbon). Modified or adapted versions of this file,
+// including ports, remain AGPLv3; serving them over a network requires releasing their source.
+
 import { useCarbon } from "@carbon/auth";
 import {
   getCompanyPrivateBucket,
@@ -6,9 +10,20 @@ import {
 } from "@carbon/files";
 import { isHeic, MediaUploader } from "@carbon/files/media";
 import { Button, cn, Status, toast } from "@carbon/react";
-import { Trans, useLingui } from "@lingui/react/macro";
 import { useEffect, useMemo, useState } from "react";
-import { LuChevronLeft, LuSearch, LuX } from "react-icons/lu";
+import {
+  LuCalendarClock,
+  LuChevronLeft,
+  LuClipboardCheck,
+  LuCoffee,
+  LuHistory,
+  LuPackage,
+  LuSearch,
+  LuTrendingUp,
+  LuTriangleAlert,
+  LuWrench,
+  LuX
+} from "react-icons/lu";
 import {
   type FetcherWithComponents,
   Link,
@@ -48,55 +63,67 @@ type MachineDetailPageProps = {
 
 type ReportKind = "break" | "planned" | "fault";
 
-function MachineStatusChip({ status }: { status: ShopMachine["status"] }) {
-  switch (status) {
-    case "running":
-      return (
-        <Status color="green" disableTooltip>
-          <Trans>Running</Trans>
-        </Status>
-      );
-    case "idle":
-      return (
-        <Status color="gray" disableTooltip>
-          <Trans>Idle</Trans>
-        </Status>
-      );
-    case "break":
-      return (
-        <Status color="blue" disableTooltip>
-          <Trans>Break / Away</Trans>
-        </Status>
-      );
-    case "planned":
-      return (
-        <Status color="yellow" disableTooltip>
-          <Trans>Planned downtime</Trans>
-        </Status>
-      );
-    case "waitingRepair":
-      return (
-        <Status color="orange" disableTooltip>
-          <Trans>Waiting repair</Trans>
-        </Status>
-      );
-    case "inRepair":
-      return (
-        <Status color="red" disableTooltip>
-          <Trans>In repair</Trans>
-        </Status>
-      );
+const statusMeta: Record<
+  ShopMachine["status"],
+  { label: string; color: "green" | "gray" | "blue" | "yellow" | "orange" | "red"; gradient: string }
+> = {
+  running: {
+    label: "运行中",
+    color: "green",
+    gradient: "from-emerald-500 to-teal-600"
+  },
+  idle: {
+    label: "空闲",
+    color: "gray",
+    gradient: "from-slate-400 to-slate-500"
+  },
+  break: {
+    label: "休息/离岗",
+    color: "blue",
+    gradient: "from-sky-500 to-blue-600"
+  },
+  planned: {
+    label: "计划停机",
+    color: "yellow",
+    gradient: "from-amber-500 to-orange-500"
+  },
+  waitingRepair: {
+    label: "待维修",
+    color: "orange",
+    gradient: "from-orange-500 to-amber-600"
+  },
+  inRepair: {
+    label: "维修中",
+    color: "red",
+    gradient: "from-red-500 to-rose-600"
   }
+};
+
+function MachineStatusChip({ status }: { status: ShopMachine["status"] }) {
+  const meta = statusMeta[status];
+  return (
+    <Status color={meta.color} disableTooltip>
+      {meta.label}
+    </Status>
+  );
 }
 
 function QcStatus({ status }: { status: string | null }) {
   if (!status) {
-    return (
-      <span className="text-muted-foreground">
-        <Trans>No inspection</Trans>
-      </span>
-    );
+    return <span className="text-sm text-muted-foreground">暂无检验</span>;
   }
+  const label =
+    status === "Passed"
+      ? "合格"
+      : status === "Failed"
+        ? "不合格"
+        : status === "In Progress"
+          ? "检验中"
+          : status === "Partial"
+            ? "部分合格"
+            : status === "Pending"
+              ? "待检验"
+              : status;
   const color =
     status === "Passed"
       ? "green"
@@ -107,8 +134,23 @@ function QcStatus({ status }: { status: string | null }) {
           : "gray";
   return (
     <Status color={color} disableTooltip>
-      {status}
+      {label}
     </Status>
+  );
+}
+
+function SectionTitle({
+  icon,
+  children
+}: {
+  icon?: React.ReactNode;
+  children: React.ReactNode;
+}) {
+  return (
+    <h2 className="flex items-center gap-1.5 text-sm font-semibold text-foreground">
+      {icon ? <span className="text-muted-foreground">{icon}</span> : null}
+      {children}
+    </h2>
   );
 }
 
@@ -122,48 +164,49 @@ function WorkOrderSection({ work }: { work: ShopCurrentWork | null }) {
     : null;
 
   return (
-    <section className="flex flex-col gap-3 px-4">
-      <div>
-        <h2 className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
-          <Trans>Current production</Trans>
-        </h2>
-        <div className="mt-2 flex flex-wrap items-center gap-2">
-          {jobLabel ? (
-            operationHref ? (
+    <section className="overflow-hidden rounded-2xl border border-border bg-card shadow-sm">
+      <div className="border-b border-border bg-muted/40 px-4 py-2.5">
+        <SectionTitle icon={<LuPackage className="h-4 w-4" />}>
+          当前生产
+        </SectionTitle>
+      </div>
+      <div className="px-4 py-3">
+        {jobLabel ? (
+          <div className="flex flex-wrap items-center gap-2">
+            {operationHref ? (
               <Link
                 to={operationHref}
-                className="text-base font-medium tabular-nums text-foreground underline-offset-4 hover:underline"
+                className="text-xl font-bold tabular-nums tracking-tight text-foreground underline-offset-4 hover:underline"
               >
                 {jobLabel}
               </Link>
             ) : (
-              <p className="text-base font-medium tabular-nums">{jobLabel}</p>
-            )
-          ) : (
-            <p className="text-sm text-muted-foreground">
-              <Trans>No open job</Trans>
-            </p>
-          )}
-          {work?.operationStatus ? (
-            <Status color="gray" disableTooltip>
-              {work.operationStatus}
-            </Status>
-          ) : null}
-        </div>
-      </div>
+              <p className="text-xl font-bold tabular-nums tracking-tight">
+                {jobLabel}
+              </p>
+            )}
+            {work?.operationStatus ? (
+              <Status color="gray" disableTooltip>
+                {work.operationStatus}
+              </Status>
+            ) : null}
+          </div>
+        ) : (
+          <p className="py-1 text-sm text-muted-foreground">暂无在产工单</p>
+        )}
 
-      <div>
-        <h3 className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
-          <Trans>QC / Inspection</Trans>
-        </h3>
-        <div className="mt-2 flex flex-wrap items-center gap-2">
-          <QcStatus status={work?.inspectionStatus ?? null} />
+        <div className="mt-3 flex items-center justify-between gap-2 rounded-xl bg-muted/50 px-3 py-2.5">
+          <div className="flex items-center gap-2">
+            <LuClipboardCheck className="h-4 w-4 text-muted-foreground" />
+            <span className="text-sm font-medium">质检</span>
+            <QcStatus status={work?.inspectionStatus ?? null} />
+          </div>
           {inspectionHref && work?.inspectionId ? (
             <Link
               to={inspectionHref}
-              className="text-xs font-medium text-foreground underline-offset-4 hover:underline"
+              className="shrink-0 rounded-lg bg-primary px-3 py-1.5 text-xs font-medium text-primary-foreground"
             >
-              <Trans>Open inspection</Trans>
+              查看检验单
             </Link>
           ) : null}
         </div>
@@ -183,7 +226,6 @@ function PersonPicker({
   onPick: (person: ShopPerson) => void;
   onCancel: () => void;
 }) {
-  const { t } = useLingui();
   const [search, setSearch] = useState("");
 
   const filtered = useMemo(() => {
@@ -193,19 +235,19 @@ function PersonPicker({
   }, [people, search]);
 
   return (
-    <div className="mt-3 rounded-lg border border-border">
-      <div className="flex items-center gap-2 border-b border-border px-3 py-2">
+    <div className="mt-3 overflow-hidden rounded-xl border border-border">
+      <div className="flex items-center gap-2 border-b border-border bg-muted/40 px-3 py-2">
         <LuSearch className="h-4 w-4 shrink-0 text-muted-foreground" />
         <input
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          placeholder={t`Search people…`}
+          placeholder="搜索人员…"
           className="h-9 flex-1 bg-transparent text-sm outline-none placeholder:text-muted-foreground"
           autoFocus
         />
         <button
           type="button"
-          aria-label={t`Cancel`}
+          aria-label="取消"
           className="rounded-md p-1.5 text-muted-foreground hover:bg-muted hover:text-foreground"
           onClick={onCancel}
         >
@@ -215,7 +257,7 @@ function PersonPicker({
       <ul className="max-h-56 overflow-y-auto">
         {filtered.length === 0 ? (
           <li className="px-3 py-4 text-sm text-muted-foreground">
-            <Trans>No people found</Trans>
+            未找到人员
           </li>
         ) : (
           filtered.map((person) => (
@@ -239,6 +281,27 @@ function PersonPicker({
   );
 }
 
+const reportKindMeta: Record<
+  ReportKind,
+  { title: string; hint: string; icon: React.ReactNode }
+> = {
+  break: {
+    title: "休息 / 离岗",
+    hint: "简单备注即可（吃饭、上厕所、短暂离开）。",
+    icon: <LuCoffee className="h-5 w-5" />
+  },
+  planned: {
+    title: "计划停机",
+    hint: "建议填写备注并拍照（换模、保养、计划维护）。",
+    icon: <LuCalendarClock className="h-5 w-5" />
+  },
+  fault: {
+    title: "故障报修",
+    hint: "请描述故障现象（必填），建议拍照或录像。",
+    icon: <LuTriangleAlert className="h-5 w-5" />
+  }
+};
+
 function ReportForm({
   kind,
   busy,
@@ -256,38 +319,38 @@ function ReportForm({
     files: File[];
   }) => void;
 }) {
-  const { t } = useLingui();
   const [note, setNote] = useState("");
   const [assigneeId, setAssigneeId] = useState<string | undefined>();
   const [picking, setPicking] = useState(false);
   const [files, setFiles] = useState<File[]>([]);
   const noteRequired = kind === "fault";
   const mediaRecommended = kind === "fault" || kind === "planned";
-
-  const title =
-    kind === "break"
-      ? t`Break / Away`
-      : kind === "planned"
-        ? t`Planned downtime`
-        : t`Fault downtime`;
-
-  const hint =
-    kind === "break"
-      ? t`Optional short note (lunch, bathroom, away).`
-      : kind === "planned"
-        ? t`Notes and photos recommended (changeover / PM window).`
-        : t`Describe the fault. Notes required; photos/videos recommended.`;
+  const meta = reportKindMeta[kind];
 
   return (
-    <section className="mx-4 rounded-lg border border-border p-3">
-      <div className="flex items-start justify-between gap-2">
-        <div>
-          <h2 className="text-sm font-semibold">{title}</h2>
-          <p className="mt-1 text-xs text-muted-foreground">{hint}</p>
+    <section className="overflow-hidden rounded-2xl border border-border bg-card shadow-sm">
+      <div className="flex items-start justify-between gap-2 border-b border-border bg-muted/40 px-4 py-3">
+        <div className="flex items-center gap-2.5">
+          <span
+            className={cn(
+              "flex h-9 w-9 items-center justify-center rounded-xl text-white",
+              kind === "fault"
+                ? "bg-gradient-to-br from-red-500 to-rose-600"
+                : kind === "planned"
+                  ? "bg-gradient-to-br from-amber-500 to-orange-500"
+                  : "bg-gradient-to-br from-sky-500 to-blue-600"
+            )}
+          >
+            {meta.icon}
+          </span>
+          <div>
+            <h2 className="text-sm font-semibold">{meta.title}</h2>
+            <p className="mt-0.5 text-xs text-muted-foreground">{meta.hint}</p>
+          </div>
         </div>
         <button
           type="button"
-          aria-label={t`Cancel`}
+          aria-label="取消"
           className="rounded-md p-1.5 text-muted-foreground hover:bg-muted"
           onClick={onCancel}
         >
@@ -295,93 +358,90 @@ function ReportForm({
         </button>
       </div>
 
-      <textarea
-        value={note}
-        onChange={(e) => setNote(e.target.value)}
-        rows={kind === "break" ? 2 : 4}
-        placeholder={
-          noteRequired ? t`What happened? (required)` : t`Optional note`
-        }
-        className="mt-3 w-full rounded-md border border-border bg-background px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-ring"
-      />
+      <div className="px-4 py-3">
+        <textarea
+          value={note}
+          onChange={(e) => setNote(e.target.value)}
+          rows={kind === "break" ? 2 : 4}
+          placeholder={noteRequired ? "发生了什么？（必填）" : "备注（可选）"}
+          className="w-full rounded-xl border border-border bg-background px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-ring"
+        />
 
-      {mediaRecommended ? (
-        <div className="mt-3">
-          <input
-            type="file"
-            accept="image/*,video/*"
-            capture="environment"
-            multiple
-            onChange={(e) => setFiles(Array.from(e.target.files ?? []))}
-            className="block w-full text-xs text-muted-foreground file:mr-3 file:rounded-md file:border-0 file:bg-muted file:px-3 file:py-2 file:text-sm file:font-medium"
-          />
-          {files.length > 0 ? (
-            <p className="mt-1 text-xs text-muted-foreground tabular-nums">
-              <Trans>{files.length} file(s) selected</Trans>
-            </p>
-          ) : null}
-        </div>
-      ) : null}
+        {mediaRecommended ? (
+          <div className="mt-3">
+            <input
+              type="file"
+              accept="image/*,video/*"
+              capture="environment"
+              multiple
+              onChange={(e) => setFiles(Array.from(e.target.files ?? []))}
+              className="block w-full text-xs text-muted-foreground file:mr-3 file:rounded-lg file:border-0 file:bg-muted file:px-3 file:py-2 file:text-sm file:font-medium"
+            />
+            {files.length > 0 ? (
+              <p className="mt-1 text-xs tabular-nums text-muted-foreground">
+                已选择 {files.length} 个文件
+              </p>
+            ) : null}
+          </div>
+        ) : null}
 
-      {kind !== "break" ? (
-        <div className="mt-3">
+        {kind !== "break" ? (
+          <div className="mt-3">
+            <Button
+              type="button"
+              size="sm"
+              variant={picking ? "primary" : "secondary"}
+              isDisabled={busy}
+              onClick={() => setPicking((v) => !v)}
+            >
+              {assigneeId ? "更换负责人" : "指派人员（可选）"}
+            </Button>
+            {assigneeId ? (
+              <p className="mt-1 text-xs text-muted-foreground">
+                {people.find((p) => p.id === assigneeId)?.name}
+              </p>
+            ) : null}
+            {picking ? (
+              <PersonPicker
+                people={people}
+                busy={busy}
+                onPick={(person) => {
+                  setAssigneeId(person.id);
+                  setPicking(false);
+                }}
+                onCancel={() => setPicking(false)}
+              />
+            ) : null}
+          </div>
+        ) : null}
+
+        <div className="mt-4 flex gap-2">
           <Button
             type="button"
-            size="sm"
-            variant={picking ? "primary" : "secondary"}
-            isDisabled={busy}
-            onClick={() => setPicking((v) => !v)}
+            size="md"
+            variant={kind === "fault" ? "destructive" : "primary"}
+            isDisabled={busy || (noteRequired && !note.trim())}
+            onClick={() =>
+              onSubmit({
+                note: note.trim(),
+                assigneeId,
+                files
+              })
+            }
+            className="flex-1"
           >
-            {assigneeId ? (
-              <Trans>Change assignee</Trans>
-            ) : (
-              <Trans>Assign person (optional)</Trans>
-            )}
+            确认提交
           </Button>
-          {assigneeId ? (
-            <p className="mt-1 text-xs text-muted-foreground">
-              {people.find((p) => p.id === assigneeId)?.name}
-            </p>
-          ) : null}
-          {picking ? (
-            <PersonPicker
-              people={people}
-              busy={busy}
-              onPick={(person) => {
-                setAssigneeId(person.id);
-                setPicking(false);
-              }}
-              onCancel={() => setPicking(false)}
-            />
-          ) : null}
+          <Button
+            type="button"
+            size="md"
+            variant="ghost"
+            isDisabled={busy}
+            onClick={onCancel}
+          >
+            取消
+          </Button>
         </div>
-      ) : null}
-
-      <div className="mt-4 flex flex-wrap gap-2">
-        <Button
-          type="button"
-          size="md"
-          variant={kind === "fault" ? "destructive" : "primary"}
-          isDisabled={busy || (noteRequired && !note.trim())}
-          onClick={() =>
-            onSubmit({
-              note: note.trim(),
-              assigneeId,
-              files
-            })
-          }
-        >
-          <Trans>Confirm</Trans>
-        </Button>
-        <Button
-          type="button"
-          size="md"
-          variant="ghost"
-          isDisabled={busy}
-          onClick={onCancel}
-        >
-          <Trans>Cancel</Trans>
-        </Button>
       </div>
     </section>
   );
@@ -435,30 +495,31 @@ function DispatchActions({
 
   const kindLabel =
     dispatch.shopKind === "break"
-      ? "Break / Away"
+      ? "休息 / 离岗"
       : dispatch.shopKind === "planned"
-        ? "Planned downtime"
-        : "Fault / repair";
+        ? "计划停机"
+        : "故障维修";
 
   return (
-    <section className="mx-4 rounded-lg border border-border p-3">
-      <div className="flex items-start justify-between gap-2">
+    <section className="overflow-hidden rounded-2xl border border-border bg-card shadow-sm">
+      <div className="flex items-start justify-between gap-2 px-4 pt-3">
         <div className="min-w-0">
-          <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
+          <p className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+            <LuWrench className="h-3.5 w-3.5" />
             {kindLabel}
           </p>
-          <p className="mt-1 truncate text-sm font-medium tabular-nums">
+          <p className="mt-1 truncate text-sm font-bold tabular-nums">
             {dispatch.maintenanceDispatchId ?? dispatch.id}
           </p>
           <p className="mt-1 text-xs text-muted-foreground">
             {dispatch.assigneeName ? (
               assignedToMe ? (
-                <Trans>Assigned to you</Trans>
+                <span className="font-medium text-primary">已指派给你</span>
               ) : (
-                <Trans>Assigned to {dispatch.assigneeName}</Trans>
+                <>负责人：{dispatch.assigneeName}</>
               )
             ) : (
-              <Trans>Unassigned</Trans>
+              "暂未指派"
             )}
           </p>
         </div>
@@ -476,24 +537,24 @@ function DispatchActions({
       </div>
 
       {dispatch.note ? (
-        <p className="mt-3 whitespace-pre-wrap text-sm">{dispatch.note}</p>
+        <p className="mx-4 mt-3 whitespace-pre-wrap rounded-xl bg-muted/50 px-3 py-2 text-sm">
+          {dispatch.note}
+        </p>
       ) : null}
 
       {comments.length > 0 ? (
-        <ul className="mt-3 flex flex-col gap-2 border-t border-border pt-3">
+        <ul className="mx-4 mt-3 flex flex-col gap-2 border-t border-border pt-3">
           {comments.map((c) => (
             <li key={c.id} className="text-sm">
-              <span className="font-medium">
-                {c.createdByName ?? <Trans>Unknown</Trans>}
-              </span>
-              <span className="text-muted-foreground">: </span>
+              <span className="font-medium">{c.createdByName ?? "未知"}</span>
+              <span className="text-muted-foreground">：</span>
               <span className="whitespace-pre-wrap">{c.comment}</span>
             </li>
           ))}
         </ul>
       ) : null}
 
-      <div className="mt-3">
+      <div className="mx-4 mt-3">
         <ShopDispatchMedia
           companyId={companyId}
           dispatchId={dispatch.id}
@@ -503,7 +564,7 @@ function DispatchActions({
         />
       </div>
 
-      <div className={cn("mt-3 flex flex-wrap gap-2")}>
+      <div className="flex flex-wrap gap-2 px-4 py-3">
         {showResume ? (
           <Button
             type="button"
@@ -511,45 +572,33 @@ function DispatchActions({
             variant="primary"
             isDisabled={busy}
             onClick={() => onAction("ResumeAvailability", dispatch)}
+            className="flex-1"
           >
-            {dispatch.shopKind === "break" ? (
-              <Trans>I'm back</Trans>
-            ) : (
-              <Trans>Resume / Complete</Trans>
-            )}
-          </Button>
-        ) : null}
-        {canAssignPerson ? (
-          <Button
-            type="button"
-            size="sm"
-            variant={assigning ? "primary" : "secondary"}
-            isDisabled={busy}
-            onClick={() => setAssigning((v) => !v)}
-          >
-            <Trans>Assign person</Trans>
-          </Button>
-        ) : null}
-        {showAssignToMe ? (
-          <Button
-            type="button"
-            size="sm"
-            variant="secondary"
-            isDisabled={busy}
-            onClick={() => onAction("Assign", dispatch)}
-          >
-            <Trans>Assign to me</Trans>
+            {dispatch.shopKind === "break" ? "我回来了" : "恢复生产"}
           </Button>
         ) : null}
         {showStart ? (
           <Button
             type="button"
-            size="sm"
+            size="md"
             variant="primary"
             isDisabled={busy}
             onClick={() => onAction("Start", dispatch)}
+            className="flex-1"
           >
-            <Trans>Start</Trans>
+            开始维修
+          </Button>
+        ) : null}
+        {showComplete ? (
+          <Button
+            type="button"
+            size="md"
+            variant="primary"
+            isDisabled={busy}
+            onClick={() => onAction("Complete", dispatch)}
+            className="flex-1"
+          >
+            维修完成
           </Button>
         ) : null}
         {showEnd ? (
@@ -560,32 +609,45 @@ function DispatchActions({
             isDisabled={busy}
             onClick={() => onAction("End", dispatch)}
           >
-            <Trans>Pause</Trans>
+            暂停
           </Button>
         ) : null}
-        {showComplete ? (
+        {canAssignPerson ? (
           <Button
             type="button"
             size="sm"
-            variant="primary"
+            variant={assigning ? "primary" : "secondary"}
             isDisabled={busy}
-            onClick={() => onAction("Complete", dispatch)}
+            onClick={() => setAssigning((v) => !v)}
           >
-            <Trans>Complete</Trans>
+            指派人员
+          </Button>
+        ) : null}
+        {showAssignToMe ? (
+          <Button
+            type="button"
+            size="sm"
+            variant="secondary"
+            isDisabled={busy}
+            onClick={() => onAction("Assign", dispatch)}
+          >
+            我来接单
           </Button>
         ) : null}
       </div>
 
       {assigning ? (
-        <PersonPicker
-          people={people}
-          busy={busy}
-          onPick={(person) => {
-            onAction("Assign", dispatch, person.id);
-            setAssigning(false);
-          }}
-          onCancel={() => setAssigning(false)}
-        />
+        <div className="px-4 pb-3">
+          <PersonPicker
+            people={people}
+            busy={busy}
+            onPick={(person) => {
+              onAction("Assign", dispatch, person.id);
+              setAssigning(false);
+            }}
+            onCancel={() => setAssigning(false)}
+          />
+        </div>
       ) : null}
     </section>
   );
@@ -604,7 +666,6 @@ function PendingMediaUploader({
   onDone: () => void;
 }) {
   const { carbon } = useCarbon();
-  const { t } = useLingui();
   const [startedFor, setStartedFor] = useState<string | null>(null);
 
   useEffect(() => {
@@ -631,12 +692,12 @@ function PendingMediaUploader({
           });
         }
       } catch {
-        toast.error(t`Created ticket, but media upload failed`);
+        toast.error("工单已创建，但图片上传失败");
       } finally {
         onDone();
       }
     })();
-  }, [carbon, companyId, dispatchId, files, onDone, startedFor, t]);
+  }, [carbon, companyId, dispatchId, files, onDone, startedFor]);
 
   return null;
 }
@@ -662,6 +723,7 @@ export function MachineDetailPage({
     machine.status === "running" ||
     machine.status === "idle" ||
     machine.openDispatches.length === 0;
+  const meta = statusMeta[machine.status];
 
   useEffect(() => {
     if (fetcher.state !== "idle" || !fetcher.data?.ok) return;
@@ -720,159 +782,185 @@ export function MachineDetailPage({
   };
 
   return (
-    <div className="mx-auto flex min-h-dvh w-full max-w-3xl flex-col gap-5 pb-24">
-      <header className="sticky top-0 z-10 flex items-center gap-2 border-b border-border bg-background/95 px-2 py-2 backdrop-blur supports-[backdrop-filter]:bg-background/80">
-        <button
-          type="button"
-          className="rounded-md p-2 text-foreground hover:bg-muted"
-          aria-label="Back"
-          onClick={() => navigate(path.to.shop)}
-        >
-          <LuChevronLeft className="h-5 w-5" />
-        </button>
-        <div className="min-w-0 flex-1">
-          <h1 className="truncate text-base font-semibold">{machine.name}</h1>
-          {machine.subtitle ? (
-            <p className="truncate text-xs text-muted-foreground">
-              {machine.subtitle}
-            </p>
-          ) : null}
+    <div className="mx-auto flex min-h-dvh w-full max-w-3xl flex-col gap-4 bg-muted/30 pb-24">
+      <header className="sticky top-0 z-10 border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80">
+        <div className="flex items-center gap-2 px-2 py-2">
+          <button
+            type="button"
+            className="rounded-md p-2 text-foreground hover:bg-muted"
+            aria-label="返回"
+            onClick={() => navigate(path.to.shop)}
+          >
+            <LuChevronLeft className="h-5 w-5" />
+          </button>
+          <div className="min-w-0 flex-1">
+            <h1 className="truncate text-lg font-bold tracking-tight">
+              {machine.name}
+            </h1>
+            {machine.subtitle ? (
+              <p className="truncate text-xs text-muted-foreground">
+                {machine.subtitle}
+              </p>
+            ) : null}
+          </div>
+          <MachineStatusChip status={machine.status} />
         </div>
-        <MachineStatusChip status={machine.status} />
+        <div className={cn("h-1 w-full bg-gradient-to-r", meta.gradient)} />
       </header>
 
-      <WorkOrderSection work={machine.currentWork} />
+      <div className="flex flex-col gap-4 px-4">
+        <WorkOrderSection work={machine.currentWork} />
 
-      {reportKind ? (
-        <ReportForm
-          kind={reportKind}
-          busy={busy}
-          people={people}
-          onCancel={() => setReportKind(null)}
-          onSubmit={onReport}
-        />
-      ) : null}
+        {reportKind ? (
+          <ReportForm
+            kind={reportKind}
+            busy={busy}
+            people={people}
+            onCancel={() => setReportKind(null)}
+            onSubmit={onReport}
+          />
+        ) : null}
 
-      {!reportKind && canReport ? (
-        <section className="px-4">
-          <h2 className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
-            <Trans>Actions</Trans>
-          </h2>
-          <div className="mt-3 flex flex-wrap gap-2">
-            <Button
-              type="button"
-              size="md"
-              variant="secondary"
-              isDisabled={busy}
-              onClick={() => setReportKind("break")}
-            >
-              <Trans>Break / Away</Trans>
-            </Button>
-            <Button
-              type="button"
-              size="md"
-              variant="secondary"
-              isDisabled={busy}
-              onClick={() => setReportKind("planned")}
-            >
-              <Trans>Planned downtime</Trans>
-            </Button>
-            <Button
-              type="button"
-              size="md"
-              variant="destructive"
-              isDisabled={busy}
-              onClick={() => setReportKind("fault")}
-            >
-              <Trans>Fault downtime</Trans>
-            </Button>
-          </div>
-        </section>
-      ) : null}
-
-      {!reportKind && primary ? (
-        <DispatchActions
-          companyId={companyId}
-          dispatch={primary}
-          userId={userId}
-          people={people}
-          busy={busy}
-          comments={commentsByDispatchId[primary.id] ?? []}
-          files={filesByDispatchId[primary.id] ?? []}
-          onAction={onAction}
-          onUploaded={() => revalidator.revalidate()}
-        />
-      ) : null}
-
-      {!reportKind &&
-      machine.openDispatches.filter((d) => d.id !== primary?.id).length > 0 ? (
-        <section className="flex flex-col gap-2 px-0">
-          <h2 className="px-4 text-xs font-medium uppercase tracking-wide text-muted-foreground">
-            <Trans>Other open tickets</Trans>
-          </h2>
-          {machine.openDispatches
-            .filter((d) => d.id !== primary?.id)
-            .map((d) => (
-              <DispatchActions
-                key={d.id}
-                companyId={companyId}
-                dispatch={d}
-                userId={userId}
-                people={people}
-                busy={busy}
-                comments={commentsByDispatchId[d.id] ?? []}
-                files={filesByDispatchId[d.id] ?? []}
-                onAction={onAction}
-                onUploaded={() => revalidator.revalidate()}
-              />
-            ))}
-        </section>
-      ) : null}
-
-      <section className="px-4">
-        <h2 className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
-          <Trans>Today's yield</Trans>
-        </h2>
-        <p className="mt-2 text-sm text-muted-foreground">
-          <Trans>Coming in a later update</Trans>
-        </p>
-      </section>
-
-      <section className="px-4 pb-6">
-        <h2 className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
-          <Trans>Maintenance history</Trans>
-        </h2>
-        {history.length === 0 ? (
-          <p className="mt-2 text-sm text-muted-foreground">
-            <Trans>No recent closed tickets</Trans>
-          </p>
-        ) : (
-          <ul className="mt-2 flex flex-col gap-2">
-            {history.map((item) => (
-              <li
-                key={item.id}
-                className="rounded-md border border-border px-3 py-2 text-sm"
+        {!reportKind && canReport ? (
+          <section>
+            <SectionTitle icon={<LuWrench className="h-4 w-4" />}>
+              快捷操作
+            </SectionTitle>
+            <div className="mt-2.5 grid grid-cols-3 gap-2.5">
+              <button
+                type="button"
+                disabled={busy}
+                onClick={() => setReportKind("break")}
+                className="flex flex-col items-center gap-1.5 rounded-2xl border border-border bg-card px-2 py-4 shadow-sm transition active:scale-95 disabled:opacity-50"
               >
-                <div className="flex items-center justify-between gap-2">
-                  <span className="font-medium tabular-nums">
-                    {item.maintenanceDispatchId ?? item.id}
-                  </span>
-                  <span className="text-xs text-muted-foreground">
-                    {item.status}
-                  </span>
-                </div>
-                <p className="mt-1 text-xs text-muted-foreground">
-                  {item.shopKind}
-                  {item.assigneeName ? ` · ${item.assigneeName}` : ""}
-                </p>
-                {item.note ? (
-                  <p className="mt-1 line-clamp-2 text-xs">{item.note}</p>
-                ) : null}
-              </li>
-            ))}
-          </ul>
-        )}
-      </section>
+                <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-sky-500 to-blue-600 text-white">
+                  <LuCoffee className="h-5 w-5" />
+                </span>
+                <span className="text-xs font-medium">休息</span>
+              </button>
+              <button
+                type="button"
+                disabled={busy}
+                onClick={() => setReportKind("planned")}
+                className="flex flex-col items-center gap-1.5 rounded-2xl border border-border bg-card px-2 py-4 shadow-sm transition active:scale-95 disabled:opacity-50"
+              >
+                <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-amber-500 to-orange-500 text-white">
+                  <LuCalendarClock className="h-5 w-5" />
+                </span>
+                <span className="text-xs font-medium">计划停机</span>
+              </button>
+              <button
+                type="button"
+                disabled={busy}
+                onClick={() => setReportKind("fault")}
+                className="flex flex-col items-center gap-1.5 rounded-2xl border border-border bg-card px-2 py-4 shadow-sm transition active:scale-95 disabled:opacity-50"
+              >
+                <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-red-500 to-rose-600 text-white">
+                  <LuTriangleAlert className="h-5 w-5" />
+                </span>
+                <span className="text-xs font-medium">故障报修</span>
+              </button>
+            </div>
+          </section>
+        ) : null}
+
+        {!reportKind && primary ? (
+          <DispatchActions
+            companyId={companyId}
+            dispatch={primary}
+            userId={userId}
+            people={people}
+            busy={busy}
+            comments={commentsByDispatchId[primary.id] ?? []}
+            files={filesByDispatchId[primary.id] ?? []}
+            onAction={onAction}
+            onUploaded={() => revalidator.revalidate()}
+          />
+        ) : null}
+
+        {!reportKind &&
+        machine.openDispatches.filter((d) => d.id !== primary?.id).length >
+          0 ? (
+          <section className="flex flex-col gap-3">
+            <SectionTitle icon={<LuWrench className="h-4 w-4" />}>
+              其他进行中的工单
+            </SectionTitle>
+            {machine.openDispatches
+              .filter((d) => d.id !== primary?.id)
+              .map((d) => (
+                <DispatchActions
+                  key={d.id}
+                  companyId={companyId}
+                  dispatch={d}
+                  userId={userId}
+                  people={people}
+                  busy={busy}
+                  comments={commentsByDispatchId[d.id] ?? []}
+                  files={filesByDispatchId[d.id] ?? []}
+                  onAction={onAction}
+                  onUploaded={() => revalidator.revalidate()}
+                />
+              ))}
+          </section>
+        ) : null}
+
+        <section className="rounded-2xl border border-border bg-card px-4 py-3 shadow-sm">
+          <SectionTitle icon={<LuTrendingUp className="h-4 w-4" />}>
+            今日产量
+          </SectionTitle>
+          <p className="mt-2 text-sm text-muted-foreground">
+            后续版本上线，敬请期待
+          </p>
+        </section>
+
+        <section>
+          <SectionTitle icon={<LuHistory className="h-4 w-4" />}>
+            维修历史
+          </SectionTitle>
+          {history.length === 0 ? (
+            <p className="mt-2 rounded-2xl border border-dashed border-border px-4 py-6 text-center text-sm text-muted-foreground">
+              暂无历史维修记录
+            </p>
+          ) : (
+            <ul className="mt-2.5 flex flex-col gap-2">
+              {history.map((item) => (
+                <li
+                  key={item.id}
+                  className="rounded-2xl border border-border bg-card px-4 py-3 shadow-sm"
+                >
+                  <div className="flex items-center justify-between gap-2">
+                    <span className="text-sm font-bold tabular-nums">
+                      {item.maintenanceDispatchId ?? item.id}
+                    </span>
+                    <Status color="gray" disableTooltip>
+                      {item.status === "Completed"
+                        ? "已完成"
+                        : item.status === "Cancelled"
+                          ? "已取消"
+                          : item.status}
+                    </Status>
+                  </div>
+                  <p className="mt-1 text-xs text-muted-foreground">
+                    {item.shopKind === "break"
+                      ? "休息/离岗"
+                      : item.shopKind === "planned"
+                        ? "计划停机"
+                        : item.shopKind === "fault"
+                          ? "故障维修"
+                          : item.shopKind}
+                    {item.assigneeName ? ` · ${item.assigneeName}` : ""}
+                  </p>
+                  {item.note ? (
+                    <p className="mt-1.5 line-clamp-2 text-xs text-muted-foreground">
+                      {item.note}
+                    </p>
+                  ) : null}
+                </li>
+              ))}
+            </ul>
+          )}
+        </section>
+      </div>
 
       <PendingMediaUploader
         companyId={companyId}
