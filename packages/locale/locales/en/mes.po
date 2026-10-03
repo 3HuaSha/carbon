@@ -64,6 +64,14 @@ msgstr "{0} of {1} complete"
 msgid "{0} of {1} completed"
 msgstr "{0} of {1} completed"
 
+#. placeholder {0}: member.tasks.length
+msgid "{0} open tasks"
+msgstr "{0} open tasks"
+
+#. placeholder {0}: board.members.length
+msgid "{0} people · {busyCount} busy"
+msgstr "{0} people · {busyCount} busy"
+
 #. placeholder {0}: rows.length
 msgid "{0} queued"
 msgstr "{0} queued"
@@ -210,6 +218,9 @@ msgstr "Are you sure you want to leave this page?"
 
 msgid "Assembly steps"
 msgstr "Assembly steps"
+
+msgid "Assign active employees to one of the matched employee types."
+msgstr "Assign active employees to one of the matched employee types."
 
 msgid "Assign person"
 msgstr "Assign person"
@@ -462,6 +473,12 @@ msgstr "Cost of unplanned maintenance, last {0} days"
 msgid "Create {0}"
 msgstr "Create {0}"
 
+msgid "Create an employee type named 模房 (or Mold) in ERP Users → Employee types, then assign people to it."
+msgstr "Create an employee type named 模房 (or Mold) in ERP Users → Employee types, then assign people to it."
+
+msgid "Create an employee type named 维修 or 机修 (or Repair / Maintenance) in ERP Users → Employee types, then assign people to it."
+msgstr "Create an employee type named 维修 or 机修 (or Repair / Maintenance) in ERP Users → Employee types, then assign people to it."
+
 msgid "Create Issue"
 msgstr "Create Issue"
 
@@ -699,6 +716,9 @@ msgstr "Failed to upload image"
 
 msgid "Failed to upload media"
 msgstr "Failed to upload media"
+
+msgid "Fault"
+msgstr "Fault"
 
 msgid "Fault downtime"
 msgstr "Fault downtime"
@@ -991,6 +1011,9 @@ msgstr "Machine down for maintenance now?"
 msgid "Machine status"
 msgstr "Machine status"
 
+msgid "Machines"
+msgstr "Machines"
+
 msgid "Maintenance"
 msgstr "Maintenance"
 
@@ -1035,6 +1058,9 @@ msgstr "Metric"
 
 msgid "Model"
 msgstr "Model"
+
+msgid "Mold shop"
+msgstr "Mold shop"
 
 msgid "More actions"
 msgstr "More actions"
@@ -1133,6 +1159,9 @@ msgstr "No maintenance scheduled for today"
 msgid "No matches. Type to create one."
 msgstr "No matches. Type to create one."
 
+msgid "No matching employee type"
+msgstr "No matching employee type"
+
 msgid "No materials"
 msgstr "No materials"
 
@@ -1162,6 +1191,9 @@ msgstr "No options found."
 
 msgid "No people found"
 msgstr "No people found"
+
+msgid "No people on this crew"
+msgstr "No people on this crew"
 
 msgid "No photos or videos yet"
 msgstr "No photos or videos yet"
@@ -1544,6 +1576,9 @@ msgstr "Remove part"
 
 msgid "Reopen the subassembly and create a replacement unit"
 msgstr "Reopen the subassembly and create a replacement unit"
+
+msgid "Repair"
+msgstr "Repair"
 
 msgid "Report downtime to put this machine into waiting repair."
 msgstr "Report downtime to put this machine into waiting repair."

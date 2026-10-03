@@ -64,6 +64,14 @@ msgstr "{0} / {1} 已完成"
 msgid "{0} of {1} completed"
 msgstr "{0} / {1} 已完成"
 
+#. placeholder {0}: member.tasks.length
+msgid "{0} open tasks"
+msgstr "{0} 个未完成任务"
+
+#. placeholder {0}: board.members.length
+msgid "{0} people · {busyCount} busy"
+msgstr "{0} 人 · {busyCount} 人忙碌"
+
 #. placeholder {0}: rows.length
 msgid "{0} queued"
 msgstr "{0} 排队中"
@@ -210,6 +218,9 @@ msgstr "您确定要离开此页面吗？"
 
 msgid "Assembly steps"
 msgstr "装配步骤"
+
+msgid "Assign active employees to one of the matched employee types."
+msgstr "请把在职员工分配到上述匹配的员工类型之一。"
 
 msgid "Assign person"
 msgstr "分配人员"
@@ -462,6 +473,12 @@ msgstr "过去 {0} 天的计划外维护成本"
 msgid "Create {0}"
 msgstr "创建 {0}"
 
+msgid "Create an employee type named 模房 (or Mold) in ERP Users → Employee types, then assign people to it."
+msgstr "请在 ERP「用户 → 员工类型」创建名为「模房」（或 Mold）的员工类型，并把人员分配到该类型。"
+
+msgid "Create an employee type named 维修 or 机修 (or Repair / Maintenance) in ERP Users → Employee types, then assign people to it."
+msgstr "请在 ERP「用户 → 员工类型」创建名为「维修」或「机修」（或 Repair / Maintenance）的员工类型，并把人员分配到该类型。"
+
 msgid "Create Issue"
 msgstr "创建问题"
 
@@ -699,6 +716,9 @@ msgstr "图片上传失败"
 
 msgid "Failed to upload media"
 msgstr ""
+
+msgid "Fault"
+msgstr "故障"
 
 msgid "Fault downtime"
 msgstr ""
@@ -991,6 +1011,9 @@ msgstr "机器现在正在维护吗？"
 msgid "Machine status"
 msgstr "机器状态"
 
+msgid "Machines"
+msgstr "机台"
+
 msgid "Maintenance"
 msgstr "维护"
 
@@ -1035,6 +1058,9 @@ msgstr "公制"
 
 msgid "Model"
 msgstr "模型"
+
+msgid "Mold shop"
+msgstr "模房"
 
 msgid "More actions"
 msgstr "更多操作"
@@ -1133,6 +1159,9 @@ msgstr "今天没有计划的维护"
 msgid "No matches. Type to create one."
 msgstr "没有匹配项。输入以创建一个。"
 
+msgid "No matching employee type"
+msgstr "未匹配到员工类型"
+
 msgid "No materials"
 msgstr "没有原材料"
 
@@ -1162,6 +1191,9 @@ msgstr "未找到选项。"
 
 msgid "No people found"
 msgstr "未找到人员"
+
+msgid "No people on this crew"
+msgstr "该班组暂无人员"
 
 msgid "No photos or videos yet"
 msgstr ""
@@ -1544,6 +1576,9 @@ msgstr "移除零件"
 
 msgid "Reopen the subassembly and create a replacement unit"
 msgstr "重新打开子装配件并创建替代件"
+
+msgid "Repair"
+msgstr "维修"
 
 msgid "Report downtime to put this machine into waiting repair."
 msgstr "上报停机可将此机器设为待维修。"

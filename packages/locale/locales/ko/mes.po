@@ -64,6 +64,14 @@ msgstr "{1} 중 {0} 완료"
 msgid "{0} of {1} completed"
 msgstr "{1} 중 {0} 완료됨"
 
+#. placeholder {0}: member.tasks.length
+msgid "{0} open tasks"
+msgstr ""
+
+#. placeholder {0}: board.members.length
+msgid "{0} people · {busyCount} busy"
+msgstr ""
+
 #. placeholder {0}: rows.length
 msgid "{0} queued"
 msgstr "{0} 대기열"
@@ -210,6 +218,9 @@ msgstr "이 페이지를 나가시겠습니까?"
 
 msgid "Assembly steps"
 msgstr "조립 단계"
+
+msgid "Assign active employees to one of the matched employee types."
+msgstr ""
 
 msgid "Assign person"
 msgstr "담당자 배정"
@@ -462,6 +473,12 @@ msgstr "계획되지 않은 유지보수의 원가, 최근 {0}일"
 msgid "Create {0}"
 msgstr "{0} 생성"
 
+msgid "Create an employee type named 模房 (or Mold) in ERP Users → Employee types, then assign people to it."
+msgstr ""
+
+msgid "Create an employee type named 维修 or 机修 (or Repair / Maintenance) in ERP Users → Employee types, then assign people to it."
+msgstr ""
+
 msgid "Create Issue"
 msgstr "이슈 생성"
 
@@ -698,6 +715,9 @@ msgid "Failed to upload image"
 msgstr "이미지를 업로드하지 못했습니다"
 
 msgid "Failed to upload media"
+msgstr ""
+
+msgid "Fault"
 msgstr ""
 
 msgid "Fault downtime"
@@ -991,6 +1011,9 @@ msgstr "기계가 지금 유지보수 중인가요?"
 msgid "Machine status"
 msgstr "장비 상태"
 
+msgid "Machines"
+msgstr ""
+
 msgid "Maintenance"
 msgstr "유지보수"
 
@@ -1035,6 +1058,9 @@ msgstr "미터법"
 
 msgid "Model"
 msgstr "모델"
+
+msgid "Mold shop"
+msgstr ""
 
 msgid "More actions"
 msgstr "더 많은 작업"
@@ -1133,6 +1159,9 @@ msgstr "오늘 예정된 유지보수가 없습니다"
 msgid "No matches. Type to create one."
 msgstr "일치항목이 없습니다. 입력하여 새로 만드세요."
 
+msgid "No matching employee type"
+msgstr ""
+
 msgid "No materials"
 msgstr "자재 없음"
 
@@ -1162,6 +1191,9 @@ msgstr "옵션이 없습니다."
 
 msgid "No people found"
 msgstr "사람을 찾을 수 없음"
+
+msgid "No people on this crew"
+msgstr ""
 
 msgid "No photos or videos yet"
 msgstr ""
@@ -1544,6 +1576,9 @@ msgstr "품목 제거"
 
 msgid "Reopen the subassembly and create a replacement unit"
 msgstr "서브어셈블리를 다시 열고 대체 부품을 생성하세요"
+
+msgid "Repair"
+msgstr ""
 
 msgid "Report downtime to put this machine into waiting repair."
 msgstr "다운타임을 보고하여 이 장비를 수리 대기로 설정합니다."

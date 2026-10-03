@@ -5,10 +5,27 @@ import {
   deriveShopMachineStatus,
   filterShopMachines,
   groupShopMachinesByArea,
+  matchesShopCrewEmployeeType,
   parseShopDispatchContent,
   resolveShopDispatchKind,
   shopMachineSubtitle
 } from "./shop.utils";
+
+describe("matchesShopCrewEmployeeType", () => {
+  it("matches Chinese and English repair aliases", () => {
+    expect(matchesShopCrewEmployeeType("机修", "repair")).toBe(true);
+    expect(matchesShopCrewEmployeeType("维修班", "repair")).toBe(true);
+    expect(matchesShopCrewEmployeeType("Maintenance", "repair")).toBe(true);
+    expect(matchesShopCrewEmployeeType("Admin", "repair")).toBe(false);
+  });
+
+  it("matches mold-room aliases without colliding with repair", () => {
+    expect(matchesShopCrewEmployeeType("模房", "mold")).toBe(true);
+    expect(matchesShopCrewEmployeeType("Mold Shop", "mold")).toBe(true);
+    expect(matchesShopCrewEmployeeType("机修", "mold")).toBe(false);
+    expect(matchesShopCrewEmployeeType(null, "mold")).toBe(false);
+  });
+});
 
 const machine = (
   overrides: Partial<ShopMachine> & Pick<ShopMachine, "id" | "name" | "status">

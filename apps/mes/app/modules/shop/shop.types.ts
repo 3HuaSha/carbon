@@ -140,3 +140,43 @@ export const shopMaintenanceActions = [
 ] as const;
 
 export type ShopMaintenanceAction = (typeof shopMaintenanceActions)[number];
+
+/**
+ * Crew boards under `/shop/repair` and `/shop/mold`. People are selected by
+ * matching `employeeType.name` against configurable aliases (see
+ * `SHOP_CREW_TYPE_ALIASES` in shop.utils).
+ */
+export const shopCrewKinds = ["repair", "mold"] as const;
+
+export type ShopCrewKind = (typeof shopCrewKinds)[number];
+
+/** One open dispatch assigned to a crew member (not Completed/Cancelled). */
+export type ShopCrewTask = {
+  id: string;
+  maintenanceDispatchId: string | null;
+  status: string | null;
+  shopKind: ShopDispatchKind;
+  note: string | null;
+  workCenterId: string | null;
+  workCenterName: string | null;
+  createdAt: string | null;
+};
+
+/** Employee on a crew board + their open assigned tasks. */
+export type ShopCrewMember = {
+  id: string;
+  name: string;
+  avatarUrl: string | null;
+  locationId: string | null;
+  employeeTypeName: string | null;
+  tasks: ShopCrewTask[];
+};
+
+export type ShopCrewBoard = {
+  crew: ShopCrewKind;
+  locationId: string;
+  locationName: string | null;
+  /** Matched `employeeType.name` values used for this board. */
+  matchedTypeNames: string[];
+  members: ShopCrewMember[];
+};

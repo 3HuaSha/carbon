@@ -3,6 +3,10 @@ import { storage } from "@carbon/files";
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { openDispatchStatuses } from "~/utils/display";
 import type {
+  ShopCrewBoard,
+  ShopCrewKind,
+  ShopCrewMember,
+  ShopCrewTask,
   ShopCurrentWork,
   ShopDispatchComment,
   ShopDispatchFile,
@@ -15,6 +19,7 @@ import type {
 } from "./shop.types";
 import {
   deriveShopMachineStatus,
+  matchesShopCrewEmployeeType,
   parseShopDispatchContent,
   resolveShopDispatchKind,
   shopMachineSubtitle
@@ -289,6 +294,174 @@ export async function getShopMachineDetail(
     commentsByDispatchId,
     filesByDispatchId,
     history
+  };
+}
+
+/**
+ * Crew board for `/shop/repair` or `/shop/mold`: active employees whose
+ * `employeeType.name` matches the crew aliases, each with assigned open
+ * (not Completed) maintenance dispatches. Idle people (zero tasks) still
+ * appear. No Start/accept required — assignment alone counts as "doing".
+ */
+export async function getShopCrewBoard(
+  client: SupabaseClient<Database>,
+  args: {
+    companyId: string;
+    locationId: string;
+    crew: ShopCrewKind;
+  }
+): Promise<ShopCrewBoard> {
+  const [typesResult, locationResult] = await Promise.all([
+    client
+      .from("employeeType")
+      .select("id, name")
+      .eq("companyId", args.companyId),
+    client
+      .from("location")
+      .select("id, name")
+      .eq("id", args.locationId)
+      .eq("companyId", args.companyId)
+      .maybeSingle()
+  ]);
+
+  if (typesResult.error) throw typesResult.error;
+  if (locationResult.error) throw locationResult.error;
+
+  const matchedTypes = (typesResult.data ?? []).filter((row) =>
+    matchesShopCrewEmployeeType(row.name, args.crew)
+  );
+  const matchedTypeNames = matchedTypes
+    .map((t) => t.name)
+    .filter((name): name is string => typeof name === "string" && !!name.trim())
+    .sort((a, b) => a.localeCompare(b));
+  const typeIds = matchedTypes
+    .map((t) => t.id)
+    .filter((id): id is string => typeof id === "string");
+  const typeNameById = new Map(
+    matchedTypes
+      .filter((t): t is typeof t & { id: string } => typeof t.id === "string")
+      .map((t) => [t.id, t.name ?? null] as const)
+  );
+
+  if (typeIds.length === 0) {
+    return {
+      crew: args.crew,
+      locationId: args.locationId,
+      locationName: locationResult.data?.name ?? null,
+      matchedTypeNames: [],
+      members: []
+    };
+  }
+
+  const peopleResult = await client
+    .from("employees")
+    .select("id, name, avatarUrl, locationId, employeeTypeId")
+    .eq("companyId", args.companyId)
+    .eq("active", true)
+    .in("employeeTypeId", typeIds)
+    .order("name", { ascending: true });
+
+  if (peopleResult.error) throw peopleResult.error;
+
+  const people = (peopleResult.data ?? []).filter(
+    (row): row is typeof row & { id: string } => typeof row.id === "string"
+  );
+  const peopleIds = people.map((p) => p.id);
+
+  if (peopleIds.length === 0) {
+    return {
+      crew: args.crew,
+      locationId: args.locationId,
+      locationName: locationResult.data?.name ?? null,
+      matchedTypeNames,
+      members: []
+    };
+  }
+
+  const dispatchesResult = await client
+    .from("maintenanceDispatch")
+    .select(DISPATCH_COLUMNS)
+    .eq("companyId", args.companyId)
+    .in("assignee", peopleIds)
+    .in("status", [...openDispatchStatuses])
+    .order("createdAt", { ascending: true });
+
+  if (dispatchesResult.error) throw dispatchesResult.error;
+
+  const workCenterIds = [
+    ...new Set(
+      (dispatchesResult.data ?? [])
+        .map((d) => d.workCenterId)
+        .filter((id): id is string => typeof id === "string")
+    )
+  ];
+
+  const workCenterNameById = new Map<string, string>();
+  if (workCenterIds.length > 0) {
+    const wcResult = await client
+      .from("workCenters")
+      .select("id, name")
+      .eq("companyId", args.companyId)
+      .in("id", workCenterIds);
+    if (wcResult.error) throw wcResult.error;
+    for (const row of wcResult.data ?? []) {
+      if (row.id) workCenterNameById.set(row.id, row.name ?? row.id);
+    }
+  }
+
+  const tasksByAssignee = new Map<string, ShopCrewTask[]>();
+  for (const row of dispatchesResult.data ?? []) {
+    const assignee = row.assignee;
+    if (typeof assignee !== "string") continue;
+    const parsed = parseShopDispatchContent(row.content);
+    const task: ShopCrewTask = {
+      id: row.id as string,
+      maintenanceDispatchId: row.maintenanceDispatchId ?? null,
+      status: row.status ?? null,
+      shopKind: resolveShopDispatchKind({
+        shopKind: parsed.shopKind,
+        oeeImpact: row.oeeImpact ?? null
+      }),
+      note: parsed.note,
+      workCenterId: row.workCenterId ?? null,
+      workCenterName: row.workCenterId
+        ? (workCenterNameById.get(row.workCenterId) ?? null)
+        : null,
+      createdAt: row.createdAt ?? null
+    };
+    const list = tasksByAssignee.get(assignee) ?? [];
+    list.push(task);
+    tasksByAssignee.set(assignee, list);
+  }
+
+  const members: ShopCrewMember[] = people
+    .map((row) => ({
+      id: row.id,
+      name: row.name?.trim() || row.id,
+      avatarUrl: row.avatarUrl ?? null,
+      locationId: row.locationId ?? null,
+      employeeTypeName: row.employeeTypeId
+        ? (typeNameById.get(row.employeeTypeId) ?? null)
+        : null,
+      tasks: tasksByAssignee.get(row.id) ?? []
+    }))
+    .sort((a, b) => {
+      // Busy people first, then location peers, then name.
+      const aBusy = a.tasks.length > 0 ? 0 : 1;
+      const bBusy = b.tasks.length > 0 ? 0 : 1;
+      if (aBusy !== bBusy) return aBusy - bBusy;
+      const aHere = a.locationId === args.locationId ? 0 : 1;
+      const bHere = b.locationId === args.locationId ? 0 : 1;
+      if (aHere !== bHere) return aHere - bHere;
+      return a.name.localeCompare(b.name);
+    });
+
+  return {
+    crew: args.crew,
+    locationId: args.locationId,
+    locationName: locationResult.data?.name ?? null,
+    matchedTypeNames,
+    members
   };
 }
 

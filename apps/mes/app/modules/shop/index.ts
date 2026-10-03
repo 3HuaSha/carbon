@@ -1,4 +1,8 @@
 export type {
+  ShopCrewBoard,
+  ShopCrewKind,
+  ShopCrewMember,
+  ShopCrewTask,
   ShopCurrentWork,
   ShopDispatchComment,
   ShopDispatchFile,
@@ -14,6 +18,7 @@ export type {
   ShopStatusFilter
 } from "./shop.types";
 export {
+  shopCrewKinds,
   shopDispatchKinds,
   shopMachineStatuses,
   shopMaintenanceActions,
@@ -24,8 +29,10 @@ export {
   deriveShopMachineStatus,
   filterShopMachines,
   groupShopMachinesByArea,
+  matchesShopCrewEmployeeType,
   parseShopDispatchContent,
   primaryOpenDispatch,
   resolveShopDispatchKind,
+  SHOP_CREW_TYPE_ALIASES,
   shopMachineSubtitle
 } from "./shop.utils";

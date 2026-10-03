@@ -64,6 +64,14 @@ msgstr "{0} sur {1} terminé(s)"
 msgid "{0} of {1} completed"
 msgstr "{0} sur {1} terminé(s)"
 
+#. placeholder {0}: member.tasks.length
+msgid "{0} open tasks"
+msgstr ""
+
+#. placeholder {0}: board.members.length
+msgid "{0} people · {busyCount} busy"
+msgstr ""
+
 #. placeholder {0}: rows.length
 msgid "{0} queued"
 msgstr "{0} en file d'attente"
@@ -210,6 +218,9 @@ msgstr "Êtes-vous sûr de vouloir quitter cette page ?"
 
 msgid "Assembly steps"
 msgstr "Étapes d'assemblage"
+
+msgid "Assign active employees to one of the matched employee types."
+msgstr ""
 
 msgid "Assign person"
 msgstr "Assigner une personne"
@@ -462,6 +473,12 @@ msgstr "Coût de la maintenance imprévue, {0} derniers jours"
 msgid "Create {0}"
 msgstr "Créer {0}"
 
+msgid "Create an employee type named 模房 (or Mold) in ERP Users → Employee types, then assign people to it."
+msgstr ""
+
+msgid "Create an employee type named 维修 or 机修 (or Repair / Maintenance) in ERP Users → Employee types, then assign people to it."
+msgstr ""
+
 msgid "Create Issue"
 msgstr "Créer un problème"
 
@@ -698,6 +715,9 @@ msgid "Failed to upload image"
 msgstr "Échec du téléversement de l'image"
 
 msgid "Failed to upload media"
+msgstr ""
+
+msgid "Fault"
 msgstr ""
 
 msgid "Fault downtime"
@@ -991,6 +1011,9 @@ msgstr "Machine arrêtée pour maintenance actuellement ?"
 msgid "Machine status"
 msgstr "État de la machine"
 
+msgid "Machines"
+msgstr ""
+
 msgid "Maintenance"
 msgstr "Maintenance"
 
@@ -1035,6 +1058,9 @@ msgstr "Métrique"
 
 msgid "Model"
 msgstr "Modèle"
+
+msgid "Mold shop"
+msgstr ""
 
 msgid "More actions"
 msgstr "Plus d'actions"
@@ -1133,6 +1159,9 @@ msgstr "Aucune maintenance planifiée pour aujourd'hui"
 msgid "No matches. Type to create one."
 msgstr "Aucune correspondance. Tapez pour en créer une."
 
+msgid "No matching employee type"
+msgstr ""
+
 msgid "No materials"
 msgstr "Aucun matériau"
 
@@ -1162,6 +1191,9 @@ msgstr "Aucune option trouvée."
 
 msgid "No people found"
 msgstr "Aucune personne trouvée"
+
+msgid "No people on this crew"
+msgstr ""
 
 msgid "No photos or videos yet"
 msgstr ""
@@ -1544,6 +1576,9 @@ msgstr "Retirer la pièce"
 
 msgid "Reopen the subassembly and create a replacement unit"
 msgstr "Rouvrir le sous-ensemble et créer une unité de remplacement"
+
+msgid "Repair"
+msgstr ""
 
 msgid "Report downtime to put this machine into waiting repair."
 msgstr "Signalez un arrêt pour mettre cette machine en attente de réparation."
