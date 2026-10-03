@@ -31,7 +31,7 @@ export function ShopHeader({
   onFilterChange
 }: ShopHeaderProps) {
   const { t } = useLingui();
-  const { installed, requestInstall, isIos } = usePwaInstall();
+  const { installed, requestInstall, isIos, preparing } = usePwaInstall();
   const [helpOpen, setHelpOpen] = useState(false);
 
   const onInstallClick = async () => {
@@ -55,11 +55,20 @@ export function ShopHeader({
         <div className="flex shrink-0 items-start gap-2">
           {!installed ? (
             <IconButton
-              aria-label={t`Install / Add to Home Screen`}
-              title={t`Install / Add to Home Screen`}
+              aria-label={
+                preparing
+                  ? t`Preparing install…`
+                  : t`Install / Add to Home Screen`
+              }
+              title={
+                preparing
+                  ? t`Preparing install…`
+                  : t`Install / Add to Home Screen`
+              }
               icon={<LuDownload />}
               variant="secondary"
               size="md"
+              isDisabled={preparing}
               onClick={() => {
                 void onInstallClick();
               }}

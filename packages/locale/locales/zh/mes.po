@@ -296,6 +296,12 @@ msgstr "请查收邮件"
 msgid "Choose a job"
 msgstr "选择工单"
 
+msgid "Chrome did not offer a one-tap install yet. Use the menu below, or stay on this page a few seconds and try Install again."
+msgstr ""
+
+msgid "Chrome, Firefox, and Edge on iOS cannot native-install this app."
+msgstr ""
+
 msgid "Clear"
 msgstr "清除"
 
@@ -660,6 +666,9 @@ msgstr "完成账户设置"
 msgid "Finish with material unpicked?"
 msgstr "物料未拣货的情况下要完成吗？"
 
+msgid "Firefox and Safari on desktop also use manual Add to Home Screen — only Chromium fires the Install prompt."
+msgstr ""
+
 #. placeholder {0}: formatRelativeTime( convertDateStringToIsoString(batchFacts.dueDate) )
 msgid "First due {0}"
 msgstr "最早应交期 {0}"
@@ -731,12 +740,6 @@ msgstr "已检验"
 msgid "Install / Add to Home Screen"
 msgstr ""
 
-msgid "Install this shop view from Chrome so it opens like an app."
-msgstr ""
-
-msgid "Install this shop view so it opens like an app."
-msgstr ""
-
 msgid "Instructions"
 msgstr "作业指导"
 
@@ -748,6 +751,9 @@ msgstr "库存调整已完成"
 
 msgid "Inventory Adjustments"
 msgstr "库存调整"
+
+msgid "iPhone and iPad never show a native Install button — use Safari’s Share menu."
+msgstr ""
 
 msgid "is"
 msgstr "是"
@@ -1172,10 +1178,7 @@ msgstr "未结工单"
 msgid "Open maintenance"
 msgstr "未结维护"
 
-msgid "Open this page in Chrome on Android."
-msgstr ""
-
-msgid "Open this page in Safari (not Chrome)."
+msgid "Open this page in Safari (not Chrome on iOS)."
 msgstr ""
 
 msgid "Operations"
@@ -1280,6 +1283,9 @@ msgstr "请选择一个物料"
 
 msgid "PM schedule lapsed"
 msgstr "PM排程已逾期"
+
+msgid "Preparing install…"
+msgstr ""
 
 msgid "Press ? on any page to open this list. Shortcuts are ignored while you type in a field."
 msgstr "在任何页面按 ? 打开此列表。在字段中输入时快捷键不可用。"
@@ -1877,6 +1883,9 @@ msgstr "正在上传 {0}"
 
 msgid "Use a different account"
 msgstr "使用不同的帐户"
+
+msgid "Use Chrome on Android (or desktop Chrome)."
+msgstr ""
 
 msgid "Used automatically at completion"
 msgstr "在完成时自动使用"

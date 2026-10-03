@@ -296,6 +296,12 @@ msgstr "Revise su correo electrónico"
 msgid "Choose a job"
 msgstr "Elegir una orden de trabajo"
 
+msgid "Chrome did not offer a one-tap install yet. Use the menu below, or stay on this page a few seconds and try Install again."
+msgstr ""
+
+msgid "Chrome, Firefox, and Edge on iOS cannot native-install this app."
+msgstr ""
+
 msgid "Clear"
 msgstr "Limpiar"
 
@@ -660,6 +666,9 @@ msgstr "Finalizar la configuración de su cuenta"
 msgid "Finish with material unpicked?"
 msgstr "¿Finalizar con material sin recoger?"
 
+msgid "Firefox and Safari on desktop also use manual Add to Home Screen — only Chromium fires the Install prompt."
+msgstr ""
+
 #. placeholder {0}: formatRelativeTime( convertDateStringToIsoString(batchFacts.dueDate) )
 msgid "First due {0}"
 msgstr "Primer vencimiento {0}"
@@ -731,12 +740,6 @@ msgstr "inspeccionado"
 msgid "Install / Add to Home Screen"
 msgstr ""
 
-msgid "Install this shop view from Chrome so it opens like an app."
-msgstr ""
-
-msgid "Install this shop view so it opens like an app."
-msgstr ""
-
 msgid "Instructions"
 msgstr "Instrucciones"
 
@@ -748,6 +751,9 @@ msgstr "Ajuste de inventario completado"
 
 msgid "Inventory Adjustments"
 msgstr "Ajustes de inventario"
+
+msgid "iPhone and iPad never show a native Install button — use Safari’s Share menu."
+msgstr ""
 
 msgid "is"
 msgstr "es"
@@ -1172,10 +1178,7 @@ msgstr "Órdenes de trabajo abiertas"
 msgid "Open maintenance"
 msgstr "Mantenimiento abierto"
 
-msgid "Open this page in Chrome on Android."
-msgstr ""
-
-msgid "Open this page in Safari (not Chrome)."
+msgid "Open this page in Safari (not Chrome on iOS)."
 msgstr ""
 
 msgid "Operations"
@@ -1280,6 +1283,9 @@ msgstr "Por favor seleccione un artículo"
 
 msgid "PM schedule lapsed"
 msgstr "Cronograma de PM caducado"
+
+msgid "Preparing install…"
+msgstr ""
 
 msgid "Press ? on any page to open this list. Shortcuts are ignored while you type in a field."
 msgstr "Presione ? en cualquier página para abrir la lista. Los atajos se ignoran mientras escribe en un campo."
@@ -1877,6 +1883,9 @@ msgstr "Subiendo {0}"
 
 msgid "Use a different account"
 msgstr "Usar una cuenta diferente"
+
+msgid "Use Chrome on Android (or desktop Chrome)."
+msgstr ""
 
 msgid "Used automatically at completion"
 msgstr "Se utiliza automáticamente al completar"

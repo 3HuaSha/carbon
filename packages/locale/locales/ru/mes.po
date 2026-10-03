@@ -296,6 +296,12 @@ msgstr "Проверьте вашу электронную почту"
 msgid "Choose a job"
 msgstr "Выбрать производственный заказ"
 
+msgid "Chrome did not offer a one-tap install yet. Use the menu below, or stay on this page a few seconds and try Install again."
+msgstr ""
+
+msgid "Chrome, Firefox, and Edge on iOS cannot native-install this app."
+msgstr ""
+
 msgid "Clear"
 msgstr "Очистить"
 
@@ -660,6 +666,9 @@ msgstr "Завершите настройку вашего аккаунта"
 msgid "Finish with material unpicked?"
 msgstr "Завершить с неподобранным материалом?"
 
+msgid "Firefox and Safari on desktop also use manual Add to Home Screen — only Chromium fires the Install prompt."
+msgstr ""
+
 #. placeholder {0}: formatRelativeTime( convertDateStringToIsoString(batchFacts.dueDate) )
 msgid "First due {0}"
 msgstr "Первый срок {0}"
@@ -731,12 +740,6 @@ msgstr "проверенный"
 msgid "Install / Add to Home Screen"
 msgstr ""
 
-msgid "Install this shop view from Chrome so it opens like an app."
-msgstr ""
-
-msgid "Install this shop view so it opens like an app."
-msgstr ""
-
 msgid "Instructions"
 msgstr "Инструкции"
 
@@ -748,6 +751,9 @@ msgstr "Корректировка запасов выполнена"
 
 msgid "Inventory Adjustments"
 msgstr "Корректировка запасов"
+
+msgid "iPhone and iPad never show a native Install button — use Safari’s Share menu."
+msgstr ""
 
 msgid "is"
 msgstr "равно"
@@ -1172,10 +1178,7 @@ msgstr "Открытые производственные заказы"
 msgid "Open maintenance"
 msgstr "Открытое техобслуживание"
 
-msgid "Open this page in Chrome on Android."
-msgstr ""
-
-msgid "Open this page in Safari (not Chrome)."
+msgid "Open this page in Safari (not Chrome on iOS)."
 msgstr ""
 
 msgid "Operations"
@@ -1280,6 +1283,9 @@ msgstr "Пожалуйста, выберите номенклатуру"
 
 msgid "PM schedule lapsed"
 msgstr "График обслуживания истек"
+
+msgid "Preparing install…"
+msgstr ""
 
 msgid "Press ? on any page to open this list. Shortcuts are ignored while you type in a field."
 msgstr "Нажмите ? на любой странице, чтобы открыть этот список. Горячие клавиши отключены при вводе в поле."
@@ -1877,6 +1883,9 @@ msgstr "Загрузка {0}"
 
 msgid "Use a different account"
 msgstr "Использовать другой аккаунт"
+
+msgid "Use Chrome on Android (or desktop Chrome)."
+msgstr ""
 
 msgid "Used automatically at completion"
 msgstr "Используется автоматически при завершении"
