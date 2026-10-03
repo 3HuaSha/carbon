@@ -1,4 +1,4 @@
-import { TELEGRAM_CB_COMPLETE, TELEGRAM_CB_START } from "./constants";
+import { TELEGRAM_CB_COMPLETE } from "./constants";
 
 /** Chinese label for shop downtime / dispatch kind. */
 export function shopDispatchKindLabelZh(
@@ -61,14 +61,11 @@ export function formatTelegramAssigneeMention(args: {
   return name || null;
 }
 
+/** Assign notify markup: Complete only (no Start). */
 export function buildMaintenanceTelegramButtons(dispatchId: string) {
   return {
     inline_keyboard: [
       [
-        {
-          text: "开始",
-          callback_data: `${TELEGRAM_CB_START}${dispatchId}`
-        },
         {
           text: "完成",
           callback_data: `${TELEGRAM_CB_COMPLETE}${dispatchId}`
