@@ -77,7 +77,8 @@ export async function action({ request }: ActionFunctionArgs) {
     lastName,
     locationId,
     employeeType,
-    usPersonAttestation
+    usPersonAttestation,
+    activateWithoutInvite
   } = validation.data;
 
   // Community / Starter ships "everyone is an admin": authoring roles is gated,
@@ -133,7 +134,8 @@ export async function action({ request }: ActionFunctionArgs) {
     companyId,
     createdBy: userId,
     attestedBy: CONTROLLED_ENVIRONMENT ? userId : null,
-    attestedAt: CONTROLLED_ENVIRONMENT ? datetime.timestamp() : null
+    attestedAt: CONTROLLED_ENVIRONMENT ? datetime.timestamp() : null,
+    activateWithoutInvite: Boolean(activateWithoutInvite)
   });
 
   if (!result.success) {
@@ -143,6 +145,18 @@ export async function action({ request }: ActionFunctionArgs) {
       await flash(
         request,
         error(result, result.message ?? "Failed to create employee account")
+      )
+    );
+  }
+
+  if (activateWithoutInvite) {
+    throw redirect(
+      path.to.personJob(result.userId),
+      await flash(
+        request,
+        success(
+          "Employee created and activated (no invite email). They can bind Telegram with this email."
+        )
       )
     );
   }

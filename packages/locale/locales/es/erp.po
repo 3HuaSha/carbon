@@ -555,8 +555,8 @@ msgstr "Una regla \"debe coincidir\" en este proceso impide que estos compartan 
 msgid "A 3D model the operator can turn around"
 msgstr "Un modelo 3D que el operario puede girar"
 
-msgid "A 4-digit PIN is generated when the operator is created."
-msgstr "Se genera un PIN de 4 dígitos cuando se crea el operario."
+msgid "A 4-digit PIN is generated for MES terminal pin-in. No invite email is sent — the operator is active immediately."
+msgstr ""
 
 msgid "A batch needs at least one operation. To break up the whole batch, use Dissolve instead."
 msgstr "Un lote de producción necesita al menos una operación. Para dividir el lote de producción completo, utilice Disolver en su lugar."
@@ -1311,6 +1311,9 @@ msgstr "Activar {name}"
 
 msgid "Activate Process"
 msgstr "Activar Proceso"
+
+msgid "Activate without invite email"
+msgstr ""
 
 msgid "Activate Work Center"
 msgstr "Activar Centro de Trabajo"
@@ -4825,6 +4828,9 @@ msgstr "Crear asiento de ajuste"
 
 msgid "Create an account"
 msgstr "Crear una cuenta"
+
+msgid "Create an active employee immediately — no magic-link email. Use for shop-floor / Telegram maintenance people."
+msgstr ""
 
 msgid "Create an issue"
 msgstr "Crear un problema"
@@ -9388,9 +9394,6 @@ msgstr "Unidad de Medida de Inventario"
 msgid "Inventory Valuation"
 msgstr "Valoración de Inventario"
 
-msgid "Invite"
-msgstr "Invitar"
-
 msgid "Invite Expired"
 msgstr "Invitación Vencida"
 
@@ -12646,6 +12649,9 @@ msgstr "Tasa fija opcional utilizada al traducir saldos de patrimonio según IAS
 
 msgid "Optional pages & sections"
 msgstr "Páginas y secciones opcionales"
+
+msgid "Optional. Needed for Telegram bind. Leave blank for console-only (no Telegram email bind)."
+msgstr ""
 
 msgid "Optional. Stops new purchase suggestions after this date."
 msgstr "Opcional. Detiene las sugerencias de compra después de esta fecha."

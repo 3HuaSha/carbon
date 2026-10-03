@@ -110,6 +110,11 @@ const CreateEmployeeModal = ({ invitable }: CreateEmployeeModalProps) => {
                 label={t`Location`}
                 termId="create-employee-location"
               />
+              <Boolean
+                name="activateWithoutInvite"
+                label={t`Activate without invite email`}
+                description={t`Create an active employee immediately — no magic-link email. Use for shop-floor / Telegram maintenance people.`}
+              />
               {isControlledEnvironment && (
                 <Boolean
                   name="usPersonAttestation"
@@ -129,7 +134,7 @@ const CreateEmployeeModal = ({ invitable }: CreateEmployeeModalProps) => {
                 // server-side Admin fallback can apply.
                 isDisabled={permissionsGated && !adminType}
               >
-                <Trans>Invite</Trans>
+                <Trans>Create</Trans>
               </Submit>
             </HStack>
           </ModalFooter>

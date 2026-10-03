@@ -34,43 +34,27 @@ export async function resolveTelegramBindCompanyId(
   return { ok: true, companyId: data[0]!.id };
 }
 
+function looksLikeEmail(value: string): boolean {
+  // Practical check — full RFC not needed for bind UX.
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+}
+
 /**
- * Find active employees by 工号/姓名/邮箱 for Telegram bind.
- * Carbon has no dedicated employee-code column — match name, email local-part, or UUID id.
+ * Find active employees by email for Telegram bind (case-insensitive).
+ * Exact email match first; if none and the query is not a full email,
+ * fall back to substring matches and ask the caller to clarify when >1.
+ * Synthetic console emails (`@console.internal`) never match.
  */
-export async function findEmployeesForTelegramBind(
+export async function findEmployeesByEmailForTelegramBind(
   client: SupabaseClient<Database>,
   args: { companyId: string; query: string }
 ): Promise<TelegramEmployeeMatch[]> {
   const q = args.query.trim();
   if (!q) return [];
 
-  const uuidLike =
-    /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(q);
-  if (uuidLike) {
-    const { data } = await client
-      .from("employees")
-      .select("id, name, email")
-      .eq("companyId", args.companyId)
-      .eq("active", true)
-      .eq("id", q)
-      .maybeSingle();
-    if (data?.id) {
-      return [
-        {
-          id: data.id,
-          name: data.name ?? data.id,
-          email: data.email
-        }
-      ];
-    }
-  }
-
-  // Single-tenant demos keep operator counts small; filter in process so we
-  // do not depend on PostgREST `.or()` escaping for Chinese names / 工号.
   const { data, error } = await client
     .from("employees")
-    .select("id, name, email, firstName, lastName")
+    .select("id, name, email")
     .eq("companyId", args.companyId)
     .eq("active", true)
     .limit(500);
@@ -78,19 +62,29 @@ export async function findEmployeesForTelegramBind(
   if (error || !data?.length) return [];
 
   const lower = q.toLowerCase();
-  const matches = data
-    .filter((row): row is typeof row & { id: string } => Boolean(row.id))
+  const rows = data
+    .filter((row): row is typeof row & { id: string; email: string } =>
+      Boolean(row.id && row.email)
+    )
+    .filter((row) => !row.email.toLowerCase().endsWith("@console.internal"));
+
+  const exact = rows.filter((row) => row.email.toLowerCase() === lower);
+  if (exact.length > 0) {
+    return exact.map((row) => ({
+      id: row.id,
+      name: row.name ?? row.id,
+      email: row.email
+    }));
+  }
+
+  // Full email typed but no match — do not broaden (avoids guessing).
+  if (looksLikeEmail(q)) return [];
+
+  const partial = rows
     .filter((row) => {
-      const parts = [
-        row.name,
-        row.email,
-        row.firstName,
-        row.lastName,
-        row.email?.split("@")[0]
-      ]
-        .filter((v): v is string => Boolean(v))
-        .map((v) => v.toLowerCase());
-      return parts.some((p) => p === lower || p.includes(lower));
+      const email = row.email.toLowerCase();
+      const local = email.split("@")[0] ?? "";
+      return email.includes(lower) || local === lower;
     })
     .map((row) => ({
       id: row.id,
@@ -98,11 +92,16 @@ export async function findEmployeesForTelegramBind(
       email: row.email
     }));
 
-  matches.sort((a, b) => {
-    const aExact = a.name.toLowerCase() === lower ? 0 : 1;
-    const bExact = b.name.toLowerCase() === lower ? 0 : 1;
-    return aExact - bExact;
-  });
+  return partial.slice(0, 8);
+}
 
-  return matches.slice(0, 8);
+/**
+ * @deprecated Prefer findEmployeesByEmailForTelegramBind — name/工号 bind retired.
+ * Kept for tests / callers that still pass a free-text query.
+ */
+export async function findEmployeesForTelegramBind(
+  client: SupabaseClient<Database>,
+  args: { companyId: string; query: string }
+): Promise<TelegramEmployeeMatch[]> {
+  return findEmployeesByEmailForTelegramBind(client, args);
 }

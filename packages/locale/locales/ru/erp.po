@@ -555,8 +555,8 @@ msgstr "Правило «должны совпадать» на этом про�
 msgid "A 3D model the operator can turn around"
 msgstr "3D-модель, которую оператор может вращать"
 
-msgid "A 4-digit PIN is generated when the operator is created."
-msgstr "4-значный PIN создается при создании оператора."
+msgid "A 4-digit PIN is generated for MES terminal pin-in. No invite email is sent — the operator is active immediately."
+msgstr ""
 
 msgid "A batch needs at least one operation. To break up the whole batch, use Dissolve instead."
 msgstr "Серия должна содержать по крайней мере одну операцию. Чтобы разделить всю серию, используйте вместо этого «Растворить»."
@@ -1311,6 +1311,9 @@ msgstr "Активировать {name}"
 
 msgid "Activate Process"
 msgstr "Активировать процесс"
+
+msgid "Activate without invite email"
+msgstr ""
 
 msgid "Activate Work Center"
 msgstr "Активировать рабочий центр"
@@ -4825,6 +4828,9 @@ msgstr "Создать корректирующую запись"
 
 msgid "Create an account"
 msgstr "Создать учетную запись"
+
+msgid "Create an active employee immediately — no magic-link email. Use for shop-floor / Telegram maintenance people."
+msgstr ""
 
 msgid "Create an issue"
 msgstr "Создать проблему"
@@ -9388,9 +9394,6 @@ msgstr "Единица измерения запасов"
 msgid "Inventory Valuation"
 msgstr "Оценка товарно-материального запаса"
 
-msgid "Invite"
-msgstr "Пригласить"
-
 msgid "Invite Expired"
 msgstr "Истек срок приглашения"
 
@@ -12646,6 +12649,9 @@ msgstr "Дополнительный фиксированный курс, исп
 
 msgid "Optional pages & sections"
 msgstr "Дополнительные страницы и разделы"
+
+msgid "Optional. Needed for Telegram bind. Leave blank for console-only (no Telegram email bind)."
+msgstr ""
 
 msgid "Optional. Stops new purchase suggestions after this date."
 msgstr "Опционально. Останавливает новые предложения по закупкам после этой даты."
