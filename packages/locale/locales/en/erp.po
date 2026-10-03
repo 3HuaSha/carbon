@@ -555,8 +555,8 @@ msgstr "A \"must match\" rule on this process blocks these from sharing a batch"
 msgid "A 3D model the operator can turn around"
 msgstr "A 3D model the operator can turn around"
 
-msgid "A 4-digit PIN is generated when the operator is created."
-msgstr "A 4-digit PIN is generated when the operator is created."
+msgid "A 4-digit PIN is generated for MES terminal pin-in. No invite email is sent — the operator is active immediately."
+msgstr "A 4-digit PIN is generated for MES terminal pin-in. No invite email is sent — the operator is active immediately."
 
 msgid "A batch needs at least one operation. To break up the whole batch, use Dissolve instead."
 msgstr "A batch needs at least one operation. To break up the whole batch, use Dissolve instead."
@@ -1311,6 +1311,9 @@ msgstr "Activate {name}"
 
 msgid "Activate Process"
 msgstr "Activate Process"
+
+msgid "Activate without invite email"
+msgstr "Activate without invite email"
 
 msgid "Activate Work Center"
 msgstr "Activate Work Center"
@@ -4825,6 +4828,9 @@ msgstr "Create adjusting entry"
 
 msgid "Create an account"
 msgstr "Create an account"
+
+msgid "Create an active employee immediately — no magic-link email. Use for shop-floor / Telegram maintenance people."
+msgstr "Create an active employee immediately — no magic-link email. Use for shop-floor / Telegram maintenance people."
 
 msgid "Create an issue"
 msgstr "Create an issue"
@@ -9388,9 +9394,6 @@ msgstr "Inventory Unit of Measure"
 msgid "Inventory Valuation"
 msgstr "Inventory Valuation"
 
-msgid "Invite"
-msgstr "Invite"
-
 msgid "Invite Expired"
 msgstr "Invite Expired"
 
@@ -12646,6 +12649,9 @@ msgstr "Optional fixed rate used when translating equity balances per IAS 21 (in
 
 msgid "Optional pages & sections"
 msgstr "Optional pages & sections"
+
+msgid "Optional. Needed for Telegram bind. Leave blank for console-only (no Telegram email bind)."
+msgstr "Optional. Needed for Telegram bind. Leave blank for console-only (no Telegram email bind)."
 
 msgid "Optional. Stops new purchase suggestions after this date."
 msgstr "Optional. Stops new purchase suggestions after this date."
