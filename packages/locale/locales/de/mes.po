@@ -311,7 +311,7 @@ msgstr "Wählen Sie In Safari öffnen."
 msgid "Chrome did not offer a one-tap install yet. Use the menu below."
 msgstr ""
 
-msgid "Chrome did not offer one-tap Install yet. You must use Chrome (not WeChat), hard-refresh, and confirm the service worker is controlling this page."
+msgid "Chrome did not offer one-tap Install yet. Stay in Chrome (not WeChat), wait for the service worker, then use Chrome’s menu."
 msgstr ""
 
 msgid "Chrome only fires beforeinstallprompt when the site is not already installed and installability criteria are met."
@@ -412,7 +412,7 @@ msgstr "Weiter"
 msgid "Controlled: no — Chrome will not fire the install prompt until a service worker controls this page. Hard refresh and wait a few seconds."
 msgstr ""
 
-msgid "Controlled: yes — this page has an active service worker (required for Install)."
+msgid "Controlled: yes — registration is fine. Missing one-tap Install usually means Chrome already installed MES, or Chrome only offers Install from the ⋮ menu right now."
 msgstr ""
 
 #. placeholder {0}: board.unplannedCost.days
@@ -738,6 +738,9 @@ msgstr "Leerlauf"
 
 msgid "Idle for"
 msgstr "Untätig seit"
+
+msgid "If Chrome’s menu has no Install item, MES is usually already installed — check your home screen / app drawer for MES and open that icon instead."
+msgstr ""
 
 msgid "Impact"
 msgstr "Auswirkung"
@@ -1197,6 +1200,9 @@ msgstr "eine pro Fertigungsauftrag · geplant"
 
 msgid "One pick covers the whole batch — it is shared out to the jobs automatically."
 msgstr "Eine Kommissionierung deckt das gesamte Los ab – sie wird automatisch auf die Fertigungsaufträge verteilt."
+
+msgid "One-tap Install is unavailable, but the service worker is already active. Use Chrome’s menu, or check whether MES is already on your home screen."
+msgstr ""
 
 #. placeholder {0}: batch.quantity
 msgid "Only {0} available"
@@ -1782,6 +1788,9 @@ msgstr "Setzt den Arbeitsplatz offline"
 msgid "Tap Add in the top right. Launch MES from your Home Screen icon afterward."
 msgstr "Tippen Sie oben rechts auf Hinzufügen. Starten Sie MES danach über das Symbol auf dem Startbildschirm."
 
+msgid "Tap Chrome ⋮ (top right) and look for Install app, Add to Home screen, or Install page as app. That menu path works even when the in-page Install button cannot show a dialog."
+msgstr ""
+
 msgid "Tap Install again for the system install dialog. Or Chrome ⋮ → Install app / Add to Home screen."
 msgstr ""
 
@@ -1859,6 +1868,9 @@ msgstr "Zeiteinträge"
 msgid "Time Worked: {0}"
 msgstr "Arbeitszeit: {0}"
 
+msgid "To force a fresh install: uninstall the MES app, then Chrome ⋮ → Settings → Site settings → All sites → this host → Clear and reset. Reload /shop, wait a few seconds, tap Install again."
+msgstr ""
+
 msgid "To pick"
 msgstr "Zu kommissionieren"
 
@@ -1867,9 +1879,6 @@ msgstr "Zum erneuten Installieren: Symbol lange drücken → App-Info → Deinst
 
 msgid "To run"
 msgstr "Zu laufen"
-
-msgid "To verify yourself: Chrome ⋮ → More tools → Developer tools (if available), or chrome://serviceworker-internals on desktop. On phone, hard refresh is usually enough."
-msgstr ""
 
 msgid "Today"
 msgstr "Heute"

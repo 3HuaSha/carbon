@@ -61,9 +61,11 @@ export function PwaInstallSheet({
         ? isAndroid
           ? t`Chrome will not offer Install again while MES is already on your home screen. Open the app, or uninstall it to reinstall.`
           : t`This site is already installed. Chrome will not show Install again.`
-        : isAndroid
-          ? t`Chrome did not offer one-tap Install yet. You must use Chrome (not WeChat), hard-refresh, and confirm the service worker is controlling this page.`
-          : t`Chrome did not offer a one-tap install yet. Use the menu below.`;
+        : isAndroid && swControlled
+          ? t`One-tap Install is unavailable, but the service worker is already active. Use Chrome’s menu, or check whether MES is already on your home screen.`
+          : isAndroid
+            ? t`Chrome did not offer one-tap Install yet. Stay in Chrome (not WeChat), wait for the service worker, then use Chrome’s menu.`
+            : t`Chrome did not offer a one-tap install yet. Use the menu below.`;
 
   return (
     <BottomSheet open={open} onOpenChange={onOpenChange}>
@@ -152,6 +154,30 @@ export function PwaInstallSheet({
                 </Trans>
               </li>
             </ol>
+          ) : isAndroid && swControlled ? (
+            <ol className="list-decimal space-y-3 pl-5 text-base leading-relaxed text-foreground">
+              <li>
+                <Trans>
+                  Tap Chrome ⋮ (top right) and look for Install app, Add to Home
+                  screen, or Install page as app. That menu path works even when
+                  the in-page Install button cannot show a dialog.
+                </Trans>
+              </li>
+              <li>
+                <Trans>
+                  If Chrome’s menu has no Install item, MES is usually already
+                  installed — check your home screen / app drawer for MES and
+                  open that icon instead.
+                </Trans>
+              </li>
+              <li>
+                <Trans>
+                  To force a fresh install: uninstall the MES app, then Chrome ⋮
+                  → Settings → Site settings → All sites → this host → Clear and
+                  reset. Reload /shop, wait a few seconds, tap Install again.
+                </Trans>
+              </li>
+            </ol>
           ) : (
             <ol className="list-decimal space-y-3 pl-5 text-base leading-relaxed text-foreground">
               <li>
@@ -189,8 +215,9 @@ export function PwaInstallSheet({
               <p className="text-muted-foreground">
                 {swControlled ? (
                   <Trans>
-                    Controlled: yes — this page has an active service worker
-                    (required for Install).
+                    Controlled: yes — registration is fine. Missing one-tap
+                    Install usually means Chrome already installed MES, or
+                    Chrome only offers Install from the ⋮ menu right now.
                   </Trans>
                 ) : (
                   <Trans>
@@ -205,13 +232,6 @@ export function PwaInstallSheet({
                   {swControllerUrl}
                 </p>
               ) : null}
-              <p className="text-xs text-muted-foreground pt-1">
-                <Trans>
-                  To verify yourself: Chrome ⋮ → More tools → Developer tools
-                  (if available), or chrome://serviceworker-internals on
-                  desktop. On phone, hard refresh is usually enough.
-                </Trans>
-              </p>
             </div>
           ) : null}
 

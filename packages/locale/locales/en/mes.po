@@ -311,8 +311,8 @@ msgstr "Choose Open in Safari."
 msgid "Chrome did not offer a one-tap install yet. Use the menu below."
 msgstr "Chrome did not offer a one-tap install yet. Use the menu below."
 
-msgid "Chrome did not offer one-tap Install yet. You must use Chrome (not WeChat), hard-refresh, and confirm the service worker is controlling this page."
-msgstr "Chrome did not offer one-tap Install yet. You must use Chrome (not WeChat), hard-refresh, and confirm the service worker is controlling this page."
+msgid "Chrome did not offer one-tap Install yet. Stay in Chrome (not WeChat), wait for the service worker, then use Chrome’s menu."
+msgstr "Chrome did not offer one-tap Install yet. Stay in Chrome (not WeChat), wait for the service worker, then use Chrome’s menu."
 
 msgid "Chrome only fires beforeinstallprompt when the site is not already installed and installability criteria are met."
 msgstr "Chrome only fires beforeinstallprompt when the site is not already installed and installability criteria are met."
@@ -412,8 +412,8 @@ msgstr "Continue"
 msgid "Controlled: no — Chrome will not fire the install prompt until a service worker controls this page. Hard refresh and wait a few seconds."
 msgstr "Controlled: no — Chrome will not fire the install prompt until a service worker controls this page. Hard refresh and wait a few seconds."
 
-msgid "Controlled: yes — this page has an active service worker (required for Install)."
-msgstr "Controlled: yes — this page has an active service worker (required for Install)."
+msgid "Controlled: yes — registration is fine. Missing one-tap Install usually means Chrome already installed MES, or Chrome only offers Install from the ⋮ menu right now."
+msgstr "Controlled: yes — registration is fine. Missing one-tap Install usually means Chrome already installed MES, or Chrome only offers Install from the ⋮ menu right now."
 
 #. placeholder {0}: board.unplannedCost.days
 msgid "Cost of unplanned maintenance, last {0} days"
@@ -738,6 +738,9 @@ msgstr "Idle"
 
 msgid "Idle for"
 msgstr "Idle for"
+
+msgid "If Chrome’s menu has no Install item, MES is usually already installed — check your home screen / app drawer for MES and open that icon instead."
+msgstr "If Chrome’s menu has no Install item, MES is usually already installed — check your home screen / app drawer for MES and open that icon instead."
 
 msgid "Impact"
 msgstr "Impact"
@@ -1197,6 +1200,9 @@ msgstr "one per job · planned"
 
 msgid "One pick covers the whole batch — it is shared out to the jobs automatically."
 msgstr "One pick covers the whole batch — it is shared out to the jobs automatically."
+
+msgid "One-tap Install is unavailable, but the service worker is already active. Use Chrome’s menu, or check whether MES is already on your home screen."
+msgstr "One-tap Install is unavailable, but the service worker is already active. Use Chrome’s menu, or check whether MES is already on your home screen."
 
 #. placeholder {0}: batch.quantity
 msgid "Only {0} available"
@@ -1782,6 +1788,9 @@ msgstr "Takes work center offline"
 msgid "Tap Add in the top right. Launch MES from your Home Screen icon afterward."
 msgstr "Tap Add in the top right. Launch MES from your Home Screen icon afterward."
 
+msgid "Tap Chrome ⋮ (top right) and look for Install app, Add to Home screen, or Install page as app. That menu path works even when the in-page Install button cannot show a dialog."
+msgstr "Tap Chrome ⋮ (top right) and look for Install app, Add to Home screen, or Install page as app. That menu path works even when the in-page Install button cannot show a dialog."
+
 msgid "Tap Install again for the system install dialog. Or Chrome ⋮ → Install app / Add to Home screen."
 msgstr "Tap Install again for the system install dialog. Or Chrome ⋮ → Install app / Add to Home screen."
 
@@ -1859,6 +1868,9 @@ msgstr "Time Entries"
 msgid "Time Worked: {0}"
 msgstr "Time Worked: {0}"
 
+msgid "To force a fresh install: uninstall the MES app, then Chrome ⋮ → Settings → Site settings → All sites → this host → Clear and reset. Reload /shop, wait a few seconds, tap Install again."
+msgstr "To force a fresh install: uninstall the MES app, then Chrome ⋮ → Settings → Site settings → All sites → this host → Clear and reset. Reload /shop, wait a few seconds, tap Install again."
+
 msgid "To pick"
 msgstr "To pick"
 
@@ -1867,9 +1879,6 @@ msgstr "To reinstall: long-press the icon → App info → Uninstall (or Remove)
 
 msgid "To run"
 msgstr "To run"
-
-msgid "To verify yourself: Chrome ⋮ → More tools → Developer tools (if available), or chrome://serviceworker-internals on desktop. On phone, hard refresh is usually enough."
-msgstr "To verify yourself: Chrome ⋮ → More tools → Developer tools (if available), or chrome://serviceworker-internals on desktop. On phone, hard refresh is usually enough."
 
 msgid "Today"
 msgstr "Today"
