@@ -1,6 +1,6 @@
 import { Trans } from "@lingui/react/macro";
 import type { ShopMachine } from "../shop.types";
-import { groupShopMachinesByArea } from "../shop.utils";
+import { layoutShopMachinesByFloorPlan } from "../shop.utils";
 import { MachineTile } from "./MachineTile";
 
 type MachineGridProps = {
@@ -8,6 +8,12 @@ type MachineGridProps = {
   onSelect: (machine: ShopMachine) => void;
 };
 
+/**
+ * Phone PWA machine overview laid out as the physical shop floor:
+ * fixed 3-column grid in floor-plan order (see FLOOR_PLAN_ROWS in
+ * shop.utils.ts), with an aisle separator between the two zones.
+ * Filtered-out machines leave empty cells so the map keeps its shape.
+ */
 export function MachineGrid({ machines, onSelect }: MachineGridProps) {
   if (machines.length === 0) {
     return (
@@ -17,30 +23,33 @@ export function MachineGrid({ machines, onSelect }: MachineGridProps) {
     );
   }
 
-  const groups = groupShopMachinesByArea(machines);
-  const showAreaHeaders =
-    groups.length > 1 || (groups.length === 1 && groups[0].area !== null);
+  const cells = layoutShopMachinesByFloorPlan(machines);
 
   return (
-    <div className="flex flex-col gap-4 px-2 py-2 sm:px-3 sm:py-3">
-      {groups.map((group) => (
-        <section key={group.area ?? "__other"} className="space-y-1.5">
-          {showAreaHeaders ? (
-            <h2 className="px-0.5 text-[10px] font-medium uppercase tracking-wide text-muted-foreground">
-              {group.area ?? <Trans>Other</Trans>}
-            </h2>
-          ) : null}
-          <div className="grid grid-cols-3 gap-1.5 min-[400px]:grid-cols-4 sm:grid-cols-4 md:grid-cols-5">
-            {group.machines.map((machine) => (
-              <MachineTile
-                key={machine.id}
-                machine={machine}
-                onSelect={onSelect}
+    <div className="px-2 py-2 sm:px-3 sm:py-3">
+      <div className="grid grid-cols-3 gap-1.5">
+        {cells.map((cell, index) => {
+          if (cell.kind === "aisle") {
+            return (
+              <div
+                key={`aisle-${index}`}
+                aria-hidden
+                className="col-span-3 h-3"
               />
-            ))}
-          </div>
-        </section>
-      ))}
+            );
+          }
+          if (cell.kind === "empty") {
+            return <div key={`empty-${index}`} aria-hidden />;
+          }
+          return (
+            <MachineTile
+              key={cell.machine.id}
+              machine={cell.machine}
+              onSelect={onSelect}
+            />
+          );
+        })}
+      </div>
     </div>
   );
 }

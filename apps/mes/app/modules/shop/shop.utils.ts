@@ -193,3 +193,70 @@ export function primaryOpenDispatch(
   };
   return [...dispatches].sort((a, b) => rank(a) - rank(b))[0] ?? null;
 }
+
+/**
+ * Physical shop-floor layout for the phone PWA overview, transcribed from
+ * the floor-plan photo. Fixed 3-column grid; machines are placed by name.
+ * A full row of `null` renders as an aisle separator between the two zones.
+ */
+export const FLOOR_PLAN_ROWS: (string | null)[][] = [
+  ["T1", "T4", "T7"],
+  ["T2", "T5", "T8"],
+  ["T3", "T6", "T9"],
+  [null, null, null],
+  ["T17", "T16", "T27"],
+  ["T18", "T15", "T28"],
+  ["T19", "T14", "T29"],
+  ["T20", "T13", null],
+  ["T21", "T12", null],
+  ["T24", "T11", null],
+  ["T25", "T10", null],
+  ["T26", "T22", null],
+  ["T30", "T23", null]
+];
+
+export type FloorPlanCell =
+  | { kind: "machine"; machine: ShopMachine }
+  | { kind: "empty" }
+  | { kind: "aisle" };
+
+/**
+ * Lay machines out in floor-plan order as a flat cell list for a 3-column
+ * grid. Missing or filtered-out machines leave an empty cell so the map
+ * keeps its shape; machines not on the plan are appended last, in name
+ * order.
+ */
+export function layoutShopMachinesByFloorPlan(
+  machines: ShopMachine[]
+): FloorPlanCell[] {
+  const byName = new Map(
+    machines.map((m) => [m.name.trim().toUpperCase(), m])
+  );
+  const seen = new Set<string>();
+  const cells: FloorPlanCell[] = [];
+
+  for (const row of FLOOR_PLAN_ROWS) {
+    if (row.every((name) => name === null)) {
+      cells.push({ kind: "aisle" });
+      continue;
+    }
+    for (const name of row) {
+      if (name === null) {
+        cells.push({ kind: "empty" });
+        continue;
+      }
+      const machine = byName.get(name.toUpperCase()) ?? null;
+      if (machine) seen.add(machine.id);
+      cells.push(machine ? { kind: "machine", machine } : { kind: "empty" });
+    }
+  }
+
+  const unlisted = machines
+    .filter((m) => !seen.has(m.id))
+    .sort((a, b) => a.name.localeCompare(b.name));
+  for (const machine of unlisted) {
+    cells.push({ kind: "machine", machine });
+  }
+
+  return cells;
+}
