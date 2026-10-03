@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { isTelegramCommand } from "../commands";
-import { TELEGRAM_CB_COMPLETE, TELEGRAM_CB_START } from "../constants";
+import { TELEGRAM_CB_COMPLETE } from "../constants";
 import {
   buildMaintenanceTelegramButtons,
   buildMaintenanceTelegramDmText,
@@ -9,15 +9,14 @@ import {
 } from "../message";
 
 describe("telegram maintenance helpers", () => {
-  it("builds callback_data under Telegram's 64-char limit", () => {
+  it("builds Complete-only buttons under Telegram's 64-char limit", () => {
     const dispatchId = "01234567-89ab-cdef-0123-456789abcdef";
     const markup = buildMaintenanceTelegramButtons(dispatchId);
     const row = markup.inline_keyboard[0]!;
-    const start = row[0]!.callback_data!;
-    const complete = row[1]!.callback_data!;
-    expect(start).toBe(`${TELEGRAM_CB_START}${dispatchId}`);
+    expect(row).toHaveLength(1);
+    expect(row[0]!.text).toBe("完成");
+    const complete = row[0]!.callback_data!;
     expect(complete).toBe(`${TELEGRAM_CB_COMPLETE}${dispatchId}`);
-    expect(start.length).toBeLessThanOrEqual(64);
     expect(complete.length).toBeLessThanOrEqual(64);
   });
 
