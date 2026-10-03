@@ -555,8 +555,8 @@ msgstr "Eine «muss übereinstimmen»-Regel für diesen Verfahren blockiert dies
 msgid "A 3D model the operator can turn around"
 msgstr "Ein 3D-Modell, das der Werker ansehen kann"
 
-msgid "A 4-digit PIN is generated when the operator is created."
-msgstr "Eine 4-stellige PIN wird generiert, wenn ein Werker erstellt wird."
+msgid "A 4-digit PIN is generated for MES terminal pin-in. No invite email is sent — the operator is active immediately."
+msgstr ""
 
 msgid "A batch needs at least one operation. To break up the whole batch, use Dissolve instead."
 msgstr "Ein Los benötigt mindestens einen Arbeitsgang. Um das ganze Los aufzulösen, nutzen Sie stattdessen Auflösen."
@@ -1311,6 +1311,18 @@ msgstr "Aktivieren {name}"
 
 msgid "Activate Process"
 msgstr "Prozess aktivieren"
+
+msgid "Activate these employees immediately with no invite email? They become Active and can bind Telegram with their email."
+msgstr ""
+
+msgid "Activate this employee immediately with no invite email? They become Active and can bind Telegram with this email."
+msgstr ""
+
+msgid "Activate without invite"
+msgstr ""
+
+msgid "Activate without invite email"
+msgstr ""
 
 msgid "Activate Work Center"
 msgstr "Arbeitsplatz aktivieren"
@@ -4825,6 +4837,9 @@ msgstr "Anpassungseintrag erstellen"
 
 msgid "Create an account"
 msgstr "Konto erstellen"
+
+msgid "Create an active employee immediately — no magic-link email. Use for shop-floor / Telegram maintenance people."
+msgstr ""
 
 msgid "Create an issue"
 msgstr "Problem erstellen"
@@ -9388,9 +9403,6 @@ msgstr "Bestands-Mengeneinheit"
 msgid "Inventory Valuation"
 msgstr "Bestandsbewertung"
 
-msgid "Invite"
-msgstr "Einladen"
-
 msgid "Invite Expired"
 msgstr "Einladung abgelaufen"
 
@@ -12646,6 +12658,9 @@ msgstr "Optionale feste Rate, die bei der Umrechnung von Eigenkapitalsalden nach
 
 msgid "Optional pages & sections"
 msgstr "Optionale Seiten & Abschnitte"
+
+msgid "Optional. Needed for Telegram bind. Leave blank for console-only (no Telegram email bind)."
+msgstr ""
 
 msgid "Optional. Stops new purchase suggestions after this date."
 msgstr "Optional. Beendet neue Kaufvorschläge nach diesem Datum."

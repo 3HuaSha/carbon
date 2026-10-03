@@ -1,5 +1,6 @@
 import {
   assertIsPost,
+  CarbonEdition,
   CONTROLLED_ENVIRONMENT,
   error,
   success
@@ -13,7 +14,8 @@ import { getSsoAwareInviteLink } from "@carbon/ee/sso.server";
 import { validationError, validator } from "@carbon/form";
 import { sendEmail } from "@carbon/lib/email.server";
 import { getLogger } from "@carbon/logger";
-import { datetime, getClientIp } from "@carbon/utils";
+import { updateSubscriptionQuantityForCompany } from "@carbon/stripe/stripe.server";
+import { datetime, Edition, getClientIp } from "@carbon/utils";
 import { render } from "@react-email/components";
 import { nanoid } from "nanoid";
 import type {
@@ -77,7 +79,8 @@ export async function action({ request }: ActionFunctionArgs) {
     lastName,
     locationId,
     employeeType,
-    usPersonAttestation
+    usPersonAttestation,
+    activateWithoutInvite
   } = validation.data;
 
   // Community / Starter ships "everyone is an admin": authoring roles is gated,
@@ -133,7 +136,8 @@ export async function action({ request }: ActionFunctionArgs) {
     companyId,
     createdBy: userId,
     attestedBy: CONTROLLED_ENVIRONMENT ? userId : null,
-    attestedAt: CONTROLLED_ENVIRONMENT ? datetime.timestamp() : null
+    attestedAt: CONTROLLED_ENVIRONMENT ? datetime.timestamp() : null,
+    activateWithoutInvite: Boolean(activateWithoutInvite)
   });
 
   if (!result.success) {
@@ -143,6 +147,21 @@ export async function action({ request }: ActionFunctionArgs) {
       await flash(
         request,
         error(result, result.message ?? "Failed to create employee account")
+      )
+    );
+  }
+
+  if (activateWithoutInvite) {
+    if (CarbonEdition === Edition.Cloud) {
+      await updateSubscriptionQuantityForCompany(companyId);
+    }
+    throw redirect(
+      path.to.personJob(result.userId),
+      await flash(
+        request,
+        success(
+          "Employee created and activated (no invite email). They can bind Telegram with this email."
+        )
       )
     );
   }

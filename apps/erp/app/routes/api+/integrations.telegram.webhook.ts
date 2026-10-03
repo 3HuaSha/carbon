@@ -1,9 +1,8 @@
 import { getCarbonServiceRole } from "@carbon/auth/client.server";
-import { verifyEmployeePin } from "@carbon/ee/console.server";
 import {
   clearTelegramPendingBind,
   consumeTelegramBindNonce,
-  findEmployeesForTelegramBind,
+  findEmployeesByEmailForTelegramBind,
   getTelegramPendingBind,
   getUserByTelegramChatId,
   getUserByTelegramUserId,
@@ -39,18 +38,18 @@ export const config = { runtime: "nodejs" };
 
 const logger = getLogger("erp", "telegram", "webhook");
 
-const pinLockout = new AccountLockout({
+/** Rate-limit failed email bind attempts per chat (email acts as bind secret). */
+const bindLockout = new AccountLockout({
   redis,
   prefix: TELEGRAM_PIN_LOCKOUT_PREFIX,
-  maxAttempts: 5,
+  maxAttempts: 8,
   window: "15 m"
 });
 
-const GENERIC_PIN_ERROR = "PIN 不正确，请重试";
-const LOCKED_PIN_ERROR = "尝试次数过多，请稍后再试";
+const LOCKED_BIND_ERROR = "尝试次数过多，请稍后再试";
 
 const BIND_INTRO =
-  "欢迎使用维修通知机器人。\n\n请发送你的工号或姓名（与 MES 操作员一致），然后输入 4 位 PIN 完成绑定。\n之后派工通知会推到这里，开始/完成不用再输 PIN。";
+  "欢迎使用维修通知机器人。\n\n请发送你在 Carbon 里登记的邮箱完成绑定（区分大小写不敏感）。\n之后派工通知会推到这里，开始/完成不用再验证。";
 
 function isValidTelegramSecret(request: Request): boolean {
   if (!TELEGRAM_WEBHOOK_SECRET) return false;
@@ -189,7 +188,7 @@ async function handleMessage(message: TelegramMessage) {
     text === "绑定" ||
     text === "绑定账号"
   ) {
-    // Bind is private-chat only (PIN + chat↔user mapping).
+    // Bind is private-chat only (email + chat↔user mapping).
     if (message.chat.type !== "private") {
       await reply(
         chatId,
@@ -220,12 +219,8 @@ async function handleMessage(message: TelegramMessage) {
   }
 
   const pending = await getTelegramPendingBind(chatId);
-  if (pending?.step === "identity") {
-    await handleIdentityAttempt(chatId, pending.companyId, text);
-    return;
-  }
-  if (pending?.step === "pin") {
-    await handlePinAttempt(chatId, message, pending, text);
+  if (pending?.step === "email") {
+    await handleEmailBindAttempt(chatId, message, pending.companyId, text);
     return;
   }
 
@@ -236,7 +231,7 @@ async function handleMessage(message: TelegramMessage) {
   if (!mapping) {
     await reply(
       chatId,
-      "尚未绑定 Carbon 操作员。\n\n请发送 /bind，或直接发送你的工号/姓名开始绑定。"
+      "尚未绑定 Carbon 账号。\n\n请发送 /bind，或直接发送你的邮箱开始绑定。"
     );
   }
 }
@@ -262,12 +257,12 @@ async function handleStart(
     return;
   }
 
-  // Optional secondary: MES deep-link nonce → ask PIN only.
+  // Optional secondary: MES deep-link nonce → bind immediately (MES already identified).
   const bind = await consumeTelegramBindNonce(startPayload);
   if (!bind) {
     await reply(
       chatId,
-      "绑定链接无效或已过期。\n\n也可直接在此绑定：请发送你的工号或姓名。"
+      "绑定链接无效或已过期。\n\n也可直接在此绑定：请发送你的邮箱。"
     );
     await beginTelegramOnlyBind(chatId);
     return;
@@ -283,23 +278,23 @@ async function handleStart(
     .maybeSingle();
 
   if (!employee.data) {
-    await reply(chatId, "操作员不存在或已停用。也可发送工号或姓名重新绑定。");
+    await reply(chatId, "账号不存在或已停用。也可发送邮箱重新绑定。");
     return;
   }
 
-  const ok = await setTelegramPendingBind(chatId, {
-    step: "pin",
+  await clearTelegramPendingBind(chatId);
+  await linkTelegramUser(getDatabaseClient(), {
     companyId: bind.companyId,
-    employeeId: bind.employeeId
+    userId: bind.employeeId,
+    chatId,
+    telegramUserId: message.from?.id,
+    username: message.from?.username ?? null,
+    createdBy: bind.employeeId
   });
-  if (!ok) {
-    await reply(chatId, "暂时无法开始绑定，请稍后重试。");
-    return;
-  }
 
   await reply(
     chatId,
-    `正在绑定到 ${employee.data.name}。\n请输入你的 4 位操作员 PIN（仅本次绑定需要，之后开始/完成不用 PIN）。`
+    `已绑定到 ${employee.data.name}。之后维修派工会推送到这里，可直接点「开始 / 完成」。`
   );
 }
 
@@ -320,7 +315,7 @@ async function beginTelegramOnlyBind(chatId: string) {
   }
 
   const ok = await setTelegramPendingBind(chatId, {
-    step: "identity",
+    step: "email",
     companyId: company.companyId
   });
   if (!ok) {
@@ -331,108 +326,61 @@ async function beginTelegramOnlyBind(chatId: string) {
   await reply(chatId, BIND_INTRO);
 }
 
-async function handleIdentityAttempt(
+async function handleEmailBindAttempt(
   chatId: string,
+  message: TelegramMessage,
   companyId: string,
   text: string
 ) {
   if (text.startsWith("/")) {
-    await reply(chatId, "请先发送你的工号或姓名（不要发命令）。");
+    await reply(chatId, "请先发送你的邮箱（不要发命令）。");
     return;
   }
 
-  const matches = await findEmployeesForTelegramBind(getCarbonServiceRole(), {
-    companyId,
-    query: text
-  });
+  const lockoutKey = `email:${companyId}:${chatId}`;
+  const matches = await findEmployeesByEmailForTelegramBind(
+    getCarbonServiceRole(),
+    { companyId, query: text }
+  );
 
   if (matches.length === 0) {
+    const attempt = await bindLockout.recordFailure(lockoutKey);
     await reply(
       chatId,
-      "未找到匹配的操作员。请重新发送工号或姓名（与 MES 里显示的一致）。"
+      attempt.locked
+        ? LOCKED_BIND_ERROR
+        : "未找到匹配的邮箱。请重新发送 Carbon 里登记的完整邮箱。"
     );
     return;
   }
 
   if (matches.length > 1) {
-    const list = matches.map((m, i) => `${i + 1}. ${m.name}`).join("\n");
+    const list = matches
+      .map((m, i) => `${i + 1}. ${m.name} <${m.email}>`)
+      .join("\n");
     await reply(
       chatId,
-      `找到多人，请发送更完整的姓名（与下列一致）：\n${list}`
+      `找到多个匹配，请发送完整邮箱（与下列一致）：\n${list}`
     );
     return;
   }
 
   const employee = matches[0]!;
-  const ok = await setTelegramPendingBind(chatId, {
-    step: "pin",
-    companyId,
-    employeeId: employee.id
-  });
-  if (!ok) {
-    await reply(chatId, "暂时无法继续绑定，请稍后重试。");
-    return;
-  }
-
-  await reply(
-    chatId,
-    `已找到：${employee.name}\n请输入你的 4 位操作员 PIN（仅本次绑定需要）。`
-  );
-}
-
-async function handlePinAttempt(
-  chatId: string,
-  message: TelegramMessage,
-  pending: { companyId: string; employeeId: string },
-  text: string
-) {
-  if (!/^\d{4}$/.test(text)) {
-    await reply(chatId, "请输入 4 位数字 PIN。");
-    return;
-  }
-
-  const lockoutKey = `${pending.companyId}:${pending.employeeId}`;
-  const attempt = await pinLockout.recordFailure(lockoutKey);
-  if (attempt.locked) {
-    await reply(chatId, LOCKED_PIN_ERROR);
-    return;
-  }
-
-  const db = getDatabaseClient();
-  const verified = await verifyEmployeePin(db, {
-    employeeId: pending.employeeId,
-    companyId: pending.companyId,
-    pin: text
-  });
-
-  if (!verified.hasPin || !verified.valid) {
-    await reply(chatId, GENERIC_PIN_ERROR);
-    return;
-  }
-
-  await pinLockout.reset(lockoutKey);
+  await bindLockout.reset(lockoutKey);
   await clearTelegramPendingBind(chatId);
 
-  await linkTelegramUser(db, {
-    companyId: pending.companyId,
-    userId: pending.employeeId,
+  await linkTelegramUser(getDatabaseClient(), {
+    companyId,
+    userId: employee.id,
     chatId,
     telegramUserId: message.from?.id,
     username: message.from?.username ?? null,
-    createdBy: pending.employeeId
+    createdBy: employee.id
   });
-
-  const client = getCarbonServiceRole();
-  const employee = await client
-    .from("employees")
-    .select("name")
-    .eq("id", pending.employeeId)
-    .eq("companyId", pending.companyId)
-    .maybeSingle();
 
   await reply(
     chatId,
-    `已绑定到 ${employee.data?.name ?? "操作员"}。之后维修派工会推送到这里，可直接点「开始 / 完成」。`
+    `已绑定到 ${employee.name}。之后维修派工会推送到这里，可直接点「开始 / 完成」。`
   );
 }
 
@@ -519,7 +467,7 @@ async function handleUnlink(chatId: string) {
 async function handleStatus(chatId: string) {
   const mapping = await getUserByTelegramChatId(getCarbonServiceRole(), chatId);
   if (!mapping) {
-    await reply(chatId, "未绑定。发送 /bind，或直接发送工号/姓名开始绑定。");
+    await reply(chatId, "未绑定。发送 /bind，或直接发送邮箱开始绑定。");
     return;
   }
   const employee = await getCarbonServiceRole()
@@ -557,7 +505,7 @@ async function handleCallbackQuery(query: TelegramCallbackQuery) {
       showAlert: true
     });
     if (!isGroupChat) {
-      await reply(messageChatId, "请先绑定：发送 /bind，或发送你的工号/姓名。");
+      await reply(messageChatId, "请先绑定：发送 /bind，或发送你的邮箱。");
     }
     return;
   }

@@ -555,8 +555,8 @@ msgstr "이 공정의 \"일치해야 함\" 규칙이 이들을 배치 공유에�
 msgid "A 3D model the operator can turn around"
 msgstr "작업자가 회전할 수 있는 3D 모델"
 
-msgid "A 4-digit PIN is generated when the operator is created."
-msgstr "작업자를 생성할 때 4자리 PIN이 생성됩니다."
+msgid "A 4-digit PIN is generated for MES terminal pin-in. No invite email is sent — the operator is active immediately."
+msgstr ""
 
 msgid "A batch needs at least one operation. To break up the whole batch, use Dissolve instead."
 msgstr "배치는 최소한 하나의 공정이 필요합니다. 전체 배치를 분할하려면 대신 Dissolve를 사용하세요."
@@ -1311,6 +1311,18 @@ msgstr "{name} 활성화"
 
 msgid "Activate Process"
 msgstr "공정 활성화"
+
+msgid "Activate these employees immediately with no invite email? They become Active and can bind Telegram with their email."
+msgstr ""
+
+msgid "Activate this employee immediately with no invite email? They become Active and can bind Telegram with this email."
+msgstr ""
+
+msgid "Activate without invite"
+msgstr ""
+
+msgid "Activate without invite email"
+msgstr ""
 
 msgid "Activate Work Center"
 msgstr "작업장 활성화"
@@ -4825,6 +4837,9 @@ msgstr "조정 전표 생성"
 
 msgid "Create an account"
 msgstr "계정 생성"
+
+msgid "Create an active employee immediately — no magic-link email. Use for shop-floor / Telegram maintenance people."
+msgstr ""
 
 msgid "Create an issue"
 msgstr "문제 생성"
@@ -9388,9 +9403,6 @@ msgstr "재고 측정 단위"
 msgid "Inventory Valuation"
 msgstr "재고 평가"
 
-msgid "Invite"
-msgstr "초대"
-
 msgid "Invite Expired"
 msgstr "초대권 만료됨"
 
@@ -12646,6 +12658,9 @@ msgstr "IAS 21에 따라 자본 잔액을 환산할 때 사용하는 선택적 �
 
 msgid "Optional pages & sections"
 msgstr "선택적 페이지 및 섹션"
+
+msgid "Optional. Needed for Telegram bind. Leave blank for console-only (no Telegram email bind)."
+msgstr ""
 
 msgid "Optional. Stops new purchase suggestions after this date."
 msgstr "선택사항. 이 날짜 이후로 새로운 구매 제안을 중단합니다."

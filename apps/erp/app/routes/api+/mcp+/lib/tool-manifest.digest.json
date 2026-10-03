@@ -1532,7 +1532,7 @@
     {"name":"shared_upsertSavedView","classification":"WRITE","paramCount":10,"schema":"88a0b7dfec62","response":"3797626bd17e","injectAuth":"companyId+createdBy+updatedBy+userId","permission":"none","paginates":false},
     {"name":"users_deleteGroup","classification":"DESTRUCTIVE","paramCount":1,"schema":"c4dcdfdf8647","response":"bcde375ebd4c","injectAuth":"companyId","permission":"users:delete","paginates":false},
     {"name":"users_getCompaniesForUser","classification":"READ","paramCount":0,"schema":"efddc7bd8bbc","response":"681004346c78","injectAuth":"companyId","permission":"users:view","paginates":false},
-    {"name":"users_getConsoleOperators","classification":"READ","paramCount":3,"schema":"04eded31eebb","response":"42c3353a5284","injectAuth":"companyId","permission":"users:view","paginates":true},
+    {"name":"users_getConsoleOperators","classification":"READ","paramCount":3,"schema":"04eded31eebb","response":"9c24318867f7","injectAuth":"companyId","permission":"users:view","paginates":true},
     {"name":"users_getCustomers","classification":"READ","paramCount":3,"schema":"04eded31eebb","response":"79cad34eb92a","injectAuth":"companyId","permission":"users:view","paginates":true},
     {"name":"users_getEmployee","classification":"READ","paramCount":1,"schema":"3797626bd17e","response":"fddbdf17260d","injectAuth":"companyId","permission":"users:view","paginates":false},
     {"name":"users_getEmployees","classification":"READ","paramCount":3,"schema":"04eded31eebb","response":"42c3353a5284","injectAuth":"companyId","permission":"users:view","paginates":true},

@@ -270,13 +270,8 @@ export async function getEmployees(
 }
 
 /**
- * Gets console operators — users with @console.internal emails.
- * Uses the employees view (which joins user + employee) and filters
- * by the synthetic email pattern since there's no FK from employee to user
- * for PostgREST to use directly.
- *
- * TODO: After running db:generate, replace email pattern filter with
- * .eq("isConsoleOperator", true) once the column is in the employees view.
+ * Gets console operators — users with `isConsoleOperator` (includes those with
+ * a real email for Telegram bind, not only `@console.internal`).
  */
 export async function getConsoleOperators(
   client: SupabaseClient<Database>,
@@ -285,11 +280,30 @@ export async function getConsoleOperators(
     search: string | null;
   }
 ) {
+  const consoleUsers = await client
+    .from("user")
+    .select("id")
+    .eq("isConsoleOperator", true)
+    .eq("active", true);
+
+  if (consoleUsers.error) {
+    return {
+      data: null,
+      error: consoleUsers.error,
+      count: null
+    };
+  }
+
+  const ids = (consoleUsers.data ?? []).map((u) => u.id);
+  if (ids.length === 0) {
+    return { data: [], error: null, count: 0 };
+  }
+
   let query = client
     .from("employees")
     .select("*", { count: "exact" })
     .eq("companyId", companyId)
-    .like("email", "%@console.internal");
+    .in("id", ids);
 
   if (args.search) {
     query = query.ilike("name", `%${args.search}%`);

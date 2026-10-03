@@ -555,8 +555,8 @@ msgstr "このプロセスの\"一致必須\"ルールにより、これらは�
 msgid "A 3D model the operator can turn around"
 msgstr "作業者が回転させることができる3Dモデル"
 
-msgid "A 4-digit PIN is generated when the operator is created."
-msgstr "4 桁の PIN は、作業者が作成されるときに生成されます。"
+msgid "A 4-digit PIN is generated for MES terminal pin-in. No invite email is sent — the operator is active immediately."
+msgstr ""
 
 msgid "A batch needs at least one operation. To break up the whole batch, use Dissolve instead."
 msgstr "バッチには少なくとも 1 つの工程が必要です。バッチ全体を分割するには、代わりに [分割] を使用してください。"
@@ -1311,6 +1311,18 @@ msgstr "{name}を有効化"
 
 msgid "Activate Process"
 msgstr "プロセスを有効化"
+
+msgid "Activate these employees immediately with no invite email? They become Active and can bind Telegram with their email."
+msgstr ""
+
+msgid "Activate this employee immediately with no invite email? They become Active and can bind Telegram with this email."
+msgstr ""
+
+msgid "Activate without invite"
+msgstr ""
+
+msgid "Activate without invite email"
+msgstr ""
 
 msgid "Activate Work Center"
 msgstr "作業区を有効にする"
@@ -4825,6 +4837,9 @@ msgstr "調整仕訳を作成"
 
 msgid "Create an account"
 msgstr "アカウントを作成"
+
+msgid "Create an active employee immediately — no magic-link email. Use for shop-floor / Telegram maintenance people."
+msgstr ""
 
 msgid "Create an issue"
 msgstr "問題を作成"
@@ -9388,9 +9403,6 @@ msgstr "在庫単位"
 msgid "Inventory Valuation"
 msgstr "在庫評価"
 
-msgid "Invite"
-msgstr "招待"
-
 msgid "Invite Expired"
 msgstr "招待が期限切れになりました"
 
@@ -12646,6 +12658,9 @@ msgstr "IAS 21 に従って純資産残高を換算する際に使用するオ�
 
 msgid "Optional pages & sections"
 msgstr "オプションページとセクション"
+
+msgid "Optional. Needed for Telegram bind. Leave blank for console-only (no Telegram email bind)."
+msgstr ""
 
 msgid "Optional. Stops new purchase suggestions after this date."
 msgstr "オプション。この日付以降、新規の購買提案が行われなくなります。"

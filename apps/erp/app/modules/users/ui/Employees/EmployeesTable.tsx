@@ -33,6 +33,7 @@ import { usePermissions, useUrlParams, useUser } from "~/hooks";
 import { useSettings } from "~/hooks/useSettings";
 import type { Employee } from "~/modules/users";
 import {
+  ActivateEmployeesModal,
   BulkEditPermissionsForm,
   DeactivateUsersModal,
   ResendInviteModal,
@@ -96,6 +97,7 @@ const EmployeesTable = memo(
     const deactivateEmployeeModal = useDisclosure();
     const resendInviteModal = useDisclosure();
     const revokeInviteModal = useDisclosure();
+    const activateEmployeesModal = useDisclosure();
 
     const canEdit = permissions.can("update", "users");
 
@@ -416,18 +418,31 @@ const EmployeesTable = memo(
                 )}
               </>
             ) : hasUnrevokedInvite ? (
-              permissions.can("delete", "users") && (
-                <MenuItem
-                  onClick={() => {
-                    setSelectedUserIds([row.id!]);
-                    revokeInviteModal.onOpen();
-                  }}
-                  destructive
-                >
-                  <MenuIcon icon={<LuBan />} />
-                  <Trans>Revoke Invite</Trans>
-                </MenuItem>
-              )
+              <>
+                {permissions.can("create", "users") && (
+                  <MenuItem
+                    onClick={() => {
+                      setSelectedUserIds([row.id!]);
+                      activateEmployeesModal.onOpen();
+                    }}
+                  >
+                    <MenuIcon icon={<LuUserCheck />} />
+                    <Trans>Activate without invite</Trans>
+                  </MenuItem>
+                )}
+                {permissions.can("delete", "users") && (
+                  <MenuItem
+                    onClick={() => {
+                      setSelectedUserIds([row.id!]);
+                      revokeInviteModal.onOpen();
+                    }}
+                    destructive
+                  >
+                    <MenuIcon icon={<LuBan />} />
+                    <Trans>Revoke Invite</Trans>
+                  </MenuItem>
+                )}
+              </>
             ) : (
               <MenuItem
                 onClick={() => {
@@ -443,6 +458,7 @@ const EmployeesTable = memo(
         );
       },
       [
+        activateEmployeesModal,
         currentUserId,
         deactivateEmployeeModal,
         navigate,
@@ -498,6 +514,13 @@ const EmployeesTable = memo(
             userIds={selectedUserIds}
             isOpen={revokeInviteModal.isOpen}
             onClose={revokeInviteModal.onClose}
+          />
+        )}
+        {activateEmployeesModal.isOpen && (
+          <ActivateEmployeesModal
+            userIds={selectedUserIds}
+            isOpen={activateEmployeesModal.isOpen}
+            onClose={activateEmployeesModal.onClose}
           />
         )}
       </>

@@ -12,9 +12,12 @@ export type TelegramBindPayload = {
   employeeId: string;
 };
 
-/** Multi-step Telegram-only bind (工号/姓名 → PIN). Deep-link bind jumps to `pin`. */
+/** Multi-step Telegram-only bind. Primary: wait for email. */
 export type TelegramPendingBind =
+  | { step: "email"; companyId: string }
+  /** @deprecated Legacy PIN bind — ignore / clear if seen. */
   | { step: "identity"; companyId: string }
+  /** @deprecated Legacy PIN bind — ignore / clear if seen. */
   | { step: "pin"; companyId: string; employeeId: string };
 
 /**
@@ -67,12 +70,15 @@ export async function setTelegramPendingBind(
   return result !== null;
 }
 
-/** @deprecated Prefer setTelegramPendingBind — kept for deep-link callers. */
+/** @deprecated Prefer setTelegramPendingBind. */
 export async function setTelegramPendingPin(
   chatId: string,
   payload: TelegramBindPayload
 ): Promise<boolean> {
-  return setTelegramPendingBind(chatId, { step: "pin", ...payload });
+  return setTelegramPendingBind(chatId, {
+    step: "email",
+    companyId: payload.companyId
+  });
 }
 
 export async function getTelegramPendingBind(
@@ -88,16 +94,12 @@ export async function getTelegramPendingBind(
       step?: string;
     };
     if (!parsed.companyId) return null;
-    // Back-compat: older pending rows were `{ companyId, employeeId }` only.
-    if (parsed.step === "identity") {
-      return { step: "identity", companyId: parsed.companyId };
+    if (parsed.step === "email" || parsed.step === "identity") {
+      return { step: "email", companyId: parsed.companyId };
     }
-    if (parsed.employeeId) {
-      return {
-        step: "pin",
-        companyId: parsed.companyId,
-        employeeId: parsed.employeeId
-      };
+    // Legacy PIN step — treat as waiting for email for that company.
+    if (parsed.step === "pin" || parsed.employeeId) {
+      return { step: "email", companyId: parsed.companyId };
     }
     return null;
   } catch {
@@ -109,9 +111,7 @@ export async function getTelegramPendingBind(
 export async function getTelegramPendingPin(
   chatId: string
 ): Promise<TelegramBindPayload | null> {
-  const pending = await getTelegramPendingBind(chatId);
-  if (!pending || pending.step !== "pin") return null;
-  return { companyId: pending.companyId, employeeId: pending.employeeId };
+  return null;
 }
 
 export async function clearTelegramPendingPin(chatId: string): Promise<void> {

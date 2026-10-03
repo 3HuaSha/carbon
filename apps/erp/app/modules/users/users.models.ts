@@ -26,6 +26,9 @@ export const createEmployeeValidator = z.object({
   lastName: z.string().min(1, { message: "Last name is required" }),
   employeeType: z.string().min(1, { message: "Employee type is required" }),
   locationId: z.string().min(1, { message: "Location is required" }),
+  // When true: activate immediately, no invite row, no Resend email.
+  // Used for shop-floor / Telegram-only people who never need to accept an invite.
+  activateWithoutInvite: zfd.checkbox(),
   // Controlled environments (ITAR) require the inviter to attest a reasonable
   // basis that the invitee is a U.S. person (22 CFR 120.62). Optional in the
   // schema — the action enforces it only when CONTROLLED_ENVIRONMENT is on, so
@@ -74,7 +77,13 @@ export const itarUserCertificationValidator = z.object({
 export const createOperatorValidator = z.object({
   firstName: z.string().min(1, { message: "First name is required" }),
   lastName: z.string().min(1, { message: "Last name is required" }),
-  locationId: z.string().min(1, { message: "Location is required" })
+  locationId: z.string().min(1, { message: "Location is required" }),
+  // Real email for Telegram bind / identity. Empty keeps synthetic
+  // `{uuid}@console.internal` (cannot bind Telegram by email).
+  email: z
+    .union([z.literal(""), z.string().email("Must be a valid email")])
+    .optional()
+    .transform((v) => (v == null || v === "" ? undefined : v.toLowerCase()))
 });
 
 export const convertOperatorValidator = z.object({
@@ -142,6 +151,13 @@ export const resendInviteValidator = z.object({
 });
 
 export const revokeInviteValidator = z.object({
+  users: z
+    .array(z.string().min(1, { message: "Invalid user id" }))
+    .min(1, { message: "Users are required" })
+});
+
+/** Activate Invited employees immediately (no magic-link accept / Resend). */
+export const activateEmployeesValidator = z.object({
   users: z
     .array(z.string().min(1, { message: "Invalid user id" }))
     .min(1, { message: "Users are required" })

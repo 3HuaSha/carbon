@@ -555,8 +555,8 @@ msgstr "Bu operasyon üzerinde \"eşleşmeli\" kuralı bunların bir partide pay
 msgid "A 3D model the operator can turn around"
 msgstr "Operatörün döndürebileceği 3D model"
 
-msgid "A 4-digit PIN is generated when the operator is created."
-msgstr "Operatör oluşturulduğunda bir 4 haneli PIN oluşturulur."
+msgid "A 4-digit PIN is generated for MES terminal pin-in. No invite email is sent — the operator is active immediately."
+msgstr ""
 
 msgid "A batch needs at least one operation. To break up the whole batch, use Dissolve instead."
 msgstr "Bir parti en az bir operasyon gerektirir. Bütün partiyi ayırmak için bunun yerine Çöz'ü kullanın."
@@ -1311,6 +1311,18 @@ msgstr "*{name} Etkinleştir*"
 
 msgid "Activate Process"
 msgstr "İş Akışını Aktif Et"
+
+msgid "Activate these employees immediately with no invite email? They become Active and can bind Telegram with their email."
+msgstr ""
+
+msgid "Activate this employee immediately with no invite email? They become Active and can bind Telegram with this email."
+msgstr ""
+
+msgid "Activate without invite"
+msgstr ""
+
+msgid "Activate without invite email"
+msgstr ""
 
 msgid "Activate Work Center"
 msgstr "İş Merkezi Etkinleştir"
@@ -4825,6 +4837,9 @@ msgstr "Düzeltme girişi oluştur"
 
 msgid "Create an account"
 msgstr "Hesap oluştur"
+
+msgid "Create an active employee immediately — no magic-link email. Use for shop-floor / Telegram maintenance people."
+msgstr ""
 
 msgid "Create an issue"
 msgstr "Sorun oluştur"
@@ -9388,9 +9403,6 @@ msgstr "Envanter Ölçü Birimi"
 msgid "Inventory Valuation"
 msgstr "Envanter Değerlemesi"
 
-msgid "Invite"
-msgstr "Davet et"
-
 msgid "Invite Expired"
 msgstr "Davet Süresi Doldu"
 
@@ -12646,6 +12658,9 @@ msgstr "Özkaynak bakiyelerini IAS 21'e göre çevirirken kullanılan isteğe ba
 
 msgid "Optional pages & sections"
 msgstr "İsteğe bağlı sayfalar ve bölümler"
+
+msgid "Optional. Needed for Telegram bind. Leave blank for console-only (no Telegram email bind)."
+msgstr ""
 
 msgid "Optional. Stops new purchase suggestions after this date."
 msgstr "İsteğe bağlı. Bu tarihten sonra yeni satın alma önerilerini durdurur."

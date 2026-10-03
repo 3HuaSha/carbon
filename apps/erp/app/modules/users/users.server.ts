@@ -25,6 +25,7 @@ import {
   uncoveredSsoDomainError
 } from "@carbon/ee/sso.server";
 import { getLogger } from "@carbon/logger";
+import { datetime } from "@carbon/utils";
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { redirect } from "react-router";
 import { getSupplierContact } from "~/modules/purchasing";
@@ -465,7 +466,8 @@ export async function createEmployeeAccount(
     companyId,
     createdBy,
     attestedBy,
-    attestedAt
+    attestedAt,
+    activateWithoutInvite = false
   }: {
     email: string;
     firstName: string;
@@ -478,6 +480,12 @@ export async function createEmployeeAccount(
     // attestation. Null in ordinary deployments.
     attestedBy?: string | null;
     attestedAt?: string | null;
+    /**
+     * When true: employee is active immediately, permissions + company link are
+     * applied now, and no invite row / Resend email is created. For shop-floor
+     * / Telegram-only people who never accept a magic-link invite.
+     */
+    activateWithoutInvite?: boolean;
   }
 ): Promise<
   | { success: false; message: string }
@@ -578,6 +586,66 @@ export async function createEmployeeAccount(
     await seedSsoIdentityForNewUser(serviceRole, { userId, email });
   }
 
+  if (activateWithoutInvite) {
+    const [employeeInsert, jobInsert] = await Promise.all([
+      insertEmployee(client, {
+        id: userId,
+        employeeTypeId: employeeType,
+        active: true,
+        companyId
+      }),
+      insertEmployeeJob(client, {
+        id: userId,
+        companyId,
+        locationId
+      })
+    ]);
+
+    if (employeeInsert.error) {
+      if (isNewUser) {
+        await deleteAuthAccount(serviceRole, userId);
+      }
+      return { success: false, message: employeeInsert.error.message };
+    }
+
+    if (jobInsert.error) {
+      if (isNewUser) {
+        await deleteAuthAccount(serviceRole, userId);
+      } else {
+        await deactivateEmployee(serviceRole, userId, companyId);
+      }
+      return { success: false, message: jobInsert.error.message };
+    }
+
+    const [addUser, setPermissions] = await Promise.all([
+      addUserToCompany(serviceRole, {
+        userId,
+        companyId,
+        role: "employee"
+      }),
+      setUserPermissions(serviceRole, userId, permissions)
+    ]);
+
+    if (addUser.error) {
+      await deactivateEmployee(serviceRole, userId, companyId);
+      if (isNewUser) {
+        await deleteAuthAccount(serviceRole, userId);
+      }
+      return { success: false, message: addUser.error.message };
+    }
+
+    if (setPermissions.error) {
+      logger.error("Failed to set permissions for direct-create employee", {
+        userId,
+        companyId,
+        error: setPermissions.error
+      });
+      // Employee is active and linked; permissions can be fixed in Users UI.
+    }
+
+    return { success: true, code: "", userId };
+  }
+
   const code = crypto.randomUUID();
   const [employeeInsert, jobInsert, inviteInsert] = await Promise.all([
     insertEmployee(client, {
@@ -629,6 +697,138 @@ export async function createEmployeeAccount(
   }
 
   return { success: true, code, userId };
+}
+
+/**
+ * Activate Invited employees without magic-link accept / Resend.
+ * Mirrors invite acceptance: employee.active, userToCompany, permissions,
+ * invite.acceptedAt. Used for people stuck as 已邀请 / Invited.
+ */
+export async function activatePendingEmployees({
+  userIds,
+  companyId
+}: {
+  userIds: string[];
+  companyId: string;
+}): Promise<
+  { success: true; activated: number } | { success: false; message: string }
+> {
+  const serviceRole = getCarbonServiceRole();
+  let activated = 0;
+
+  for (const userId of userIds) {
+    const user = await serviceRole
+      .from("user")
+      .select("id, email")
+      .eq("id", userId)
+      .maybeSingle();
+
+    if (user.error || !user.data?.email) {
+      return {
+        success: false,
+        message: user.error?.message ?? "User not found"
+      };
+    }
+
+    const employee = await serviceRole
+      .from("employee")
+      .select("id, active, employeeTypeId")
+      .eq("id", userId)
+      .eq("companyId", companyId)
+      .maybeSingle();
+
+    if (employee.error || !employee.data) {
+      return {
+        success: false,
+        message: employee.error?.message ?? "Employee not found in this company"
+      };
+    }
+
+    if (employee.data.active) {
+      continue;
+    }
+
+    const invite = await serviceRole
+      .from("invite")
+      .select("id, permissions, role")
+      .eq("email", user.data.email)
+      .eq("companyId", companyId)
+      .eq("role", "employee")
+      .is("acceptedAt", null)
+      .is("revokedAt", null)
+      .maybeSingle();
+
+    if (invite.error || !invite.data) {
+      return {
+        success: false,
+        message: `No pending invite for ${user.data.email}`
+      };
+    }
+
+    const permissions = (invite.data.permissions ?? {}) as Record<
+      string,
+      string[]
+    >;
+
+    const existingLink = await serviceRole
+      .from("userToCompany")
+      .select("userId")
+      .eq("userId", userId)
+      .eq("companyId", companyId)
+      .maybeSingle();
+
+    const [activate, setPermissions] = await Promise.all([
+      activateEmployee(serviceRole, { userId, companyId }),
+      setUserPermissions(serviceRole, userId, permissions)
+    ]);
+
+    if (activate.error) {
+      return {
+        success: false,
+        message: activate.error.message ?? "Failed to activate employee"
+      };
+    }
+
+    if (!existingLink.data) {
+      const addUser = await addUserToCompany(serviceRole, {
+        userId,
+        companyId,
+        role: "employee"
+      });
+      if (addUser.error) {
+        await rollbackInvite(serviceRole, { userId, companyId });
+        return {
+          success: false,
+          message: addUser.error.message ?? "Failed to link user to company"
+        };
+      }
+    }
+
+    if (setPermissions.error) {
+      logger.error("Failed to set permissions for direct activate", {
+        userId,
+        companyId,
+        error: setPermissions.error
+      });
+    }
+
+    const accepted = await serviceRole
+      .from("invite")
+      .update({ acceptedAt: datetime.timestamp() })
+      .eq("id", invite.data.id)
+      .eq("companyId", companyId);
+
+    if (accepted.error) {
+      logger.error("Failed to mark invite accepted after direct activate", {
+        inviteId: invite.data.id,
+        error: accepted.error
+      });
+    }
+
+    activated += 1;
+  }
+
+  return { success: true, activated };
 }
 
 export async function createSupplierAccount(
@@ -977,10 +1177,10 @@ async function insertUser(
 
 /**
  * Creates a console-only operator: a lightweight user record that can pin in
- * at MES terminals without needing email, password, or Supabase Auth.
+ * at MES terminals without needing password or Supabase Auth.
  *
- * Uses a synthetic email ({uuid}@console.internal) to satisfy the NOT NULL
- * constraint. No auth.users entry is created — operators cannot log in.
+ * Default email is synthetic ({uuid}@console.internal). Pass a real `email`
+ * for Telegram bind — still no auth.users row; operators cannot log in.
  */
 export async function createConsoleOperator(
   client: SupabaseClient<Database>,
@@ -990,7 +1190,8 @@ export async function createConsoleOperator(
     employeeType,
     locationId,
     companyId,
-    createdBy
+    createdBy,
+    email
   }: {
     firstName: string;
     lastName: string;
@@ -998,6 +1199,8 @@ export async function createConsoleOperator(
     locationId: string;
     companyId: string;
     createdBy: string;
+    /** Real email for Telegram bind. Omit → synthetic @console.internal. */
+    email?: string;
   }
 ): Promise<
   | { success: false; message: string }
@@ -1005,7 +1208,24 @@ export async function createConsoleOperator(
 > {
   const serviceRole = getCarbonServiceRole();
   const userId = crypto.randomUUID();
-  const syntheticEmail = `${userId}@console.internal`;
+  const normalizedEmail = email?.trim().toLowerCase();
+  if (normalizedEmail?.endsWith("@console.internal")) {
+    return {
+      success: false,
+      message: "Use a real email address (not @console.internal)"
+    };
+  }
+  if (normalizedEmail) {
+    const taken = await serviceRole
+      .from("user")
+      .select("id")
+      .eq("email", normalizedEmail)
+      .maybeSingle();
+    if (taken.data) {
+      return { success: false, message: "Email is already in use" };
+    }
+  }
+  const userEmail = normalizedEmail || `${userId}@console.internal`;
 
   // 1. Insert user record (no Supabase Auth)
   // Note: isConsoleOperator field added by migration 20260319000000_console-mode.sql
@@ -1014,7 +1234,7 @@ export async function createConsoleOperator(
     .from("user")
     .insert({
       id: userId,
-      email: syntheticEmail,
+      email: userEmail,
       firstName,
       lastName,
       avatarUrl: null,
@@ -1023,7 +1243,6 @@ export async function createConsoleOperator(
     } as any)
     .select("*")
     .single();
-
   if (userInsert.error) {
     return { success: false, message: userInsert.error.message };
   }

@@ -555,8 +555,8 @@ msgstr "इस प्रक्रिया पर एक \"मेल खान�
 msgid "A 3D model the operator can turn around"
 msgstr "एक 3D मॉडल जिसे ऑपरेटर घुमा सकता है"
 
-msgid "A 4-digit PIN is generated when the operator is created."
-msgstr "ऑपरेटर बनाए जाने पर एक 4-अंकीय PIN बनाया जाता है।"
+msgid "A 4-digit PIN is generated for MES terminal pin-in. No invite email is sent — the operator is active immediately."
+msgstr ""
 
 msgid "A batch needs at least one operation. To break up the whole batch, use Dissolve instead."
 msgstr "बैच को कम से कम एक ऑपरेशन की आवश्यकता है। पूरे बैच को विभाजित करने के लिए, इसके बजाय विघटन का उपयोग करें।"
@@ -1311,6 +1311,18 @@ msgstr "{name} को सक्रिय करें"
 
 msgid "Activate Process"
 msgstr "प्रक्रिया सक्रिय करें"
+
+msgid "Activate these employees immediately with no invite email? They become Active and can bind Telegram with their email."
+msgstr ""
+
+msgid "Activate this employee immediately with no invite email? They become Active and can bind Telegram with this email."
+msgstr ""
+
+msgid "Activate without invite"
+msgstr ""
+
+msgid "Activate without invite email"
+msgstr ""
 
 msgid "Activate Work Center"
 msgstr "वर्क सेंटर सक्रिय करें"
@@ -4825,6 +4837,9 @@ msgstr "समायोजन प्रविष्टि बनाएं"
 
 msgid "Create an account"
 msgstr "एक खाता बनाएं"
+
+msgid "Create an active employee immediately — no magic-link email. Use for shop-floor / Telegram maintenance people."
+msgstr ""
 
 msgid "Create an issue"
 msgstr "एक समस्या बनाएँ"
@@ -9388,9 +9403,6 @@ msgstr "इन्वेंटरी माप की इकाई"
 msgid "Inventory Valuation"
 msgstr "इन्वेंटरी मूल्यांकन"
 
-msgid "Invite"
-msgstr "आमंत्रित करें"
-
 msgid "Invite Expired"
 msgstr "आमंत्रण समाप्त हो गया"
 
@@ -12646,6 +12658,9 @@ msgstr "IAS 21 के अनुसार इक्विटी शेष को 
 
 msgid "Optional pages & sections"
 msgstr "वैकल्पिक पृष्ठ और अनुभाग"
+
+msgid "Optional. Needed for Telegram bind. Leave blank for console-only (no Telegram email bind)."
+msgstr ""
 
 msgid "Optional. Stops new purchase suggestions after this date."
 msgstr "वैकल्पिक। इस तारीख के बाद नई खरीद सुझाव बंद करता है।"
