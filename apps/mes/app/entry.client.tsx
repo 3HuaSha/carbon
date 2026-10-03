@@ -20,11 +20,13 @@ ensureLoggingConfigured();
 
 // Capture beforeinstallprompt before React hydrates — Chrome often fires it
 // as soon as the SW is active, which can be before any useEffect listener.
+// Also adopts any event stored by the <head> bootstrap in root.tsx (that
+// script registers the SW even earlier so /login and /shop both control ASAP).
 ensurePwaInstallCapture();
 
-// Register a minimal service worker so Chromium can offer "Install app"
-// for the MES shop PWA. Scope `/` covers `/shop` (start_url). Browser-only;
-// never block hydration if registration fails.
+// Fallback SW registration if the head bootstrap did not run (tests / odd
+// navigations). Scope `/` covers `/shop` (start_url). Browser-only; never
+// block hydration if registration fails. Duplicate register is a no-op.
 if ("serviceWorker" in navigator) {
   void navigator.serviceWorker
     .register("/serviceWorker.js", {

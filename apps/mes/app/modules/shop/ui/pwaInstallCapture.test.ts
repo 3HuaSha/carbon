@@ -219,4 +219,61 @@ describe("pwaInstallCapture", () => {
     expect(capture.getDeferredInstallPrompt()).toBeNull();
     expect(localStorage.getItem(capture.PWA_INSTALLED_STORAGE_KEY)).toBe("1");
   });
+
+  it("beforeinstallprompt clears stale installed memory", async () => {
+    const { capture, listeners, localStorage } = await loadCapture();
+    localStorage.setItem(capture.PWA_INSTALLED_STORAGE_KEY, "1");
+    expect(capture.wasPwaInstallRemembered()).toBe(true);
+
+    fireBip(listeners, {
+      preventDefault: vi.fn(),
+      prompt: vi.fn(async () => undefined),
+      userChoice: Promise.resolve({
+        outcome: "accepted" as const,
+        platform: ""
+      })
+    });
+
+    expect(capture.wasPwaInstallRemembered()).toBe(false);
+    expect(localStorage.getItem(capture.PWA_INSTALLED_STORAGE_KEY)).toBeNull();
+  });
+
+  it("adopts deferred event captured by head bootstrap", async () => {
+    const { listeners, localStorage } = stubWindow();
+    const earlyEvent = {
+      preventDefault: vi.fn(),
+      prompt: vi.fn(async () => undefined),
+      userChoice: Promise.resolve({
+        outcome: "accepted" as const,
+        platform: ""
+      })
+    };
+    (
+      window as Window & {
+        __carbonMesPwa?: {
+          deferred: typeof earlyEvent;
+          capturing: boolean;
+        };
+      }
+    ).__carbonMesPwa = {
+      deferred: earlyEvent,
+      capturing: true
+    };
+
+    const capture = await import("./pwaInstallCapture");
+    capture.ensurePwaInstallCapture();
+
+    expect(capture.getDeferredInstallPrompt()).toBe(earlyEvent);
+    // Adopting early BIP also clears stale installed memory
+    localStorage.setItem(capture.PWA_INSTALLED_STORAGE_KEY, "1");
+    fireBip(listeners, {
+      preventDefault: vi.fn(),
+      prompt: vi.fn(async () => undefined),
+      userChoice: Promise.resolve({
+        outcome: "dismissed" as const,
+        platform: ""
+      })
+    });
+    expect(localStorage.getItem(capture.PWA_INSTALLED_STORAGE_KEY)).toBeNull();
+  });
 });

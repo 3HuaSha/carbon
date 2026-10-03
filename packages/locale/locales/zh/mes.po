@@ -299,11 +299,26 @@ msgstr "请查收邮件"
 msgid "Choose a job"
 msgstr "选择工单"
 
+msgid "Choose Open in Chrome (or Open in browser)."
+msgstr "选择“在 Chrome 中打开”（或“在浏览器中打开”）。"
+
+msgid "Choose Open in Safari."
+msgstr "选择“在 Safari 中打开”。"
+
+msgid "Chrome did not offer a one-tap install yet. Stay on this page a few seconds, tap Install again, or use the Chrome menu below."
+msgstr "Chrome 尚未提供一键安装。请在此页面停留几秒后再次点“安装”，或使用下方的 Chrome 菜单。"
+
 msgid "Chrome did not offer a one-tap install yet. Use the menu below — or if the address bar shows Open in app, the PWA is already installed."
 msgstr "Chrome 尚未提供一键安装提示。请使用下方菜单 — 或者如果地址栏显示“在应用中打开”，则表示 PWA 已安装。"
 
-msgid "Chrome, Firefox, and Edge on iOS cannot native-install this app."
-msgstr "iOS 上的 Chrome、Firefox 和 Edge 无法原生安装此应用。"
+msgid "Chrome on this phone will not offer Install again while MES is already on your home screen. Open the app, or uninstall it to reinstall."
+msgstr "只要 MES 已在主屏幕上，此手机上的 Chrome 不会再次提供“安装”。请打开应用，或卸载后重新安装。"
+
+msgid "Chrome only fires the install prompt when the site is not already installed and installability criteria are met."
+msgstr "仅当网站尚未安装且满足可安装条件时，Chrome 才会显示安装提示。"
+
+msgid "Chrome, Firefox, and Edge on iOS cannot native-install this app — they all use WebKit without beforeinstallprompt."
+msgstr "iOS 上的 Chrome、Firefox 和 Edge 无法原生安装此应用——它们都使用没有 beforeinstallprompt 的 WebKit。"
 
 msgid "Clear"
 msgstr "清除"
@@ -715,6 +730,9 @@ msgstr "空闲"
 msgid "Idle for"
 msgstr "闲置时间"
 
+msgid "If Install app is missing, wait a few seconds on Shop and tap the download button again — or clear site data for this host and retry."
+msgstr "若没有“安装应用”，请在 Shop 停留几秒后再次点下载按钮，或清除此主机的网站数据后重试。"
+
 msgid "Impact"
 msgstr "影响"
 
@@ -724,6 +742,9 @@ msgstr "英制"
 #. placeholder {0}: precise?.text
 msgid "in {0}"
 msgstr "在 {0}"
+
+msgid "In Chrome, tap ⋮ → Settings → Site settings → All sites → this MES host → Clear and reset, then reload /shop and tap Install again."
+msgstr "在 Chrome 中点 ⋮ → 设置 → 网站设置 → 所有网站 → 此 MES 主机 → 清除并重置，然后重新加载 /shop 并再次点“安装”。"
 
 msgid "In Progress"
 msgstr "进行中"
@@ -736,6 +757,9 @@ msgstr "在该应用窗口中：菜单 ⋮ → Cast, save, and share (投屏、�
 
 msgid "In the Chrome address bar, click Open in app (打开应用) to launch the installed Carbon MES window."
 msgstr "在 Chrome 地址栏中，点击 Open in app (打开应用) 以启动已安装的 Carbon MES 窗口。"
+
+msgid "In-app browsers (WeChat, Instagram, etc.) block Progressive Web App install."
+msgstr "应用内浏览器（微信、Instagram 等）会阻止 Progressive Web App 安装。"
 
 msgid "Inspect Item"
 msgstr "检验物品"
@@ -758,8 +782,8 @@ msgstr "库存调整已完成"
 msgid "Inventory Adjustments"
 msgstr "库存调整"
 
-msgid "iPhone and iPad never show a native Install button — use Safari’s Share menu."
-msgstr "iPhone 和 iPad 从不显示原生“安装”按钮 — 请使用 Safari 的共享菜单。"
+msgid "iPhone and iPad never show a one-tap Install button. Use Safari’s Share menu — the steps below take about 15 seconds."
+msgstr "iPhone 和 iPad 从不显示一键“安装”按钮。请使用 Safari 的共享菜单——下列步骤大约需要 15 秒。"
 
 msgid "is"
 msgstr "是"
@@ -877,6 +901,9 @@ msgstr "记录 {0} 的报废"
 
 msgid "Login"
 msgstr "登录"
+
+msgid "Look for the MES / Carbon MES icon on your home screen or in the app drawer and open it."
+msgstr "在主屏幕或应用抽屉中找到 MES / Carbon MES 图标并打开。"
 
 msgid "Lot"
 msgstr "批次"
@@ -1160,8 +1187,8 @@ msgstr "一次拣货覆盖整个生产批次 — 自动分配给各工单。"
 msgid "Only {0} available"
 msgstr "仅 {0} 可用"
 
-msgid "Only Chromium fires the one-tap Install prompt. After install, use Open in app to pin to the desktop."
-msgstr "仅 Chromium 会弹出“一键安装”提示。安装后，请使用“在应用中打开”将其固定到桌面。"
+msgid "Only Chromium fires the one-tap Install prompt. After install on desktop, use Open in app to pin to the taskbar."
+msgstr "只有 Chromium 会弹出一键安装提示。在桌面安装后，请使用“打开应用”固定到任务栏。"
 
 msgid "Oops. You shouldn't see this page. Eventually it will be a landing page."
 msgstr "抱歉，您不应该看到此页面。此页面最终将成为首页。"
@@ -1181,6 +1208,9 @@ msgstr "为MRB处置打开NCR"
 msgid "Open app — Already installed"
 msgstr "打开应用 — 已安装"
 
+msgid "Open in your browser"
+msgstr "在浏览器中打开"
+
 msgid "Open inspection"
 msgstr "打开检验"
 
@@ -1190,8 +1220,8 @@ msgstr "未结工单"
 msgid "Open maintenance"
 msgstr "未结维护"
 
-msgid "Open this page in Safari (not Chrome on iOS)."
-msgstr "在 Safari 中打开此页面（不要使用 iOS 上的 Chrome）。"
+msgid "Open this page in Safari — not Chrome, Firefox, Edge, or WeChat. Only Safari can add MES to the Home Screen."
+msgstr "请在 Safari 中打开此页面——不要用 Chrome、Firefox、Edge 或微信。只有 Safari 能将 MES 添加到主屏幕。"
 
 msgid "Operations"
 msgstr "工序"
@@ -1504,6 +1534,9 @@ msgstr "报废序列号 {trackedEntityReadableId}"
 msgid "Scrapping the selected serial"
 msgstr "报废所选序列号"
 
+msgid "Scroll the share sheet and tap Add to Home Screen."
+msgstr "滚动共享菜单，点“添加到主屏幕”。"
+
 msgid "Search"
 msgstr "搜索"
 
@@ -1627,6 +1660,9 @@ msgstr "显示描述"
 msgid "Show keyboard shortcuts"
 msgstr "显示键盘快捷键"
 
+msgid "Sign in if needed, open Shop, then tap Install again."
+msgstr "如需登录请先登录，打开 Shop，然后再次点“安装”。"
+
 msgid "Sign in with Google"
 msgstr "使用 Google 登录"
 
@@ -1686,6 +1722,9 @@ msgstr "状态"
 msgid "Statuses"
 msgstr "状态"
 
+msgid "Stay in Chrome on Android (not Samsung Internet)."
+msgstr "请继续使用 Android 上的 Chrome（不要用 Samsung Internet）。"
+
 msgid "Stay on this page"
 msgstr "留在此页面"
 
@@ -1719,14 +1758,17 @@ msgstr "标签"
 msgid "Takes work center offline"
 msgstr "使工作中心离线"
 
-msgid "Tap Add to Home Screen, then Add."
-msgstr "点按“添加到主屏幕”，然后点按“添加”。"
+msgid "Tap Add in the top right. Launch MES from your Home Screen icon afterward."
+msgstr "点右上角的“添加”。之后从主屏幕图标启动 MES。"
 
-msgid "Tap Share (square with an arrow)."
-msgstr "点按“共享”（带箭头的方框）。"
+msgid "Tap the Chrome menu (⋮) at the top right, then Install app or Add to Home screen."
+msgstr "点右上角的 Chrome 菜单（⋮），然后点“安装应用”或“添加到主屏幕”。"
 
-msgid "Tap the menu (⋮). If you see Install app, use it. If you see Open in app in the address bar instead, the app is already installed — follow Open app help."
-msgstr "点击菜单 (⋮)。如果看到“安装应用”，请使用该功能。如果地址栏中显示的是“在应用中打开”，则表示应用已安装 — 请参阅“打开应用”帮助。"
+msgid "Tap the menu (⋯ or Share) in this in-app browser."
+msgstr "在此应用内浏览器中点菜单（⋯ 或共享）。"
+
+msgid "Tap the Share button at the bottom of Safari (square with an upward arrow)."
+msgstr "点 Safari 底部的共享按钮（带向上箭头的方框）。"
 
 msgid "The completed quantity for this operation is less than the required quantity of {targetQuantity}."
 msgstr "此工序的完成数量小于所需数量 {targetQuantity}。"
@@ -1762,6 +1804,12 @@ msgstr "这些物料仍有原材料需要拣货。现在完成将标记列表为
 msgid "This batch has no work instructions."
 msgstr "此生产批次没有作业指导书。"
 
+msgid "This in-app browser cannot install MES. Open the link in Chrome, then tap Install."
+msgstr "此应用内浏览器无法安装 MES。请在 Chrome 中打开链接，然后点“安装”。"
+
+msgid "This in-app browser cannot install MES. Open the link in Safari, then Add to Home Screen."
+msgstr "此应用内浏览器无法安装 MES。请在 Safari 中打开链接，然后添加到主屏幕。"
+
 msgid "This lot is expired and can't be picked."
 msgstr "此批次已过期，无法拣货。"
 
@@ -1795,6 +1843,9 @@ msgstr "工作时间：{0}"
 
 msgid "To pick"
 msgstr "待拣货"
+
+msgid "To reinstall: long-press the icon → App info → Uninstall (or Remove)."
+msgstr "要重新安装：长按图标 → 应用信息 → 卸载（或移除）。"
 
 msgid "To run"
 msgstr "待启动"

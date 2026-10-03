@@ -50,6 +50,7 @@ import {
   useLoaderData
 } from "react-router";
 import SonnerStyle from "sonner/dist/styles.css?url";
+import { PWA_BOOTSTRAP_INLINE_SCRIPT } from "~/modules/shop/ui/pwaBootstrapSnippet";
 import { preloadCatalog, useCatalog } from "~/services/lingui";
 import { getMode, setMode } from "~/services/mode.server";
 import Background from "~/styles/background.css?url";
@@ -80,7 +81,12 @@ export const meta: MetaFunction = () => {
   return [
     {
       title: "Carbon | MES"
-    }
+    },
+    // iOS Safari A2HS — not installable via beforeinstallprompt
+    { name: "apple-mobile-web-app-capable", content: "yes" },
+    { name: "apple-mobile-web-app-title", content: "MES" },
+    { name: "mobile-web-app-capable", content: "yes" },
+    { name: "theme-color", content: "#ffffff" }
   ];
 };
 
@@ -229,6 +235,17 @@ function Document({
         <Meta />
         <title>{title}</title>
         <Links />
+        {/* PWA: capture beforeinstallprompt + register SW before entry.client
+            downloads. Android Chrome can fire BIP while the module graph is
+            still loading; waiting until entry.client misses it permanently for
+            that page load. CSP nonce required (same pattern as window.env). */}
+        <script
+          nonce={nonce}
+          suppressHydrationWarning
+          dangerouslySetInnerHTML={{
+            __html: PWA_BOOTSTRAP_INLINE_SCRIPT
+          }}
+        />
       </head>
       <body className="h-full bg-background antialiased selection:bg-primary/10 selection:text-primary">
         {children}

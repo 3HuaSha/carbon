@@ -5,8 +5,14 @@
  * React hydrates and `useEffect` listeners attach. Capture at module load
  * (from `entry.client.tsx`) and share the deferred event with the shop UI.
  *
+ * An even earlier listener + SW registration runs from an inline <head>
+ * script (`pwaBootstrapSnippet.ts` via `root.tsx`) so Android Chrome does not
+ * miss BIP while the entry.client bundle is still downloading.
+ *
  * @see https://developer.mozilla.org/en-US/docs/Web/API/BeforeInstallPromptEvent
  */
+
+import { PWA_BOOTSTRAP_WINDOW_KEY } from "./pwaBootstrapSnippet";
 
 export type BeforeInstallPromptEvent = Event & {
   prompt: () => Promise<void>;
@@ -14,6 +20,11 @@ export type BeforeInstallPromptEvent = Event & {
 };
 
 type Listener = (event: BeforeInstallPromptEvent | null) => void;
+
+type EarlyPwaBridge = {
+  deferred: BeforeInstallPromptEvent | null;
+  capturing: boolean;
+};
 
 /** Persists across reloads in this browser profile after a successful install. */
 export const PWA_INSTALLED_STORAGE_KEY = "carbon-mes-pwa-installed";
@@ -24,6 +35,27 @@ const listeners = new Set<Listener>();
 
 function notify(event: BeforeInstallPromptEvent | null): void {
   for (const listener of listeners) listener(event);
+}
+
+function getEarlyBridge(): EarlyPwaBridge | undefined {
+  if (typeof window === "undefined") return undefined;
+  return (window as Window & { [PWA_BOOTSTRAP_WINDOW_KEY]?: EarlyPwaBridge })[
+    PWA_BOOTSTRAP_WINDOW_KEY
+  ];
+}
+
+function syncEarlyBridge(event: BeforeInstallPromptEvent | null): void {
+  const bridge = getEarlyBridge();
+  if (bridge) bridge.deferred = event;
+}
+
+function forgetPwaInstalled(): void {
+  if (typeof window === "undefined") return;
+  try {
+    window.localStorage.removeItem(PWA_INSTALLED_STORAGE_KEY);
+  } catch {
+    // Private mode / quota — ignore.
+  }
 }
 
 export function rememberPwaInstalled(): void {
@@ -44,24 +76,47 @@ export function wasPwaInstallRemembered(): boolean {
   }
 }
 
+function storeDeferred(event: BeforeInstallPromptEvent): void {
+  // BIP proves Chromium still considers the origin installable — drop any
+  // stale "already installed" memory from a prior accept/uninstall cycle.
+  forgetPwaInstalled();
+  deferred = event;
+  syncEarlyBridge(event);
+  notify(deferred);
+}
+
 export function ensurePwaInstallCapture(): void {
-  if (typeof window === "undefined" || capturing) return;
+  if (typeof window === "undefined") return;
+
+  // Adopt an event captured by the <head> bootstrap before this module ran.
+  const early = getEarlyBridge()?.deferred;
+  if (early && !deferred) {
+    storeDeferred(early);
+  }
+
+  if (capturing) return;
   capturing = true;
 
   window.addEventListener("beforeinstallprompt", (event) => {
     event.preventDefault();
-    deferred = event as BeforeInstallPromptEvent;
-    notify(deferred);
+    storeDeferred(event as BeforeInstallPromptEvent);
   });
 
   window.addEventListener("appinstalled", () => {
     deferred = null;
+    syncEarlyBridge(null);
     rememberPwaInstalled();
     notify(null);
   });
 }
 
 export function getDeferredInstallPrompt(): BeforeInstallPromptEvent | null {
+  if (!deferred) {
+    const early = getEarlyBridge()?.deferred;
+    if (early) {
+      deferred = early;
+    }
+  }
   return deferred;
 }
 
@@ -71,6 +126,7 @@ export function getDeferredInstallPrompt(): BeforeInstallPromptEvent | null {
  */
 export function clearDeferredInstallPrompt(): void {
   deferred = null;
+  syncEarlyBridge(null);
   notify(null);
 }
 
@@ -105,7 +161,7 @@ export async function promptDeferredInstall(
 
 export function subscribeDeferredInstallPrompt(listener: Listener): () => void {
   listeners.add(listener);
-  listener(deferred);
+  listener(getDeferredInstallPrompt());
   return () => {
     listeners.delete(listener);
   };

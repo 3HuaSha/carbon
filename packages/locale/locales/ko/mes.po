@@ -299,11 +299,26 @@ msgstr "이메일을 확인하세요"
 msgid "Choose a job"
 msgstr "작업 지시 선택"
 
+msgid "Choose Open in Chrome (or Open in browser)."
+msgstr "Chrome에서 열기(또는 브라우저에서 열기)를 선택하세요."
+
+msgid "Choose Open in Safari."
+msgstr "Safari에서 열기를 선택하세요."
+
+msgid "Chrome did not offer a one-tap install yet. Stay on this page a few seconds, tap Install again, or use the Chrome menu below."
+msgstr "Chrome이 아직 원탭 설치를 제안하지 않았습니다. 이 페이지에서 몇 초 기다린 뒤 설치를 다시 누르거나 아래 Chrome 메뉴를 사용하세요."
+
 msgid "Chrome did not offer a one-tap install yet. Use the menu below — or if the address bar shows Open in app, the PWA is already installed."
 msgstr "Chrome에서 아직 원클릭 설치를 제공하지 않았습니다. 아래 메뉴를 사용하거나, 주소 표시줄에 '앱에서 열기'가 표시되면 PWA가 이미 설치된 것입니다."
 
-msgid "Chrome, Firefox, and Edge on iOS cannot native-install this app."
-msgstr "iOS의 Chrome, Firefox, Edge에서는 이 앱을 네이티브로 설치할 수 없습니다."
+msgid "Chrome on this phone will not offer Install again while MES is already on your home screen. Open the app, or uninstall it to reinstall."
+msgstr "MES가 이미 홈 화면에 있으면 이 휴대전화의 Chrome은 다시 설치를 제안하지 않습니다. 앱을 열거나 재설치하려면 제거하세요."
+
+msgid "Chrome only fires the install prompt when the site is not already installed and installability criteria are met."
+msgstr "Chrome은 사이트가 아직 설치되지 않았고 설치 가능 조건을 충족할 때만 설치 프롬프트를 표시합니다."
+
+msgid "Chrome, Firefox, and Edge on iOS cannot native-install this app — they all use WebKit without beforeinstallprompt."
+msgstr "iOS의 Chrome, Firefox, Edge는 이 앱을 네이티브로 설치할 수 없습니다. 모두 beforeinstallprompt 없는 WebKit을 사용합니다."
 
 msgid "Clear"
 msgstr "지우기"
@@ -715,6 +730,9 @@ msgstr "유휴"
 msgid "Idle for"
 msgstr "유휴 상태"
 
+msgid "If Install app is missing, wait a few seconds on Shop and tap the download button again — or clear site data for this host and retry."
+msgstr "앱 설치가 없으면 Shop에서 몇 초 기다린 뒤 다운로드 버튼을 다시 누르거나, 이 호스트의 사이트 데이터를 지운 후 다시 시도하세요."
+
 msgid "Impact"
 msgstr "영향"
 
@@ -724,6 +742,9 @@ msgstr "야드파운드법"
 #. placeholder {0}: precise?.text
 msgid "in {0}"
 msgstr "{0} 후"
+
+msgid "In Chrome, tap ⋮ → Settings → Site settings → All sites → this MES host → Clear and reset, then reload /shop and tap Install again."
+msgstr "Chrome에서 ⋮ → 설정 → 사이트 설정 → 모든 사이트 → 이 MES 호스트 → 삭제 및 재설정을 누른 뒤 /shop을 새로고침하고 설치를 다시 누르세요."
 
 msgid "In Progress"
 msgstr "진행 중"
@@ -736,6 +757,9 @@ msgstr "해당 앱 창에서: 메뉴 ⋮ → 전송, 저장 및 공유 → 바�
 
 msgid "In the Chrome address bar, click Open in app (打开应用) to launch the installed Carbon MES window."
 msgstr "Chrome 주소 표시줄에서 '앱에서 열기'를 클릭하여 설치된 Carbon MES 창을 실행합니다."
+
+msgid "In-app browsers (WeChat, Instagram, etc.) block Progressive Web App install."
+msgstr "인앱 브라우저(WeChat, Instagram 등)는 Progressive Web App 설치를 차단합니다."
 
 msgid "Inspect Item"
 msgstr "항목 검사"
@@ -758,8 +782,8 @@ msgstr "재고 조정이 완료되었습니다"
 msgid "Inventory Adjustments"
 msgstr "재고 조정"
 
-msgid "iPhone and iPad never show a native Install button — use Safari’s Share menu."
-msgstr "iPhone과 iPad는 네이티브 설치 버튼을 절대 표시하지 않습니다. Safari의 공유 메뉴를 사용하세요."
+msgid "iPhone and iPad never show a one-tap Install button. Use Safari’s Share menu — the steps below take about 15 seconds."
+msgstr "iPhone과 iPad에는 원탭 설치 버튼이 없습니다. Safari 공유 메뉴를 사용하세요. 아래 단계는 약 15초 걸립니다."
 
 msgid "is"
 msgstr "같음"
@@ -877,6 +901,9 @@ msgstr "{0} 스크랩 기록"
 
 msgid "Login"
 msgstr "로그인"
+
+msgid "Look for the MES / Carbon MES icon on your home screen or in the app drawer and open it."
+msgstr "홈 화면이나 앱 서랍에서 MES / Carbon MES 아이콘을 찾아 여세요."
 
 msgid "Lot"
 msgstr "로트"
@@ -1160,8 +1187,8 @@ msgstr "하나의 피킹이 전체 배치를 커버합니다 — 자동으로 �
 msgid "Only {0} available"
 msgstr "{0}개만 가용합니다"
 
-msgid "Only Chromium fires the one-tap Install prompt. After install, use Open in app to pin to the desktop."
-msgstr "Chromium 브라우저에서만 원클릭 설치 메시지가 표시됩니다. 설치 후 '앱에서 열기'를 사용하여 바탕화면에 고정하세요."
+msgid "Only Chromium fires the one-tap Install prompt. After install on desktop, use Open in app to pin to the taskbar."
+msgstr "원탭 설치 프롬프트는 Chromium만 표시합니다. 데스크톱에 설치한 뒤 앱에서 열기를 사용해 작업 표시줄에 고정하세요."
 
 msgid "Oops. You shouldn't see this page. Eventually it will be a landing page."
 msgstr "이런. 이 페이지가 보이면 안 됩니다. 나중에 랜딩 페이지가 될 예정입니다."
@@ -1181,6 +1208,9 @@ msgstr "MRB 처분 결정을 위해 NCR을 여세요"
 msgid "Open app — Already installed"
 msgstr "앱 열기 — 이미 설치됨"
 
+msgid "Open in your browser"
+msgstr "브라우저에서 열기"
+
 msgid "Open inspection"
 msgstr "검사 열기"
 
@@ -1190,8 +1220,8 @@ msgstr "작업 지시 열기"
 msgid "Open maintenance"
 msgstr "미결 유지보수"
 
-msgid "Open this page in Safari (not Chrome on iOS)."
-msgstr "이 페이지를 Safari에서 여세요(iOS Chrome이 아님)."
+msgid "Open this page in Safari — not Chrome, Firefox, Edge, or WeChat. Only Safari can add MES to the Home Screen."
+msgstr "이 페이지를 Safari에서 여세요. Chrome, Firefox, Edge, WeChat이 아닙니다. MES를 홈 화면에 추가할 수 있는 것은 Safari뿐입니다."
 
 msgid "Operations"
 msgstr "공정작업"
@@ -1504,6 +1534,9 @@ msgstr "일련번호 {trackedEntityReadableId} 폐기"
 msgid "Scrapping the selected serial"
 msgstr "선택한 일련번호 폐기"
 
+msgid "Scroll the share sheet and tap Add to Home Screen."
+msgstr "공유 시트를 스크롤한 뒤 홈 화면에 추가를 누르세요."
+
 msgid "Search"
 msgstr "검색"
 
@@ -1627,6 +1660,9 @@ msgstr "설명 표시"
 msgid "Show keyboard shortcuts"
 msgstr "키보드 바로가기 표시"
 
+msgid "Sign in if needed, open Shop, then tap Install again."
+msgstr "필요하면 로그인한 뒤 Shop을 열고 설치를 다시 누르세요."
+
 msgid "Sign in with Google"
 msgstr "Google로 로그인"
 
@@ -1686,6 +1722,9 @@ msgstr "상태"
 msgid "Statuses"
 msgstr "상태"
 
+msgid "Stay in Chrome on Android (not Samsung Internet)."
+msgstr "Android에서는 Chrome을 사용하세요(Samsung Internet 아님)."
+
 msgid "Stay on this page"
 msgstr "이 페이지에 머무르기"
 
@@ -1719,14 +1758,17 @@ msgstr "태그"
 msgid "Takes work center offline"
 msgstr "작업장을 오프라인으로 전환"
 
-msgid "Tap Add to Home Screen, then Add."
-msgstr "‘홈 화면에 추가’를 탭한 다음 ‘추가’를 탭하세요."
+msgid "Tap Add in the top right. Launch MES from your Home Screen icon afterward."
+msgstr "오른쪽 위에서 추가를 누르세요. 이후 홈 화면 아이콘에서 MES를 실행하세요."
 
-msgid "Tap Share (square with an arrow)."
-msgstr "공유(화살표가 있는 사각형)를 탭하세요."
+msgid "Tap the Chrome menu (⋮) at the top right, then Install app or Add to Home screen."
+msgstr "오른쪽 위 Chrome 메뉴(⋮)를 누른 뒤 앱 설치 또는 홈 화면에 추가를 선택하세요."
 
-msgid "Tap the menu (⋮). If you see Install app, use it. If you see Open in app in the address bar instead, the app is already installed — follow Open app help."
-msgstr "메뉴(⋮)를 탭하세요. '앱 설치'가 표시되면 사용하세요. 주소 표시줄에 대신 '앱에서 열기'가 표시되면 앱이 이미 설치된 것입니다. 앱 열기 도움말을 참조하세요."
+msgid "Tap the menu (⋯ or Share) in this in-app browser."
+msgstr "이 인앱 브라우저에서 메뉴(⋯ 또는 공유)를 누르세요."
+
+msgid "Tap the Share button at the bottom of Safari (square with an upward arrow)."
+msgstr "Safari 하단의 공유 버튼(위쪽 화살표가 있는 사각형)을 누르세요."
 
 msgid "The completed quantity for this operation is less than the required quantity of {targetQuantity}."
 msgstr "이 공정작업의 완료 수량이 필요 수량 {targetQuantity}보다 적습니다."
@@ -1762,6 +1804,12 @@ msgstr "이 항목들은 아직 선택할 재료가 있습니다. 지금 완료�
 msgid "This batch has no work instructions."
 msgstr "이 배치는 작업 표준서가 없습니다."
 
+msgid "This in-app browser cannot install MES. Open the link in Chrome, then tap Install."
+msgstr "이 인앱 브라우저는 MES를 설치할 수 없습니다. 링크를 Chrome에서 연 뒤 설치를 누르세요."
+
+msgid "This in-app browser cannot install MES. Open the link in Safari, then Add to Home Screen."
+msgstr "이 인앱 브라우저는 MES를 설치할 수 없습니다. 링크를 Safari에서 연 뒤 홈 화면에 추가하세요."
+
 msgid "This lot is expired and can't be picked."
 msgstr "로트가 만료되었으며 피킹할 수 없습니다."
 
@@ -1795,6 +1843,9 @@ msgstr "작업 시간: {0}"
 
 msgid "To pick"
 msgstr "피킹할"
+
+msgid "To reinstall: long-press the icon → App info → Uninstall (or Remove)."
+msgstr "재설치: 아이콘을 길게 누름 → 앱 정보 → 제거(또는 삭제)."
 
 msgid "To run"
 msgstr "실행할"
