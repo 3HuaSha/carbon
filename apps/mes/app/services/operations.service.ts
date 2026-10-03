@@ -2820,29 +2820,4 @@ export async function getJobMethodBomIdMap(
   return bomIdMap;
 }
 
-/**
- * Stamp the schedule as outdated so the debounced replan wave regenerates the
- * affected location. Mirrors production.service.ts's helper (ERP) — used here
- * when a MES maintenance dispatch changes a work center's downtime window.
- */
-export async function notifyScheduleInputsChanged(
-  companyId: string,
-  kind:
-    | "ability"
-    | "shift"
-    | "employee-shift"
-    | "work-center"
-    | "location"
-    | "reorder"
-    | "people",
-  reason: string,
-  entityId?: string
-) {
-  const { trigger } = await import("@carbon/jobs");
-  await trigger("schedule-inputs-changed", {
-    companyId,
-    kind,
-    reason,
-    entityId
-  });
-}
+export { notifyScheduleInputsChanged } from "./schedule-notify.server";
