@@ -5,6 +5,7 @@ export type {
   ShopMaintenanceAction,
   ShopOpenDispatch,
   ShopOverview,
+  ShopPerson,
   ShopStatusFilter
 } from "./shop.types";
 export {

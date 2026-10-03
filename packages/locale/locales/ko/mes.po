@@ -197,6 +197,9 @@ msgstr "이 페이지를 나가시겠습니까?"
 msgid "Assembly steps"
 msgstr "조립 단계"
 
+msgid "Assign person"
+msgstr "담당자 배정"
+
 msgid "Assign to me"
 msgstr "나에게 배정"
 
@@ -920,6 +923,9 @@ msgstr "기계"
 msgid "Machine down for maintenance now?"
 msgstr "기계가 지금 유지보수 중인가요?"
 
+msgid "Machine status"
+msgstr "장비 상태"
+
 msgid "Maintenance"
 msgstr "유지보수"
 
@@ -1085,6 +1091,9 @@ msgstr "옵션이 없습니다."
 
 msgid "No options found."
 msgstr "옵션이 없습니다."
+
+msgid "No people found"
+msgstr "사람을 찾을 수 없음"
 
 msgid "No picking lists assigned"
 msgstr "할당된 피킹 리스트가 없습니다"
@@ -1450,6 +1459,9 @@ msgstr "품목 제거"
 msgid "Reopen the subassembly and create a replacement unit"
 msgstr "서브어셈블리를 다시 열고 대체 부품을 생성하세요"
 
+msgid "Report downtime to put this machine into waiting repair."
+msgstr "다운타임을 보고하여 이 장비를 수리 대기로 설정합니다."
+
 msgid "Required"
 msgstr "필수"
 
@@ -1545,6 +1557,9 @@ msgstr "작업 또는 품목 ID로 검색"
 
 msgid "Search operators..."
 msgstr "작업자 검색..."
+
+msgid "Search people…"
+msgstr "담당자 검색…"
 
 msgid "Search..."
 msgstr "검색..."

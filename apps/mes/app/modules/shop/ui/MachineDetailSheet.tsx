@@ -9,19 +9,24 @@ import {
   cn,
   Status
 } from "@carbon/react";
-import { Trans } from "@lingui/react/macro";
+import { Trans, useLingui } from "@lingui/react/macro";
+import { useEffect, useMemo, useState } from "react";
+import { LuSearch, LuX } from "react-icons/lu";
 import { type FetcherWithComponents, Link } from "react-router";
+import Avatar from "~/components/Avatar";
 import { path } from "~/utils/path";
 import type {
   ShopCurrentWork,
   ShopMachine,
   ShopMaintenanceAction,
-  ShopOpenDispatch
+  ShopOpenDispatch,
+  ShopPerson
 } from "../shop.types";
 
 type MachineDetailSheetProps = {
   machine: ShopMachine | null;
   userId: string;
+  people: ShopPerson[];
   open: boolean;
   onOpenChange: (open: boolean) => void;
   fetcher: FetcherWithComponents<{ ok: boolean; action?: string }>;
@@ -145,29 +150,107 @@ function WorkOrderSection({ work }: { work: ShopCurrentWork | null }) {
   );
 }
 
+function PersonPicker({
+  people,
+  busy,
+  onPick,
+  onCancel
+}: {
+  people: ShopPerson[];
+  busy: boolean;
+  onPick: (person: ShopPerson) => void;
+  onCancel: () => void;
+}) {
+  const { t } = useLingui();
+  const [search, setSearch] = useState("");
+
+  const filtered = useMemo(() => {
+    const q = search.trim().toLowerCase();
+    if (!q) return people;
+    return people.filter((p) => p.name.toLowerCase().includes(q));
+  }, [people, search]);
+
+  return (
+    <div className="mt-3 rounded-lg border border-border">
+      <div className="flex items-center gap-2 border-b border-border px-3 py-2">
+        <LuSearch className="h-4 w-4 shrink-0 text-muted-foreground" />
+        <input
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          placeholder={t`Search people…`}
+          className="h-9 flex-1 bg-transparent text-sm outline-none placeholder:text-muted-foreground"
+          autoFocus
+        />
+        <button
+          type="button"
+          aria-label={t`Cancel`}
+          className="rounded-md p-1.5 text-muted-foreground hover:bg-muted hover:text-foreground"
+          onClick={onCancel}
+        >
+          <LuX className="h-4 w-4" />
+        </button>
+      </div>
+      <ul className="max-h-56 overflow-y-auto">
+        {filtered.length === 0 ? (
+          <li className="px-3 py-4 text-sm text-muted-foreground">
+            <Trans>No people found</Trans>
+          </li>
+        ) : (
+          filtered.map((person) => (
+            <li key={person.id}>
+              <button
+                type="button"
+                disabled={busy}
+                onClick={() => onPick(person)}
+                className="flex w-full items-center gap-3 px-3 py-2.5 text-left hover:bg-muted/60 disabled:opacity-50"
+              >
+                <Avatar name={person.name} path={person.avatarUrl} size="sm" />
+                <span className="truncate text-sm font-medium">
+                  {person.name}
+                </span>
+              </button>
+            </li>
+          ))
+        )}
+      </ul>
+    </div>
+  );
+}
+
 function DispatchRow({
   dispatch,
   userId,
+  people,
   busy,
+  assigningDispatchId,
+  onAssignOpen,
+  onAssignClose,
+  onAssignPerson,
   onAction
 }: {
   dispatch: ShopOpenDispatch;
   userId: string;
+  people: ShopPerson[];
   busy: boolean;
+  assigningDispatchId: string | null;
+  onAssignOpen: (dispatchId: string) => void;
+  onAssignClose: () => void;
+  onAssignPerson: (dispatch: ShopOpenDispatch, person: ShopPerson) => void;
   onAction: (action: ShopMaintenanceAction, dispatch: ShopOpenDispatch) => void;
 }) {
   const assignedToMe = dispatch.assignee === userId;
-  const canAssign = !dispatch.assignee || !assignedToMe;
-  const showAssign =
-    canAssign &&
+  const canAssignPerson =
     (dispatch.status === "Open" || dispatch.status === "Assigned") &&
     !dispatch.isWorking;
+  const showAssignToMe =
+    canAssignPerson && (!dispatch.assignee || !assignedToMe);
   const showStart =
     !dispatch.isWorking &&
     dispatch.status !== "Completed" &&
     dispatch.status !== "Cancelled";
   const showEnd = dispatch.isWorking;
   const showComplete = dispatch.status === "In Progress" || dispatch.isWorking;
+  const picking = assigningDispatchId === dispatch.id;
 
   return (
     <li className="rounded-lg border border-border px-3 py-3">
@@ -200,7 +283,20 @@ function DispatchRow({
       ) : null}
 
       <div className={cn("mt-3 flex flex-wrap gap-2")}>
-        {showAssign ? (
+        {canAssignPerson ? (
+          <Button
+            type="button"
+            size="sm"
+            variant={picking ? "primary" : "secondary"}
+            isDisabled={busy}
+            onClick={() =>
+              picking ? onAssignClose() : onAssignOpen(dispatch.id)
+            }
+          >
+            <Trans>Assign person</Trans>
+          </Button>
+        ) : null}
+        {showAssignToMe ? (
           <Button
             type="button"
             size="sm"
@@ -245,6 +341,15 @@ function DispatchRow({
           </Button>
         ) : null}
       </div>
+
+      {picking ? (
+        <PersonPicker
+          people={people}
+          busy={busy}
+          onPick={(person) => onAssignPerson(dispatch, person)}
+          onCancel={onAssignClose}
+        />
+      ) : null}
     </li>
   );
 }
@@ -252,15 +357,30 @@ function DispatchRow({
 export function MachineDetailSheet({
   machine,
   userId,
+  people,
   open,
   onOpenChange,
   fetcher
 }: MachineDetailSheetProps) {
   const busy = fetcher.state !== "idle";
+  const [assigningDispatchId, setAssigningDispatchId] = useState<string | null>(
+    null
+  );
+
+  useEffect(() => {
+    if (!open) setAssigningDispatchId(null);
+  }, [open]);
+
+  useEffect(() => {
+    if (fetcher.state === "idle" && fetcher.data?.ok) {
+      setAssigningDispatchId(null);
+    }
+  }, [fetcher.state, fetcher.data]);
 
   const onAction = (
     action: ShopMaintenanceAction,
-    dispatch: ShopOpenDispatch
+    dispatch: ShopOpenDispatch,
+    assigneeId?: string
   ) => {
     const body = new FormData();
     body.set("action", action);
@@ -268,8 +388,29 @@ export function MachineDetailSheet({
     if (dispatch.workCenterId) {
       body.set("workCenterId", dispatch.workCenterId);
     }
+    if (assigneeId) {
+      body.set("assigneeId", assigneeId);
+    }
     fetcher.submit(body, { method: "post" });
   };
+
+  const onReportDowntime = (assigneeId?: string) => {
+    if (!machine) return;
+    const body = new FormData();
+    body.set("action", "ReportDowntime");
+    body.set("workCenterId", machine.id);
+    if (assigneeId) {
+      body.set("assigneeId", assigneeId);
+    }
+    fetcher.submit(body, { method: "post" });
+  };
+
+  const hasOpenMaintenance = (machine?.openDispatches.length ?? 0) > 0;
+  const showReportDowntime =
+    machine != null &&
+    (machine.status === "running" ||
+      machine.status === "idle" ||
+      !hasOpenMaintenance);
 
   return (
     <BottomSheet open={open} onOpenChange={onOpenChange}>
@@ -291,6 +432,30 @@ export function MachineDetailSheet({
             <div className="flex flex-col gap-5">
               <WorkOrderSection work={machine.currentWork} />
 
+              {showReportDowntime ? (
+                <section>
+                  <h3 className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
+                    <Trans>Machine status</Trans>
+                  </h3>
+                  <p className="mt-1 text-sm text-muted-foreground">
+                    <Trans>
+                      Report downtime to put this machine into waiting repair.
+                    </Trans>
+                  </p>
+                  <div className="mt-3 flex flex-wrap gap-2">
+                    <Button
+                      type="button"
+                      size="md"
+                      variant="destructive"
+                      isDisabled={busy}
+                      onClick={() => onReportDowntime()}
+                    >
+                      <Trans>Down</Trans>
+                    </Button>
+                  </div>
+                </section>
+              ) : null}
+
               <section>
                 <h3 className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
                   <Trans>Open maintenance</Trans>
@@ -306,7 +471,14 @@ export function MachineDetailSheet({
                         key={dispatch.id}
                         dispatch={dispatch}
                         userId={userId}
+                        people={people}
                         busy={busy}
+                        assigningDispatchId={assigningDispatchId}
+                        onAssignOpen={setAssigningDispatchId}
+                        onAssignClose={() => setAssigningDispatchId(null)}
+                        onAssignPerson={(d, person) =>
+                          onAction("Assign", d, person.id)
+                        }
                         onAction={onAction}
                       />
                     ))}

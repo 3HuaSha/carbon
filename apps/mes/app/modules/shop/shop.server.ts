@@ -5,7 +5,8 @@ import type {
   ShopCurrentWork,
   ShopMachine,
   ShopOpenDispatch,
-  ShopOverview
+  ShopOverview,
+  ShopPerson
 } from "./shop.types";
 import { deriveShopMachineStatus, shopMachineSubtitle } from "./shop.utils";
 
@@ -52,20 +53,22 @@ export async function getShopOverview(
       locationId: args.locationId,
       locationName: locationResult.data?.name ?? null,
       userId: args.userId,
-      machines: []
+      machines: [],
+      people: []
     };
   }
 
-  const [blockingResult, eventsResult, dispatchesResult] = await Promise.all([
-    client
-      .from("workCentersWithBlockingStatus")
-      .select("id, isBlocked")
-      .eq("companyId", args.companyId)
-      .in("id", workCenterIds),
-    client
-      .from("productionEvent")
-      .select(
-        `
+  const [blockingResult, eventsResult, dispatchesResult, peopleResult] =
+    await Promise.all([
+      client
+        .from("workCentersWithBlockingStatus")
+        .select("id, isBlocked")
+        .eq("companyId", args.companyId)
+        .in("id", workCenterIds),
+      client
+        .from("productionEvent")
+        .select(
+          `
         id,
         workCenterId,
         startTime,
@@ -80,22 +83,29 @@ export async function getShopOverview(
           )
         )
       `
-      )
-      .eq("companyId", args.companyId)
-      .in("workCenterId", workCenterIds)
-      .is("endTime", null)
-      .order("startTime", { ascending: true }),
-    client
-      .from("maintenanceDispatch")
-      .select(DISPATCH_COLUMNS)
-      .eq("companyId", args.companyId)
-      .in("workCenterId", workCenterIds)
-      .in("status", [...openDispatchStatuses])
-  ]);
+        )
+        .eq("companyId", args.companyId)
+        .in("workCenterId", workCenterIds)
+        .is("endTime", null)
+        .order("startTime", { ascending: true }),
+      client
+        .from("maintenanceDispatch")
+        .select(DISPATCH_COLUMNS)
+        .eq("companyId", args.companyId)
+        .in("workCenterId", workCenterIds)
+        .in("status", [...openDispatchStatuses]),
+      client
+        .from("employees")
+        .select("id, name, avatarUrl, locationId")
+        .eq("companyId", args.companyId)
+        .eq("active", true)
+        .order("name", { ascending: true })
+    ]);
 
   if (blockingResult.error) throw blockingResult.error;
   if (eventsResult.error) throw eventsResult.error;
   if (dispatchesResult.error) throw dispatchesResult.error;
+  if (peopleResult.error) throw peopleResult.error;
 
   const blockedById = new Map(
     (blockingResult.data ?? []).map((row) => [row.id!, row.isBlocked ?? false])
@@ -214,12 +224,30 @@ export async function getShopOverview(
     };
   });
 
+  const people: ShopPerson[] = (peopleResult.data ?? [])
+    .filter(
+      (row): row is typeof row & { id: string } => typeof row.id === "string"
+    )
+    .map((row) => ({
+      id: row.id,
+      name: row.name?.trim() || row.id,
+      avatarUrl: row.avatarUrl ?? null,
+      locationId: row.locationId ?? null
+    }))
+    .sort((a, b) => {
+      const aHere = a.locationId === args.locationId ? 0 : 1;
+      const bHere = b.locationId === args.locationId ? 0 : 1;
+      if (aHere !== bHere) return aHere - bHere;
+      return a.name.localeCompare(b.name);
+    });
+
   return {
     locationId: args.locationId,
     locationName:
       locationResult.data?.name ?? workCenters[0]?.locationName ?? null,
     userId: args.userId,
-    machines
+    machines,
+    people
   };
 }
 
