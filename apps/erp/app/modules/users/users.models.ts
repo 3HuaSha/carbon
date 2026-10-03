@@ -156,6 +156,13 @@ export const revokeInviteValidator = z.object({
     .min(1, { message: "Users are required" })
 });
 
+/** Activate Invited employees immediately (no magic-link accept / Resend). */
+export const activateEmployeesValidator = z.object({
+  users: z
+    .array(z.string().min(1, { message: "Invalid user id" }))
+    .min(1, { message: "Users are required" })
+});
+
 export const userPermissionsValidator = z.object({
   view: z.boolean(),
   create: z.boolean(),

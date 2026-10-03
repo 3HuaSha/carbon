@@ -61,6 +61,7 @@ export const path = {
     accountPersonal: `${x}/account/personal`,
     accountSecurity: `${x}/account/security`,
     acknowledge: `${x}/acknowledge`,
+    activateEmployees: `${x}/users/activate-employees`,
     activateGauge: (id: string) =>
       generatePath(`${x}/quality/gauges/activate/${id}`),
     activeMethodVersion: (id: string) =>

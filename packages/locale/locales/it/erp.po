@@ -1312,6 +1312,15 @@ msgstr "Attiva {name}"
 msgid "Activate Process"
 msgstr "Attiva Processo"
 
+msgid "Activate these employees immediately with no invite email? They become Active and can bind Telegram with their email."
+msgstr ""
+
+msgid "Activate this employee immediately with no invite email? They become Active and can bind Telegram with this email."
+msgstr ""
+
+msgid "Activate without invite"
+msgstr ""
+
 msgid "Activate without invite email"
 msgstr ""
 

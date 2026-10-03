@@ -25,6 +25,7 @@ import {
   uncoveredSsoDomainError
 } from "@carbon/ee/sso.server";
 import { getLogger } from "@carbon/logger";
+import { datetime } from "@carbon/utils";
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { redirect } from "react-router";
 import { getSupplierContact } from "~/modules/purchasing";
@@ -696,6 +697,138 @@ export async function createEmployeeAccount(
   }
 
   return { success: true, code, userId };
+}
+
+/**
+ * Activate Invited employees without magic-link accept / Resend.
+ * Mirrors invite acceptance: employee.active, userToCompany, permissions,
+ * invite.acceptedAt. Used for people stuck as 已邀请 / Invited.
+ */
+export async function activatePendingEmployees({
+  userIds,
+  companyId
+}: {
+  userIds: string[];
+  companyId: string;
+}): Promise<
+  { success: true; activated: number } | { success: false; message: string }
+> {
+  const serviceRole = getCarbonServiceRole();
+  let activated = 0;
+
+  for (const userId of userIds) {
+    const user = await serviceRole
+      .from("user")
+      .select("id, email")
+      .eq("id", userId)
+      .maybeSingle();
+
+    if (user.error || !user.data?.email) {
+      return {
+        success: false,
+        message: user.error?.message ?? "User not found"
+      };
+    }
+
+    const employee = await serviceRole
+      .from("employee")
+      .select("id, active, employeeTypeId")
+      .eq("id", userId)
+      .eq("companyId", companyId)
+      .maybeSingle();
+
+    if (employee.error || !employee.data) {
+      return {
+        success: false,
+        message: employee.error?.message ?? "Employee not found in this company"
+      };
+    }
+
+    if (employee.data.active) {
+      continue;
+    }
+
+    const invite = await serviceRole
+      .from("invite")
+      .select("id, permissions, role")
+      .eq("email", user.data.email)
+      .eq("companyId", companyId)
+      .eq("role", "employee")
+      .is("acceptedAt", null)
+      .is("revokedAt", null)
+      .maybeSingle();
+
+    if (invite.error || !invite.data) {
+      return {
+        success: false,
+        message: `No pending invite for ${user.data.email}`
+      };
+    }
+
+    const permissions = (invite.data.permissions ?? {}) as Record<
+      string,
+      string[]
+    >;
+
+    const existingLink = await serviceRole
+      .from("userToCompany")
+      .select("userId")
+      .eq("userId", userId)
+      .eq("companyId", companyId)
+      .maybeSingle();
+
+    const [activate, setPermissions] = await Promise.all([
+      activateEmployee(serviceRole, { userId, companyId }),
+      setUserPermissions(serviceRole, userId, permissions)
+    ]);
+
+    if (activate.error) {
+      return {
+        success: false,
+        message: activate.error.message ?? "Failed to activate employee"
+      };
+    }
+
+    if (!existingLink.data) {
+      const addUser = await addUserToCompany(serviceRole, {
+        userId,
+        companyId,
+        role: "employee"
+      });
+      if (addUser.error) {
+        await rollbackInvite(serviceRole, { userId, companyId });
+        return {
+          success: false,
+          message: addUser.error.message ?? "Failed to link user to company"
+        };
+      }
+    }
+
+    if (setPermissions.error) {
+      logger.error("Failed to set permissions for direct activate", {
+        userId,
+        companyId,
+        error: setPermissions.error
+      });
+    }
+
+    const accepted = await serviceRole
+      .from("invite")
+      .update({ acceptedAt: datetime.timestamp() })
+      .eq("id", invite.data.id)
+      .eq("companyId", companyId);
+
+    if (accepted.error) {
+      logger.error("Failed to mark invite accepted after direct activate", {
+        inviteId: invite.data.id,
+        error: accepted.error
+      });
+    }
+
+    activated += 1;
+  }
+
+  return { success: true, activated };
 }
 
 export async function createSupplierAccount(

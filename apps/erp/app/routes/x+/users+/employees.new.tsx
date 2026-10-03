@@ -1,5 +1,6 @@
 import {
   assertIsPost,
+  CarbonEdition,
   CONTROLLED_ENVIRONMENT,
   error,
   success
@@ -13,7 +14,8 @@ import { getSsoAwareInviteLink } from "@carbon/ee/sso.server";
 import { validationError, validator } from "@carbon/form";
 import { sendEmail } from "@carbon/lib/email.server";
 import { getLogger } from "@carbon/logger";
-import { datetime, getClientIp } from "@carbon/utils";
+import { updateSubscriptionQuantityForCompany } from "@carbon/stripe/stripe.server";
+import { datetime, Edition, getClientIp } from "@carbon/utils";
 import { render } from "@react-email/components";
 import { nanoid } from "nanoid";
 import type {
@@ -150,6 +152,9 @@ export async function action({ request }: ActionFunctionArgs) {
   }
 
   if (activateWithoutInvite) {
+    if (CarbonEdition === Edition.Cloud) {
+      await updateSubscriptionQuantityForCompany(companyId);
+    }
     throw redirect(
       path.to.personJob(result.userId),
       await flash(

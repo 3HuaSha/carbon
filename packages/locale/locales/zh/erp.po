@@ -1312,8 +1312,17 @@ msgstr "激活 {name}"
 msgid "Activate Process"
 msgstr "激活流程"
 
+msgid "Activate these employees immediately with no invite email? They become Active and can bind Telegram with their email."
+msgstr "立即启用这些员工（不发送邀请邮件）？状态变为「启用」，可用邮箱绑定 Telegram。"
+
+msgid "Activate this employee immediately with no invite email? They become Active and can bind Telegram with this email."
+msgstr "立即启用该员工（不发送邀请邮件）？状态变为「启用」，可用此邮箱绑定 Telegram。"
+
+msgid "Activate without invite"
+msgstr "直接启用（无需邀请）"
+
 msgid "Activate without invite email"
-msgstr ""
+msgstr "直接启用（不发送邀请邮件）"
 
 msgid "Activate Work Center"
 msgstr "激活工作中心"
@@ -4830,7 +4839,7 @@ msgid "Create an account"
 msgstr "创建账户"
 
 msgid "Create an active employee immediately — no magic-link email. Use for shop-floor / Telegram maintenance people."
-msgstr ""
+msgstr "立即创建为启用状态，不发送魔法链接邮件。适合车间/Telegram 维修人员。"
 
 msgid "Create an issue"
 msgstr "创建问题"
@@ -12651,7 +12660,7 @@ msgid "Optional pages & sections"
 msgstr "可选页面和部分"
 
 msgid "Optional. Needed for Telegram bind. Leave blank for console-only (no Telegram email bind)."
-msgstr ""
+msgstr "可选。用于 Telegram 邮箱绑定。留空则为仅控制台账号（无法用邮箱绑定 Telegram）。"
 
 msgid "Optional. Stops new purchase suggestions after this date."
 msgstr "可选。在此日期之后停止新采购建议。"
