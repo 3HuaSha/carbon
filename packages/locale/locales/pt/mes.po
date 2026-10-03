@@ -191,6 +191,9 @@ msgstr "Tem certeza que deseja sair desta página?"
 msgid "Assembly steps"
 msgstr "Etapas de montagem"
 
+msgid "Assign to me"
+msgstr "Atribuir a mim"
+
 msgid "Assigned"
 msgstr "Atribuído"
 
@@ -200,6 +203,9 @@ msgstr "Atribuído a {0}"
 
 msgid "Assigned to Me"
 msgstr "Atribuído a Mim"
+
+msgid "Assigned to you"
+msgstr "Atribuído a você"
 
 msgid "Assignee"
 msgstr "Designado"
@@ -984,6 +990,9 @@ msgstr "Nenhum arquivo"
 msgid "No Impact"
 msgstr "Sem Impacto"
 
+msgid "No inspection"
+msgstr "Sem inspeção"
+
 msgid "No issue types configured"
 msgstr "Nenhum tipo de problema configurado"
 
@@ -1138,6 +1147,9 @@ msgstr "Abrir uma ordem de produção neste lote de produção"
 
 msgid "Open an NCR for MRB disposition"
 msgstr "Abrir um NCR para disposição MRB"
+
+msgid "Open inspection"
+msgstr "Abrir inspeção"
 
 msgid "Open Jobs"
 msgstr "Ordens de produção abertas"
@@ -1294,6 +1306,12 @@ msgstr "Progresso"
 #. placeholder {0}: formatDate(projectedCompletionDate)
 msgid "Proj. {0}"
 msgstr "Proj. {0}"
+
+msgid "QC / Inspection"
+msgstr "QC / Inspeção"
+
+msgid "QC: {status}"
+msgstr "QC: {status}"
 
 msgid "Quality Issue"
 msgstr "Problema de Qualidade"

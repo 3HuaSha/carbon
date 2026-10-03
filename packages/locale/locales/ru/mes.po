@@ -191,6 +191,9 @@ msgstr "Вы уверены, что хотите покинуть эту стр�
 msgid "Assembly steps"
 msgstr "Шаги сборки"
 
+msgid "Assign to me"
+msgstr "Назначить мне"
+
 msgid "Assigned"
 msgstr "Назначенные"
 
@@ -200,6 +203,9 @@ msgstr "Исполнитель: {0}"
 
 msgid "Assigned to Me"
 msgstr "Назначенные мне"
+
+msgid "Assigned to you"
+msgstr "Назначено вам"
 
 msgid "Assignee"
 msgstr "Исполнитель"
@@ -984,6 +990,9 @@ msgstr "Нет файлов"
 msgid "No Impact"
 msgstr "Без влияния"
 
+msgid "No inspection"
+msgstr "Нет инспекции"
+
 msgid "No issue types configured"
 msgstr "Типы проблем не настроены"
 
@@ -1138,6 +1147,9 @@ msgstr "Открыть производственный заказ в этой �
 
 msgid "Open an NCR for MRB disposition"
 msgstr "Открыть NCR для решения MRB"
+
+msgid "Open inspection"
+msgstr "Открыть инспекцию"
 
 msgid "Open Jobs"
 msgstr "Открытые производственные заказы"
@@ -1294,6 +1306,12 @@ msgstr "Прогресс"
 #. placeholder {0}: formatDate(projectedCompletionDate)
 msgid "Proj. {0}"
 msgstr "Прогноз. {0}"
+
+msgid "QC / Inspection"
+msgstr "QC / Инспекция"
+
+msgid "QC: {status}"
+msgstr "QC: {status}"
 
 msgid "Quality Issue"
 msgstr "Проблема качества"

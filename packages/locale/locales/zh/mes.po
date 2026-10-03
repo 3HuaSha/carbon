@@ -191,6 +191,9 @@ msgstr "您确定要离开此页面吗？"
 msgid "Assembly steps"
 msgstr "装配步骤"
 
+msgid "Assign to me"
+msgstr "分配给我"
+
 msgid "Assigned"
 msgstr "已分配"
 
@@ -200,6 +203,9 @@ msgstr "分配给 {0}"
 
 msgid "Assigned to Me"
 msgstr "已分配给我"
+
+msgid "Assigned to you"
+msgstr "已分配给你"
 
 msgid "Assignee"
 msgstr "经办人"
@@ -984,6 +990,9 @@ msgstr "无文件"
 msgid "No Impact"
 msgstr "无影响"
 
+msgid "No inspection"
+msgstr "无检验"
+
 msgid "No issue types configured"
 msgstr "未配置问题类型"
 
@@ -1138,6 +1147,9 @@ msgstr "打开此生产批次中的工单"
 
 msgid "Open an NCR for MRB disposition"
 msgstr "为MRB处置打开NCR"
+
+msgid "Open inspection"
+msgstr "打开检验"
 
 msgid "Open Jobs"
 msgstr "未结工单"
@@ -1294,6 +1306,12 @@ msgstr "进度"
 #. placeholder {0}: formatDate(projectedCompletionDate)
 msgid "Proj. {0}"
 msgstr "预计 {0}"
+
+msgid "QC / Inspection"
+msgstr "QC / 检验"
+
+msgid "QC: {status}"
+msgstr "QC：{status}"
 
 msgid "Quality Issue"
 msgstr "质量问题"

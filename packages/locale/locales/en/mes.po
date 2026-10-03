@@ -191,6 +191,9 @@ msgstr "Are you sure you want to leave this page?"
 msgid "Assembly steps"
 msgstr "Assembly steps"
 
+msgid "Assign to me"
+msgstr "Assign to me"
+
 msgid "Assigned"
 msgstr "Assigned"
 
@@ -200,6 +203,9 @@ msgstr "Assigned to {0}"
 
 msgid "Assigned to Me"
 msgstr "Assigned to Me"
+
+msgid "Assigned to you"
+msgstr "Assigned to you"
 
 msgid "Assignee"
 msgstr "Assignee"
@@ -984,6 +990,9 @@ msgstr "No files"
 msgid "No Impact"
 msgstr "No Impact"
 
+msgid "No inspection"
+msgstr "No inspection"
+
 msgid "No issue types configured"
 msgstr "No issue types configured"
 
@@ -1138,6 +1147,9 @@ msgstr "Open a job in this batch"
 
 msgid "Open an NCR for MRB disposition"
 msgstr "Open an NCR for MRB disposition"
+
+msgid "Open inspection"
+msgstr "Open inspection"
 
 msgid "Open Jobs"
 msgstr "Open Jobs"
@@ -1294,6 +1306,12 @@ msgstr "Progress"
 #. placeholder {0}: formatDate(projectedCompletionDate)
 msgid "Proj. {0}"
 msgstr "Proj. {0}"
+
+msgid "QC / Inspection"
+msgstr "QC / Inspection"
+
+msgid "QC: {status}"
+msgstr "QC: {status}"
 
 msgid "Quality Issue"
 msgstr "Quality Issue"

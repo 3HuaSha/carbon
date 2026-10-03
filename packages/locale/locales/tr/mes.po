@@ -191,6 +191,9 @@ msgstr "Bu sayfadan ayrılmak istediğinizden emin misiniz?"
 msgid "Assembly steps"
 msgstr "Montaj adımları"
 
+msgid "Assign to me"
+msgstr "Bana ata"
+
 msgid "Assigned"
 msgstr "Atanmış"
 
@@ -200,6 +203,9 @@ msgstr "{0}'e atandı"
 
 msgid "Assigned to Me"
 msgstr "Bana Atananlar"
+
+msgid "Assigned to you"
+msgstr "Size atandı"
 
 msgid "Assignee"
 msgstr "Atanan"
@@ -984,6 +990,9 @@ msgstr "Dosya yok"
 msgid "No Impact"
 msgstr "Etki Yok"
 
+msgid "No inspection"
+msgstr "Muayene yok"
+
 msgid "No issue types configured"
 msgstr "Sorun türü yapılandırılmadı"
 
@@ -1138,6 +1147,9 @@ msgstr "Bu partizeki bir iş emrini aç"
 
 msgid "Open an NCR for MRB disposition"
 msgstr "MRB kararı için NCR aç"
+
+msgid "Open inspection"
+msgstr "Muayeneyi aç"
 
 msgid "Open Jobs"
 msgstr "Açık İş emirleri"
@@ -1294,6 +1306,12 @@ msgstr "İlerleme"
 #. placeholder {0}: formatDate(projectedCompletionDate)
 msgid "Proj. {0}"
 msgstr "Proj. {0}"
+
+msgid "QC / Inspection"
+msgstr "QC / Muayene"
+
+msgid "QC: {status}"
+msgstr "QC: {status}"
 
 msgid "Quality Issue"
 msgstr "Kalite Sorunu"

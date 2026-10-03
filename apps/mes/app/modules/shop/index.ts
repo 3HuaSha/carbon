@@ -1,11 +1,17 @@
 export type {
+  ShopCurrentWork,
   ShopMachine,
   ShopMachineStatus,
+  ShopMaintenanceAction,
   ShopOpenDispatch,
   ShopOverview,
   ShopStatusFilter
 } from "./shop.types";
-export { shopMachineStatuses, shopStatusFilters } from "./shop.types";
+export {
+  shopMachineStatuses,
+  shopMaintenanceActions,
+  shopStatusFilters
+} from "./shop.types";
 export {
   countShopStatuses,
   deriveShopMachineStatus,

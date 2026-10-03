@@ -191,6 +191,9 @@ msgstr "이 페이지를 나가시겠습니까?"
 msgid "Assembly steps"
 msgstr "조립 단계"
 
+msgid "Assign to me"
+msgstr "나에게 배정"
+
 msgid "Assigned"
 msgstr "배정됨"
 
@@ -199,6 +202,9 @@ msgid "Assigned to {0}"
 msgstr "{0}에게 배정"
 
 msgid "Assigned to Me"
+msgstr "나에게 배정됨"
+
+msgid "Assigned to you"
 msgstr "나에게 배정됨"
 
 msgid "Assignee"
@@ -984,6 +990,9 @@ msgstr "파일 없음"
 msgid "No Impact"
 msgstr "영향 없음"
 
+msgid "No inspection"
+msgstr "검사 없음"
+
 msgid "No issue types configured"
 msgstr "구성된 문제 유형이 없음"
 
@@ -1138,6 +1147,9 @@ msgstr "이 배치에서 작업 지시 열기"
 
 msgid "Open an NCR for MRB disposition"
 msgstr "MRB 처분 결정을 위해 NCR을 여세요"
+
+msgid "Open inspection"
+msgstr "검사 열기"
 
 msgid "Open Jobs"
 msgstr "작업 지시 열기"
@@ -1294,6 +1306,12 @@ msgstr "진행 상황"
 #. placeholder {0}: formatDate(projectedCompletionDate)
 msgid "Proj. {0}"
 msgstr "예상. {0}"
+
+msgid "QC / Inspection"
+msgstr "QC / 검사"
+
+msgid "QC: {status}"
+msgstr "QC: {status}"
 
 msgid "Quality Issue"
 msgstr "품질 이슈"
