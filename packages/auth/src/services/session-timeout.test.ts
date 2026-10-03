@@ -169,4 +169,22 @@ describe("refreshAuthSession preserves session-age clocks", () => {
     expect(isSessionExpiredAbsolute(refreshed)).toBe(false);
     expect(isSessionIdleLocked(refreshed)).toBe(false);
   });
+
+  it("keeps a non-expired session when GoTrue refresh returns null", async () => {
+    const cookie = await setAuthSession(
+      new Request("http://localhost:3000/x"),
+      {
+        authSession: makeSession({
+          accessToken: "still-valid-access",
+          refreshToken: "stale-or-raced-refresh"
+        })
+      }
+    );
+
+    vi.mocked(refreshAccessToken).mockResolvedValue(null);
+
+    const kept = await refreshAuthSession(requestWithCookie(cookie));
+    expect(kept.accessToken).toBe("still-valid-access");
+    expect(kept.refreshToken).toBe("stale-or-raced-refresh");
+  });
 });

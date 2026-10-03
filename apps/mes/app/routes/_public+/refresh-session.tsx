@@ -1,6 +1,7 @@
 import { assertIsPost } from "@carbon/auth";
 import { setCompanyId } from "@carbon/auth/company.server";
 import {
+  getAuthSession,
   refreshAuthSession,
   setAuthSession
 } from "@carbon/auth/session.server";
@@ -16,7 +17,15 @@ export async function loader() {
 export async function action({ request }: ActionFunctionArgs) {
   assertIsPost(request);
 
+  // Capture pre-refresh tokens so a failed/duplicate refresh (fail-open) does
+  // not Set-Cookie the stale refresh token over a winning rotation.
+  const before = await getAuthSession(request);
   const authSession = await refreshAuthSession(request);
+  const rotated = authSession.refreshToken !== before?.refreshToken;
+
+  if (!rotated) {
+    return data({ success: true });
+  }
 
   const sessionCookie = await setAuthSession(request, {
     authSession

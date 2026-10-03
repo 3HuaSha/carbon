@@ -52,6 +52,24 @@ export const CarbonProvider = ({
 
   const initialLoad = useRef(true);
   const refresh = useFetcher<{}>();
+  // Debounce concurrent visibility + interval submits. Parallel refresh_token
+  // grants rotate/revoke each other and can clear the session cookie.
+  const lastRefreshSubmitAt = useRef(0);
+  const refreshFetcherRef = useRef(refresh);
+  refreshFetcherRef.current = refresh;
+  const REFRESH_DEBOUNCE_MS = 5_000;
+
+  const trySubmitRefresh = () => {
+    const fetcher = refreshFetcherRef.current;
+    if (fetcher.state !== "idle") return;
+    const now = Date.now();
+    if (now - lastRefreshSubmitAt.current < REFRESH_DEBOUNCE_MS) return;
+    lastRefreshSubmitAt.current = now;
+    fetcher.submit(null, {
+      method: "post",
+      action: path.to.refreshSession
+    });
+  };
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: suppressed due to migration
   useEffect(() => {
@@ -60,13 +78,11 @@ export const CarbonProvider = ({
     }
   }, [carbon, setAuthToken, session.accessToken]);
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: trySubmitRefresh is ref-backed
   useEffect(() => {
     const handleVisibilityChange = () => {
       if (document.visibilityState === "visible") {
-        refresh.submit(null, {
-          method: "post",
-          action: path.to.refreshSession
-        });
+        trySubmitRefresh();
       }
     };
 
@@ -82,7 +98,7 @@ export const CarbonProvider = ({
         );
       }
     };
-  }, [refresh]);
+  }, []);
 
   useInterval(() => {
     // refresh ten minutes before expiry
@@ -95,10 +111,7 @@ export const CarbonProvider = ({
     }
 
     if (!initialLoad.current && shouldRefresh && carbon) {
-      refresh.submit(null, {
-        method: "post",
-        action: path.to.refreshSession
-      });
+      trySubmitRefresh();
     }
 
     initialLoad.current = false;

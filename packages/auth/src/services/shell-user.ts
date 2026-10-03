@@ -16,6 +16,27 @@ export function isShellUserReadTimeout(
   return (error?.message ?? "").includes("aborted due to timeout");
 }
 
+/** GoTrue / fetch blips that must not force logout or refresh-token rotation. */
+export function isAuthTransportError(
+  error: { message?: string; status?: number } | null | undefined
+): boolean {
+  if (isShellUserReadTimeout(error)) return true;
+  const message = (error?.message ?? "").toLowerCase();
+  return (
+    message.includes("fetch failed") ||
+    message.includes("network") ||
+    message.includes("econnreset") ||
+    message.includes("econnrefused") ||
+    message.includes("etimedout") ||
+    message.includes("socket") ||
+    error?.status === 408 ||
+    error?.status === 502 ||
+    error?.status === 503 ||
+    error?.status === 504 ||
+    error?.status === 524
+  );
+}
+
 export function shellUserReadGate(result: ShellUserRead): ShellUserReadGate {
   if (isShellUserReadTimeout(result.error)) return "unavailable";
   if (result.error || result.data == null) return "logout";
