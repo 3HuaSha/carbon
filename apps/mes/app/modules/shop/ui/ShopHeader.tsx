@@ -1,7 +1,7 @@
 import { Count, cn, IconButton } from "@carbon/react";
 import { Trans, useLingui } from "@lingui/react/macro";
 import { type ReactNode, useState } from "react";
-import { LuDownload, LuMonitor } from "react-icons/lu";
+import { LuDownload, LuMonitor, LuShare } from "react-icons/lu";
 import type { ShopMachineStatus, ShopStatusFilter } from "../shop.types";
 import { shopStatusFilters } from "../shop.types";
 import { PwaInstallSheet } from "./PwaInstallSheet";
@@ -34,19 +34,39 @@ export function ShopHeader({
   const {
     installed,
     knownInstalled,
+    canPrompt,
     requestInstall,
     openInstalledApp,
     isIos,
     isAndroid,
-    preparing
+    isInAppBrowser,
+    preparing,
+    readyRetry,
+    swControllerUrl
   } = usePwaInstall();
   const [helpOpen, setHelpOpen] = useState(false);
   const [alreadyInstalledHelp, setAlreadyInstalledHelp] = useState(false);
   const [inAppBrowserHelp, setInAppBrowserHelp] = useState(false);
+  const [retryHint, setRetryHint] = useState(false);
 
   const onInstallClick = async () => {
-    // Known-installed browser tab: open sheet with Open in app / pin steps.
-    // Pages cannot programmatically trigger Chrome's omnibox Open in app.
+    // In-app WebView (WeChat etc.): never pretend Install failed — guide out.
+    if (isInAppBrowser) {
+      setAlreadyInstalledHelp(false);
+      setInAppBrowserHelp(true);
+      setHelpOpen(true);
+      return;
+    }
+
+    // iOS: Add to Home Screen is the primary action (no BIP ever).
+    if (isIos) {
+      setInAppBrowserHelp(false);
+      setAlreadyInstalledHelp(false);
+      setHelpOpen(true);
+      return;
+    }
+
+    // Known-installed browser tab: open sheet with open / reinstall steps.
     if (knownInstalled) {
       openInstalledApp();
       setInAppBrowserHelp(false);
@@ -69,12 +89,34 @@ export function ShopHeader({
       setHelpOpen(true);
       return;
     }
+    if (result === "ready-retry") {
+      // BIP arrived after wait — gesture is gone; ask for a second tap.
+      setRetryHint(true);
+      return;
+    }
     if (result === "manual") {
       setInAppBrowserHelp(false);
       setAlreadyInstalledHelp(false);
       setHelpOpen(true);
     }
+    if (result === "prompted") {
+      setRetryHint(false);
+    }
   };
+
+  const installAria = preparing
+    ? t`Preparing install…`
+    : readyRetry || retryHint
+      ? t`Install ready — tap again`
+      : knownInstalled
+        ? t`Open app — Already installed`
+        : isIos
+          ? t`Add to Home Screen`
+          : isInAppBrowser
+            ? t`Open in Chrome`
+            : canPrompt
+              ? t`Install`
+              : t`Install`;
 
   return (
     <header className="sticky top-0 z-10 border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80 px-4 pt-3 pb-3">
@@ -90,21 +132,17 @@ export function ShopHeader({
         <div className="flex shrink-0 items-start gap-2">
           {!installed ? (
             <IconButton
-              aria-label={
-                preparing
-                  ? t`Preparing install…`
-                  : knownInstalled
-                    ? t`Open app — Already installed`
-                    : t`Install / Add to Home Screen`
+              aria-label={installAria}
+              title={installAria}
+              icon={
+                knownInstalled ? (
+                  <LuMonitor />
+                ) : isIos ? (
+                  <LuShare />
+                ) : (
+                  <LuDownload />
+                )
               }
-              title={
-                preparing
-                  ? t`Preparing install…`
-                  : knownInstalled
-                    ? t`Open app — Already installed`
-                    : t`Install / Add to Home Screen`
-              }
-              icon={knownInstalled ? <LuMonitor /> : <LuDownload />}
               variant="secondary"
               size="md"
               isDisabled={preparing}
@@ -156,6 +194,7 @@ export function ShopHeader({
         isAndroid={isAndroid}
         alreadyInstalled={alreadyInstalledHelp}
         inAppBrowser={inAppBrowserHelp}
+        swControllerUrl={swControllerUrl}
       />
     </header>
   );

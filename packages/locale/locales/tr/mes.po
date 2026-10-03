@@ -302,26 +302,23 @@ msgstr "E-postanızı kontrol edin"
 msgid "Choose a job"
 msgstr "İş emri seç"
 
-msgid "Choose Open in Chrome (or Open in browser)."
-msgstr "Chrome’da aç’ı (veya Tarayıcıda aç’ı) seçin."
+msgid "Choose Open in browser / Open in Chrome (用浏览器打开)."
+msgstr ""
 
 msgid "Choose Open in Safari."
 msgstr "Safari’de aç’ı seçin."
 
-msgid "Chrome did not offer a one-tap install yet. Stay on this page a few seconds, tap Install again, or use the Chrome menu below."
-msgstr "Chrome henüz tek dokunuşla kurulum sunmadı. Bu sayfada birkaç saniye kalın, Kur’a yeniden dokunun veya aşağıdaki Chrome menüsünü kullanın."
+msgid "Chrome did not offer a one-tap install yet. Use the menu below."
+msgstr ""
 
-msgid "Chrome did not offer a one-tap install yet. Use the menu below — or if the address bar shows Open in app, the PWA is already installed."
-msgstr "Chrome henüz tek dokunuşla yükleme sunmadı. Aşağıdaki menüyü kullanın veya adres çubuğunda Uygulamada aç görünüyorsa PWA zaten yüklenmiştir."
+msgid "Chrome did not offer one-tap Install yet. You must use Chrome (not WeChat), hard-refresh, and confirm the service worker is controlling this page."
+msgstr ""
 
-msgid "Chrome on this phone will not offer Install again while MES is already on your home screen. Open the app, or uninstall it to reinstall."
-msgstr "MES zaten ana ekrandayken bu telefondaki Chrome yeniden Kur sunmaz. Uygulamayı açın veya yeniden kurmak için kaldırın."
+msgid "Chrome only fires beforeinstallprompt when the site is not already installed and installability criteria are met."
+msgstr ""
 
-msgid "Chrome only fires the install prompt when the site is not already installed and installability criteria are met."
-msgstr "Chrome yükleme istemini yalnızca site henüz yüklü değilse ve yüklenebilirlik ölçütleri karşılandığında gösterir."
-
-msgid "Chrome, Firefox, and Edge on iOS cannot native-install this app — they all use WebKit without beforeinstallprompt."
-msgstr "iOS’ta Chrome, Firefox ve Edge bu uygulamayı yerel olarak kuramaz — hepsi beforeinstallprompt olmadan WebKit kullanır."
+msgid "Chrome will not offer Install again while MES is already on your home screen. Open the app, or uninstall it to reinstall."
+msgstr ""
 
 msgid "Clear"
 msgstr "Temizle"
@@ -411,6 +408,12 @@ msgstr "Tüketildi süresi doldu"
 
 msgid "Continue"
 msgstr "Devam Et"
+
+msgid "Controlled: no — Chrome will not fire the install prompt until a service worker controls this page. Hard refresh and wait a few seconds."
+msgstr ""
+
+msgid "Controlled: yes — this page has an active service worker (required for Install)."
+msgstr ""
 
 #. placeholder {0}: board.unplannedCost.days
 msgid "Cost of unplanned maintenance, last {0} days"
@@ -709,6 +712,9 @@ msgstr "Başlangıç adımına git"
 msgid "Got it"
 msgstr "Anladım"
 
+msgid "Hard refresh this page: Chrome ⋮ → refresh, or close the tab and open /shop again. Wait 3–5 seconds after Shop loads."
+msgstr ""
+
 msgid "Hide description"
 msgstr "Açıklamayı gizle"
 
@@ -733,9 +739,6 @@ msgstr "Boşta"
 msgid "Idle for"
 msgstr "Boş olma süresi"
 
-msgid "If Install app is missing, wait a few seconds on Shop and tap the download button again — or clear site data for this host and retry."
-msgstr "Uygulamayı yükle yoksa Shop’ta birkaç saniye bekleyip indirme düğmesine yeniden dokunun — veya bu ana bilgisayarın site verilerini temizleyip yeniden deneyin."
-
 msgid "Impact"
 msgstr "Etki"
 
@@ -746,8 +749,8 @@ msgstr "İmparatorluk"
 msgid "in {0}"
 msgstr "{0} içinde"
 
-msgid "In Chrome, tap ⋮ → Settings → Site settings → All sites → this MES host → Clear and reset, then reload /shop and tap Install again."
-msgstr "Chrome’da ⋮ → Ayarlar → Site ayarları → Tüm siteler → bu MES ana bilgisayarı → Temizle ve sıfırla’ya dokunun, sonra /shop’u yenileyip yeniden Kur’a dokunun."
+msgid "In Chrome: ⋮ → Settings → Site settings → All sites → this MES host → Clear and reset. Reload /shop, wait a few seconds, tap Install."
+msgstr ""
 
 msgid "In Progress"
 msgstr "Devam Ediyor"
@@ -755,14 +758,8 @@ msgstr "Devam Ediyor"
 msgid "In repair"
 msgstr "Onarımda"
 
-msgid "In that app window: menu ⋮ → Cast, save, and share (投屏、保存和分享) → Create shortcut (创建快捷方式) / Pin to taskbar (固定到任务栏)."
-msgstr "Bu uygulama penceresinde: menü ⋮ → Yayınla, kaydet ve paylaş (Cast, save, and share) → Kısayol oluştur (Create shortcut) / Görev çubuğuna sabitle (Pin to taskbar)."
-
-msgid "In the Chrome address bar, click Open in app (打开应用) to launch the installed Carbon MES window."
-msgstr "Yüklenen Carbon MES penceresini başlatmak için Chrome adres çubuğunda Uygulamada aç (Open in app) öğesine tıklayın."
-
-msgid "In-app browsers (WeChat, Instagram, etc.) block Progressive Web App install."
-msgstr "Uygulama içi tarayıcılar (WeChat, Instagram vb.) Progressive Web App kurulumunu engeller."
+msgid "In-app browsers (WeChat, QQ, UC, Instagram) block Progressive Web App install."
+msgstr ""
 
 msgid "Inspect Item"
 msgstr "Ürünü İncele"
@@ -770,8 +767,14 @@ msgstr "Ürünü İncele"
 msgid "inspected"
 msgstr "incelendi"
 
-msgid "Install / Add to Home Screen"
-msgstr "Yükle / Ana ekrana ekle"
+msgid "Install"
+msgstr ""
+
+msgid "Install MES"
+msgstr ""
+
+msgid "Install ready — tap again"
+msgstr ""
 
 msgid "Instructions"
 msgstr "Talimatlar"
@@ -785,8 +788,8 @@ msgstr "Stok düzeltme tamamlandı"
 msgid "Inventory Adjustments"
 msgstr "Stok düzeltmeleri"
 
-msgid "iPhone and iPad never show a one-tap Install button. Use Safari’s Share menu — the steps below take about 15 seconds."
-msgstr "iPhone ve iPad asla tek dokunuşluk Kur düğmesi göstermez. Safari’nin Paylaş menüsünü kullanın — aşağıdaki adımlar yaklaşık 15 saniye sürer."
+msgid "iPhone and iPad never show a one-tap Install button (Apple policy). Use Safari’s Share menu — about 15 seconds."
+msgstr ""
 
 msgid "is"
 msgstr "eşittir"
@@ -905,8 +908,8 @@ msgstr "{0} için fire kaydı"
 msgid "Login"
 msgstr "Giriş Yap"
 
-msgid "Look for the MES / Carbon MES icon on your home screen or in the app drawer and open it."
-msgstr "Ana ekranda veya uygulama çekmecesinde MES / Carbon MES simgesini bulun ve açın."
+msgid "Look for the MES icon on your home screen or in the app drawer and open it."
+msgstr ""
 
 msgid "Lot"
 msgstr "Lot"
@@ -1183,6 +1186,9 @@ msgstr "/{0}"
 msgid "Oldest first"
 msgstr "En eski önce"
 
+msgid "On iPhone, one-tap system install is impossible by Apple policy — Safari Add to Home Screen is the only path."
+msgstr ""
+
 msgid "one combined lot · planned"
 msgstr "bir birleştirilmiş Lot · planlandı"
 
@@ -1196,8 +1202,8 @@ msgstr "Bir toplama tüm partiyi kapsar — iş emirlerine otomatik olarak dağ�
 msgid "Only {0} available"
 msgstr "Sadece {0} kullanılabilir"
 
-msgid "Only Chromium fires the one-tap Install prompt. After install on desktop, use Open in app to pin to the taskbar."
-msgstr "Tek dokunuşluk Kur istemini yalnızca Chromium gösterir. Masaüstüne kurduktan sonra görev çubuğuna sabitlemek için Uygulamada aç’ı kullanın."
+msgid "Only Android Chrome fires the one-tap Install prompt (beforeinstallprompt)."
+msgstr ""
 
 msgid "Oops. You shouldn't see this page. Eventually it will be a landing page."
 msgstr "Üzgünüz. Bu sayfayı görmemelisiniz. Sonunda bir açılış sayfası olacak."
@@ -1217,8 +1223,8 @@ msgstr "MRB kararı için NCR aç"
 msgid "Open app — Already installed"
 msgstr "Uygulamayı aç — Zaten yüklendi"
 
-msgid "Open in your browser"
-msgstr "Tarayıcınızda açın"
+msgid "Open in Chrome"
+msgstr ""
 
 msgid "Open inspection"
 msgstr "Muayeneyi aç"
@@ -1249,9 +1255,6 @@ msgstr "İsteğe bağlı"
 
 msgid "or"
 msgstr "veya"
-
-msgid "Or open chrome://apps → right-click Carbon MES → Create shortcut → choose Pin to taskbar / Create desktop shortcut."
-msgstr "Veya chrome://apps adresini açın → Carbon MES öğesine sağ tıklayın → Kısayol oluştur → Görev çubuğuna sabitle / Masaüstü kısayolu oluştur seçeneğini belirleyin."
 
 msgid "Other"
 msgstr "Diğer"
@@ -1639,6 +1642,9 @@ msgstr "Seri Numaraları"
 msgid "Serialized"
 msgstr "Serileştirildi"
 
+msgid "Service worker check"
+msgstr ""
+
 msgid "Session locked"
 msgstr "Oturum kilitlendi"
 
@@ -1675,8 +1681,8 @@ msgstr "Açıklamayı göster"
 msgid "Show keyboard shortcuts"
 msgstr "Klavye kısayollarını göster"
 
-msgid "Sign in if needed, open Shop, then tap Install again."
-msgstr "Gerekirse oturum açın, Shop’u açın, sonra yeniden Kur’a dokunun."
+msgid "Sign in if needed, open Shop, wait a few seconds, then tap Install."
+msgstr ""
 
 msgid "Sign in with Google"
 msgstr "Google ile giriş yap"
@@ -1737,8 +1743,8 @@ msgstr "Durum"
 msgid "Statuses"
 msgstr "Durumlar"
 
-msgid "Stay in Chrome on Android (not Samsung Internet)."
-msgstr "Android’de Chrome’da kalın (Samsung Internet değil)."
+msgid "Stay in Android Chrome — not WeChat, QQ, UC, or Samsung Internet."
+msgstr ""
 
 msgid "Stay on this page"
 msgstr "Bu sayfada kal"
@@ -1749,8 +1755,8 @@ msgstr "Adımlar"
 msgid "Steps are missing"
 msgstr "Adımlar eksik"
 
-msgid "Still missing Install? Stay on this page a few seconds and try again, or use Open in app / chrome://apps → Create shortcut."
-msgstr "Yükle seçeneği hâlâ görünmüyor mu? Bu sayfada birkaç saniye bekleyip tekrar deneyin veya Uygulamada aç / chrome://apps → Kısayol oluştur yolunu kullanın."
+msgid "Still missing? Chrome ⋮ → Settings → Site settings → All sites → this host → Clear and reset, then retry."
+msgstr ""
 
 msgid "Storage Unit"
 msgstr "Depolama Birimi"
@@ -1776,11 +1782,11 @@ msgstr "İş merkezini çevrimdışı yapar"
 msgid "Tap Add in the top right. Launch MES from your Home Screen icon afterward."
 msgstr "Sağ üstte Ekle’ye dokunun. Ardından Ana Ekran simgesinden MES’i açın."
 
-msgid "Tap the Chrome menu (⋮) at the top right, then Install app or Add to Home screen."
-msgstr "Sağ üstteki Chrome menüsüne (⋮) dokunun, sonra Uygulamayı yükle veya Ana ekrana ekle’yi seçin."
+msgid "Tap Install again for the system install dialog. Or Chrome ⋮ → Install app / Add to Home screen."
+msgstr ""
 
-msgid "Tap the menu (⋯ or Share) in this in-app browser."
-msgstr "Bu uygulama içi tarayıcıda menüye (⋯ veya Paylaş) dokunun."
+msgid "Tap the menu (⋯) in this in-app browser."
+msgstr ""
 
 msgid "Tap the Share button at the bottom of Safari (square with an upward arrow)."
 msgstr "Safari’nin altındaki Paylaş düğmesine dokunun (yukarı oklu kare)."
@@ -1819,9 +1825,6 @@ msgstr "Bu öğelerin hala seçilecek malzemesi var. Şimdi bitirmek listeyi Kı
 msgid "This batch has no work instructions."
 msgstr "Bu partinin iş talimatı yok."
 
-msgid "This in-app browser cannot install MES. Open the link in Chrome, then tap Install."
-msgstr "Bu uygulama içi tarayıcı MES’i kuramaz. Bağlantıyı Chrome’da açın, sonra Kur’a dokunun."
-
 msgid "This in-app browser cannot install MES. Open the link in Safari, then Add to Home Screen."
 msgstr "Bu uygulama içi tarayıcı MES’i kuramaz. Bağlantıyı Safari’de açın, sonra Ana Ekrana Ekle’yi kullanın."
 
@@ -1834,8 +1837,8 @@ msgstr "Bu parça siparişe göre yapılmıştır. Hurdalaması, bir yedek yapma
 msgid "This part will be scrapped from stock. Its requirement stays open so you can issue a replacement."
 msgstr "Bu parça stoktan hurdaya ayrılacak. Gerekliliği açık kalacak, böylece bir yedek sağlayabilirsiniz."
 
-msgid "This site is already installed. Chrome will not show Install again. Use Open in app, then pin a desktop / taskbar shortcut."
-msgstr "Bu site zaten yüklendi. Chrome, Yükle seçeneğini tekrar göstermez. Uygulamada aç seçeneğini kullanın, ardından masaüstü / görev çubuğu kısayolu sabitleyin."
+msgid "This site is already installed. Chrome will not show Install again."
+msgstr ""
 
 msgid "This unit will be permanently scrapped and a replacement serial number will be created."
 msgstr "Bu birim kalıcı olarak hurdaya çıkarılacak ve yedek bir seri numarası oluşturulacaktır."
@@ -1864,6 +1867,9 @@ msgstr "Yeniden kurmak için: simgeye uzun basın → Uygulama bilgisi → Kald�
 
 msgid "To run"
 msgstr "Çalıştırılacak"
+
+msgid "To verify yourself: Chrome ⋮ → More tools → Developer tools (if available), or chrome://serviceworker-internals on desktop. On phone, hard refresh is usually enough."
+msgstr ""
 
 msgid "Today"
 msgstr "Bugün"
@@ -1968,9 +1974,6 @@ msgstr "Yükleniyor {0}"
 msgid "Use a different account"
 msgstr "Farklı bir hesap kullan"
 
-msgid "Use Chrome on Android (or desktop Chrome)."
-msgstr "Android’de Chrome (veya masaüstü Chrome) kullanın."
-
 msgid "Used automatically at completion"
 msgstr "Tamamlama sırasında otomatik olarak kullanılır"
 
@@ -1992,8 +1995,8 @@ msgstr "Onarım bekliyor"
 msgid "We've sent you a magic link to sign in to your account."
 msgstr "Hesabınıza giriş yapmak için size bir sihirli bağlantı gönderdik."
 
-msgid "Web pages cannot trigger Chrome’s Open in app automatically — use the address-bar control or chrome://apps."
-msgstr "Web sayfaları Chrome'un Uygulamada aç özelliğini otomatik olarak tetikleyemez; adres çubuğu denetimini veya chrome://apps sayfasını kullanın."
+msgid "WeChat / QQ / UC cannot install MES. Open this link in Chrome, then tap Install."
+msgstr ""
 
 msgid "What is {translatedTerm}?"
 msgstr "{translatedTerm} nedir?"
