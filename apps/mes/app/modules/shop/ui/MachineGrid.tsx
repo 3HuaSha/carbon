@@ -22,15 +22,15 @@ export function MachineGrid({ machines, onSelect }: MachineGridProps) {
     groups.length > 1 || (groups.length === 1 && groups[0].area !== null);
 
   return (
-    <div className="flex flex-col gap-6 px-4 py-4">
+    <div className="flex flex-col gap-4 px-2 py-2 sm:px-3 sm:py-3">
       {groups.map((group) => (
-        <section key={group.area ?? "__other"} className="space-y-3">
+        <section key={group.area ?? "__other"} className="space-y-1.5">
           {showAreaHeaders ? (
-            <h2 className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
+            <h2 className="px-0.5 text-[10px] font-medium uppercase tracking-wide text-muted-foreground">
               {group.area ?? <Trans>Other</Trans>}
             </h2>
           ) : null}
-          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+          <div className="grid grid-cols-3 gap-1.5 min-[400px]:grid-cols-4 sm:grid-cols-4 md:grid-cols-5">
             {group.machines.map((machine) => (
               <MachineTile
                 key={machine.id}

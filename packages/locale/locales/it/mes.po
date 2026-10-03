@@ -1483,9 +1483,6 @@ msgstr "Prev. {0}"
 msgid "QC / Inspection"
 msgstr "QC / Ispezione"
 
-msgid "QC: {status}"
-msgstr "QC: {status}"
-
 msgid "Quality Issue"
 msgstr "Problema di qualità"
 
