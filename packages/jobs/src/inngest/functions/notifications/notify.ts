@@ -9,10 +9,18 @@ import { getSlackUserIdByCarbonId } from "@carbon/ee/slack.server";
 import {
   buildMaintenanceTelegramButtons,
   buildMaintenanceTelegramText,
-  getTelegramChatIdForUser
+  formatTelegramAssigneeMention,
+  getTelegramMaintenanceGroupChatId,
+  getTelegramMappingForUser
 } from "@carbon/ee/telegram.server";
-import { ERP_URL, getMESUrl, TELEGRAM_BOT_TOKEN } from "@carbon/env";
+import {
+  ERP_URL,
+  getMESUrl,
+  TELEGRAM_BOT_TOKEN,
+  TELEGRAM_MAINTENANCE_GROUP_CHAT_ID
+} from "@carbon/env";
 import type { Events } from "@carbon/lib/events";
+import { getLogger } from "@carbon/logger";
 import {
   escapeSlackText,
   getNotificationEmailCtaLabel,
@@ -32,6 +40,8 @@ import {
   getNotificationContent,
   getNotificationEmailComponent
 } from "./content";
+
+const telegramNotifyLog = getLogger("jobs", "notify", "telegram");
 
 async function getCompanyIntegrations(
   client: ReturnType<typeof getCarbonServiceRole>,
@@ -730,7 +740,7 @@ export const notifyFunction = inngest.createFunction(
       }
     }
 
-    // MVP Telegram shortcut: maintenance assignment → bound chat + buttons.
+    // MVP Telegram shortcut: maintenance assignment → private DM + optional group.
     // Full `telegram` preference channel is Phase C.
     if (
       TELEGRAM_BOT_TOKEN &&
@@ -742,34 +752,95 @@ export const notifyFunction = inngest.createFunction(
         async () => {
           const shopPath =
             details.find((d) => d.label === "Shop")?.value ?? "/shop";
-          const text = buildMaintenanceTelegramText({
-            description,
-            details: details.filter((d) => d.label !== "Shop"),
-            shopUrl: `${getMESUrl()}${shopPath.startsWith("/") ? shopPath : `/${shopPath}`}`
-          });
+          const shopUrl = `${getMESUrl()}${
+            shopPath.startsWith("/") ? shopPath : `/${shopPath}`
+          }`;
+          const detailRows = details.filter((d) => d.label !== "Shop");
           const replyMarkup =
             buildMaintenanceTelegramButtons(primaryDocumentId);
 
-          const chatIds = await Promise.all(
-            userIds.map((userId) =>
-              getTelegramChatIdForUser(client, {
-                companyId: payload.companyId,
-                userId
-              })
-            )
-          );
+          type TelegramSendEvent = {
+            data: {
+              chatId: string;
+              companyId: string;
+              text: string;
+              replyMarkup: ReturnType<typeof buildMaintenanceTelegramButtons>;
+            };
+            name: "carbon/send-telegram";
+          };
 
-          return chatIds
-            .filter((id): id is string => !!id)
-            .map((chatId) => ({
+          const events: TelegramSendEvent[] = [];
+          const assigneeMentions: string[] = [];
+
+          for (const userId of userIds) {
+            const mapping = await getTelegramMappingForUser(client, {
+              companyId: payload.companyId,
+              userId
+            });
+            if (!mapping) continue;
+
+            const { data: employee } = await client
+              .from("employees")
+              .select("name")
+              .eq("id", userId)
+              .eq("companyId", payload.companyId)
+              .maybeSingle();
+
+            const mention = formatTelegramAssigneeMention({
+              name: employee?.name,
+              username:
+                typeof mapping.metadata?.username === "string"
+                  ? mapping.metadata.username
+                  : null
+            });
+            if (mention) assigneeMentions.push(mention);
+
+            events.push({
               data: {
-                chatId,
+                chatId: mapping.chatId,
                 companyId: payload.companyId,
-                text,
+                text: buildMaintenanceTelegramText({
+                  description,
+                  details: detailRows,
+                  shopUrl
+                }),
                 replyMarkup
               },
               name: "carbon/send-telegram" as const
-            }));
+            });
+          }
+
+          const groupChatId =
+            TELEGRAM_MAINTENANCE_GROUP_CHAT_ID?.trim() ||
+            (await getTelegramMaintenanceGroupChatId(
+              client,
+              payload.companyId
+            ));
+          if (groupChatId) {
+            events.push({
+              data: {
+                chatId: groupChatId,
+                companyId: payload.companyId,
+                text: buildMaintenanceTelegramText({
+                  description,
+                  details: detailRows,
+                  shopUrl,
+                  assigneeMention:
+                    assigneeMentions.length > 0
+                      ? assigneeMentions.join(", ")
+                      : null
+                }),
+                replyMarkup
+              },
+              name: "carbon/send-telegram" as const
+            });
+          } else {
+            telegramNotifyLog.info(
+              "Skipping Telegram group notify — TELEGRAM_MAINTENANCE_GROUP_CHAT_ID unset and no /setgroup mapping"
+            );
+          }
+
+          return events;
         }
       );
 

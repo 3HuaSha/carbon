@@ -31,4 +31,14 @@ describe("telegram maintenance helpers", () => {
     expect(text).toContain("Priority: High");
     expect(text).toContain("https://mes.example/shop");
   });
+
+  it("includes assignee mention for group notify", () => {
+    const text = buildMaintenanceTelegramText({
+      description: "Maintenance dispatch MD-1 assigned",
+      details: [{ label: "Priority", value: "High" }],
+      shopUrl: "https://mes.example/shop",
+      assigneeMention: "@alice"
+    });
+    expect(text).toContain("指派: @alice");
+  });
 });

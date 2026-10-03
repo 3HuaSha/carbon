@@ -6,9 +6,11 @@ import {
   findEmployeesForTelegramBind,
   getTelegramPendingBind,
   getUserByTelegramChatId,
+  getUserByTelegramUserId,
   linkTelegramUser,
   resolveTelegramBindCompanyId,
   runTelegramMaintenanceAction,
+  setTelegramMaintenanceGroupChatId,
   setTelegramPendingBind,
   TELEGRAM_CB_COMPLETE,
   TELEGRAM_CB_START,
@@ -92,6 +94,8 @@ export async function action({ request }: ActionFunctionArgs) {
       await handleCallbackQuery(update.callback_query as TelegramCallbackQuery);
     } else if (update.message) {
       await handleMessage(update.message as TelegramMessage);
+    } else if (update.my_chat_member) {
+      await handleMyChatMember(update.my_chat_member as TelegramMyChatMember);
     }
   } catch (err) {
     logger.error("Telegram webhook handler failed", { error: err });
@@ -104,7 +108,7 @@ export async function action({ request }: ActionFunctionArgs) {
 type TelegramMessage = {
   message_id: number;
   text?: string;
-  chat: { id: number; type: string };
+  chat: { id: number; type: string; title?: string };
   from?: { id: number; username?: string; first_name?: string };
 };
 
@@ -114,10 +118,44 @@ type TelegramCallbackQuery = {
   from: { id: number; username?: string; first_name?: string };
   message?: {
     message_id: number;
-    chat: { id: number };
+    chat: { id: number; type?: string };
     text?: string;
   };
 };
+
+type TelegramMyChatMember = {
+  chat: { id: number; type: string; title?: string };
+  new_chat_member?: { status?: string };
+};
+
+async function handleMyChatMember(update: TelegramMyChatMember) {
+  const chatId = String(update.chat.id);
+  const status = update.new_chat_member?.status ?? "unknown";
+  logger.info("Telegram bot chat membership changed", {
+    chatId,
+    chatType: update.chat.type,
+    title: update.chat.title ?? null,
+    status
+  });
+  if (
+    (update.chat.type === "group" || update.chat.type === "supergroup") &&
+    (status === "member" || status === "administrator")
+  ) {
+    await reply(
+      chatId,
+      `已加入群组。\nchat_id: \`${chatId}\`\n\n请把该值设到 Railway 环境变量 TELEGRAM_MAINTENANCE_GROUP_CHAT_ID，派工通知会同步发到本群。\n也可随时发送 /chatid 或 /groupid 查看。`
+    );
+  }
+}
+
+function isChatIdCommand(text: string): boolean {
+  return (
+    text === "/chatid" ||
+    text.startsWith("/chatid@") ||
+    text === "/groupid" ||
+    text.startsWith("/groupid@")
+  );
+}
 
 async function handleMessage(message: TelegramMessage) {
   const chatId = String(message.chat.id);
@@ -130,22 +168,58 @@ async function handleMessage(message: TelegramMessage) {
     return;
   }
 
+  if (isChatIdCommand(text)) {
+    logger.info("Telegram /chatid requested", {
+      chatId,
+      chatType: message.chat.type,
+      title: message.chat.title ?? null
+    });
+    await reply(
+      chatId,
+      `chat_id: ${chatId}\ntype: ${message.chat.type}${
+        message.chat.title ? `\ntitle: ${message.chat.title}` : ""
+      }\n\n维修群：发送 /setgroup 保存为派工通知群，或把 chat_id 设到 Railway TELEGRAM_MAINTENANCE_GROUP_CHAT_ID`
+    );
+    return;
+  }
+
+  if (text === "/setgroup" || text.startsWith("/setgroup@")) {
+    await handleSetGroup(message);
+    return;
+  }
+
   if (
     text === "/bind" ||
     text.startsWith("/bind@") ||
     text === "绑定" ||
     text === "绑定账号"
   ) {
+    // Bind is private-chat only (PIN + chat↔user mapping).
+    if (message.chat.type !== "private") {
+      await reply(
+        chatId,
+        "请私聊机器人完成绑定（发送 /bind），群里只用于派工通知与开始/完成。"
+      );
+      return;
+    }
     await beginTelegramOnlyBind(chatId);
     return;
   }
 
   if (text === "/unlink" || text.startsWith("/unlink@")) {
+    if (message.chat.type !== "private") {
+      await reply(chatId, "请私聊机器人发送 /unlink。");
+      return;
+    }
     await handleUnlink(chatId);
     return;
   }
 
   if (text === "/status" || text.startsWith("/status@")) {
+    if (message.chat.type !== "private") {
+      await reply(chatId, "请私聊机器人发送 /status。");
+      return;
+    }
     await handleStatus(chatId);
     return;
   }
@@ -159,6 +233,9 @@ async function handleMessage(message: TelegramMessage) {
     await handlePinAttempt(chatId, message, pending, text);
     return;
   }
+
+  // Ignore free-form chatter in groups; bind prompts are private-only.
+  if (message.chat.type !== "private") return;
 
   const mapping = await getUserByTelegramChatId(getCarbonServiceRole(), chatId);
   if (!mapping) {
@@ -364,6 +441,50 @@ async function handlePinAttempt(
   );
 }
 
+async function handleSetGroup(message: TelegramMessage) {
+  const chatId = String(message.chat.id);
+  if (message.chat.type !== "group" && message.chat.type !== "supergroup") {
+    await reply(
+      chatId,
+      "请在维修群里发送 /setgroup（私聊无效）。也可先发 /chatid 查看 chat_id。"
+    );
+    return;
+  }
+
+  const company = await resolveTelegramBindCompanyId(
+    getCarbonServiceRole(),
+    TELEGRAM_COMPANY_ID || undefined
+  );
+  if (!company.ok) {
+    await reply(
+      chatId,
+      company.reason === "ambiguous"
+        ? "无法确定公司，请联系管理员配置 TELEGRAM_COMPANY_ID。"
+        : "暂无法保存维修群，请联系管理员。"
+    );
+    return;
+  }
+
+  const db = getDatabaseClient();
+  await setTelegramMaintenanceGroupChatId(db, {
+    companyId: company.companyId,
+    chatId,
+    title: message.chat.title ?? null,
+    createdBy: message.from ? String(message.from.id) : undefined
+  });
+
+  logger.info("Telegram maintenance group chat configured", {
+    chatId,
+    companyId: company.companyId,
+    title: message.chat.title ?? null
+  });
+
+  await reply(
+    chatId,
+    `已保存维修群 chat_id：${chatId}\n之后派工通知会发到本群（并私聊被指派人）。\n也可把同一值设到 Railway：TELEGRAM_MAINTENANCE_GROUP_CHAT_ID`
+  );
+}
+
 async function handleUnlink(chatId: string) {
   const db = getDatabaseClient();
   const client = getCarbonServiceRole();
@@ -395,18 +516,30 @@ async function handleStatus(chatId: string) {
 }
 
 async function handleCallbackQuery(query: TelegramCallbackQuery) {
-  const chatId = String(query.message?.chat.id ?? query.from.id);
+  // Message lives in private or group chat; identity is always the clicker.
+  const messageChatId = String(query.message?.chat.id ?? query.from.id);
+  const telegramUserId = String(query.from.id);
+  const chatType = query.message?.chat.type;
+  const isGroupChat =
+    chatType === "group" ||
+    chatType === "supergroup" ||
+    (!chatType && messageChatId !== telegramUserId);
   const callbackData = query.data ?? "";
   const messageId = query.message?.message_id;
 
-  const mapping = await getUserByTelegramChatId(getCarbonServiceRole(), chatId);
+  const mapping = await getUserByTelegramUserId(
+    getCarbonServiceRole(),
+    telegramUserId
+  );
   if (!mapping) {
     await answerTelegramCallbackQuery({
       callbackQueryId: query.id,
-      text: "请先绑定",
+      text: "请先私聊机器人绑定（/bind）",
       showAlert: true
     });
-    await reply(chatId, "请先绑定：发送 /bind，或发送你的工号/姓名。");
+    if (!isGroupChat) {
+      await reply(messageChatId, "请先绑定：发送 /bind，或发送你的工号/姓名。");
+    }
     return;
   }
 
@@ -442,10 +575,17 @@ async function handleCallbackQuery(query: TelegramCallbackQuery) {
   });
 
   if (result.ok && messageId && query.message?.text) {
-    const suffix = action === "Start" ? "\n\n✅ 已开始" : "\n\n✅ 已完成";
+    const actor =
+      query.from.username != null
+        ? `@${query.from.username}`
+        : (query.from.first_name ?? "操作员");
+    const suffix =
+      action === "Start"
+        ? `\n\n✅ 已开始（${actor}）`
+        : `\n\n✅ 已完成（${actor}）`;
     try {
       await editTelegramMessage({
-        chatId,
+        chatId: messageChatId,
         messageId,
         text: `${query.message.text}${suffix}`,
         replyMarkup: { inline_keyboard: [] }
@@ -453,8 +593,8 @@ async function handleCallbackQuery(query: TelegramCallbackQuery) {
     } catch (err) {
       logger.warn("Failed to edit Telegram message after action", { err });
     }
-  } else if (!result.ok) {
-    await reply(chatId, result.message);
+  } else if (!result.ok && !isGroupChat) {
+    await reply(messageChatId, result.message);
   }
 }
 

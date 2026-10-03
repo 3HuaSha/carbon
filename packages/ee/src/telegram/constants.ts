@@ -1,5 +1,8 @@
 export const TELEGRAM_INTEGRATION = "telegram" as const;
 export const TELEGRAM_USER_ENTITY = "user" as const;
+/** Company-scoped maintenance dispatch group chat (externalId = group chat_id). */
+export const TELEGRAM_MAINTENANCE_GROUP_ENTITY = "maintenanceGroup" as const;
+export const TELEGRAM_MAINTENANCE_GROUP_ENTITY_ID = "default" as const;
 
 /** Redis key prefixes for bind flow (nonce + pending PIN). */
 export const TELEGRAM_BIND_NONCE_PREFIX = "@carbon/telegram-bind:";
