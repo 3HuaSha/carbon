@@ -9,7 +9,8 @@ import { oncePerRequest } from "@carbon/logger/middleware.server";
 import { Edition, getClientIp, Plan } from "@carbon/utils";
 import type {
   AuthSession as SupabaseAuthSession,
-  SupabaseClient
+  SupabaseClient,
+  User
 } from "@supabase/supabase-js";
 import { createHash } from "crypto";
 import { redirect } from "react-router";
@@ -24,7 +25,10 @@ import {
 } from "../config/env";
 import { getCarbon } from "../lib/supabase";
 import { getCarbonAPIKeyClient } from "../lib/supabase/client";
-import { getCarbonServiceRole } from "../lib/supabase/client.server";
+import {
+  getCarbonServiceRole,
+  getCarbonServiceRoleSingleAttempt
+} from "../lib/supabase/client.server";
 import type { AuthSession } from "../types";
 import { path } from "../utils/path";
 import { error } from "../utils/result";
@@ -37,6 +41,7 @@ import {
   flash,
   requireAuthSession
 } from "./session.server";
+import { isAuthTransportError } from "./shell-user";
 import { getCompaniesForUser } from "./users";
 import { getUserClaims } from "./users.server";
 
@@ -95,13 +100,32 @@ export async function deleteAuthAccount(
   return true;
 }
 
-export async function getAuthAccountByAccessToken(accessToken: string) {
-  const { data, error } =
-    await getCarbonServiceRole().auth.getUser(accessToken);
+export type AuthAccountLookup =
+  | { status: "ok"; user: User }
+  | { status: "invalid" }
+  | { status: "unavailable" };
 
-  if (!data.user || error) return null;
+/**
+ * Resolve the GoTrue user for an access token.
+ * - `ok` — token accepted
+ * - `invalid` — GoTrue rejected the token (logout-worthy)
+ * - `unavailable` — timeout / transport / 5xx — keep the session
+ */
+export async function getAuthAccountByAccessToken(
+  accessToken: string
+): Promise<AuthAccountLookup> {
+  try {
+    // One 25s attempt: verify must not become three hung GETs (~76s) and a
+    // false logout under a Supabase blip.
+    const { data, error } =
+      await getCarbonServiceRoleSingleAttempt().auth.getUser(accessToken);
 
-  return data.user;
+    if (isAuthTransportError(error)) return { status: "unavailable" };
+    if (!data.user || error) return { status: "invalid" };
+    return { status: "ok", user: data.user };
+  } catch {
+    return { status: "unavailable" };
+  }
 }
 
 /** Hash an OAuth token or secret using SHA-256 for secure storage/lookup */
@@ -601,15 +625,43 @@ export async function refreshAccessToken(
 ): Promise<AuthSession | null> {
   if (!refreshToken) return null;
 
-  const client = getCarbonServiceRole();
+  // GoTrue rotates refresh tokens. Concurrent /refresh-session + shell verify
+  // refreshes with the same token revoke the loser and clear the cookie. Serialize
+  // per token; losers return null and refreshAuthSession fail-opens if the access
+  // token is still valid (and must not Set-Cookie — see refresh-session routes).
+  const lockKey = `auth:refresh:${createHash("sha256")
+    .update(refreshToken)
+    .digest("hex")}`;
+  let locked = false;
+  try {
+    const acquired = await redis.set(lockKey, "1", "EX", 20, "NX");
+    if (acquired !== "OK") {
+      log.warn("Auth refresh already in progress; skipping duplicate");
+      return null;
+    }
+    locked = true;
 
-  const { data, error } = await client.auth.refreshSession({
-    refresh_token: refreshToken
-  });
+    const client = getCarbonServiceRole();
 
-  if (!data.session || error) return null;
+    const { data, error } = await client.auth.refreshSession({
+      refresh_token: refreshToken
+    });
 
-  return makeAuthSession(data.session, companyId!, companyGroupId!);
+    if (!data.session || error) return null;
+
+    return makeAuthSession(data.session, companyId!, companyGroupId!);
+  } catch (e) {
+    log.error("Auth refresh failed", { error: e });
+    return null;
+  } finally {
+    if (locked) {
+      try {
+        await redis.del(lockKey);
+      } catch {
+        // lock TTL bounds the critical section if delete fails
+      }
+    }
+  }
 }
 
 // `requireAuthSession(request, { verify: true })` costs a full GoTrue round-trip
@@ -635,14 +687,19 @@ export async function verifyAuthSession(authSession: AuthSession) {
     log.error("Failed to read cached auth verification", { error: e });
   }
 
-  const authAccount = await getAuthAccountByAccessToken(
-    authSession.accessToken
-  );
-  const isValid = Boolean(authAccount);
+  const lookup = await getAuthAccountByAccessToken(authSession.accessToken);
 
-  // Only positive verdicts are cached. `getAuthAccountByAccessToken` also
-  // returns null on a transient network error, so caching a failure would turn
-  // one blip into a minute of forced logouts.
+  // Transport blip: keep the session. Forcing refresh under the same outage
+  // (or a concurrent refresh-token rotation) is what bounced MES to /login.
+  if (lookup.status === "unavailable") {
+    log.warn("Auth verify unavailable; keeping session");
+    return true;
+  }
+
+  const isValid = lookup.status === "ok";
+
+  // Only positive verdicts are cached. Caching `invalid` would turn one blip
+  // into a minute of forced logouts if GoTrue flickered.
   if (isValid) {
     try {
       await redis.set(cacheKey, "1", "EX", AUTH_VERIFY_CACHE_TTL_SECONDS);

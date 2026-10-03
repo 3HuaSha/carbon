@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { shellUserReadGate } from "./shell-user";
+import { isAuthTransportError, shellUserReadGate } from "./shell-user";
 
 // Shape produced by @supabase/postgrest-js 2.80 when fetch rejects with
 // AbortSignal.timeout's TimeoutError.
@@ -38,5 +38,23 @@ describe("shellUserReadGate", () => {
         error: null
       })
     ).toBe("serve");
+  });
+});
+
+describe("isAuthTransportError", () => {
+  it("treats timeout and gateway statuses as transport", () => {
+    expect(
+      isAuthTransportError({
+        message: "AbortError: The operation was aborted due to timeout"
+      })
+    ).toBe(true);
+    expect(isAuthTransportError({ message: "fetch failed" })).toBe(true);
+    expect(isAuthTransportError({ message: "nope", status: 503 })).toBe(true);
+  });
+
+  it("does not treat JWT rejection as transport", () => {
+    expect(isAuthTransportError({ message: "invalid JWT", status: 401 })).toBe(
+      false
+    );
   });
 });

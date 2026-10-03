@@ -1,4 +1,5 @@
 import { redis } from "@carbon/kv";
+import { getLogger } from "@carbon/logger";
 import { Edition } from "@carbon/utils";
 import type { AuthSession as SupabaseAuthSession } from "@supabase/supabase-js";
 import { createCookieSessionStorage, redirect } from "react-router";
@@ -31,6 +32,8 @@ import {
   verifyTotpChallenge
 } from "./mfa.server";
 import { getPermissionCacheKey } from "./users";
+
+const log = getLogger("auth.session");
 
 async function assertAuthSession(
   request: Request,
@@ -399,6 +402,17 @@ export async function refreshAuthSession(
   }
 
   if (!refreshedAuthSession) {
+    // Refresh can fail on GoTrue timeout, or because a concurrent refresh
+    // already rotated this refresh token (Redis lock loser / multi-tab). If the
+    // access token is still valid, keep the session. Callers that Set-Cookie
+    // must skip when the refresh token did not change (see refresh-session).
+    if (authSession && authSession.expiresAt * 1000 > Date.now()) {
+      log.warn("Auth refresh failed; keeping non-expired session", {
+        userId: authSession.userId
+      });
+      return authSession;
+    }
+
     const redirectUrl = `${path.to.login}?${makeRedirectToFromHere(request)}`;
 
     const sessionCookie = await setAuthSession(request, {
