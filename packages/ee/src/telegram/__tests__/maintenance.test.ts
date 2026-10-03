@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import { isTelegramCommand } from "../commands";
 import { TELEGRAM_CB_COMPLETE, TELEGRAM_CB_START } from "../constants";
 import {
   buildMaintenanceTelegramButtons,
@@ -40,5 +41,20 @@ describe("telegram maintenance helpers", () => {
       assigneeMention: "@alice"
     });
     expect(text).toContain("指派: @alice");
+  });
+
+  it("matches group commands with @botusername suffix", () => {
+    expect(isTelegramCommand("/setgroup", "setgroup")).toBe(true);
+    expect(isTelegramCommand("/setgroup@vivahealthmedia_bot", "setgroup")).toBe(
+      true
+    );
+    expect(
+      isTelegramCommand("/setgroup@vivahealthmedia_bot extra", "setgroup")
+    ).toBe(true);
+    expect(isTelegramCommand("/chatid@vivahealthmedia_bot", "chatid")).toBe(
+      true
+    );
+    expect(isTelegramCommand("/setgroupish", "setgroup")).toBe(false);
+    expect(isTelegramCommand("/bind", "setgroup")).toBe(false);
   });
 });

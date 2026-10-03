@@ -185,7 +185,10 @@ export async function setTelegramMaintenanceGroupChatId(
     companyId: string;
     chatId: string;
     title?: string | null;
+    /** Carbon `user.id` only — never a Telegram numeric user id (FK). */
     createdBy?: string;
+    /** Telegram `from.id` of whoever ran `/setgroup` (metadata only). */
+    telegramFromId?: string | number;
   }
 ): Promise<void> {
   const mapping = createMappingService(db, args.companyId);
@@ -198,7 +201,10 @@ export async function setTelegramMaintenanceGroupChatId(
       createdBy: args.createdBy,
       metadata: {
         title: args.title ?? undefined,
-        setAt: new Date().toISOString()
+        setAt: new Date().toISOString(),
+        telegramFromId: args.telegramFromId
+          ? String(args.telegramFromId)
+          : undefined
       }
     }
   );
