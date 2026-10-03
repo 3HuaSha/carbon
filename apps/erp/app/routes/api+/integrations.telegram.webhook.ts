@@ -7,6 +7,7 @@ import {
   getTelegramPendingBind,
   getUserByTelegramChatId,
   getUserByTelegramUserId,
+  isTelegramCommand,
   linkTelegramUser,
   resolveTelegramBindCompanyId,
   runTelegramMaintenanceAction,
@@ -98,7 +99,10 @@ export async function action({ request }: ActionFunctionArgs) {
       await handleMyChatMember(update.my_chat_member as TelegramMyChatMember);
     }
   } catch (err) {
-    logger.error("Telegram webhook handler failed", { error: err });
+    logger.error("Telegram webhook handler failed", {
+      error: err instanceof Error ? err.message : String(err),
+      stack: err instanceof Error ? err.stack : undefined
+    });
   }
 
   // Always 200 so Telegram does not retry forever on business errors.
@@ -148,27 +152,19 @@ async function handleMyChatMember(update: TelegramMyChatMember) {
   }
 }
 
-function isChatIdCommand(text: string): boolean {
-  return (
-    text === "/chatid" ||
-    text.startsWith("/chatid@") ||
-    text === "/groupid" ||
-    text.startsWith("/groupid@")
-  );
-}
-
 async function handleMessage(message: TelegramMessage) {
   const chatId = String(message.chat.id);
   const text = (message.text ?? "").trim();
   if (!text) return;
 
-  if (text.startsWith("/start")) {
-    const payload = text.slice("/start".length).trim();
-    await handleStart(chatId, message, payload);
+  if (isTelegramCommand(text, "start")) {
+    // Deep-link payload: `/start <nonce>` or `/start@bot <nonce>`.
+    const afterCmd = text.replace(/^\/start(?:@\S+)?/i, "").trim();
+    await handleStart(chatId, message, afterCmd);
     return;
   }
 
-  if (isChatIdCommand(text)) {
+  if (isTelegramCommand(text, "chatid") || isTelegramCommand(text, "groupid")) {
     logger.info("Telegram /chatid requested", {
       chatId,
       chatType: message.chat.type,
@@ -183,14 +179,13 @@ async function handleMessage(message: TelegramMessage) {
     return;
   }
 
-  if (text === "/setgroup" || text.startsWith("/setgroup@")) {
+  if (isTelegramCommand(text, "setgroup")) {
     await handleSetGroup(message);
     return;
   }
 
   if (
-    text === "/bind" ||
-    text.startsWith("/bind@") ||
+    isTelegramCommand(text, "bind") ||
     text === "绑定" ||
     text === "绑定账号"
   ) {
@@ -206,7 +201,7 @@ async function handleMessage(message: TelegramMessage) {
     return;
   }
 
-  if (text === "/unlink" || text.startsWith("/unlink@")) {
+  if (isTelegramCommand(text, "unlink")) {
     if (message.chat.type !== "private") {
       await reply(chatId, "请私聊机器人发送 /unlink。");
       return;
@@ -215,7 +210,7 @@ async function handleMessage(message: TelegramMessage) {
     return;
   }
 
-  if (text === "/status" || text.startsWith("/status@")) {
+  if (isTelegramCommand(text, "status")) {
     if (message.chat.type !== "private") {
       await reply(chatId, "请私聊机器人发送 /status。");
       return;
@@ -465,24 +460,48 @@ async function handleSetGroup(message: TelegramMessage) {
     return;
   }
 
-  const db = getDatabaseClient();
-  await setTelegramMaintenanceGroupChatId(db, {
-    companyId: company.companyId,
-    chatId,
-    title: message.chat.title ?? null,
-    createdBy: message.from ? String(message.from.id) : undefined
-  });
+  // createdBy FK → user(id). Never store Telegram numeric ids there (that
+  // made /setgroup throw and stay silent). Prefer bound Carbon user if any.
+  let createdBy: string | undefined;
+  if (message.from?.id != null) {
+    const actor = await getUserByTelegramUserId(
+      getCarbonServiceRole(),
+      message.from.id
+    );
+    createdBy = actor?.userId;
+  }
 
-  logger.info("Telegram maintenance group chat configured", {
-    chatId,
-    companyId: company.companyId,
-    title: message.chat.title ?? null
-  });
+  try {
+    const db = getDatabaseClient();
+    await setTelegramMaintenanceGroupChatId(db, {
+      companyId: company.companyId,
+      chatId,
+      title: message.chat.title ?? null,
+      createdBy,
+      telegramFromId: message.from?.id
+    });
 
-  await reply(
-    chatId,
-    `已保存维修群 chat_id：${chatId}\n之后派工通知会发到本群（并私聊被指派人）。\n也可把同一值设到 Railway：TELEGRAM_MAINTENANCE_GROUP_CHAT_ID`
-  );
+    logger.info("Telegram maintenance group chat configured", {
+      chatId,
+      companyId: company.companyId,
+      title: message.chat.title ?? null
+    });
+
+    await reply(
+      chatId,
+      `已保存维修群 chat_id：${chatId}\n之后派工通知会发到本群（并私聊被指派人）。\n也可把同一值设到 Railway：TELEGRAM_MAINTENANCE_GROUP_CHAT_ID`
+    );
+  } catch (err) {
+    logger.error("Failed to save Telegram maintenance group", {
+      chatId,
+      companyId: company.companyId,
+      error: err instanceof Error ? err.message : String(err)
+    });
+    await reply(
+      chatId,
+      "保存维修群失败，请稍后重试。也可先发 /chatid 查看 chat_id 并联系管理员。"
+    );
+  }
 }
 
 async function handleUnlink(chatId: string) {
