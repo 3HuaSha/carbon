@@ -366,6 +366,15 @@ export const TELEGRAM_WEBHOOK_SECRET = getEnv("TELEGRAM_WEBHOOK_SECRET", {
 export const TELEGRAM_BOT_USERNAME =
   getEnv("TELEGRAM_BOT_USERNAME", { isRequired: false }) ||
   "vivahealthmedia_bot";
+/**
+ * Company used for Telegram-only bind (工号/姓名 → PIN) when the start
+ * payload has no MES deep-link nonce. Required when the DB has multiple
+ * companies; single-tenant demos can omit it and the webhook falls back
+ * to the sole company row.
+ */
+export const TELEGRAM_COMPANY_ID = getEnv("TELEGRAM_COMPANY_ID", {
+  isRequired: false
+});
 export const CARBON_TELEGRAM_ENABLED = isBrowser
   ? window.env?.CARBON_TELEGRAM_ENABLED === "true"
   : Boolean(TELEGRAM_BOT_TOKEN);
