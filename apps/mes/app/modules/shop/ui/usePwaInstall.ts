@@ -9,6 +9,7 @@ import {
   waitForDeferredInstallPrompt,
   wasPwaInstallRemembered
 } from "./pwaInstallCapture";
+import { logPwaInstallDiagnosticsOnce } from "./pwaInstallDiagnostics";
 import {
   classifyPwaClient,
   detectAndroid,
@@ -72,11 +73,16 @@ async function detectInstalledRelatedApp(): Promise<boolean> {
   if (wasPwaInstallRemembered()) return true;
   try {
     const nav = navigator as Navigator & {
-      getInstalledRelatedApps?: () => Promise<Array<{ platform: string }>>;
+      getInstalledRelatedApps?: () => Promise<
+        Array<{ platform: string; id?: string; url?: string }>
+      >;
     };
     if (typeof nav.getInstalledRelatedApps !== "function") return false;
     const apps = await nav.getInstalledRelatedApps();
-    if (apps.length > 0) {
+    // Prefer an explicit webapp hit; any related app still means BIP won't help.
+    const installed =
+      apps.some((app) => app.platform === "webapp") || apps.length > 0;
+    if (installed) {
       rememberPwaInstalled();
       return true;
     }
@@ -84,6 +90,10 @@ async function detectInstalledRelatedApp(): Promise<boolean> {
   } catch {
     return false;
   }
+}
+
+function logNoBipDiagnostics(rememberedInstalled: boolean): void {
+  void logPwaInstallDiagnosticsOnce({ rememberedInstalled });
 }
 
 async function ensureServiceWorkerReady(): Promise<void> {
@@ -228,6 +238,7 @@ export function usePwaInstall() {
       }
 
       setBipWaitExhausted(true);
+      logNoBipDiagnostics(wasPwaInstallRemembered());
       // Desktop only: treat no-BIP as already-installed for Open app UX.
       if (!phone) {
         setKnownInstalled(true);
@@ -292,6 +303,7 @@ export function usePwaInstall() {
     // BIP never arrived after background wait — open diagnostics immediately.
     if (bipWaitExhausted) {
       setSwControllerUrl(getServiceWorkerControllerUrl());
+      logNoBipDiagnostics(wasPwaInstallRemembered());
       if (wasPwaInstallRemembered() || (await detectInstalledRelatedApp())) {
         setKnownInstalled(true);
         return "already-installed";
@@ -323,6 +335,7 @@ export function usePwaInstall() {
       }
 
       setBipWaitExhausted(true);
+      logNoBipDiagnostics(wasPwaInstallRemembered());
 
       if (wasPwaInstallRemembered() || (await detectInstalledRelatedApp())) {
         setKnownInstalled(true);

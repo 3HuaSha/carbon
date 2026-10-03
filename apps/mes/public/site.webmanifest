@@ -1,6 +1,7 @@
 {
   "name": "Carbon MES",
   "short_name": "MES",
+  "description": "Carbon manufacturing execution — shop floor",
   "id": "/shop",
   "start_url": "/shop",
   "scope": "/",
@@ -17,12 +18,25 @@
       "type": "image/png",
       "sizes": "512x512",
       "purpose": "any"
+    },
+    {
+      "src": "/icons/192-maskable.png",
+      "type": "image/png",
+      "sizes": "192x192",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/icons/512-maskable.png",
+      "type": "image/png",
+      "sizes": "512x512",
+      "purpose": "maskable"
     }
   ],
   "related_applications": [
     {
       "platform": "webapp",
-      "url": "/site.webmanifest"
+      "url": "/site.webmanifest",
+      "id": "/shop"
     }
   ],
   "prefer_related_applications": false,
