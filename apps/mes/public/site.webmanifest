@@ -1,15 +1,24 @@
 {
   "name": "Carbon MES",
   "short_name": "MES",
+  "id": "/shop",
   "start_url": "/shop",
+  "scope": "/",
+  "display": "standalone",
   "icons": [
     {
-      "src": "/carbon-mark-dark.png",
+      "src": "/icons/192.png",
       "type": "image/png",
-      "sizes": "any"
+      "sizes": "192x192",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/512.png",
+      "type": "image/png",
+      "sizes": "512x512",
+      "purpose": "any"
     }
   ],
   "theme_color": "#ffffff",
-  "background_color": "#ffffff",
-  "display": "standalone"
+  "background_color": "#ffffff"
 }

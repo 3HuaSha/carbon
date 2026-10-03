@@ -17,6 +17,17 @@ import { preloadCatalog } from "~/services/lingui";
 
 ensureLoggingConfigured();
 
+// Register a minimal service worker so Chromium can offer "Install app"
+// for the MES shop PWA. Scope `/` covers `/shop` (start_url). Browser-only;
+// never block hydration if registration fails.
+if ("serviceWorker" in navigator) {
+  void navigator.serviceWorker
+    .register("/serviceWorker.js", { scope: "/" })
+    .catch(() => {
+      // Best-effort installability — ignore registration errors.
+    });
+}
+
 // Initialized at module scope, before hydration, rather than from an effect:
 // the authenticated layout calls identify()/register()/group() from its own
 // effect, and posthog-js drops those when it isn't loaded yet — register()
