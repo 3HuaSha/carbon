@@ -3,13 +3,18 @@ import {
   CarbonProvider,
   CONTROLLED_ENVIRONMENT,
   getCarbon,
+  getCarbonSingleAttempt,
   getMESUrl,
   ITAR_RIDER_PDF_PATH,
   isAuthProviderEnabled,
   SESSION_HEARTBEAT_MS,
-  SESSION_IDLE_LOCK_MS
+  SESSION_IDLE_LOCK_MS,
+  shellUserReadGate
 } from "@carbon/auth";
-import { getCarbonServiceRole } from "@carbon/auth/client.server";
+import {
+  getCarbonServiceRole,
+  getCarbonServiceRoleSingleAttempt
+} from "@carbon/auth/client.server";
 import { getCompanyId, setCompanyId } from "@carbon/auth/company.server";
 import { userHasVerifiedTotpFactor } from "@carbon/auth/mfa.server";
 import {
@@ -145,6 +150,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
   // });
 
   const client = getCarbon(accessToken);
+  const shellUserClient = getCarbonSingleAttempt(accessToken);
 
   // Only probe product signals when the company is actually enrolled, so the
   // home card + nav badge count gates the same way the hub page does. Chained
@@ -193,7 +199,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
     getCompanyIntegrations(client, companyId),
     getCompanySettings(client, companyId),
     getSavedViews(client, userId, companyId),
-    getUser(client, userId),
+    getUser(shellUserClient, userId),
     getUserClaims(userId, companyId),
     getUserGroups(client, userId),
     getUserDefaults(client, userId, companyId),
@@ -208,14 +214,34 @@ export async function loader({ request }: LoaderFunctionArgs) {
     getChangelogPanelEntry(getCarbonServiceRole()).catch(() => null)
   ]);
 
-  // Under PostgREST fan-out (this Promise.all) a user-scoped GET can 429/timeout
-  // while claims still resolve from Redis. Destroying the session on that blip
-  // is what produced `?reason=user-error` after a successful bypass login.
-  // Service-role fallback is safe here: requireAuthSession already proved the
-  // JWT, and we only need the active user row for the shell.
+  // One attempt already ran out the 25s cap. A timeout is not a missing user —
+  // destroying the session here is what sent people to /login?reason=user-error.
+  if (shellUserReadGate(userResult) === "unavailable") {
+    log.warn("Shell user read timed out; keeping the session", {
+      userId,
+      companyId
+    });
+    throw new Response("User profile is temporarily unavailable", {
+      status: 503
+    });
+  }
+
+  // A non-timeout failure (throttle, RLS) can still be a blip while claims
+  // resolve from Redis. Service-role fallback is safe here: requireAuthSession
+  // already proved the JWT, and we only need the active user row for the shell.
+  // A genuinely missing or inactive row still falls through to logout below.
   let user = userResult;
   if (user.error || !user.data) {
-    const fallback = await getUser(getCarbonServiceRole(), userId);
+    const fallback = await getUser(getCarbonServiceRoleSingleAttempt(), userId);
+    if (shellUserReadGate(fallback) === "unavailable") {
+      log.warn("Shell user read timed out; keeping the session", {
+        userId,
+        companyId
+      });
+      throw new Response("User profile is temporarily unavailable", {
+        status: 503
+      });
+    }
     if (fallback.data) {
       log.warn("x+/_layout getUser fell back to service role", {
         userId,

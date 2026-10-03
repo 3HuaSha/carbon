@@ -8,7 +8,9 @@ vi.mock("../../config/env", () => ({
   SUPABASE_URL: "http://supabase.test"
 }));
 
-const { fetchWithRetry } = await import("./client");
+const { fetchOnce, fetchWithRetry, getCarbonSingleAttempt } = await import(
+  "./client"
+);
 
 const jsonResponse = (status: number) =>
   new Response(JSON.stringify({}), { status });
@@ -147,5 +149,84 @@ describe("fetchWithRetry", () => {
 
     expect(fetchSpy).toHaveBeenCalledTimes(2);
     expect(response.status).toBe(200);
+  });
+});
+
+describe("fetchOnce", () => {
+  let fetchSpy: ReturnType<typeof vi.spyOn>;
+
+  beforeEach(() => {
+    fetchSpy = vi.spyOn(globalThis, "fetch");
+  });
+
+  afterEach(() => {
+    fetchSpy.mockRestore();
+  });
+
+  it("does not retry a shell user GET that times out", async () => {
+    fetchSpy.mockRejectedValue(
+      new DOMException(
+        "The operation was aborted due to timeout",
+        "TimeoutError"
+      )
+    );
+
+    await expect(
+      fetchOnce("http://supabase.internal.test/rest/v1/user?id=eq.1", {
+        method: "GET"
+      })
+    ).rejects.toThrow(/aborted due to timeout/);
+
+    expect(fetchSpy).toHaveBeenCalledTimes(1);
+  });
+
+  it("classifies a timed-out shell user query as unavailable after one attempt", async () => {
+    const { shellUserReadGate } = await import("../../services/shell-user");
+    fetchSpy.mockRejectedValue(
+      new DOMException(
+        "The operation was aborted due to timeout",
+        "TimeoutError"
+      )
+    );
+
+    const client = getCarbonSingleAttempt("access-token");
+    const result = await client
+      .from("user")
+      .select("*")
+      .eq("id", "user-1")
+      .eq("active", true)
+      .single();
+
+    expect(fetchSpy).toHaveBeenCalledTimes(1);
+    expect(shellUserReadGate(result)).toBe("unavailable");
+  });
+
+  it("classifies a missing or inactive shell user as a logout", async () => {
+    const { shellUserReadGate } = await import("../../services/shell-user");
+    fetchSpy.mockResolvedValue(
+      new Response(
+        JSON.stringify({
+          code: "PGRST116",
+          details: "The result contains 0 rows",
+          hint: null,
+          message: "JSON object requested, multiple (or no) rows returned"
+        }),
+        {
+          status: 406,
+          headers: { "content-type": "application/json" }
+        }
+      )
+    );
+
+    const client = getCarbonSingleAttempt("access-token");
+    const result = await client
+      .from("user")
+      .select("*")
+      .eq("id", "user-1")
+      .eq("active", true)
+      .single();
+
+    expect(fetchSpy).toHaveBeenCalledTimes(1);
+    expect(shellUserReadGate(result)).toBe("logout");
   });
 });
