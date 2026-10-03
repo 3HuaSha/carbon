@@ -1,20 +1,53 @@
 import { TELEGRAM_CB_COMPLETE, TELEGRAM_CB_START } from "./constants";
 
-export function buildMaintenanceTelegramText(args: {
-  description: string;
-  details: Array<{ label: string; value: string }>;
-  shopUrl: string;
-  /** Group notify: "@username" or display name of the assignee. */
-  assigneeMention?: string | null;
+/** Chinese label for shop downtime / dispatch kind. */
+export function shopDispatchKindLabelZh(
+  shopKind: string | null | undefined
+): string {
+  if (shopKind === "planned") return "计划停机";
+  if (shopKind === "break") return "休息";
+  return "故障";
+}
+
+/**
+ * Private DM copy for a maintenance assignment.
+ *
+ * 🔧 您有一条新的维修派单
+ * 机台：{workCenterName}
+ * 类型：{type}
+ * 派单人：{assignerName}
+ */
+export function buildMaintenanceTelegramDmText(args: {
+  workCenterName: string;
+  typeLabel: string;
+  assignerName: string;
 }): string {
-  const lines = [
-    `🔧 ${args.description}`,
-    ...(args.assigneeMention ? [`指派: ${args.assigneeMention}`] : []),
-    ...args.details.map((d) => `${d.label}: ${d.value}`),
-    "",
-    `打开 MES: ${args.shopUrl}`
-  ];
-  return lines.join("\n");
+  return [
+    "🔧 您有一条新的维修派单",
+    `机台：${args.workCenterName}`,
+    `类型：${args.typeLabel}`,
+    `派单人：${args.assignerName}`
+  ].join("\n");
+}
+
+/**
+ * Maintenance group copy for a maintenance assignment (different from DM).
+ *
+ * 📢 维修动态 · {workCenterName}
+ * 类型：{type}
+ * 已指派给 {assigneeName}（派单人：{assignerName}）
+ */
+export function buildMaintenanceTelegramGroupText(args: {
+  workCenterName: string;
+  typeLabel: string;
+  assigneeName: string;
+  assignerName: string;
+}): string {
+  return [
+    `📢 维修动态 · ${args.workCenterName}`,
+    `类型：${args.typeLabel}`,
+    `已指派给 ${args.assigneeName}（派单人：${args.assignerName}）`
+  ].join("\n");
 }
 
 /** Prefer @username; otherwise Carbon employee display name. */

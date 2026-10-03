@@ -8,14 +8,14 @@ import {
 import { getSlackUserIdByCarbonId } from "@carbon/ee/slack.server";
 import {
   buildMaintenanceTelegramButtons,
-  buildMaintenanceTelegramText,
-  formatTelegramAssigneeMention,
+  buildMaintenanceTelegramDmText,
+  buildMaintenanceTelegramGroupText,
   getTelegramMaintenanceGroupChatId,
-  getTelegramMappingForUser
+  getTelegramMappingForUser,
+  shopDispatchKindLabelZh
 } from "@carbon/ee/telegram.server";
 import {
   ERP_URL,
-  getMESUrl,
   TELEGRAM_BOT_TOKEN,
   TELEGRAM_MAINTENANCE_GROUP_CHAT_ID
 } from "@carbon/env";
@@ -750,12 +750,12 @@ export const notifyFunction = inngest.createFunction(
       const telegramEvents = await step.run(
         "build-telegram-events",
         async () => {
-          const shopPath =
-            details.find((d) => d.label === "Shop")?.value ?? "/shop";
-          const shopUrl = `${getMESUrl()}${
-            shopPath.startsWith("/") ? shopPath : `/${shopPath}`
-          }`;
-          const detailRows = details.filter((d) => d.label !== "Shop");
+          const workCenterName =
+            details.find((d) => d.label === "Machine")?.value?.trim() ||
+            "未知机台";
+          const typeLabel = shopDispatchKindLabelZh(
+            details.find((d) => d.label === "Kind")?.value
+          );
           const replyMarkup =
             buildMaintenanceTelegramButtons(primaryDocumentId);
 
@@ -769,8 +769,26 @@ export const notifyFunction = inngest.createFunction(
             name: "carbon/send-telegram";
           };
 
+          const nameIds = [...userIds, ...(payload.from ? [payload.from] : [])];
+          const uniqueNameIds = Array.from(new Set(nameIds));
+          const nameById = new Map<string, string>();
+          if (uniqueNameIds.length > 0) {
+            const { data: employees } = await client
+              .from("employees")
+              .select("id, name")
+              .eq("companyId", payload.companyId)
+              .in("id", uniqueNameIds);
+            for (const row of employees ?? []) {
+              const name = row.name?.trim();
+              if (name) nameById.set(row.id, name);
+            }
+          }
+
+          const assignerDisplay =
+            (payload.from ? nameById.get(payload.from) : null) ?? "未命名";
+
           const events: TelegramSendEvent[] = [];
-          const assigneeMentions: string[] = [];
+          const assigneeDisplays: string[] = [];
 
           for (const userId of userIds) {
             const mapping = await getTelegramMappingForUser(client, {
@@ -779,30 +797,17 @@ export const notifyFunction = inngest.createFunction(
             });
             if (!mapping) continue;
 
-            const { data: employee } = await client
-              .from("employees")
-              .select("name")
-              .eq("id", userId)
-              .eq("companyId", payload.companyId)
-              .maybeSingle();
-
-            const mention = formatTelegramAssigneeMention({
-              name: employee?.name,
-              username:
-                typeof mapping.metadata?.username === "string"
-                  ? mapping.metadata.username
-                  : null
-            });
-            if (mention) assigneeMentions.push(mention);
+            const assigneeDisplay = nameById.get(userId) ?? "未命名";
+            assigneeDisplays.push(assigneeDisplay);
 
             events.push({
               data: {
                 chatId: mapping.chatId,
                 companyId: payload.companyId,
-                text: buildMaintenanceTelegramText({
-                  description,
-                  details: detailRows,
-                  shopUrl
+                text: buildMaintenanceTelegramDmText({
+                  workCenterName,
+                  typeLabel,
+                  assignerName: assignerDisplay
                 }),
                 replyMarkup
               },
@@ -821,14 +826,14 @@ export const notifyFunction = inngest.createFunction(
               data: {
                 chatId: groupChatId,
                 companyId: payload.companyId,
-                text: buildMaintenanceTelegramText({
-                  description,
-                  details: detailRows,
-                  shopUrl,
-                  assigneeMention:
-                    assigneeMentions.length > 0
-                      ? assigneeMentions.join(", ")
-                      : null
+                text: buildMaintenanceTelegramGroupText({
+                  workCenterName,
+                  typeLabel,
+                  assigneeName:
+                    assigneeDisplays.length > 0
+                      ? assigneeDisplays.join("、")
+                      : "未命名",
+                  assignerName: assignerDisplay
                 }),
                 replyMarkup
               },

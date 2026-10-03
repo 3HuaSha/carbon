@@ -1,5 +1,8 @@
 import type { Database } from "@carbon/database";
-import { getTelegramChatIdForUser } from "@carbon/ee/telegram.server";
+import {
+  getTelegramChatIdForUser,
+  sendMaintenanceAssignmentTelegram
+} from "@carbon/ee/telegram.server";
 import { trigger } from "@carbon/jobs";
 import { getLogger } from "@carbon/logger";
 import { NotificationEvent } from "@carbon/notifications";
@@ -54,11 +57,35 @@ async function notifyMaintenanceAssignment(
       from: args.from
     });
   } catch (err) {
-    logger.error("Failed to notify maintenance assignment", {
+    // Railway demos often set INNGEST_DEV with no Inngest server/cloud keys —
+    // trigger() fails and carbon/send-telegram never runs. Sync-send DM+group.
+    logger.error("Failed to notify maintenance assignment via Inngest", {
       companyId: args.companyId,
       dispatchId: args.dispatchId,
-      error: err
+      error: err instanceof Error ? err.message : String(err)
     });
+    try {
+      const telegram = await sendMaintenanceAssignmentTelegram(client, {
+        companyId: args.companyId,
+        dispatchId: args.dispatchId,
+        assigneeUserId: args.assignee,
+        assignerUserId: args.from
+      });
+      logger.info("Telegram sync fallback after Inngest notify failure", {
+        companyId: args.companyId,
+        dispatchId: args.dispatchId,
+        dmSent: telegram.dmSent,
+        groupSent: telegram.groupSent,
+        telegramUnbound: telegram.telegramUnbound
+      });
+      return { telegramUnbound: telegram.telegramUnbound };
+    } catch (syncErr) {
+      logger.error("Telegram sync fallback failed", {
+        companyId: args.companyId,
+        dispatchId: args.dispatchId,
+        error: syncErr instanceof Error ? syncErr.message : String(syncErr)
+      });
+    }
   }
 
   const chatId = await getTelegramChatIdForUser(client, {

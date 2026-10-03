@@ -1339,9 +1339,6 @@ msgstr "Optional short note (lunch, bathroom, away)."
 msgid "or"
 msgstr "or"
 
-msgid "Other"
-msgstr "Other"
-
 msgid "Other open tickets"
 msgstr "Other open tickets"
 
