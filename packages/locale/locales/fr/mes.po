@@ -1339,9 +1339,6 @@ msgstr ""
 msgid "or"
 msgstr "ou"
 
-msgid "Other"
-msgstr "Autre"
-
 msgid "Other open tickets"
 msgstr ""
 

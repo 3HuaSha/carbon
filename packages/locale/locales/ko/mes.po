@@ -1339,9 +1339,6 @@ msgstr ""
 msgid "or"
 msgstr "또는"
 
-msgid "Other"
-msgstr "기타"
-
 msgid "Other open tickets"
 msgstr ""
 

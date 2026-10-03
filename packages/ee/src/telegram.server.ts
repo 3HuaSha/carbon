@@ -5,3 +5,4 @@ export * from "./telegram/identity.server";
 export * from "./telegram/maintenance.server";
 export * from "./telegram/mapping.server";
 export * from "./telegram/message";
+export * from "./telegram/notify.server";
