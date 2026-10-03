@@ -262,6 +262,9 @@ msgstr "Hinter dem Ziel um {daysBehindTarget} Tag(e)"
 msgid "Between {0} and {1} {2}"
 msgstr "Zwischen {0} und {1} {2}"
 
+msgid "Bind Telegram"
+msgstr ""
+
 #. placeholder {0}: column.blockingDispatchReadableId
 msgid "Blocked by {0}"
 msgstr "Blockiert durch {0}"

@@ -1,5 +1,8 @@
 import type { Database } from "@carbon/database";
+import { getTelegramChatIdForUser } from "@carbon/ee/telegram.server";
+import { trigger } from "@carbon/jobs";
 import { getLogger } from "@carbon/logger";
+import { NotificationEvent } from "@carbon/notifications";
 import { datetime } from "@carbon/utils";
 import type { SupabaseClient } from "@supabase/supabase-js";
 import {
@@ -26,8 +29,42 @@ export type ShopMaintenanceActionResult =
       /** Labor posting failed after a successful status write. */
       warning?: boolean;
       dispatchId?: string;
+      /** Assignee has no Telegram binding (Assign / ReportDowntime with assignee). */
+      telegramUnbound?: boolean;
     }
   | { ok: false; message: string };
+
+async function notifyMaintenanceAssignment(
+  client: SupabaseClient<Database>,
+  args: {
+    companyId: string;
+    dispatchId: string;
+    assignee: string;
+    from: string;
+  }
+): Promise<{ telegramUnbound: boolean }> {
+  try {
+    await trigger("notify", {
+      companyId: args.companyId,
+      documentId: args.dispatchId,
+      event: NotificationEvent.MaintenanceDispatchAssignment,
+      recipient: { type: "user", userId: args.assignee },
+      from: args.from
+    });
+  } catch (err) {
+    logger.error("Failed to notify maintenance assignment", {
+      companyId: args.companyId,
+      dispatchId: args.dispatchId,
+      error: err
+    });
+  }
+
+  const chatId = await getTelegramChatIdForUser(client, {
+    companyId: args.companyId,
+    userId: args.assignee
+  });
+  return { telegramUnbound: !chatId };
+}
 
 /**
  * Same DB writes as desktop `x+/dispatch.new`, `x+/maintenance-event`, and
@@ -136,10 +173,19 @@ export async function runShopMaintenanceAction(
       });
       return { ok: false, message: "Failed to assign maintenance dispatch" };
     }
+
+    const { telegramUnbound } = await notifyMaintenanceAssignment(client, {
+      companyId,
+      dispatchId,
+      assignee,
+      from: userId
+    });
+
     return {
       ok: true,
       action,
-      message: assignee === userId ? "Assigned to you" : "Assigned"
+      message: assignee === userId ? "Assigned to you" : "Assigned",
+      telegramUnbound
     };
   }
 
@@ -377,12 +423,24 @@ async function createShopDowntimeDispatch(
     workCenterId
   );
 
+  let telegramUnbound: boolean | undefined;
+  if (assignee) {
+    const notify = await notifyMaintenanceAssignment(client, {
+      companyId,
+      dispatchId: insertDispatch.data.id,
+      assignee,
+      from: userId
+    });
+    telegramUnbound = notify.telegramUnbound;
+  }
+
   return {
     ok: true,
     action: "ReportDowntime",
     message: assignee
       ? "Machine set to waiting repair and assigned"
       : "Machine set to waiting repair",
-    dispatchId: insertDispatch.data.id
+    dispatchId: insertDispatch.data.id,
+    telegramUnbound
   };
 }

@@ -36,6 +36,7 @@ const taskToEvent = {
   "schedule-inputs-changed": "carbon/schedule.inputs.changed",
   "send-email": "carbon/send-email",
   "send-slack": "carbon/send-slack",
+  "send-telegram": "carbon/send-telegram",
   "slack-document-assignment-update": "carbon/slack-document-assignment-update",
   "slack-document-created": "carbon/slack-document-created",
   "slack-document-status-update": "carbon/slack-document-status-update",

@@ -262,6 +262,9 @@ msgstr "In ritardo rispetto al target di {daysBehindTarget} giorno(i)"
 msgid "Between {0} and {1} {2}"
 msgstr "Tra {0} e {1} {2}"
 
+msgid "Bind Telegram"
+msgstr ""
+
 #. placeholder {0}: column.blockingDispatchReadableId
 msgid "Blocked by {0}"
 msgstr "Bloccato da {0}"

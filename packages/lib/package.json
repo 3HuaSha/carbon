@@ -38,6 +38,7 @@
     "./resend.server": "./src/resend.server.ts",
     "./shims": "./src/shims.ts",
     "./slack.server": "./src/slack.server.ts",
+    "./telegram.server": "./src/telegram.server.ts",
     "./telemetry": "./src/telemetry/capture.ts",
     "./trigger": "./src/trigger.ts",
     "./twenty.server": "./src/twenty.server.ts",

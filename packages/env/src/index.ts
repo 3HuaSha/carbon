@@ -11,6 +11,8 @@ declare global {
       CARBON_EDITION: string;
       CARBON_API_URL: string;
       CARBON_SLACK_ENABLED: string;
+      CARBON_TELEGRAM_ENABLED: string;
+      TELEGRAM_BOT_USERNAME: string;
       STRIPE_CONNECT_ENABLED: string;
       CONTROLLED_ENVIRONMENT: string;
       ERP_URL: string;
@@ -347,6 +349,27 @@ export const SLACK_STATE_SECRET = getEnv("SLACK_STATE_SECRET", {
   isSecret: true
 });
 
+/** Carbon-hosted Telegram bot for MES maintenance assign/start/complete. */
+export const TELEGRAM_BOT_TOKEN = getEnv("TELEGRAM_BOT_TOKEN", {
+  isRequired: false,
+  isSecret: true
+});
+/** Secret token verified on inbound Telegram webhooks (`X-Telegram-Bot-Api-Secret-Token`). */
+export const TELEGRAM_WEBHOOK_SECRET = getEnv("TELEGRAM_WEBHOOK_SECRET", {
+  isRequired: false,
+  isSecret: true
+});
+/**
+ * Public bot username without `@`. Overridable via env; default is the
+ * vivahealthmedia bot used for Carbon MES maintenance notifications.
+ */
+export const TELEGRAM_BOT_USERNAME =
+  getEnv("TELEGRAM_BOT_USERNAME", { isRequired: false }) ||
+  "vivahealthmedia_bot";
+export const CARBON_TELEGRAM_ENABLED = isBrowser
+  ? window.env?.CARBON_TELEGRAM_ENABLED === "true"
+  : Boolean(TELEGRAM_BOT_TOKEN);
+
 export const SUPABASE_SERVICE_ROLE_KEY = getEnv("SUPABASE_SERVICE_ROLE_KEY");
 export const SUPABASE_JWT_SECRET = getEnv("SUPABASE_JWT_SECRET", {
   isSecret: true,
@@ -611,6 +634,8 @@ export function getBrowserEnv() {
     CARBON_API_URL,
     CARBON_EDITION,
     CARBON_SLACK_ENABLED: CARBON_SLACK_ENABLED ? "true" : "",
+    CARBON_TELEGRAM_ENABLED: CARBON_TELEGRAM_ENABLED ? "true" : "",
+    TELEGRAM_BOT_USERNAME,
     STRIPE_CONNECT_ENABLED: STRIPE_CONNECT_ENABLED ? "true" : "",
     CONTROLLED_ENVIRONMENT,
     DEFAULT_LANGUAGE,

@@ -6,7 +6,12 @@ import {
   notifyTaskAssigned
 } from "@carbon/ee/notifications";
 import { getSlackUserIdByCarbonId } from "@carbon/ee/slack.server";
-import { ERP_URL } from "@carbon/env";
+import {
+  buildMaintenanceTelegramButtons,
+  buildMaintenanceTelegramText,
+  getTelegramChatIdForUser
+} from "@carbon/ee/telegram.server";
+import { ERP_URL, getMESUrl, TELEGRAM_BOT_TOKEN } from "@carbon/env";
 import type { Events } from "@carbon/lib/events";
 import {
   escapeSlackText,
@@ -722,6 +727,52 @@ export const notifyFunction = inngest.createFunction(
 
       if (slackEvents.length > 0) {
         await step.sendEvent("fan-out-slack", slackEvents);
+      }
+    }
+
+    // MVP Telegram shortcut: maintenance assignment → bound chat + buttons.
+    // Full `telegram` preference channel is Phase C.
+    if (
+      TELEGRAM_BOT_TOKEN &&
+      payload.event === NotificationEvent.MaintenanceDispatchAssignment &&
+      userIds.length > 0
+    ) {
+      const telegramEvents = await step.run(
+        "build-telegram-events",
+        async () => {
+          const text = buildMaintenanceTelegramText({
+            description,
+            details,
+            shopUrl: `${getMESUrl()}/shop`
+          });
+          const replyMarkup =
+            buildMaintenanceTelegramButtons(primaryDocumentId);
+
+          const chatIds = await Promise.all(
+            userIds.map((userId) =>
+              getTelegramChatIdForUser(client, {
+                companyId: payload.companyId,
+                userId
+              })
+            )
+          );
+
+          return chatIds
+            .filter((id): id is string => !!id)
+            .map((chatId) => ({
+              data: {
+                chatId,
+                companyId: payload.companyId,
+                text,
+                replyMarkup
+              },
+              name: "carbon/send-telegram" as const
+            }));
+        }
+      );
+
+      if (telegramEvents.length > 0) {
+        await step.sendEvent("fan-out-telegram", telegramEvents);
       }
     }
   }

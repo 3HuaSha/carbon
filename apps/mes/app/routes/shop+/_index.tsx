@@ -94,12 +94,20 @@ export async function action({ request }: ActionFunctionArgs) {
     );
   }
 
+  const flashMessage =
+    result.telegramUnbound === true
+      ? success(`${result.message} — 该员工未绑定 Telegram`)
+      : result.warning
+        ? error(null, result.message)
+        : success(result.message);
+
   return data(
-    { ok: true as const, action: result.action },
-    await flash(
-      request,
-      result.warning ? error(null, result.message) : success(result.message)
-    )
+    {
+      ok: true as const,
+      action: result.action,
+      telegramUnbound: result.telegramUnbound === true
+    },
+    await flash(request, flashMessage)
   );
 }
 

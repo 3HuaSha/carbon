@@ -36,6 +36,7 @@
     "./plan": "./src/plan.ts",
     "./plan.server": "./src/plan.server.ts",
     "./slack.server": "./src/slack.server.ts",
+    "./telegram.server": "./src/telegram.server.ts",
     "./slack/messages": "./src/slack/lib/messages.ts",
     "./sso.server": "./src/sso/index.server.ts",
     "./hooks.server": "./src/hooks.server.ts",

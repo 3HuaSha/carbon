@@ -209,6 +209,7 @@ export const path = {
     suggestion: `${x}/suggestion`,
     switchCompany: (companyId: string) =>
       generatePath(`${x}/company/switch/${companyId}`),
+    telegramBind: `${x}/telegram/bind`,
     timeCardPage: `${x}/timecard`,
     timecard: `${api}/timecard`,
     triggerRework: `${x}/trigger-rework`,
