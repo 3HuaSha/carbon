@@ -146,7 +146,7 @@ msgid "Add Spare Part"
 msgstr "添加备件"
 
 msgid "Add to Home Screen"
-msgstr ""
+msgstr "添加到主屏幕"
 
 msgid "Add work centers for this location in Resources, then open Shop again. Machines on the computer MES will show here."
 msgstr "在资源中为此地点添加工作中心，然后再次打开车间。在电脑端 MES 上配置的机器将在此显示。"
@@ -175,6 +175,9 @@ msgstr "分配不合格单位"
 
 msgid "Allocate units"
 msgstr "分配单位"
+
+msgid "App already installed"
+msgstr "应用已安装"
 
 msgid "Are you sure you want to delete this step?"
 msgstr "确定要删除此步骤吗？"
@@ -290,17 +293,26 @@ msgstr "卡片"
 msgid "Chat"
 msgstr "聊天"
 
+msgid "Check ⋮ — if Install app is missing or greyed out, the app is already installed: open chrome://apps or uninstall from ⋮."
+msgstr "检查 ⋮ — 如果“安装应用”缺失或呈灰色，说明应用已安装：打开 chrome://apps，或通过 ⋮ 卸载。"
+
 msgid "Check your email"
 msgstr "请查收邮件"
 
 msgid "Choose a job"
 msgstr "选择工单"
 
-msgid "Chrome did not offer a one-tap install yet. Use the menu below, or stay on this page a few seconds and try Install again."
-msgstr ""
+msgid "Chrome did not offer a one-tap install. If you already installed this site, Install app is unavailable until you uninstall or clear site data."
+msgstr "Chrome 未提供一键安装。如果您已安装此网站，在卸载或清除网站数据之前，“安装应用”将不可用。"
+
+msgid "Chrome may fire beforeinstallprompt only once per engagement window. After dismiss or install, reload or clear site data before retrying."
+msgstr "Chrome 可能在每个互动窗口内仅触发一次 beforeinstallprompt。拒绝或安装后，请重新加载或清除网站数据再试。"
+
+msgid "Chrome only fires the install prompt when the site is not already installed and installability criteria are met."
+msgstr "仅当网站尚未安装且满足可安装条件时，Chrome 才会显示安装提示。"
 
 msgid "Chrome, Firefox, and Edge on iOS cannot native-install this app."
-msgstr ""
+msgstr "iOS 上的 Chrome、Firefox 和 Edge 无法原生安装此应用。"
 
 msgid "Clear"
 msgstr "清除"
@@ -450,6 +462,9 @@ msgstr "描述需要返工的内容..."
 
 msgid "Description"
 msgstr "描述"
+
+msgid "Desktop Chrome will not show Install again while this site is already an installed app. Open the app from chrome://apps, or uninstall it to reinstall."
+msgstr "只要此网站已作为应用安装，桌面版 Chrome 就不会再次显示“安装”。请从 chrome://apps 打开应用，或先卸载再重新安装。"
 
 msgid "Details"
 msgstr "详情"
@@ -666,9 +681,6 @@ msgstr "完成账户设置"
 msgid "Finish with material unpicked?"
 msgstr "物料未拣货的情况下要完成吗？"
 
-msgid "Firefox and Safari on desktop also use manual Add to Home Screen — only Chromium fires the Install prompt."
-msgstr ""
-
 #. placeholder {0}: formatRelativeTime( convertDateStringToIsoString(batchFacts.dueDate) )
 msgid "First due {0}"
 msgstr "最早应交期 {0}"
@@ -689,7 +701,7 @@ msgid "Go to onboarding"
 msgstr "前往入门"
 
 msgid "Got it"
-msgstr ""
+msgstr "知道了"
 
 msgid "Hide description"
 msgstr "隐藏描述"
@@ -738,7 +750,7 @@ msgid "inspected"
 msgstr "已检验"
 
 msgid "Install / Add to Home Screen"
-msgstr ""
+msgstr "安装 / 添加到主屏幕"
 
 msgid "Instructions"
 msgstr "作业指导"
@@ -753,7 +765,7 @@ msgid "Inventory Adjustments"
 msgstr "库存调整"
 
 msgid "iPhone and iPad never show a native Install button — use Safari’s Share menu."
-msgstr ""
+msgstr "iPhone 和 iPad 从不显示原生“安装”按钮 — 请使用 Safari 的共享菜单。"
 
 msgid "is"
 msgstr "是"
@@ -1169,6 +1181,9 @@ msgstr "打开此生产批次中的工单"
 msgid "Open an NCR for MRB disposition"
 msgstr "为MRB处置打开NCR"
 
+msgid "Open chrome://apps in the address bar and launch Carbon MES."
+msgstr "在地址栏打开 chrome://apps 并启动 Carbon MES。"
+
 msgid "Open inspection"
 msgstr "打开检验"
 
@@ -1179,7 +1194,7 @@ msgid "Open maintenance"
 msgstr "未结维护"
 
 msgid "Open this page in Safari (not Chrome on iOS)."
-msgstr ""
+msgstr "在 Safari 中打开此页面（不要使用 iOS 上的 Chrome）。"
 
 msgid "Operations"
 msgstr "工序"
@@ -1285,7 +1300,7 @@ msgid "PM schedule lapsed"
 msgstr "PM排程已逾期"
 
 msgid "Preparing install…"
-msgstr ""
+msgstr "正在准备安装…"
 
 msgid "Press ? on any page to open this list. Shortcuts are ignored while you type in a field."
 msgstr "在任何页面按 ? 打开此列表。在字段中输入时快捷键不可用。"
@@ -1702,16 +1717,10 @@ msgid "Takes work center offline"
 msgstr "使工作中心离线"
 
 msgid "Tap Add to Home Screen, then Add."
-msgstr ""
-
-msgid "Tap Install app or Add to Home screen."
-msgstr ""
+msgstr "点按“添加到主屏幕”，然后点按“添加”。"
 
 msgid "Tap Share (square with an arrow)."
-msgstr ""
-
-msgid "Tap the menu (⋮) at the top right."
-msgstr ""
+msgstr "点按“共享”（带箭头的方框）。"
 
 msgid "The completed quantity for this operation is less than the required quantity of {targetQuantity}."
 msgstr "此工序的完成数量小于所需数量 {targetQuantity}。"
@@ -1734,6 +1743,9 @@ msgstr "计时器和完成状态由所有 {0} 个工单共享。此处的步骤�
 
 msgid "then"
 msgstr "然后"
+
+msgid "Then open chrome://settings/content/all, find this MES host, delete site data, reload /shop, and tap Install again."
+msgstr "然后打开 chrome://settings/content/all，找到此 MES 主机，删除网站数据，重新加载 /shop，并再次点按“安装”。"
 
 msgid "There are no available or consumed tracked parts for this material."
 msgstr "此原材料没有可用或已消耗的受追踪零件。"
@@ -1777,6 +1789,12 @@ msgstr "工作时间：{0}"
 
 msgid "To pick"
 msgstr "待拣货"
+
+msgid "To reinstall: in chrome://apps, right-click the app → Remove from Chrome. Or use ⋮ → Uninstall Carbon MES on an open app window."
+msgstr "要重新安装：在 chrome://apps 中右键点击应用 → 从 Chrome 中移除。或在打开的应用窗口中使用 ⋮ → 卸载 Carbon MES。"
+
+msgid "To reset: chrome://settings/content/all → remove site data for this MES host → reload, then try Install again."
+msgstr "要重置：chrome://settings/content/all → 移除此 MES 主机的网站数据 → 重新加载，然后再次尝试安装。"
 
 msgid "To run"
 msgstr "待启动"
@@ -1885,7 +1903,7 @@ msgid "Use a different account"
 msgstr "使用不同的帐户"
 
 msgid "Use Chrome on Android (or desktop Chrome)."
-msgstr ""
+msgstr "请使用 Android 上的 Chrome（或桌面版 Chrome）。"
 
 msgid "Used automatically at completion"
 msgstr "在完成时自动使用"

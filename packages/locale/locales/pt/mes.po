@@ -146,7 +146,7 @@ msgid "Add Spare Part"
 msgstr "Adicionar peça de reposição"
 
 msgid "Add to Home Screen"
-msgstr ""
+msgstr "Adicionar ao ecrã principal"
 
 msgid "Add work centers for this location in Resources, then open Shop again. Machines on the computer MES will show here."
 msgstr "Adicione centros de trabalho para este local em Recursos e abra o Shop novamente. As máquinas no MES do computador serão exibidas aqui."
@@ -175,6 +175,9 @@ msgstr "Alocar unidades com falha"
 
 msgid "Allocate units"
 msgstr "Alocar unidades"
+
+msgid "App already installed"
+msgstr "Aplicação já instalada"
 
 msgid "Are you sure you want to delete this step?"
 msgstr "Tem certeza de que deseja excluir esta etapa?"
@@ -290,17 +293,26 @@ msgstr "Cartões"
 msgid "Chat"
 msgstr "Chat"
 
+msgid "Check ⋮ — if Install app is missing or greyed out, the app is already installed: open chrome://apps or uninstall from ⋮."
+msgstr "Verifique ⋮ — se Instalar aplicação estiver em falta ou acinzentada, a app já está instalada: abra chrome://apps ou desinstale em ⋮."
+
 msgid "Check your email"
 msgstr "Verifique seu e-mail"
 
 msgid "Choose a job"
 msgstr "Escolha uma ordem de produção"
 
-msgid "Chrome did not offer a one-tap install yet. Use the menu below, or stay on this page a few seconds and try Install again."
-msgstr ""
+msgid "Chrome did not offer a one-tap install. If you already installed this site, Install app is unavailable until you uninstall or clear site data."
+msgstr "O Chrome não ofereceu instalação com um toque. Se já instalou este site, Instalar aplicação fica indisponível até desinstalar ou limpar os dados do site."
+
+msgid "Chrome may fire beforeinstallprompt only once per engagement window. After dismiss or install, reload or clear site data before retrying."
+msgstr "O Chrome pode disparar beforeinstallprompt apenas uma vez por janela de envolvimento. Após recusar ou instalar, recarregue ou limpe os dados do site antes de tentar novamente."
+
+msgid "Chrome only fires the install prompt when the site is not already installed and installability criteria are met."
+msgstr "O Chrome só mostra o pedido de instalação quando o site ainda não está instalado e os critérios de instalabilidade são cumpridos."
 
 msgid "Chrome, Firefox, and Edge on iOS cannot native-install this app."
-msgstr ""
+msgstr "Chrome, Firefox e Edge no iOS não podem instalar nativamente esta aplicação."
 
 msgid "Clear"
 msgstr "Limpar"
@@ -450,6 +462,9 @@ msgstr "Descreva o que precisa ser retrabalhado..."
 
 msgid "Description"
 msgstr "Descrição"
+
+msgid "Desktop Chrome will not show Install again while this site is already an installed app. Open the app from chrome://apps, or uninstall it to reinstall."
+msgstr "O Chrome para computador não mostrará Instalar novamente enquanto este site já for uma app instalada. Abra-a em chrome://apps ou desinstale para reinstalar."
 
 msgid "Details"
 msgstr "Detalhes"
@@ -666,9 +681,6 @@ msgstr "Finalize a configuração de sua conta"
 msgid "Finish with material unpicked?"
 msgstr "Finalizar com material não selecionado?"
 
-msgid "Firefox and Safari on desktop also use manual Add to Home Screen — only Chromium fires the Install prompt."
-msgstr ""
-
 #. placeholder {0}: formatRelativeTime( convertDateStringToIsoString(batchFacts.dueDate) )
 msgid "First due {0}"
 msgstr "Primeiro prazo {0}"
@@ -689,7 +701,7 @@ msgid "Go to onboarding"
 msgstr "Ir para integração"
 
 msgid "Got it"
-msgstr ""
+msgstr "Entendi"
 
 msgid "Hide description"
 msgstr "Ocultar descrição"
@@ -738,7 +750,7 @@ msgid "inspected"
 msgstr "inspecionado"
 
 msgid "Install / Add to Home Screen"
-msgstr ""
+msgstr "Instalar / Adicionar ao ecrã principal"
 
 msgid "Instructions"
 msgstr "Instruções"
@@ -753,7 +765,7 @@ msgid "Inventory Adjustments"
 msgstr "Ajustes de Estoque"
 
 msgid "iPhone and iPad never show a native Install button — use Safari’s Share menu."
-msgstr ""
+msgstr "iPhone e iPad nunca mostram um botão Instalar nativo — use o menu Partilhar do Safari."
 
 msgid "is"
 msgstr "é"
@@ -1169,6 +1181,9 @@ msgstr "Abrir uma ordem de produção neste lote de produção"
 msgid "Open an NCR for MRB disposition"
 msgstr "Abrir um NCR para disposição MRB"
 
+msgid "Open chrome://apps in the address bar and launch Carbon MES."
+msgstr "Abra chrome://apps na barra de endereço e inicie o Carbon MES."
+
 msgid "Open inspection"
 msgstr "Abrir inspeção"
 
@@ -1179,7 +1194,7 @@ msgid "Open maintenance"
 msgstr "Manutenção aberta"
 
 msgid "Open this page in Safari (not Chrome on iOS)."
-msgstr ""
+msgstr "Abra esta página no Safari (não no Chrome no iOS)."
 
 msgid "Operations"
 msgstr "Operações"
@@ -1285,7 +1300,7 @@ msgid "PM schedule lapsed"
 msgstr "Cronograma de PM expirou"
 
 msgid "Preparing install…"
-msgstr ""
+msgstr "A preparar instalação…"
 
 msgid "Press ? on any page to open this list. Shortcuts are ignored while you type in a field."
 msgstr "Pressione ? em qualquer página para abrir esta lista. Os atalhos são ignorados enquanto você digita em um campo."
@@ -1702,16 +1717,10 @@ msgid "Takes work center offline"
 msgstr "Coloca o centro de trabalho offline"
 
 msgid "Tap Add to Home Screen, then Add."
-msgstr ""
-
-msgid "Tap Install app or Add to Home screen."
-msgstr ""
+msgstr "Toque em Adicionar ao ecrã principal e depois em Adicionar."
 
 msgid "Tap Share (square with an arrow)."
-msgstr ""
-
-msgid "Tap the menu (⋮) at the top right."
-msgstr ""
+msgstr "Toque em Partilhar (quadrado com uma seta)."
 
 msgid "The completed quantity for this operation is less than the required quantity of {targetQuantity}."
 msgstr "A quantidade concluída para esta operação é menor que a quantidade requerida de {targetQuantity}."
@@ -1734,6 +1743,9 @@ msgstr "O temporizador e a conclusão são compartilhados por todas as {0} orden
 
 msgid "then"
 msgstr "depois"
+
+msgid "Then open chrome://settings/content/all, find this MES host, delete site data, reload /shop, and tap Install again."
+msgstr "Depois abra chrome://settings/content/all, encontre este anfitrião MES, elimine os dados do site, recarregue /shop e toque novamente em Instalar."
 
 msgid "There are no available or consumed tracked parts for this material."
 msgstr "Não há peças rastreadas disponíveis ou consumidas para este material."
@@ -1777,6 +1789,12 @@ msgstr "Tempo Trabalhado: {0}"
 
 msgid "To pick"
 msgstr "Para separar"
+
+msgid "To reinstall: in chrome://apps, right-click the app → Remove from Chrome. Or use ⋮ → Uninstall Carbon MES on an open app window."
+msgstr "Para reinstalar: em chrome://apps, clique com o botão direito na app → Remover do Chrome. Ou use ⋮ → Desinstalar Carbon MES numa janela da app aberta."
+
+msgid "To reset: chrome://settings/content/all → remove site data for this MES host → reload, then try Install again."
+msgstr "Para repor: chrome://settings/content/all → remover dados do site deste anfitrião MES → recarregar e tentar Instalar novamente."
 
 msgid "To run"
 msgstr "Para executar"
@@ -1885,7 +1903,7 @@ msgid "Use a different account"
 msgstr "Usar uma conta diferente"
 
 msgid "Use Chrome on Android (or desktop Chrome)."
-msgstr ""
+msgstr "Use o Chrome no Android (ou Chrome para computador)."
 
 msgid "Used automatically at completion"
 msgstr "Usado automaticamente na conclusão"
