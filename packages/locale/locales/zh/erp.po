@@ -556,7 +556,7 @@ msgid "A 3D model the operator can turn around"
 msgstr "操作员可以旋转查看的 3D 模型"
 
 msgid "A 4-digit PIN is generated for MES terminal pin-in. No invite email is sent — the operator is active immediately."
-msgstr ""
+msgstr "系统会生成 4 位 PIN 用于 MES 终端登录。不会发送邀请邮件——操作员立即为启用状态。"
 
 msgid "A batch needs at least one operation. To break up the whole batch, use Dissolve instead."
 msgstr "生产批次需要至少一个工序。要分解整个生产批次，请改用\"分解\"。"
