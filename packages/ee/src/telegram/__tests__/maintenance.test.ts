@@ -3,7 +3,9 @@ import { isTelegramCommand } from "../commands";
 import { TELEGRAM_CB_COMPLETE, TELEGRAM_CB_START } from "../constants";
 import {
   buildMaintenanceTelegramButtons,
-  buildMaintenanceTelegramText
+  buildMaintenanceTelegramDmText,
+  buildMaintenanceTelegramGroupText,
+  shopDispatchKindLabelZh
 } from "../message";
 
 describe("telegram maintenance helpers", () => {
@@ -19,28 +21,44 @@ describe("telegram maintenance helpers", () => {
     expect(complete.length).toBeLessThanOrEqual(64);
   });
 
-  it("includes shop deep link in assign text", () => {
-    const text = buildMaintenanceTelegramText({
-      description: "Maintenance dispatch MD-1 for Press assigned to you",
-      details: [
-        { label: "Priority", value: "High" },
-        { label: "Severity", value: "Support Required" }
-      ],
-      shopUrl: "https://mes.example/shop"
-    });
-    expect(text).toContain("🔧");
-    expect(text).toContain("Priority: High");
-    expect(text).toContain("https://mes.example/shop");
+  it("labels shop kinds in Chinese", () => {
+    expect(shopDispatchKindLabelZh("fault")).toBe("故障");
+    expect(shopDispatchKindLabelZh("planned")).toBe("计划停机");
+    expect(shopDispatchKindLabelZh("break")).toBe("休息");
+    expect(shopDispatchKindLabelZh(null)).toBe("故障");
   });
 
-  it("includes assignee mention for group notify", () => {
-    const text = buildMaintenanceTelegramText({
-      description: "Maintenance dispatch MD-1 assigned",
-      details: [{ label: "Priority", value: "High" }],
-      shopUrl: "https://mes.example/shop",
-      assigneeMention: "@alice"
+  it("builds private DM assign text", () => {
+    const text = buildMaintenanceTelegramDmText({
+      workCenterName: "1号机",
+      typeLabel: "故障",
+      assignerName: "张三"
     });
-    expect(text).toContain("指派: @alice");
+    expect(text).toBe(
+      [
+        "🔧 您有一条新的维修派单",
+        "机台：1号机",
+        "类型：故障",
+        "派单人：张三"
+      ].join("\n")
+    );
+  });
+
+  it("builds group assign text distinct from DM", () => {
+    const text = buildMaintenanceTelegramGroupText({
+      workCenterName: "1号机",
+      typeLabel: "计划停机",
+      assigneeName: "李四",
+      assignerName: "张三"
+    });
+    expect(text).toBe(
+      [
+        "📢 维修动态 · 1号机",
+        "类型：计划停机",
+        "已指派给 李四（派单人：张三）"
+      ].join("\n")
+    );
+    expect(text).not.toContain("您有一条新的维修派单");
   });
 
   it("matches group commands with @botusername suffix", () => {

@@ -1,6 +1,5 @@
 import type { Database } from "@carbon/database";
 import {
-  getMESUrl,
   TELEGRAM_BOT_TOKEN,
   TELEGRAM_MAINTENANCE_GROUP_CHAT_ID
 } from "@carbon/env";
@@ -13,8 +12,9 @@ import {
 } from "./mapping.server";
 import {
   buildMaintenanceTelegramButtons,
-  buildMaintenanceTelegramText,
-  formatTelegramAssigneeMention
+  buildMaintenanceTelegramDmText,
+  buildMaintenanceTelegramGroupText,
+  shopDispatchKindLabelZh
 } from "./message";
 
 const log = getLogger("ee", "telegram-notify");
@@ -25,6 +25,20 @@ export type MaintenanceAssignmentTelegramResult = {
   dmSent: boolean;
   groupSent: boolean;
 };
+
+async function getEmployeeDisplayName(
+  client: SupabaseClient<Database>,
+  args: { companyId: string; userId: string }
+): Promise<string | null> {
+  const { data } = await client
+    .from("employees")
+    .select("name")
+    .eq("id", args.userId)
+    .eq("companyId", args.companyId)
+    .maybeSingle();
+  const name = data?.name?.trim();
+  return name || null;
+}
 
 /**
  * Synchronous dual notify (private DM + maintenance group) for a maintenance
@@ -41,6 +55,8 @@ export async function sendMaintenanceAssignmentTelegram(
     companyId: string;
     dispatchId: string;
     assigneeUserId: string;
+    /** Assigner / actor user id (`from` on the notify event). */
+    assignerUserId: string;
   }
 ): Promise<MaintenanceAssignmentTelegramResult> {
   if (!TELEGRAM_BOT_TOKEN) {
@@ -67,9 +83,8 @@ export async function sendMaintenanceAssignmentTelegram(
   }
 
   const workCenterName =
-    (dispatch.workCenter as { name?: string } | null)?.name ?? "Unknown";
-  const workCenterId = dispatch.workCenterId ?? null;
-  const readableId = dispatch.maintenanceDispatchId ?? args.dispatchId;
+    (dispatch.workCenter as { name?: string } | null)?.name?.trim() ||
+    "未知机台";
   const content = dispatch.content as
     | { shopKind?: string; note?: string }
     | null
@@ -84,35 +99,21 @@ export async function sendMaintenanceAssignmentTelegram(
           : dispatch.oeeImpact === "Planned"
             ? "planned"
             : "fault";
-  const note =
-    typeof content?.note === "string" && content.note.trim()
-      ? content.note.trim()
-      : null;
+  const typeLabel = shopDispatchKindLabelZh(shopKind);
 
-  const shopPath = workCenterId ? `/shop/${workCenterId}` : "/shop";
-  const shopUrl = `${getMESUrl()}${shopPath}`;
-  const description = `Maintenance dispatch ${readableId} for ${workCenterName} assigned to you`;
-  const detailRows = [
-    { label: "Machine", value: workCenterName },
-    { label: "Kind", value: shopKind },
-    ...(dispatch.priority
-      ? [{ label: "Priority", value: String(dispatch.priority) }]
-      : []),
-    ...(dispatch.severity
-      ? [{ label: "Severity", value: String(dispatch.severity) }]
-      : []),
-    ...(dispatch.status
-      ? [{ label: "Status", value: String(dispatch.status) }]
-      : []),
-    ...(note
-      ? [
-          {
-            label: "Notes",
-            value: note.length > 160 ? `${note.slice(0, 157)}…` : note
-          }
-        ]
-      : [])
-  ];
+  const [assigneeName, assignerName] = await Promise.all([
+    getEmployeeDisplayName(client, {
+      companyId: args.companyId,
+      userId: args.assigneeUserId
+    }),
+    getEmployeeDisplayName(client, {
+      companyId: args.companyId,
+      userId: args.assignerUserId
+    })
+  ]);
+
+  const assigneeDisplay = assigneeName ?? "未命名";
+  const assignerDisplay = assignerName ?? "未命名";
   const replyMarkup = buildMaintenanceTelegramButtons(args.dispatchId);
 
   const mapping = await getTelegramMappingForUser(client, {
@@ -120,32 +121,16 @@ export async function sendMaintenanceAssignmentTelegram(
     userId: args.assigneeUserId
   });
 
-  let assigneeMention: string | null = null;
   let dmSent = false;
 
   if (mapping) {
-    const { data: employee } = await client
-      .from("employees")
-      .select("name")
-      .eq("id", args.assigneeUserId)
-      .eq("companyId", args.companyId)
-      .maybeSingle();
-
-    assigneeMention = formatTelegramAssigneeMention({
-      name: employee?.name,
-      username:
-        typeof mapping.metadata?.username === "string"
-          ? mapping.metadata.username
-          : null
-    });
-
     try {
       await sendTelegramMessage({
         chatId: mapping.chatId,
-        text: buildMaintenanceTelegramText({
-          description,
-          details: detailRows,
-          shopUrl
+        text: buildMaintenanceTelegramDmText({
+          workCenterName,
+          typeLabel,
+          assignerName: assignerDisplay
         }),
         replyMarkup,
         force: true
@@ -174,11 +159,11 @@ export async function sendMaintenanceAssignmentTelegram(
     try {
       await sendTelegramMessage({
         chatId: groupChatId,
-        text: buildMaintenanceTelegramText({
-          description,
-          details: detailRows,
-          shopUrl,
-          assigneeMention
+        text: buildMaintenanceTelegramGroupText({
+          workCenterName,
+          typeLabel,
+          assigneeName: assigneeDisplay,
+          assignerName: assignerDisplay
         }),
         replyMarkup,
         force: true

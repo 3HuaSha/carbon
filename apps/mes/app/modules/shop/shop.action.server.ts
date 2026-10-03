@@ -68,7 +68,8 @@ async function notifyMaintenanceAssignment(
       const telegram = await sendMaintenanceAssignmentTelegram(client, {
         companyId: args.companyId,
         dispatchId: args.dispatchId,
-        assigneeUserId: args.assignee
+        assigneeUserId: args.assignee,
+        assignerUserId: args.from
       });
       logger.info("Telegram sync fallback after Inngest notify failure", {
         companyId: args.companyId,
