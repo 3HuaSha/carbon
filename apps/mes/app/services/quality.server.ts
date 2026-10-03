@@ -234,15 +234,15 @@ export async function createQualityIssue(
   });
 
   if (tasks.error) {
-    await serviceRole
-      .from("nonConformance")
-      .delete()
-      .eq("id", nonConformanceId);
-    return {
-      data: null,
-      error: tasks.error,
-      message: "Failed to create quality issue tasks"
-    };
+    // Task generation is best-effort: a failure here (e.g. the `create`
+    // edge function not being deployed) must not delete the issue the
+    // operator just filed. The issue remains fully usable without the
+    // auto-generated corrective-action tasks.
+    logger.error("Failed to create quality issue tasks", {
+      nonConformanceId,
+      companyId,
+      error: tasks.error
+    });
   }
 
   return { data: { id: nonConformanceId }, error: null, message: null };
