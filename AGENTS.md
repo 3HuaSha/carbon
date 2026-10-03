@@ -219,3 +219,12 @@ Internal technical context for each subsystem lives in `.claude/rules/` (the sou
 ## Browser Automation
 
 With the user's permission, use the `/auth` and `/test` skill to verify fixes.
+
+## Cursor Cloud specific instructions
+
+Cloud Agents boot Docker and the localhost stack from the environment start script (`pnpm dev`, which is `crbn up --no-portless`, with `CARBON_DEV_APPS=erp,mes`).
+
+- ERP is http://localhost:3000, MES is http://localhost:3001, and the API is http://localhost:54321.
+- Sign in as `test@carbon.ms`. `crbn up` seeds that user and skips the magic link.
+- `crbn` is linked at `/usr/local/bin/crbn`. `./setup.sh` only edits interactive shell rc files, which non-interactive login shells do not load.
+- Nested Docker uses `fuse-overlayfs` with the containerd snapshotter disabled (`/etc/docker/daemon.json`). If compose services cannot reach Postgres while published ports still answer, `iptables-legacy` `FORWARD` is `DROP` and must be set back to `ACCEPT`.
