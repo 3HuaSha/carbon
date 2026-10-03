@@ -50,7 +50,7 @@ export async function action({ request }: ActionFunctionArgs) {
     return validationError(validation.error);
   }
 
-  const { firstName, lastName, locationId } = validation.data;
+  const { firstName, lastName, locationId, email } = validation.data;
 
   // Auto-assign Console Operator employee type
   const serviceRole = getCarbonServiceRole();
@@ -80,7 +80,8 @@ export async function action({ request }: ActionFunctionArgs) {
     employeeType: operatorType.data.id,
     locationId,
     companyId,
-    createdBy: userId
+    createdBy: userId,
+    email
   });
 
   if (!result.success) {
@@ -175,10 +176,17 @@ export default function NewOperatorRoute() {
                   <Input name="firstName" label={t`First Name`} />
                   <Input name="lastName" label={t`Last Name`} />
                 </div>
+                <Input
+                  name="email"
+                  label={t`Email`}
+                  isOptional
+                  helperText={t`Optional. Needed for Telegram bind. Leave blank for console-only (no Telegram email bind).`}
+                />
                 <Location name="locationId" label={t`Location`} />
                 <p className="text-xs text-muted-foreground">
                   <Trans>
-                    A 4-digit PIN is generated when the operator is created.
+                    A 4-digit PIN is generated for MES terminal pin-in. No
+                    invite email is sent — the operator is active immediately.
                   </Trans>
                 </p>
               </VStack>
