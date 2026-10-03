@@ -13,9 +13,7 @@ describe("notifyScheduleInputsChanged", () => {
 
   it("swallows Inngest fetch failures so shop downtime does not 500", async () => {
     trigger.mockRejectedValueOnce(new Error("fetch failed"));
-    const { notifyScheduleInputsChanged } = await import(
-      "./schedule-notify.server"
-    );
+    const { notifyScheduleInputsChanged } = await import("./schedule-notify");
 
     await expect(
       notifyScheduleInputsChanged(
@@ -36,9 +34,7 @@ describe("notifyScheduleInputsChanged", () => {
 
   it("resolves when Inngest accepts the event", async () => {
     trigger.mockResolvedValueOnce({ ids: ["evt_1"] });
-    const { notifyScheduleInputsChanged } = await import(
-      "./schedule-notify.server"
-    );
+    const { notifyScheduleInputsChanged } = await import("./schedule-notify");
 
     await expect(
       notifyScheduleInputsChanged(

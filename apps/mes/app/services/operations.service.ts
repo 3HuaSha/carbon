@@ -2820,4 +2820,8 @@ export async function getJobMethodBomIdMap(
   return bomIdMap;
 }
 
-export { notifyScheduleInputsChanged } from "./schedule-notify.server";
+// Not `*.server` — operations.service is imported from the client graph
+// (types/helpers); a `.server` re-export fails react-router:dot-server on
+// `mes` build. Dynamic `@carbon/jobs` import inside the helper keeps Inngest
+// out of the browser bundle.
+export { notifyScheduleInputsChanged } from "./schedule-notify";
