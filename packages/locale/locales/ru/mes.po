@@ -1483,9 +1483,6 @@ msgstr "Прогноз. {0}"
 msgid "QC / Inspection"
 msgstr "QC / Инспекция"
 
-msgid "QC: {status}"
-msgstr "QC: {status}"
-
 msgid "Quality Issue"
 msgstr "Проблема качества"
 

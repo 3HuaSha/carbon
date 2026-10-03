@@ -293,7 +293,7 @@ msgid "Board view"
 msgstr "看板视图"
 
 msgid "Break"
-msgstr ""
+msgstr "休息"
 
 msgid "Break / Away"
 msgstr ""
@@ -1482,9 +1482,6 @@ msgstr "预计 {0}"
 
 msgid "QC / Inspection"
 msgstr "QC / 检验"
-
-msgid "QC: {status}"
-msgstr "QC：{status}"
 
 msgid "Quality Issue"
 msgstr "质量问题"

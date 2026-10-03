@@ -1483,9 +1483,6 @@ msgstr "Proj. {0}"
 msgid "QC / Inspection"
 msgstr "QC / Prüfung"
 
-msgid "QC: {status}"
-msgstr "QC: {status}"
-
 msgid "Quality Issue"
 msgstr "Qualitätsproblem"
 

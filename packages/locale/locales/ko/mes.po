@@ -1483,9 +1483,6 @@ msgstr "예상. {0}"
 msgid "QC / Inspection"
 msgstr "QC / 검사"
 
-msgid "QC: {status}"
-msgstr "QC: {status}"
-
 msgid "Quality Issue"
 msgstr "품질 이슈"
 
