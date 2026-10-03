@@ -18,7 +18,7 @@ type PwaInstallSheetProps = {
 };
 
 /**
- * Manual install steps when `beforeinstallprompt` is unavailable
+ * Manual install / open-app steps when `beforeinstallprompt` is unavailable
  * (iOS Safari, desktop non-Chromium, already installed, or Chrome without
  * an installable state for this engagement window).
  */
@@ -30,9 +30,7 @@ export function PwaInstallSheet({
 }: PwaInstallSheetProps) {
   const { t } = useLingui();
 
-  const title = alreadyInstalled
-    ? t`App already installed`
-    : t`Add to Home Screen`;
+  const title = alreadyInstalled ? t`Already installed` : t`Add to Home Screen`;
 
   return (
     <BottomSheet open={open} onOpenChange={onOpenChange}>
@@ -45,8 +43,8 @@ export function PwaInstallSheet({
             {isIos
               ? t`iPhone and iPad never show a native Install button — use Safari’s Share menu.`
               : alreadyInstalled
-                ? t`Desktop Chrome will not show Install again while this site is already an installed app. Open the app from chrome://apps, or uninstall it to reinstall.`
-                : t`Chrome did not offer a one-tap install. If you already installed this site, Install app is unavailable until you uninstall or clear site data.`}
+                ? t`This site is already installed. Chrome will not show Install again. Use Open in app, then pin a desktop / taskbar shortcut.`
+                : t`Chrome did not offer a one-tap install yet. Use the menu below — or if the address bar shows Open in app, the PWA is already installed.`}
           </BottomSheetDescription>
         </BottomSheetHeader>
         <BottomSheetBody className="space-y-4">
@@ -66,20 +64,21 @@ export function PwaInstallSheet({
             <ol className="list-decimal space-y-2 pl-5 text-sm text-foreground">
               <li>
                 <Trans>
-                  Open chrome://apps in the address bar and launch Carbon MES.
+                  In the Chrome address bar, click Open in app (打开应用) to
+                  launch the installed Carbon MES window.
                 </Trans>
               </li>
               <li>
                 <Trans>
-                  To reinstall: in chrome://apps, right-click the app → Remove
-                  from Chrome. Or use ⋮ → Uninstall Carbon MES on an open app
-                  window.
+                  In that app window: menu ⋮ → Cast, save, and share
+                  (投屏、保存和分享) → Create shortcut (创建快捷方式) / Pin to
+                  taskbar (固定到任务栏).
                 </Trans>
               </li>
               <li>
                 <Trans>
-                  Then open chrome://settings/content/all, find this MES host,
-                  delete site data, reload /shop, and tap Install again.
+                  Or open chrome://apps → right-click Carbon MES → Create
+                  shortcut → choose Pin to taskbar / Create desktop shortcut.
                 </Trans>
               </li>
             </ol>
@@ -90,14 +89,15 @@ export function PwaInstallSheet({
               </li>
               <li>
                 <Trans>
-                  Check ⋮ — if Install app is missing or greyed out, the app is
-                  already installed: open chrome://apps or uninstall from ⋮.
+                  Tap the menu (⋮). If you see Install app, use it. If you see
+                  Open in app in the address bar instead, the app is already
+                  installed — follow Open app help.
                 </Trans>
               </li>
               <li>
                 <Trans>
-                  To reset: chrome://settings/content/all → remove site data for
-                  this MES host → reload, then try Install again.
+                  Still missing Install? Stay on this page a few seconds and try
+                  again, or use Open in app / chrome://apps → Create shortcut.
                 </Trans>
               </li>
             </ol>
@@ -106,8 +106,8 @@ export function PwaInstallSheet({
             {isIos
               ? t`Chrome, Firefox, and Edge on iOS cannot native-install this app.`
               : alreadyInstalled
-                ? t`Chrome only fires the install prompt when the site is not already installed and installability criteria are met.`
-                : t`Chrome may fire beforeinstallprompt only once per engagement window. After dismiss or install, reload or clear site data before retrying.`}
+                ? t`Web pages cannot trigger Chrome’s Open in app automatically — use the address-bar control or chrome://apps.`
+                : t`Only Chromium fires the one-tap Install prompt. After install, use Open in app to pin to the desktop.`}
           </p>
           <Button
             type="button"

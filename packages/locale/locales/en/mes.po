@@ -176,8 +176,8 @@ msgstr "Allocate failed units"
 msgid "Allocate units"
 msgstr "Allocate units"
 
-msgid "App already installed"
-msgstr "App already installed"
+msgid "Already installed"
+msgstr "Already installed"
 
 msgid "Are you sure you want to delete this step?"
 msgstr "Are you sure you want to delete this step?"
@@ -293,23 +293,14 @@ msgstr "Cards"
 msgid "Chat"
 msgstr "Chat"
 
-msgid "Check ⋮ — if Install app is missing or greyed out, the app is already installed: open chrome://apps or uninstall from ⋮."
-msgstr "Check ⋮ — if Install app is missing or greyed out, the app is already installed: open chrome://apps or uninstall from ⋮."
-
 msgid "Check your email"
 msgstr "Check your email"
 
 msgid "Choose a job"
 msgstr "Choose a job"
 
-msgid "Chrome did not offer a one-tap install. If you already installed this site, Install app is unavailable until you uninstall or clear site data."
-msgstr "Chrome did not offer a one-tap install. If you already installed this site, Install app is unavailable until you uninstall or clear site data."
-
-msgid "Chrome may fire beforeinstallprompt only once per engagement window. After dismiss or install, reload or clear site data before retrying."
-msgstr "Chrome may fire beforeinstallprompt only once per engagement window. After dismiss or install, reload or clear site data before retrying."
-
-msgid "Chrome only fires the install prompt when the site is not already installed and installability criteria are met."
-msgstr "Chrome only fires the install prompt when the site is not already installed and installability criteria are met."
+msgid "Chrome did not offer a one-tap install yet. Use the menu below — or if the address bar shows Open in app, the PWA is already installed."
+msgstr "Chrome did not offer a one-tap install yet. Use the menu below — or if the address bar shows Open in app, the PWA is already installed."
 
 msgid "Chrome, Firefox, and Edge on iOS cannot native-install this app."
 msgstr "Chrome, Firefox, and Edge on iOS cannot native-install this app."
@@ -462,9 +453,6 @@ msgstr "Describe what needs to be reworked..."
 
 msgid "Description"
 msgstr "Description"
-
-msgid "Desktop Chrome will not show Install again while this site is already an installed app. Open the app from chrome://apps, or uninstall it to reinstall."
-msgstr "Desktop Chrome will not show Install again while this site is already an installed app. Open the app from chrome://apps, or uninstall it to reinstall."
 
 msgid "Details"
 msgstr "Details"
@@ -742,6 +730,12 @@ msgstr "In Progress"
 
 msgid "In repair"
 msgstr "In repair"
+
+msgid "In that app window: menu ⋮ → Cast, save, and share (投屏、保存和分享) → Create shortcut (创建快捷方式) / Pin to taskbar (固定到任务栏)."
+msgstr "In that app window: menu ⋮ → Cast, save, and share (投屏、保存和分享) → Create shortcut (创建快捷方式) / Pin to taskbar (固定到任务栏)."
+
+msgid "In the Chrome address bar, click Open in app (打开应用) to launch the installed Carbon MES window."
+msgstr "In the Chrome address bar, click Open in app (打开应用) to launch the installed Carbon MES window."
 
 msgid "Inspect Item"
 msgstr "Inspect Item"
@@ -1166,6 +1160,9 @@ msgstr "One pick covers the whole batch — it is shared out to the jobs automat
 msgid "Only {0} available"
 msgstr "Only {0} available"
 
+msgid "Only Chromium fires the one-tap Install prompt. After install, use Open in app to pin to the desktop."
+msgstr "Only Chromium fires the one-tap Install prompt. After install, use Open in app to pin to the desktop."
+
 msgid "Oops. You shouldn't see this page. Eventually it will be a landing page."
 msgstr "Oops. You shouldn't see this page. Eventually it will be a landing page."
 
@@ -1181,8 +1178,8 @@ msgstr "Open a job in this batch"
 msgid "Open an NCR for MRB disposition"
 msgstr "Open an NCR for MRB disposition"
 
-msgid "Open chrome://apps in the address bar and launch Carbon MES."
-msgstr "Open chrome://apps in the address bar and launch Carbon MES."
+msgid "Open app — Already installed"
+msgstr "Open app — Already installed"
 
 msgid "Open inspection"
 msgstr "Open inspection"
@@ -1213,6 +1210,9 @@ msgstr "Optional"
 
 msgid "or"
 msgstr "or"
+
+msgid "Or open chrome://apps → right-click Carbon MES → Create shortcut → choose Pin to taskbar / Create desktop shortcut."
+msgstr "Or open chrome://apps → right-click Carbon MES → Create shortcut → choose Pin to taskbar / Create desktop shortcut."
 
 msgid "Other"
 msgstr "Other"
@@ -1695,6 +1695,9 @@ msgstr "Steps"
 msgid "Steps are missing"
 msgstr "Steps are missing"
 
+msgid "Still missing Install? Stay on this page a few seconds and try again, or use Open in app / chrome://apps → Create shortcut."
+msgstr "Still missing Install? Stay on this page a few seconds and try again, or use Open in app / chrome://apps → Create shortcut."
+
 msgid "Storage Unit"
 msgstr "Storage Unit"
 
@@ -1722,6 +1725,9 @@ msgstr "Tap Add to Home Screen, then Add."
 msgid "Tap Share (square with an arrow)."
 msgstr "Tap Share (square with an arrow)."
 
+msgid "Tap the menu (⋮). If you see Install app, use it. If you see Open in app in the address bar instead, the app is already installed — follow Open app help."
+msgstr "Tap the menu (⋮). If you see Install app, use it. If you see Open in app in the address bar instead, the app is already installed — follow Open app help."
+
 msgid "The completed quantity for this operation is less than the required quantity of {targetQuantity}."
 msgstr "The completed quantity for this operation is less than the required quantity of {targetQuantity}."
 
@@ -1744,9 +1750,6 @@ msgstr "The timer and completion are shared by all {0} jobs. Steps, materials an
 msgid "then"
 msgstr "then"
 
-msgid "Then open chrome://settings/content/all, find this MES host, delete site data, reload /shop, and tap Install again."
-msgstr "Then open chrome://settings/content/all, find this MES host, delete site data, reload /shop, and tap Install again."
-
 msgid "There are no available or consumed tracked parts for this material."
 msgstr "There are no available or consumed tracked parts for this material."
 
@@ -1767,6 +1770,9 @@ msgstr "This part was made to order. Scrapping it can reopen its routing to make
 
 msgid "This part will be scrapped from stock. Its requirement stays open so you can issue a replacement."
 msgstr "This part will be scrapped from stock. Its requirement stays open so you can issue a replacement."
+
+msgid "This site is already installed. Chrome will not show Install again. Use Open in app, then pin a desktop / taskbar shortcut."
+msgstr "This site is already installed. Chrome will not show Install again. Use Open in app, then pin a desktop / taskbar shortcut."
 
 msgid "This unit will be permanently scrapped and a replacement serial number will be created."
 msgstr "This unit will be permanently scrapped and a replacement serial number will be created."
@@ -1789,12 +1795,6 @@ msgstr "Time Worked: {0}"
 
 msgid "To pick"
 msgstr "To pick"
-
-msgid "To reinstall: in chrome://apps, right-click the app → Remove from Chrome. Or use ⋮ → Uninstall Carbon MES on an open app window."
-msgstr "To reinstall: in chrome://apps, right-click the app → Remove from Chrome. Or use ⋮ → Uninstall Carbon MES on an open app window."
-
-msgid "To reset: chrome://settings/content/all → remove site data for this MES host → reload, then try Install again."
-msgstr "To reset: chrome://settings/content/all → remove site data for this MES host → reload, then try Install again."
 
 msgid "To run"
 msgstr "To run"
@@ -1925,6 +1925,9 @@ msgstr "Waiting repair"
 
 msgid "We've sent you a magic link to sign in to your account."
 msgstr "We've sent you a magic link to sign in to your account."
+
+msgid "Web pages cannot trigger Chrome’s Open in app automatically — use the address-bar control or chrome://apps."
+msgstr "Web pages cannot trigger Chrome’s Open in app automatically — use the address-bar control or chrome://apps."
 
 msgid "What is {translatedTerm}?"
 msgstr "What is {translatedTerm}?"

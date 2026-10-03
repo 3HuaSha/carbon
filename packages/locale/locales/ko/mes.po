@@ -176,8 +176,8 @@ msgstr "실패한 단위 할당"
 msgid "Allocate units"
 msgstr "단위 할당"
 
-msgid "App already installed"
-msgstr "앱이 이미 설치됨"
+msgid "Already installed"
+msgstr "이미 설치됨"
 
 msgid "Are you sure you want to delete this step?"
 msgstr "이 단계를 삭제하시겠습니까?"
@@ -293,23 +293,14 @@ msgstr "카드"
 msgid "Chat"
 msgstr "채팅"
 
-msgid "Check ⋮ — if Install app is missing or greyed out, the app is already installed: open chrome://apps or uninstall from ⋮."
-msgstr "⋮를 확인하세요. ‘앱 설치’가 없거나 흐리게 표시되면 이미 설치된 것입니다. chrome://apps를 열거나 ⋮에서 제거하세요."
-
 msgid "Check your email"
 msgstr "이메일을 확인하세요"
 
 msgid "Choose a job"
 msgstr "작업 지시 선택"
 
-msgid "Chrome did not offer a one-tap install. If you already installed this site, Install app is unavailable until you uninstall or clear site data."
-msgstr "Chrome이 원탭 설치를 제공하지 않았습니다. 이 사이트를 이미 설치했다면 제거하거나 사이트 데이터를 지우기 전까지 ‘앱 설치’를 사용할 수 없습니다."
-
-msgid "Chrome may fire beforeinstallprompt only once per engagement window. After dismiss or install, reload or clear site data before retrying."
-msgstr "Chrome은 참여 창마다 beforeinstallprompt를 한 번만 발생시킬 수 있습니다. 거부하거나 설치한 뒤에는 다시 시도하기 전에 새로고침하거나 사이트 데이터를 지우세요."
-
-msgid "Chrome only fires the install prompt when the site is not already installed and installability criteria are met."
-msgstr "Chrome은 사이트가 아직 설치되지 않았고 설치 가능 조건을 충족할 때만 설치 프롬프트를 표시합니다."
+msgid "Chrome did not offer a one-tap install yet. Use the menu below — or if the address bar shows Open in app, the PWA is already installed."
+msgstr "Chrome에서 아직 원클릭 설치를 제공하지 않았습니다. 아래 메뉴를 사용하거나, 주소 표시줄에 '앱에서 열기'가 표시되면 PWA가 이미 설치된 것입니다."
 
 msgid "Chrome, Firefox, and Edge on iOS cannot native-install this app."
 msgstr "iOS의 Chrome, Firefox, Edge에서는 이 앱을 네이티브로 설치할 수 없습니다."
@@ -462,9 +453,6 @@ msgstr "재작업이 필요한 내용을 설명하세요..."
 
 msgid "Description"
 msgstr "설명"
-
-msgid "Desktop Chrome will not show Install again while this site is already an installed app. Open the app from chrome://apps, or uninstall it to reinstall."
-msgstr "이 사이트가 이미 설치된 앱인 동안 데스크톱 Chrome은 다시 ‘설치’를 표시하지 않습니다. chrome://apps에서 앱을 열거나, 재설치하려면 제거하세요."
 
 msgid "Details"
 msgstr "상세 정보"
@@ -742,6 +730,12 @@ msgstr "진행 중"
 
 msgid "In repair"
 msgstr "수리 중"
+
+msgid "In that app window: menu ⋮ → Cast, save, and share (投屏、保存和分享) → Create shortcut (创建快捷方式) / Pin to taskbar (固定到任务栏)."
+msgstr "해당 앱 창에서: 메뉴 ⋮ → 전송, 저장 및 공유 → 바로가기 만들기 / 작업 표시줄에 고정."
+
+msgid "In the Chrome address bar, click Open in app (打开应用) to launch the installed Carbon MES window."
+msgstr "Chrome 주소 표시줄에서 '앱에서 열기'를 클릭하여 설치된 Carbon MES 창을 실행합니다."
 
 msgid "Inspect Item"
 msgstr "항목 검사"
@@ -1166,6 +1160,9 @@ msgstr "하나의 피킹이 전체 배치를 커버합니다 — 자동으로 �
 msgid "Only {0} available"
 msgstr "{0}개만 가용합니다"
 
+msgid "Only Chromium fires the one-tap Install prompt. After install, use Open in app to pin to the desktop."
+msgstr "Chromium 브라우저에서만 원클릭 설치 메시지가 표시됩니다. 설치 후 '앱에서 열기'를 사용하여 바탕화면에 고정하세요."
+
 msgid "Oops. You shouldn't see this page. Eventually it will be a landing page."
 msgstr "이런. 이 페이지가 보이면 안 됩니다. 나중에 랜딩 페이지가 될 예정입니다."
 
@@ -1181,8 +1178,8 @@ msgstr "이 배치에서 작업 지시 열기"
 msgid "Open an NCR for MRB disposition"
 msgstr "MRB 처분 결정을 위해 NCR을 여세요"
 
-msgid "Open chrome://apps in the address bar and launch Carbon MES."
-msgstr "주소창에서 chrome://apps를 열고 Carbon MES를 실행하세요."
+msgid "Open app — Already installed"
+msgstr "앱 열기 — 이미 설치됨"
 
 msgid "Open inspection"
 msgstr "검사 열기"
@@ -1213,6 +1210,9 @@ msgstr "선택 사항"
 
 msgid "or"
 msgstr "또는"
+
+msgid "Or open chrome://apps → right-click Carbon MES → Create shortcut → choose Pin to taskbar / Create desktop shortcut."
+msgstr "또는 chrome://apps를 열고 → Carbon MES 우클릭 → 바로가기 만들기 → 작업 표시줄에 고정 / 바탕화면 바로가기 만들기를 선택하세요."
 
 msgid "Other"
 msgstr "기타"
@@ -1695,6 +1695,9 @@ msgstr "단계"
 msgid "Steps are missing"
 msgstr "단계가 누락되었습니다"
 
+msgid "Still missing Install? Stay on this page a few seconds and try again, or use Open in app / chrome://apps → Create shortcut."
+msgstr "설치가 여전히 표시되지 않나요? 이 페이지에서 몇 초간 기다린 후 다시 시도하거나, '앱에서 열기' / chrome://apps → 바로가기 만들기를 사용하세요."
+
 msgid "Storage Unit"
 msgstr "보관 단위"
 
@@ -1722,6 +1725,9 @@ msgstr "‘홈 화면에 추가’를 탭한 다음 ‘추가’를 탭하세요
 msgid "Tap Share (square with an arrow)."
 msgstr "공유(화살표가 있는 사각형)를 탭하세요."
 
+msgid "Tap the menu (⋮). If you see Install app, use it. If you see Open in app in the address bar instead, the app is already installed — follow Open app help."
+msgstr "메뉴(⋮)를 탭하세요. '앱 설치'가 표시되면 사용하세요. 주소 표시줄에 대신 '앱에서 열기'가 표시되면 앱이 이미 설치된 것입니다. 앱 열기 도움말을 참조하세요."
+
 msgid "The completed quantity for this operation is less than the required quantity of {targetQuantity}."
 msgstr "이 공정작업의 완료 수량이 필요 수량 {targetQuantity}보다 적습니다."
 
@@ -1744,9 +1750,6 @@ msgstr "타이머와 완료는 모든 {0} 작업 지시에 공유됩니다. 여�
 msgid "then"
 msgstr "그 다음"
 
-msgid "Then open chrome://settings/content/all, find this MES host, delete site data, reload /shop, and tap Install again."
-msgstr "그런 다음 chrome://settings/content/all을 열고 이 MES 호스트를 찾아 사이트 데이터를 삭제한 뒤 /shop을 새로고침하고 다시 설치를 탭하세요."
-
 msgid "There are no available or consumed tracked parts for this material."
 msgstr "이 자재에 대해 가용 또는 소모된 추적 부품이 없습니다."
 
@@ -1767,6 +1770,9 @@ msgstr "이 부품은 주문 제작되었습니다. 이를 스크랩하면 라�
 
 msgid "This part will be scrapped from stock. Its requirement stays open so you can issue a replacement."
 msgstr "이 부품은 재고에서 폐기됩니다. 요구사항은 열려있으므로 교체품을 발급할 수 있습니다."
+
+msgid "This site is already installed. Chrome will not show Install again. Use Open in app, then pin a desktop / taskbar shortcut."
+msgstr "이 사이트는 이미 설치되어 있습니다. Chrome에 설치가 다시 표시되지 않습니다. '앱에서 열기'를 사용한 다음 바탕화면/작업 표시줄 바로가기를 고정하세요."
 
 msgid "This unit will be permanently scrapped and a replacement serial number will be created."
 msgstr "이 개가 영구적으로 스크랩되고 대체 시리얼 번호가 생성됩니다."
@@ -1789,12 +1795,6 @@ msgstr "작업 시간: {0}"
 
 msgid "To pick"
 msgstr "피킹할"
-
-msgid "To reinstall: in chrome://apps, right-click the app → Remove from Chrome. Or use ⋮ → Uninstall Carbon MES on an open app window."
-msgstr "재설치하려면: chrome://apps에서 앱을 우클릭 → Chrome에서 제거. 또는 열린 앱 창에서 ⋮ → Carbon MES 제거."
-
-msgid "To reset: chrome://settings/content/all → remove site data for this MES host → reload, then try Install again."
-msgstr "재설정하려면: chrome://settings/content/all → 이 MES 호스트의 사이트 데이터 제거 → 새로고침 후 다시 설치를 시도하세요."
 
 msgid "To run"
 msgstr "실행할"
@@ -1925,6 +1925,9 @@ msgstr "수리 대기"
 
 msgid "We've sent you a magic link to sign in to your account."
 msgstr "계정에 로그인할 수 있는 매직 링크를 보내드렸습니다."
+
+msgid "Web pages cannot trigger Chrome’s Open in app automatically — use the address-bar control or chrome://apps."
+msgstr "웹 페이지는 Chrome의 '앱에서 열기'를 자동으로 실행할 수 없습니다. 주소 표시줄 컨트롤이나 chrome://apps를 사용하세요."
 
 msgid "What is {translatedTerm}?"
 msgstr "{translatedTerm}란 무엇인가요?"
