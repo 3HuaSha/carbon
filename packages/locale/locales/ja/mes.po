@@ -299,8 +299,6 @@ msgstr "メールを確認してください"
 msgid "Choose a job"
 msgstr "製造指図を選択"
 
-msgid "Chrome did not offer a one-tap install yet. Use the menu below — or if the address bar shows Open in app, the PWA is already installed."
-msgstr "Chrome でワンタップインストールのメッセージがまだ表示されていません。以下のメニューを使用してください。または、アドレスバーに「アプリで開く」と表示されている場合は、PWA はすでにインストールされています。"
 msgid "Choose Open in Chrome (or Open in browser)."
 msgstr "「Chromeで開く」（または「ブラウザで開く」）を選びます。"
 
@@ -310,11 +308,8 @@ msgstr "「Safariで開く」を選びます。"
 msgid "Chrome did not offer a one-tap install yet. Stay on this page a few seconds, tap Install again, or use the Chrome menu below."
 msgstr "Chromeはまだワンタップインストールを提示していません。このページで数秒待ってから再度「インストール」をタップするか、下のChromeメニューを使ってください。"
 
-msgid "Chrome did not offer a one-tap install. If you already installed this site, Install app is unavailable until you uninstall or clear site data."
-msgstr "Chrome はワンタップインストールを提示しませんでした。このサイトを既にインストールしている場合、アンインストールまたはサイトデータを消去するまで「アプリをインストール」は利用できません。"
-
-msgid "Chrome may fire beforeinstallprompt only once per engagement window. After dismiss or install, reload or clear site data before retrying."
-msgstr "Chrome はエンゲージメント期間ごとに beforeinstallprompt を一度しか発火しない場合があります。却下またはインストール後は、再試行前に再読み込みするかサイトデータを消去してください。"
+msgid "Chrome did not offer a one-tap install yet. Use the menu below — or if the address bar shows Open in app, the PWA is already installed."
+msgstr "Chrome でワンタップインストールのメッセージがまだ表示されていません。以下のメニューを使用してください。または、アドレスバーに「アプリで開く」と表示されている場合は、PWA はすでにインストールされています。"
 
 msgid "Chrome on this phone will not offer Install again while MES is already on your home screen. Open the app, or uninstall it to reinstall."
 msgstr "ホーム画面にMESがある間、この端末のChromeは再度「インストール」を出しません。アプリを開くか、アンインストールしてから再インストールしてください。"
@@ -762,6 +757,7 @@ msgstr "そのアプリウィンドウで：メニュー ⋮ → [保存して�
 
 msgid "In the Chrome address bar, click Open in app (打开应用) to launch the installed Carbon MES window."
 msgstr "Chrome のアドレスバーで [アプリで開く] をクリックして、インストールされている Carbon MES ウィンドウを起動します。"
+
 msgid "In-app browsers (WeChat, Instagram, etc.) block Progressive Web App install."
 msgstr "アプリ内ブラウザ（WeChat、Instagramなど）はProgressive Web Appのインストールをブロックします。"
 
@@ -1191,8 +1187,8 @@ msgstr "1回のピッキングがバッチ全体をカバーし、各製造指�
 msgid "Only {0} available"
 msgstr "{0} のみ利用可能"
 
-msgid "Only Chromium fires the one-tap Install prompt. After install, use Open in app to pin to the desktop."
-msgstr "Chromium のみがワンタップのインストールプロンプトを表示します。インストール後は、[アプリで開く] を使用してデスクトップに固定してください。"
+msgid "Only Chromium fires the one-tap Install prompt. After install on desktop, use Open in app to pin to the taskbar."
+msgstr "ワンタップのインストールプロンプトを出すのはChromiumだけです。デスクトップにインストール後は「アプリで開く」でタスクバーにピン留めしてください。"
 
 msgid "Oops. You shouldn't see this page. Eventually it will be a landing page."
 msgstr "このページは表示されないはずです。最終的にはランディングページになります。"
@@ -1774,9 +1770,6 @@ msgstr "このアプリ内ブラウザでメニュー（⋯または共有）を
 msgid "Tap the Share button at the bottom of Safari (square with an upward arrow)."
 msgstr "Safari下部の共有ボタン（上向き矢印の四角）をタップします。"
 
-msgid "Tap the menu (⋮). If you see Install app, use it. If you see Open in app in the address bar instead, the app is already installed — follow Open app help."
-msgstr "メニュー (⋮) をタップします。[アプリをインストール] が表示されたら、それを実行します。代わりにアドレスバーに [アプリで開く] が表示されている場合は、アプリはすでにインストールされています。「アプリを開く」のヘルプに従ってください。"
-
 msgid "The completed quantity for this operation is less than the required quantity of {targetQuantity}."
 msgstr "この工程の完了数量が必要数量 {targetQuantity} を下回っています。"
 
@@ -1850,9 +1843,6 @@ msgstr "作業時間: {0}"
 
 msgid "To pick"
 msgstr "ピッキング待ち"
-
-msgid "To reinstall: in chrome://apps, right-click the app → Remove from Chrome. Or use ⋮ → Uninstall Carbon MES on an open app window."
-msgstr "再インストールするには: chrome://apps でアプリを右クリック → Chrome から削除。または開いているアプリウィンドウで ⋮ → Carbon MES をアンインストール。"
 
 msgid "To reinstall: long-press the icon → App info → Uninstall (or Remove)."
 msgstr "再インストールするには：アイコンを長押し → アプリ情報 → アンインストール（または削除）。"

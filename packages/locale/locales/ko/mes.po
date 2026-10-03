@@ -299,8 +299,6 @@ msgstr "이메일을 확인하세요"
 msgid "Choose a job"
 msgstr "작업 지시 선택"
 
-msgid "Chrome did not offer a one-tap install yet. Use the menu below — or if the address bar shows Open in app, the PWA is already installed."
-msgstr "Chrome에서 아직 원클릭 설치를 제공하지 않았습니다. 아래 메뉴를 사용하거나, 주소 표시줄에 '앱에서 열기'가 표시되면 PWA가 이미 설치된 것입니다."
 msgid "Choose Open in Chrome (or Open in browser)."
 msgstr "Chrome에서 열기(또는 브라우저에서 열기)를 선택하세요."
 
@@ -310,11 +308,8 @@ msgstr "Safari에서 열기를 선택하세요."
 msgid "Chrome did not offer a one-tap install yet. Stay on this page a few seconds, tap Install again, or use the Chrome menu below."
 msgstr "Chrome이 아직 원탭 설치를 제안하지 않았습니다. 이 페이지에서 몇 초 기다린 뒤 설치를 다시 누르거나 아래 Chrome 메뉴를 사용하세요."
 
-msgid "Chrome did not offer a one-tap install. If you already installed this site, Install app is unavailable until you uninstall or clear site data."
-msgstr "Chrome이 원탭 설치를 제공하지 않았습니다. 이 사이트를 이미 설치했다면 제거하거나 사이트 데이터를 지우기 전까지 ‘앱 설치’를 사용할 수 없습니다."
-
-msgid "Chrome may fire beforeinstallprompt only once per engagement window. After dismiss or install, reload or clear site data before retrying."
-msgstr "Chrome은 참여 창마다 beforeinstallprompt를 한 번만 발생시킬 수 있습니다. 거부하거나 설치한 뒤에는 다시 시도하기 전에 새로고침하거나 사이트 데이터를 지우세요."
+msgid "Chrome did not offer a one-tap install yet. Use the menu below — or if the address bar shows Open in app, the PWA is already installed."
+msgstr "Chrome에서 아직 원클릭 설치를 제공하지 않았습니다. 아래 메뉴를 사용하거나, 주소 표시줄에 '앱에서 열기'가 표시되면 PWA가 이미 설치된 것입니다."
 
 msgid "Chrome on this phone will not offer Install again while MES is already on your home screen. Open the app, or uninstall it to reinstall."
 msgstr "MES가 이미 홈 화면에 있으면 이 휴대전화의 Chrome은 다시 설치를 제안하지 않습니다. 앱을 열거나 재설치하려면 제거하세요."
@@ -762,6 +757,7 @@ msgstr "해당 앱 창에서: 메뉴 ⋮ → 전송, 저장 및 공유 → 바�
 
 msgid "In the Chrome address bar, click Open in app (打开应用) to launch the installed Carbon MES window."
 msgstr "Chrome 주소 표시줄에서 '앱에서 열기'를 클릭하여 설치된 Carbon MES 창을 실행합니다."
+
 msgid "In-app browsers (WeChat, Instagram, etc.) block Progressive Web App install."
 msgstr "인앱 브라우저(WeChat, Instagram 등)는 Progressive Web App 설치를 차단합니다."
 
@@ -1191,8 +1187,8 @@ msgstr "하나의 피킹이 전체 배치를 커버합니다 — 자동으로 �
 msgid "Only {0} available"
 msgstr "{0}개만 가용합니다"
 
-msgid "Only Chromium fires the one-tap Install prompt. After install, use Open in app to pin to the desktop."
-msgstr "Chromium 브라우저에서만 원클릭 설치 메시지가 표시됩니다. 설치 후 '앱에서 열기'를 사용하여 바탕화면에 고정하세요."
+msgid "Only Chromium fires the one-tap Install prompt. After install on desktop, use Open in app to pin to the taskbar."
+msgstr "원탭 설치 프롬프트는 Chromium만 표시합니다. 데스크톱에 설치한 뒤 앱에서 열기를 사용해 작업 표시줄에 고정하세요."
 
 msgid "Oops. You shouldn't see this page. Eventually it will be a landing page."
 msgstr "이런. 이 페이지가 보이면 안 됩니다. 나중에 랜딩 페이지가 될 예정입니다."
@@ -1774,9 +1770,6 @@ msgstr "이 인앱 브라우저에서 메뉴(⋯ 또는 공유)를 누르세요.
 msgid "Tap the Share button at the bottom of Safari (square with an upward arrow)."
 msgstr "Safari 하단의 공유 버튼(위쪽 화살표가 있는 사각형)을 누르세요."
 
-msgid "Tap the menu (⋮). If you see Install app, use it. If you see Open in app in the address bar instead, the app is already installed — follow Open app help."
-msgstr "메뉴(⋮)를 탭하세요. '앱 설치'가 표시되면 사용하세요. 주소 표시줄에 대신 '앱에서 열기'가 표시되면 앱이 이미 설치된 것입니다. 앱 열기 도움말을 참조하세요."
-
 msgid "The completed quantity for this operation is less than the required quantity of {targetQuantity}."
 msgstr "이 공정작업의 완료 수량이 필요 수량 {targetQuantity}보다 적습니다."
 
@@ -1850,9 +1843,6 @@ msgstr "작업 시간: {0}"
 
 msgid "To pick"
 msgstr "피킹할"
-
-msgid "To reinstall: in chrome://apps, right-click the app → Remove from Chrome. Or use ⋮ → Uninstall Carbon MES on an open app window."
-msgstr "재설치하려면: chrome://apps에서 앱을 우클릭 → Chrome에서 제거. 또는 열린 앱 창에서 ⋮ → Carbon MES 제거."
 
 msgid "To reinstall: long-press the icon → App info → Uninstall (or Remove)."
 msgstr "재설치: 아이콘을 길게 누름 → 앱 정보 → 제거(또는 삭제)."

@@ -299,8 +299,6 @@ msgstr "अपना ईमेल जांचें"
 msgid "Choose a job"
 msgstr "एक जॉब चुनें"
 
-msgid "Chrome did not offer a one-tap install yet. Use the menu below — or if the address bar shows Open in app, the PWA is already installed."
-msgstr "Chrome ने अभी तक एक-टैप इंस्टॉल की पेशकश नहीं की है। नीचे दिए गए मेनू का उपयोग करें — या यदि एड्रेस बार में ऐप में खोलें (Open in app) दिखाई देता है, तो PWA पहले से इंस्टॉल है।"
 msgid "Choose Open in Chrome (or Open in browser)."
 msgstr "Chrome में खोलें (या ब्राउज़र में खोलें) चुनें।"
 
@@ -310,11 +308,8 @@ msgstr "Safari में खोलें चुनें।"
 msgid "Chrome did not offer a one-tap install yet. Stay on this page a few seconds, tap Install again, or use the Chrome menu below."
 msgstr "Chrome ने अभी वन-टैप इंस्टॉल नहीं दिखाया। इस पेज पर कुछ सेकंड रुकें, फिर से इंस्टॉल टैप करें, या नीचे Chrome मेनू इस्तेमाल करें।"
 
-msgid "Chrome did not offer a one-tap install. If you already installed this site, Install app is unavailable until you uninstall or clear site data."
-msgstr "Chrome ने एक-टैप इंस्टॉल नहीं दिया। यदि आपने यह साइट पहले इंस्टॉल कर ली है, तो अनइंस्टॉल करने या साइट डेटा साफ़ करने तक “ऐप इंस्टॉल करें” उपलब्ध नहीं होगा।"
-
-msgid "Chrome may fire beforeinstallprompt only once per engagement window. After dismiss or install, reload or clear site data before retrying."
-msgstr "Chrome प्रति एंगेजमेंट विंडो में beforeinstallprompt केवल एक बार चला सकता है। अस्वीकार या इंस्टॉल के बाद पुनः प्रयास से पहले रीलोड करें या साइट डेटा साफ़ करें।"
+msgid "Chrome did not offer a one-tap install yet. Use the menu below — or if the address bar shows Open in app, the PWA is already installed."
+msgstr "Chrome ने अभी तक एक-टैप इंस्टॉल की पेशकश नहीं की है। नीचे दिए गए मेनू का उपयोग करें — या यदि एड्रेस बार में ऐप में खोलें (Open in app) दिखाई देता है, तो PWA पहले से इंस्टॉल है।"
 
 msgid "Chrome on this phone will not offer Install again while MES is already on your home screen. Open the app, or uninstall it to reinstall."
 msgstr "जब MES पहले से होम स्क्रीन पर हो, इस फ़ोन पर Chrome फिर से इंस्टॉल नहीं दिखाएगा। ऐप खोलें, या फिर से इंस्टॉल करने के लिए अनइंस्टॉल करें।"
@@ -762,6 +757,7 @@ msgstr "उस ऐप विंडो में: मेनू ⋮ → Cast, save
 
 msgid "In the Chrome address bar, click Open in app (打开应用) to launch the installed Carbon MES window."
 msgstr "Chrome एड्रेस बार में, इंस्टॉल की गई Carbon MES विंडो लॉन्च करने के लिए ऐप में खोलें (Open in app) पर क्लिक करें।"
+
 msgid "In-app browsers (WeChat, Instagram, etc.) block Progressive Web App install."
 msgstr "इन-ऐप ब्राउज़र (WeChat, Instagram आदि) Progressive Web App इंस्टॉल रोकते हैं।"
 
@@ -1191,8 +1187,8 @@ msgstr "एक पिकिंग पूरे बैच को कवर कर
 msgid "Only {0} available"
 msgstr "केवल {0} उपलब्ध"
 
-msgid "Only Chromium fires the one-tap Install prompt. After install, use Open in app to pin to the desktop."
-msgstr "केवल Chromium ही एक-टैप इंस्टॉल प्रॉम्प्ट दिखाता है। इंस्टॉल करने के बाद, डेस्कटॉप पर पिन करने के लिए ऐप में खोलें (Open in app) का उपयोग करें।"
+msgid "Only Chromium fires the one-tap Install prompt. After install on desktop, use Open in app to pin to the taskbar."
+msgstr "केवल Chromium वन-टैप इंस्टॉल प्रॉम्प्ट दिखाता है। डेस्कटॉप पर इंस्टॉल के बाद, टास्कबार पर पिन करने के लिए ऐप में खोलें इस्तेमाल करें।"
 
 msgid "Oops. You shouldn't see this page. Eventually it will be a landing page."
 msgstr "अरे। आपको यह पृष्ठ नहीं देखना चाहिए। आखिरकार यह एक लैंडिंग पृष्ठ होगा।"
@@ -1774,9 +1770,6 @@ msgstr "इस इन-ऐप ब्राउज़र में मेनू (�
 msgid "Tap the Share button at the bottom of Safari (square with an upward arrow)."
 msgstr "Safari के नीचे शेयर बटन टैप करें (ऊपर तीर वाला वर्ग)।"
 
-msgid "Tap the menu (⋮). If you see Install app, use it. If you see Open in app in the address bar instead, the app is already installed — follow Open app help."
-msgstr "मेनू (⋮) पर टैप करें। यदि आपको ऐप इंस्टॉल करें (Install app) दिखाई देता है, तो इसका उपयोग करें। यदि आपको इसके बजाय एड्रेस बार में ऐप में खोलें (Open in app) दिखाई देता है, तो ऐप पहले से इंस्टॉल है — ऐप खोलें (Open app) सहायता का पालन करें।"
-
 msgid "The completed quantity for this operation is less than the required quantity of {targetQuantity}."
 msgstr "इस ऑपरेशन के लिए पूर्ण मात्रा आवश्यक मात्रा {targetQuantity} से कम है।"
 
@@ -1850,9 +1843,6 @@ msgstr "समय काम किया: {0}"
 
 msgid "To pick"
 msgstr "पिकिंग के लिए"
-
-msgid "To reinstall: in chrome://apps, right-click the app → Remove from Chrome. Or use ⋮ → Uninstall Carbon MES on an open app window."
-msgstr "फिर से इंस्टॉल करने के लिए: chrome://apps में ऐप पर राइट-क्लिक → Chrome से हटाएँ। या खुली ऐप विंडो में ⋮ → Carbon MES अनइंस्टॉल करें।"
 
 msgid "To reinstall: long-press the icon → App info → Uninstall (or Remove)."
 msgstr "फिर से इंस्टॉल करने के लिए: आइकन लंबा दबाएँ → ऐप जानकारी → अनइंस्टॉल (या हटाएँ)।"

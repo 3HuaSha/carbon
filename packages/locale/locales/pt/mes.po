@@ -299,8 +299,6 @@ msgstr "Verifique seu e-mail"
 msgid "Choose a job"
 msgstr "Escolha uma ordem de produção"
 
-msgid "Chrome did not offer a one-tap install yet. Use the menu below — or if the address bar shows Open in app, the PWA is already installed."
-msgstr "O Chrome ainda não ofereceu a instalação em um toque. Use o menu abaixo — ou se a barra de endereços mostrar \"Abrir no aplicativo\", o PWA já está instalado."
 msgid "Choose Open in Chrome (or Open in browser)."
 msgstr "Escolha Abrir no Chrome (ou Abrir no navegador)."
 
@@ -310,11 +308,8 @@ msgstr "Escolha Abrir no Safari."
 msgid "Chrome did not offer a one-tap install yet. Stay on this page a few seconds, tap Install again, or use the Chrome menu below."
 msgstr "O Chrome ainda não ofereceu a instalação com um toque. Fique nesta página alguns segundos, toque em Instalar de novo ou use o menu do Chrome abaixo."
 
-msgid "Chrome did not offer a one-tap install. If you already installed this site, Install app is unavailable until you uninstall or clear site data."
-msgstr "O Chrome não ofereceu instalação com um toque. Se já instalou este site, Instalar aplicação fica indisponível até desinstalar ou limpar os dados do site."
-
-msgid "Chrome may fire beforeinstallprompt only once per engagement window. After dismiss or install, reload or clear site data before retrying."
-msgstr "O Chrome pode disparar beforeinstallprompt apenas uma vez por janela de envolvimento. Após recusar ou instalar, recarregue ou limpe os dados do site antes de tentar novamente."
+msgid "Chrome did not offer a one-tap install yet. Use the menu below — or if the address bar shows Open in app, the PWA is already installed."
+msgstr "O Chrome ainda não ofereceu a instalação em um toque. Use o menu abaixo — ou se a barra de endereços mostrar \"Abrir no aplicativo\", o PWA já está instalado."
 
 msgid "Chrome on this phone will not offer Install again while MES is already on your home screen. Open the app, or uninstall it to reinstall."
 msgstr "O Chrome neste telemóvel não oferecerá Instalar de novo enquanto o MES já estiver no ecrã inicial. Abra a app ou desinstale-a para reinstalar."
@@ -762,6 +757,7 @@ msgstr "Na janela desse aplicativo: menu ⋮ → Transmitir, salvar e compartilh
 
 msgid "In the Chrome address bar, click Open in app (打开应用) to launch the installed Carbon MES window."
 msgstr "Na barra de endereços do Chrome, clique em \"Abrir no aplicativo\" (打开应用) para iniciar a janela instalada do Carbon MES."
+
 msgid "In-app browsers (WeChat, Instagram, etc.) block Progressive Web App install."
 msgstr "Os browsers na app (WeChat, Instagram, etc.) bloqueiam a instalação de Progressive Web Apps."
 
@@ -1191,8 +1187,8 @@ msgstr "Uma separação cobre todo o lote de produção — é distribuída auto
 msgid "Only {0} available"
 msgstr "Apenas {0} disponível"
 
-msgid "Only Chromium fires the one-tap Install prompt. After install, use Open in app to pin to the desktop."
-msgstr "Apenas o Chromium aciona a solicitação de instalação em um toque. Após instalar, use \"Abrir no aplicativo\" para fixar na área de trabalho."
+msgid "Only Chromium fires the one-tap Install prompt. After install on desktop, use Open in app to pin to the taskbar."
+msgstr "Só o Chromium mostra o pedido de instalação com um toque. Depois de instalar no ambiente de trabalho, use Abrir na app para afixar na barra de tarefas."
 
 msgid "Oops. You shouldn't see this page. Eventually it will be a landing page."
 msgstr "Ops. Você não deveria ver esta página. Eventualmente será uma página inicial."
@@ -1774,9 +1770,6 @@ msgstr "Toque no menu (⋯ ou Partilhar) neste browser na app."
 msgid "Tap the Share button at the bottom of Safari (square with an upward arrow)."
 msgstr "Toque no botão Partilhar na parte inferior do Safari (quadrado com seta para cima)."
 
-msgid "Tap the menu (⋮). If you see Install app, use it. If you see Open in app in the address bar instead, the app is already installed — follow Open app help."
-msgstr "Toque no menu (⋮). Se vir \"Instalar aplicativo\", use-o. Se, em vez disso, vir \"Abrir no aplicativo\" na barra de endereços, o aplicativo já está instalado — siga a ajuda de Abrir aplicativo."
-
 msgid "The completed quantity for this operation is less than the required quantity of {targetQuantity}."
 msgstr "A quantidade concluída para esta operação é menor que a quantidade requerida de {targetQuantity}."
 
@@ -1850,9 +1843,6 @@ msgstr "Tempo Trabalhado: {0}"
 
 msgid "To pick"
 msgstr "Para separar"
-
-msgid "To reinstall: in chrome://apps, right-click the app → Remove from Chrome. Or use ⋮ → Uninstall Carbon MES on an open app window."
-msgstr "Para reinstalar: em chrome://apps, clique com o botão direito na app → Remover do Chrome. Ou use ⋮ → Desinstalar Carbon MES numa janela da app aberta."
 
 msgid "To reinstall: long-press the icon → App info → Uninstall (or Remove)."
 msgstr "Para reinstalar: prima longamente o ícone → Informações da app → Desinstalar (ou Remover)."

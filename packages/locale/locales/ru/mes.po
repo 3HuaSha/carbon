@@ -299,8 +299,6 @@ msgstr "Проверьте вашу электронную почту"
 msgid "Choose a job"
 msgstr "Выбрать производственный заказ"
 
-msgid "Chrome did not offer a one-tap install yet. Use the menu below — or if the address bar shows Open in app, the PWA is already installed."
-msgstr "Chrome пока не предложил установку в один клик. Воспользуйтесь меню ниже — либо, если в адресной строке отображается «Открыть в приложении», PWA уже установлено."
 msgid "Choose Open in Chrome (or Open in browser)."
 msgstr "Выберите «Открыть в Chrome» (или «Открыть в браузере»)."
 
@@ -310,11 +308,8 @@ msgstr "Выберите «Открыть в Safari»."
 msgid "Chrome did not offer a one-tap install yet. Stay on this page a few seconds, tap Install again, or use the Chrome menu below."
 msgstr "Chrome ещё не предложил установку в один тап. Подождите несколько секунд на этой странице, снова нажмите «Установить» или используйте меню Chrome ниже."
 
-msgid "Chrome did not offer a one-tap install. If you already installed this site, Install app is unavailable until you uninstall or clear site data."
-msgstr "Chrome не предложил установку в один клик. Если вы уже установили этот сайт, «Установить приложение» недоступно, пока вы не удалите приложение или данные сайта."
-
-msgid "Chrome may fire beforeinstallprompt only once per engagement window. After dismiss or install, reload or clear site data before retrying."
-msgstr "Chrome может вызвать beforeinstallprompt только один раз за окно взаимодействия. После отклонения или установки перезагрузите страницу или очистите данные сайта перед повтором."
+msgid "Chrome did not offer a one-tap install yet. Use the menu below — or if the address bar shows Open in app, the PWA is already installed."
+msgstr "Chrome пока не предложил установку в один клик. Воспользуйтесь меню ниже — либо, если в адресной строке отображается «Открыть в приложении», PWA уже установлено."
 
 msgid "Chrome on this phone will not offer Install again while MES is already on your home screen. Open the app, or uninstall it to reinstall."
 msgstr "Chrome на этом телефоне не предложит «Установить» снова, пока MES уже на домашнем экране. Откройте приложение или удалите его для переустановки."
@@ -762,6 +757,7 @@ msgstr "В окне этого приложения: меню ⋮ → Транс
 
 msgid "In the Chrome address bar, click Open in app (打开应用) to launch the installed Carbon MES window."
 msgstr "В адресной строке Chrome нажмите «Открыть в приложении» (打开应用), чтобы запустить установленное окно Carbon MES."
+
 msgid "In-app browsers (WeChat, Instagram, etc.) block Progressive Web App install."
 msgstr "Встроенные браузеры (WeChat, Instagram и т. д.) блокируют установку Progressive Web App."
 
@@ -1191,8 +1187,8 @@ msgstr "Один отбор охватывает всю серию — она р
 msgid "Only {0} available"
 msgstr "Доступно только {0}"
 
-msgid "Only Chromium fires the one-tap Install prompt. After install, use Open in app to pin to the desktop."
-msgstr "Запрос на установку в один клик появляется только в Chromium. После установки используйте «Открыть в приложении», чтобы закрепить его на рабочем столе."
+msgid "Only Chromium fires the one-tap Install prompt. After install on desktop, use Open in app to pin to the taskbar."
+msgstr "Подсказку установки в один тап показывает только Chromium. После установки на компьютере используйте «Открыть в приложении», чтобы закрепить на панели задач."
 
 msgid "Oops. You shouldn't see this page. Eventually it will be a landing page."
 msgstr "Ой. Вы не должны видеть эту страницу. Со временем здесь будет главная страница."
@@ -1774,9 +1770,6 @@ msgstr "Нажмите меню (⋯ или «Поделиться») в это�
 msgid "Tap the Share button at the bottom of Safari (square with an upward arrow)."
 msgstr "Нажмите кнопку «Поделиться» внизу Safari (квадрат со стрелкой вверх)."
 
-msgid "Tap the menu (⋮). If you see Install app, use it. If you see Open in app in the address bar instead, the app is already installed — follow Open app help."
-msgstr "Нажмите значок меню (⋮). Если отображается «Установить приложение», выберите его. Если же в адресной строке отображается «Открыть в приложении», приложение уже установлено — воспользуйтесь справкой «Открыть приложение»."
-
 msgid "The completed quantity for this operation is less than the required quantity of {targetQuantity}."
 msgstr "Количество готовой продукции по этой операции меньше требуемого количества {targetQuantity}."
 
@@ -1850,9 +1843,6 @@ msgstr "Отработанное время: {0}"
 
 msgid "To pick"
 msgstr "Для отбора"
-
-msgid "To reinstall: in chrome://apps, right-click the app → Remove from Chrome. Or use ⋮ → Uninstall Carbon MES on an open app window."
-msgstr "Для переустановки: в chrome://apps щёлкните приложение правой кнопкой → Удалить из Chrome. Или ⋮ → Удалить Carbon MES в открытом окне приложения."
 
 msgid "To reinstall: long-press the icon → App info → Uninstall (or Remove)."
 msgstr "Для переустановки: долгий тап по значку → О приложении → Удалить (или Убрать)."
