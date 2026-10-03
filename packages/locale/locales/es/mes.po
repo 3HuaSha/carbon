@@ -29,6 +29,10 @@ msgstr "hace {0}"
 msgid "{0} customers"
 msgstr "{0} clientes"
 
+#. placeholder {0}: files.length
+msgid "{0} file(s) selected"
+msgstr ""
+
 #. placeholder {0}: unplanned .map( (m) => (m.job as { jobId?: string | null } | null)?.jobId ) .filter(Boolean) .join(", ")
 msgid "{0} has no lot number. Set it on the batch or job in Carbon, then complete."
 msgstr "{0} no tiene número de lote. Configúralo en el lote de producción u orden de trabajo en Carbon, luego completa."
@@ -77,6 +81,10 @@ msgstr "{0} órdenes de trabajo en lote de producción {1}"
 msgid "{0} Scrapped"
 msgstr "{0} Descartados"
 
+#. placeholder {0}: file.name
+msgid "{0} uploaded"
+msgstr ""
+
 msgid "{completed} of {quantity}"
 msgstr "{completed} de {quantity}"
 
@@ -121,6 +129,9 @@ msgstr "Reconocer y finalizar"
 msgid "across {0} jobs"
 msgstr "en {0} órdenes de trabajo"
 
+msgid "Actions"
+msgstr ""
+
 msgid "Active"
 msgstr "Activo"
 
@@ -138,6 +149,9 @@ msgstr "Agregue una impresora en la configuración de impresión para imprimir e
 
 msgid "Add Inventory"
 msgstr "Agregar inventario"
+
+msgid "Add photo / video"
+msgstr ""
 
 msgid "Add Sample"
 msgstr "Agregar muestra"
@@ -199,6 +213,9 @@ msgstr "Pasos de montaje"
 
 msgid "Assign person"
 msgstr "Asignar persona"
+
+msgid "Assign person (optional)"
+msgstr ""
 
 msgid "Assign to me"
 msgstr "Asignarme"
@@ -275,6 +292,12 @@ msgstr "Bloqueando"
 msgid "Board view"
 msgstr "Vista de tablero"
 
+msgid "Break"
+msgstr ""
+
+msgid "Break / Away"
+msgstr ""
+
 msgid "But don't worry. You can use the forgot password flow to request a new magic link."
 msgstr "Pero no te preocupes. Puedes usar el flujo de contraseña olvidada para solicitar un nuevo enlace mágico."
 
@@ -290,11 +313,17 @@ msgstr "Cancelar"
 msgid "Cancelled"
 msgstr "Cancelado"
 
+msgid "Carbon client not available"
+msgstr ""
+
 msgid "Carbon Logo"
 msgstr "Logotipo de Carbon"
 
 msgid "Cards"
 msgstr "Tarjetas"
+
+msgid "Change assignee"
+msgstr ""
 
 msgid "Chat"
 msgstr "Chat"
@@ -373,6 +402,9 @@ msgstr "Columna: {0}"
 msgid "Columns"
 msgstr "Columnas"
 
+msgid "Coming in a later update"
+msgstr ""
+
 msgid "Company"
 msgstr "Empresa"
 
@@ -396,6 +428,9 @@ msgstr "Completado"
 
 msgid "Completing"
 msgstr "Finalizando"
+
+msgid "Confirm"
+msgstr ""
 
 msgid "Connecting"
 msgstr "Conectando"
@@ -436,6 +471,12 @@ msgstr "Crear Problema de Calidad"
 msgid "Create Rework"
 msgstr "Crear retrabajo"
 
+msgid "Created ticket, but media upload failed"
+msgstr ""
+
+msgid "Current production"
+msgstr ""
+
 msgid "Current work"
 msgstr "Trabajo actual"
 
@@ -468,6 +509,9 @@ msgstr "Eliminar paso"
 
 msgid "Delete Timecard (<0/>)"
 msgstr "Eliminar Tarjeta de Tiempo (<0/>)"
+
+msgid "Describe the fault. Notes required; photos/videos recommended."
+msgstr ""
 
 msgid "Describe the problem..."
 msgstr "Describe el problema..."
@@ -653,6 +697,12 @@ msgstr "Error al subir el archivo: {0}"
 msgid "Failed to upload image"
 msgstr "Error al subir la imagen"
 
+msgid "Failed to upload media"
+msgstr ""
+
+msgid "Fault downtime"
+msgstr ""
+
 msgid "Feature"
 msgstr "Característica"
 
@@ -730,6 +780,9 @@ msgstr "¿Cuántos?"
 msgid "I understand and want to complete without issuing"
 msgstr "Entiendo y deseo completar sin emitir"
 
+msgid "I'm back"
+msgstr ""
+
 msgid "I'm Still Working"
 msgstr "Sigo trabajando"
 
@@ -787,6 +840,9 @@ msgstr "Instrucciones"
 
 msgid "Insufficient quantity"
 msgstr "Cantidad insuficiente"
+
+msgid "Invalid file name"
+msgstr ""
 
 msgid "Inventory adjustment completed"
 msgstr "Ajuste de inventario completado"
@@ -940,6 +996,9 @@ msgstr "Mantenimiento"
 
 msgid "Maintenance Completed"
 msgstr "Mantenimiento completado"
+
+msgid "Maintenance history"
+msgstr ""
 
 msgid "Maintenance overdue"
 msgstr "Mantenimiento atrasado"
@@ -1104,11 +1163,17 @@ msgstr "No se encontraron opciones."
 msgid "No people found"
 msgstr "No se encontraron personas"
 
+msgid "No photos or videos yet"
+msgstr ""
+
 msgid "No picking lists assigned"
 msgstr "Sin listas de picking asignadas"
 
 msgid "No printer configured"
 msgstr "Sin impresora configurada"
+
+msgid "No recent closed tickets"
+msgstr ""
 
 msgid "No recent operations"
 msgstr "No hay operaciones recientes"
@@ -1169,6 +1234,9 @@ msgstr "Ninguno"
 
 msgid "Notes"
 msgstr "Notas"
+
+msgid "Notes and photos recommended (changeover / PM window)."
+msgstr ""
 
 msgid "Nothing running"
 msgstr "Nada en ejecución"
@@ -1262,11 +1330,20 @@ msgstr "Realizado por operador"
 msgid "Optional"
 msgstr "Opcional"
 
+msgid "Optional note"
+msgstr ""
+
+msgid "Optional short note (lunch, bathroom, away)."
+msgstr ""
+
 msgid "or"
 msgstr "o"
 
 msgid "Other"
 msgstr "Otros"
+
+msgid "Other open tickets"
+msgstr ""
 
 msgid "Output lot"
 msgstr "Lote de salida"
@@ -1340,6 +1417,9 @@ msgstr "Cerrar sesión con PIN"
 
 msgid "Planned"
 msgstr "Planificado"
+
+msgid "Planned downtime"
+msgstr ""
 
 msgid "Please record all steps for this operation before closing."
 msgstr "Por favor registre todos los pasos de esta operación antes de cerrar."
@@ -1479,6 +1559,9 @@ msgstr "Requerido"
 
 msgid "Result"
 msgstr "Resultado"
+
+msgid "Resume / Complete"
+msgstr ""
 
 msgid "Retry Completion"
 msgstr "Reintentar Finalización"
@@ -1886,6 +1969,9 @@ msgstr "Por ejecutar"
 msgid "Today"
 msgstr "Hoy"
 
+msgid "Today's yield"
+msgstr ""
+
 msgid "Toggle the sidebar"
 msgstr "Alternar la barra lateral"
 
@@ -1983,6 +2069,9 @@ msgstr "Subido: {0}"
 msgid "Uploading {0}"
 msgstr "Subiendo {0}"
 
+msgid "Uploading…"
+msgstr ""
+
 msgid "Use a different account"
 msgstr "Usar una cuenta diferente"
 
@@ -2009,6 +2098,9 @@ msgstr "Le hemos enviado un enlace mágico para iniciar sesión en su cuenta."
 
 msgid "WeChat / QQ / UC cannot install MES. Open this link in Chrome, then tap Install."
 msgstr "WeChat / QQ / UC cannot install MES. Open this link in Chrome, then tap Install."
+
+msgid "What happened? (required)"
+msgstr ""
 
 msgid "What is {translatedTerm}?"
 msgstr "¿Qué es {translatedTerm}?"

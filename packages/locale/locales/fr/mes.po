@@ -29,6 +29,10 @@ msgstr "il y a {0}"
 msgid "{0} customers"
 msgstr "{0} clients"
 
+#. placeholder {0}: files.length
+msgid "{0} file(s) selected"
+msgstr ""
+
 #. placeholder {0}: unplanned .map( (m) => (m.job as { jobId?: string | null } | null)?.jobId ) .filter(Boolean) .join(", ")
 msgid "{0} has no lot number. Set it on the batch or job in Carbon, then complete."
 msgstr "{0} n'a pas de numéro de lot. Définissez-le sur le lot de production ou l'ordre de fabrication dans Carbon, puis terminez."
@@ -77,6 +81,10 @@ msgstr "{0} s'exécute dans le lot de production {1}"
 msgid "{0} Scrapped"
 msgstr "{0} Rebuté(s)"
 
+#. placeholder {0}: file.name
+msgid "{0} uploaded"
+msgstr ""
+
 msgid "{completed} of {quantity}"
 msgstr "{completed} sur {quantity}"
 
@@ -121,6 +129,9 @@ msgstr "Reconnaître et terminer"
 msgid "across {0} jobs"
 msgstr "sur {0} ordres de fabrication"
 
+msgid "Actions"
+msgstr ""
+
 msgid "Active"
 msgstr "Actif"
 
@@ -138,6 +149,9 @@ msgstr "Ajoutez une imprimante dans les paramètres d'impression pour imprimer l
 
 msgid "Add Inventory"
 msgstr "Ajouter au stock"
+
+msgid "Add photo / video"
+msgstr ""
 
 msgid "Add Sample"
 msgstr "Ajouter échantillon"
@@ -199,6 +213,9 @@ msgstr "Étapes d'assemblage"
 
 msgid "Assign person"
 msgstr "Assigner une personne"
+
+msgid "Assign person (optional)"
+msgstr ""
 
 msgid "Assign to me"
 msgstr "M’assigner"
@@ -275,6 +292,12 @@ msgstr "Bloquant"
 msgid "Board view"
 msgstr "Vue tableau"
 
+msgid "Break"
+msgstr ""
+
+msgid "Break / Away"
+msgstr ""
+
 msgid "But don't worry. You can use the forgot password flow to request a new magic link."
 msgstr "Mais ne vous inquiétez pas. Vous pouvez utiliser la procédure de réinitialisation de mot de passe pour demander un nouveau lien magique."
 
@@ -290,11 +313,17 @@ msgstr "Annuler"
 msgid "Cancelled"
 msgstr "Annulé"
 
+msgid "Carbon client not available"
+msgstr ""
+
 msgid "Carbon Logo"
 msgstr "Logo Carbon"
 
 msgid "Cards"
 msgstr "Cartes"
+
+msgid "Change assignee"
+msgstr ""
 
 msgid "Chat"
 msgstr "Discussion"
@@ -373,6 +402,9 @@ msgstr "Colonne : {0}"
 msgid "Columns"
 msgstr "Colonnes"
 
+msgid "Coming in a later update"
+msgstr ""
+
 msgid "Company"
 msgstr "Société"
 
@@ -396,6 +428,9 @@ msgstr "Terminé"
 
 msgid "Completing"
 msgstr "Finalisation"
+
+msgid "Confirm"
+msgstr ""
 
 msgid "Connecting"
 msgstr "Connexion..."
@@ -436,6 +471,12 @@ msgstr "Créer un problème de qualité"
 msgid "Create Rework"
 msgstr "Créer une retouche"
 
+msgid "Created ticket, but media upload failed"
+msgstr ""
+
+msgid "Current production"
+msgstr ""
+
 msgid "Current work"
 msgstr "Travail actuel"
 
@@ -468,6 +509,9 @@ msgstr "Supprimer l'étape"
 
 msgid "Delete Timecard (<0/>)"
 msgstr "Supprimer la feuille de temps (<0/>)"
+
+msgid "Describe the fault. Notes required; photos/videos recommended."
+msgstr ""
 
 msgid "Describe the problem..."
 msgstr "Décrivez le problème..."
@@ -653,6 +697,12 @@ msgstr "Échec du téléversement du fichier : {0}"
 msgid "Failed to upload image"
 msgstr "Échec du téléversement de l'image"
 
+msgid "Failed to upload media"
+msgstr ""
+
+msgid "Fault downtime"
+msgstr ""
+
 msgid "Feature"
 msgstr "Fonctionnalité"
 
@@ -730,6 +780,9 @@ msgstr "Combien ?"
 msgid "I understand and want to complete without issuing"
 msgstr "Je comprends et souhaite terminer sans distribuer"
 
+msgid "I'm back"
+msgstr ""
+
 msgid "I'm Still Working"
 msgstr "Je travaille encore"
 
@@ -787,6 +840,9 @@ msgstr "Instructions"
 
 msgid "Insufficient quantity"
 msgstr "Quantité insuffisante"
+
+msgid "Invalid file name"
+msgstr ""
 
 msgid "Inventory adjustment completed"
 msgstr "Ajustement de stock terminé"
@@ -940,6 +996,9 @@ msgstr "Maintenance"
 
 msgid "Maintenance Completed"
 msgstr "Maintenance terminée"
+
+msgid "Maintenance history"
+msgstr ""
 
 msgid "Maintenance overdue"
 msgstr "Maintenance en retard"
@@ -1104,11 +1163,17 @@ msgstr "Aucune option trouvée."
 msgid "No people found"
 msgstr "Aucune personne trouvée"
 
+msgid "No photos or videos yet"
+msgstr ""
+
 msgid "No picking lists assigned"
 msgstr "Aucune liste de prélèvement assignée"
 
 msgid "No printer configured"
 msgstr "Aucune imprimante configurée"
+
+msgid "No recent closed tickets"
+msgstr ""
 
 msgid "No recent operations"
 msgstr "Aucune opération récente"
@@ -1169,6 +1234,9 @@ msgstr "Aucun"
 
 msgid "Notes"
 msgstr "Notes"
+
+msgid "Notes and photos recommended (changeover / PM window)."
+msgstr ""
 
 msgid "Nothing running"
 msgstr "Rien en cours"
@@ -1262,11 +1330,20 @@ msgstr "Effectué par l'opérateur"
 msgid "Optional"
 msgstr "Optionnel"
 
+msgid "Optional note"
+msgstr ""
+
+msgid "Optional short note (lunch, bathroom, away)."
+msgstr ""
+
 msgid "or"
 msgstr "ou"
 
 msgid "Other"
 msgstr "Autre"
+
+msgid "Other open tickets"
+msgstr ""
 
 msgid "Output lot"
 msgstr "Lot de sortie"
@@ -1340,6 +1417,9 @@ msgstr "Déconnecter"
 
 msgid "Planned"
 msgstr "Planifié"
+
+msgid "Planned downtime"
+msgstr ""
 
 msgid "Please record all steps for this operation before closing."
 msgstr "Veuillez enregistrer toutes les étapes de cette opération avant de la clôturer."
@@ -1479,6 +1559,9 @@ msgstr "Obligatoire"
 
 msgid "Result"
 msgstr "Résultat"
+
+msgid "Resume / Complete"
+msgstr ""
 
 msgid "Retry Completion"
 msgstr "Recommencer le traitement"
@@ -1886,6 +1969,9 @@ msgstr "À exécuter"
 msgid "Today"
 msgstr "Aujourd'hui"
 
+msgid "Today's yield"
+msgstr ""
+
 msgid "Toggle the sidebar"
 msgstr "Afficher/masquer la barre latérale"
 
@@ -1983,6 +2069,9 @@ msgstr "Téléversé : {0}"
 msgid "Uploading {0}"
 msgstr "Téléversement de {0}"
 
+msgid "Uploading…"
+msgstr ""
+
 msgid "Use a different account"
 msgstr "Utiliser un compte différent"
 
@@ -2009,6 +2098,9 @@ msgstr "Nous vous avons envoyé un lien magique pour vous connecter à votre com
 
 msgid "WeChat / QQ / UC cannot install MES. Open this link in Chrome, then tap Install."
 msgstr "WeChat / QQ / UC cannot install MES. Open this link in Chrome, then tap Install."
+
+msgid "What happened? (required)"
+msgstr ""
 
 msgid "What is {translatedTerm}?"
 msgstr "Qu'est-ce que {translatedTerm} ?"

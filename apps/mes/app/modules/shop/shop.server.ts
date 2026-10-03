@@ -1,17 +1,27 @@
 import type { Database } from "@carbon/database";
+import { storage } from "@carbon/files";
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { openDispatchStatuses } from "~/utils/display";
 import type {
   ShopCurrentWork,
+  ShopDispatchComment,
+  ShopDispatchFile,
+  ShopDispatchHistoryItem,
   ShopMachine,
+  ShopMachineDetail,
   ShopOpenDispatch,
   ShopOverview,
   ShopPerson
 } from "./shop.types";
-import { deriveShopMachineStatus, shopMachineSubtitle } from "./shop.utils";
+import {
+  deriveShopMachineStatus,
+  parseShopDispatchContent,
+  resolveShopDispatchKind,
+  shopMachineSubtitle
+} from "./shop.utils";
 
 const DISPATCH_COLUMNS =
-  "id, maintenanceDispatchId, status, oeeImpact, priority, assignee, workCenterId";
+  "id, maintenanceDispatchId, status, oeeImpact, priority, assignee, workCenterId, content, createdAt";
 
 /**
  * One aggregation for the `/shop` machine grid: location work centers, open
@@ -191,17 +201,11 @@ export async function getShopOverview(
       : null;
 
     const rawDispatches = dispatchesByWorkCenter.get(wc.id) ?? [];
-    const openDispatches: ShopOpenDispatch[] = rawDispatches.map((d) => ({
-      id: d.id,
-      maintenanceDispatchId: d.maintenanceDispatchId ?? null,
-      status: d.status ?? null,
-      assignee: d.assignee ?? null,
-      assigneeName: d.assignee ? (names.get(d.assignee) ?? null) : null,
-      oeeImpact: d.oeeImpact ?? null,
-      priority: d.priority ?? null,
-      workCenterId: d.workCenterId ?? wc.id,
-      isWorking: workingDispatchIds.has(d.id)
-    }));
+    const openDispatches = mapOpenDispatches(rawDispatches, {
+      workCenterId: wc.id,
+      names,
+      workingDispatchIds
+    });
     const isBlocked = blockedById.get(wc.id) ?? false;
 
     return {
@@ -224,7 +228,111 @@ export async function getShopOverview(
     };
   });
 
-  const people: ShopPerson[] = (peopleResult.data ?? [])
+  const people = mapPeople(peopleResult.data ?? [], args.locationId);
+
+  return {
+    locationId: args.locationId,
+    locationName:
+      locationResult.data?.name ?? workCenters[0]?.locationName ?? null,
+    userId: args.userId,
+    machines,
+    people
+  };
+}
+
+/**
+ * Detail page loader for one work center at the session location. Reuses the
+ * overview aggregation (no N+1), then loads comments, storage files, and a
+ * short closed-dispatch history for that machine only.
+ */
+export async function getShopMachineDetail(
+  client: SupabaseClient<Database>,
+  args: {
+    companyId: string;
+    locationId: string;
+    userId: string;
+    workCenterId: string;
+  }
+): Promise<ShopMachineDetail | null> {
+  const overview = await getShopOverview(client, {
+    companyId: args.companyId,
+    locationId: args.locationId,
+    userId: args.userId
+  });
+
+  const machine = overview.machines.find((m) => m.id === args.workCenterId);
+  if (!machine) return null;
+
+  const openIds = machine.openDispatches.map((d) => d.id);
+
+  const [commentsByDispatchId, filesByDispatchId, history] = await Promise.all([
+    getCommentsByDispatchIds(client, {
+      companyId: args.companyId,
+      dispatchIds: openIds
+    }),
+    getFilesByDispatchIds(client, {
+      companyId: args.companyId,
+      dispatchIds: openIds
+    }),
+    getRecentDispatchHistory(client, {
+      companyId: args.companyId,
+      workCenterId: args.workCenterId
+    })
+  ]);
+
+  return {
+    machine,
+    people: overview.people,
+    userId: overview.userId,
+    locationId: overview.locationId,
+    locationName: overview.locationName,
+    commentsByDispatchId,
+    filesByDispatchId,
+    history
+  };
+}
+
+function mapOpenDispatches(
+  rawDispatches: any[],
+  args: {
+    workCenterId: string;
+    names: Map<string, string>;
+    workingDispatchIds: Set<string>;
+  }
+): ShopOpenDispatch[] {
+  return rawDispatches.map((d) => {
+    const parsed = parseShopDispatchContent(d.content);
+    const shopKind = resolveShopDispatchKind({
+      shopKind: parsed.shopKind,
+      oeeImpact: d.oeeImpact ?? null
+    });
+    return {
+      id: d.id,
+      maintenanceDispatchId: d.maintenanceDispatchId ?? null,
+      status: d.status ?? null,
+      assignee: d.assignee ?? null,
+      assigneeName: d.assignee ? (args.names.get(d.assignee) ?? null) : null,
+      oeeImpact: d.oeeImpact ?? null,
+      priority: d.priority ?? null,
+      workCenterId: d.workCenterId ?? args.workCenterId,
+      isWorking: args.workingDispatchIds.has(d.id),
+      shopKind,
+      note: parsed.note,
+      createdAt: d.createdAt ?? null
+    };
+  });
+}
+
+function mapPeople(
+  rows: {
+    id?: string | null;
+    name?: string | null;
+    avatarUrl?: string | null;
+    locationId?: string | null;
+  }[],
+  locationId: string
+): ShopPerson[] {
+  return rows
     .filter(
       (row): row is typeof row & { id: string } => typeof row.id === "string"
     )
@@ -235,20 +343,11 @@ export async function getShopOverview(
       locationId: row.locationId ?? null
     }))
     .sort((a, b) => {
-      const aHere = a.locationId === args.locationId ? 0 : 1;
-      const bHere = b.locationId === args.locationId ? 0 : 1;
+      const aHere = a.locationId === locationId ? 0 : 1;
+      const bHere = b.locationId === locationId ? 0 : 1;
       if (aHere !== bHere) return aHere - bHere;
       return a.name.localeCompare(b.name);
     });
-
-  return {
-    locationId: args.locationId,
-    locationName:
-      locationResult.data?.name ?? workCenters[0]?.locationName ?? null,
-    userId: args.userId,
-    machines,
-    people
-  };
 }
 
 async function getInspectionsByOperationIds(
@@ -313,4 +412,112 @@ async function getUserNames(
   return new Map(
     (data ?? []).map((user) => [user.id, user.fullName ?? ""] as const)
   );
+}
+
+async function getCommentsByDispatchIds(
+  client: SupabaseClient<Database>,
+  args: { companyId: string; dispatchIds: string[] }
+): Promise<Record<string, ShopDispatchComment[]>> {
+  const empty: Record<string, ShopDispatchComment[]> = {};
+  if (args.dispatchIds.length === 0) return empty;
+
+  const { data, error } = await client
+    .from("maintenanceDispatchComment")
+    .select(
+      `
+      id,
+      comment,
+      createdAt,
+      maintenanceDispatchId,
+      createdBy:user!maintenanceDispatchComment_createdBy_fkey(id, fullName)
+    `
+    )
+    .eq("companyId", args.companyId)
+    .in("maintenanceDispatchId", args.dispatchIds)
+    .order("createdAt", { ascending: true });
+
+  if (error) throw error;
+
+  const result: Record<string, ShopDispatchComment[]> = {};
+  for (const id of args.dispatchIds) result[id] = [];
+
+  for (const row of (data ?? []) as any[]) {
+    const dispatchId = row.maintenanceDispatchId as string;
+    const list = result[dispatchId] ?? [];
+    list.push({
+      id: row.id,
+      comment: row.comment ?? "",
+      createdAt: row.createdAt ?? null,
+      createdByName: row.createdBy?.fullName ?? null
+    });
+    result[dispatchId] = list;
+  }
+  return result;
+}
+
+async function getFilesByDispatchIds(
+  client: SupabaseClient<Database>,
+  args: { companyId: string; dispatchIds: string[] }
+): Promise<Record<string, ShopDispatchFile[]>> {
+  const result: Record<string, ShopDispatchFile[]> = {};
+  for (const id of args.dispatchIds) result[id] = [];
+  if (args.dispatchIds.length === 0) return result;
+
+  await Promise.all(
+    args.dispatchIds.map(async (dispatchId) => {
+      const listed = await storage(client)
+        .company(args.companyId)
+        .list(`${args.companyId}/maintenance/${dispatchId}`);
+      const files = (listed.data ?? [])
+        .filter((item) => !!item.name && !item.name.endsWith("/"))
+        .map((item) => ({
+          name: item.name,
+          path: `${args.companyId}/maintenance/${dispatchId}/${item.name}`
+        }));
+      result[dispatchId] = files;
+    })
+  );
+
+  return result;
+}
+
+async function getRecentDispatchHistory(
+  client: SupabaseClient<Database>,
+  args: { companyId: string; workCenterId: string }
+): Promise<ShopDispatchHistoryItem[]> {
+  const { data, error } = await client
+    .from("maintenanceDispatch")
+    .select(
+      "id, maintenanceDispatchId, status, oeeImpact, content, assignee, completedAt"
+    )
+    .eq("companyId", args.companyId)
+    .eq("workCenterId", args.workCenterId)
+    .in("status", ["Completed", "Cancelled"])
+    .order("completedAt", { ascending: false })
+    .limit(5);
+
+  if (error) throw error;
+
+  const names = await getUserNames(
+    client,
+    (data ?? [])
+      .map((d) => d.assignee)
+      .filter((id): id is string => typeof id === "string")
+  );
+
+  return (data ?? []).map((d) => {
+    const parsed = parseShopDispatchContent(d.content);
+    return {
+      id: d.id,
+      maintenanceDispatchId: d.maintenanceDispatchId ?? null,
+      status: d.status ?? null,
+      shopKind: resolveShopDispatchKind({
+        shopKind: parsed.shopKind,
+        oeeImpact: d.oeeImpact ?? null
+      }),
+      assigneeName: d.assignee ? (names.get(d.assignee) ?? null) : null,
+      completedAt: d.completedAt ?? null,
+      note: parsed.note
+    };
+  });
 }

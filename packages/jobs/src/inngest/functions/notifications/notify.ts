@@ -740,10 +740,12 @@ export const notifyFunction = inngest.createFunction(
       const telegramEvents = await step.run(
         "build-telegram-events",
         async () => {
+          const shopPath =
+            details.find((d) => d.label === "Shop")?.value ?? "/shop";
           const text = buildMaintenanceTelegramText({
             description,
-            details,
-            shopUrl: `${getMESUrl()}/shop`
+            details: details.filter((d) => d.label !== "Shop"),
+            shopUrl: `${getMESUrl()}${shopPath.startsWith("/") ? shopPath : `/${shopPath}`}`
           });
           const replyMarkup =
             buildMaintenanceTelegramButtons(primaryDocumentId);

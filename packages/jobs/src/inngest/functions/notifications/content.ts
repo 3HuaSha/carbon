@@ -345,15 +345,65 @@ async function buildEventContent(
 
       const workCenterName =
         maintenanceDispatch.data?.workCenter?.name ?? "Unknown";
+      const workCenterId = maintenanceDispatch.data?.workCenterId ?? null;
       const dispatchId =
         maintenanceDispatch.data?.maintenanceDispatchId ?? documentId;
+
+      const content = maintenanceDispatch.data?.content as
+        | { shopKind?: string; note?: string }
+        | null
+        | undefined;
+      const shopKind =
+        content?.shopKind === "planned"
+          ? "planned"
+          : content?.shopKind === "break"
+            ? "break"
+            : content?.shopKind === "fault"
+              ? "fault"
+              : maintenanceDispatch.data?.oeeImpact === "Planned"
+                ? "planned"
+                : "fault";
+      const note =
+        typeof content?.note === "string" && content.note.trim()
+          ? content.note.trim()
+          : null;
+
+      let noteExcerpt = note;
+      if (!noteExcerpt) {
+        const commentResult = await client
+          .from("maintenanceDispatchComment")
+          .select("comment")
+          .eq("companyId", opts.companyId)
+          .eq("maintenanceDispatchId", documentId)
+          .order("createdAt", { ascending: true })
+          .limit(1)
+          .maybeSingle();
+        noteExcerpt = commentResult.data?.comment
+          ? String(commentResult.data.comment).trim()
+          : null;
+      }
+
       return {
         description: `Maintenance dispatch ${dispatchId} for ${workCenterName} assigned to you`,
         reference: dispatchId,
         details: buildDetails([
+          { label: "Machine", value: workCenterName },
+          {
+            label: "Shop",
+            value: workCenterId ? `/shop/${workCenterId}` : "/shop"
+          },
+          { label: "Kind", value: shopKind },
           { label: "Priority", value: maintenanceDispatch.data?.priority },
           { label: "Severity", value: maintenanceDispatch.data?.severity },
-          { label: "Status", value: maintenanceDispatch.data?.status }
+          { label: "Status", value: maintenanceDispatch.data?.status },
+          {
+            label: "Notes",
+            value: noteExcerpt
+              ? noteExcerpt.length > 160
+                ? `${noteExcerpt.slice(0, 157)}…`
+                : noteExcerpt
+              : null
+          }
         ])
       };
     }

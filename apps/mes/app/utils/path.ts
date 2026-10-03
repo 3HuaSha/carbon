@@ -205,6 +205,8 @@ export const path = {
     scrapReasons: `${api}/scrap-reasons`,
     setupRequired: "/setup-required",
     shop,
+    shopMachine: (workCenterId: string) =>
+      generatePath(`${shop}/${workCenterId}`),
     startOperation: (id: string) => generatePath(`${x}/start/${id}`),
     suggestion: `${x}/suggestion`,
     switchCompany: (companyId: string) =>

@@ -1,6 +1,11 @@
 export type {
   ShopCurrentWork,
+  ShopDispatchComment,
+  ShopDispatchFile,
+  ShopDispatchHistoryItem,
+  ShopDispatchKind,
   ShopMachine,
+  ShopMachineDetail,
   ShopMachineStatus,
   ShopMaintenanceAction,
   ShopOpenDispatch,
@@ -9,6 +14,7 @@ export type {
   ShopStatusFilter
 } from "./shop.types";
 export {
+  shopDispatchKinds,
   shopMachineStatuses,
   shopMaintenanceActions,
   shopStatusFilters
@@ -18,5 +24,8 @@ export {
   deriveShopMachineStatus,
   filterShopMachines,
   groupShopMachinesByArea,
+  parseShopDispatchContent,
+  primaryOpenDispatch,
+  resolveShopDispatchKind,
   shopMachineSubtitle
 } from "./shop.utils";
