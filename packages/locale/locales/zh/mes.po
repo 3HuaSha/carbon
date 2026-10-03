@@ -145,6 +145,9 @@ msgstr "添加样本"
 msgid "Add Spare Part"
 msgstr "添加备件"
 
+msgid "Add to Home Screen"
+msgstr ""
+
 msgid "Add work centers for this location in Resources, then open Shop again. Machines on the computer MES will show here."
 msgstr "在资源中为此地点添加工作中心，然后再次打开车间。在电脑端 MES 上配置的机器将在此显示。"
 
@@ -676,6 +679,9 @@ msgstr "返回操作"
 msgid "Go to onboarding"
 msgstr "前往入门"
 
+msgid "Got it"
+msgstr ""
+
 msgid "Hide description"
 msgstr "隐藏描述"
 
@@ -721,6 +727,15 @@ msgstr "检验物品"
 
 msgid "inspected"
 msgstr "已检验"
+
+msgid "Install / Add to Home Screen"
+msgstr ""
+
+msgid "Install this shop view from Chrome so it opens like an app."
+msgstr ""
+
+msgid "Install this shop view so it opens like an app."
+msgstr ""
 
 msgid "Instructions"
 msgstr "作业指导"
@@ -1156,6 +1171,12 @@ msgstr "未结工单"
 
 msgid "Open maintenance"
 msgstr "未结维护"
+
+msgid "Open this page in Chrome on Android."
+msgstr ""
+
+msgid "Open this page in Safari (not Chrome)."
+msgstr ""
 
 msgid "Operations"
 msgstr "工序"
@@ -1673,6 +1694,18 @@ msgstr "标签"
 
 msgid "Takes work center offline"
 msgstr "使工作中心离线"
+
+msgid "Tap Add to Home Screen, then Add."
+msgstr ""
+
+msgid "Tap Install app or Add to Home screen."
+msgstr ""
+
+msgid "Tap Share (square with an arrow)."
+msgstr ""
+
+msgid "Tap the menu (⋮) at the top right."
+msgstr ""
 
 msgid "The completed quantity for this operation is less than the required quantity of {targetQuantity}."
 msgstr "此工序的完成数量小于所需数量 {targetQuantity}。"

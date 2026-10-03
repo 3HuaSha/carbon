@@ -145,6 +145,9 @@ msgstr "Ajouter échantillon"
 msgid "Add Spare Part"
 msgstr "Ajouter une pièce de rechange"
 
+msgid "Add to Home Screen"
+msgstr ""
+
 msgid "Add work centers for this location in Resources, then open Shop again. Machines on the computer MES will show here."
 msgstr "Ajoutez des postes de travail pour ce site dans Ressources, puis rouvrez l'atelier. Les machines du MES sur cet ordinateur s'afficheront ici."
 
@@ -676,6 +679,9 @@ msgstr "Revenir à l'opération"
 msgid "Go to onboarding"
 msgstr "Aller à l'onboarding"
 
+msgid "Got it"
+msgstr ""
+
 msgid "Hide description"
 msgstr "Masquer la description"
 
@@ -721,6 +727,15 @@ msgstr "Inspecter l'article"
 
 msgid "inspected"
 msgstr "inspecté"
+
+msgid "Install / Add to Home Screen"
+msgstr ""
+
+msgid "Install this shop view from Chrome so it opens like an app."
+msgstr ""
+
+msgid "Install this shop view so it opens like an app."
+msgstr ""
 
 msgid "Instructions"
 msgstr "Instructions"
@@ -1156,6 +1171,12 @@ msgstr "Ordres de fabrication ouverts"
 
 msgid "Open maintenance"
 msgstr "Maintenance ouverte"
+
+msgid "Open this page in Chrome on Android."
+msgstr ""
+
+msgid "Open this page in Safari (not Chrome)."
+msgstr ""
 
 msgid "Operations"
 msgstr "Opérations"
@@ -1673,6 +1694,18 @@ msgstr "Étiquette"
 
 msgid "Takes work center offline"
 msgstr "Met le poste de travail hors ligne"
+
+msgid "Tap Add to Home Screen, then Add."
+msgstr ""
+
+msgid "Tap Install app or Add to Home screen."
+msgstr ""
+
+msgid "Tap Share (square with an arrow)."
+msgstr ""
+
+msgid "Tap the menu (⋮) at the top right."
+msgstr ""
 
 msgid "The completed quantity for this operation is less than the required quantity of {targetQuantity}."
 msgstr "La quantité produite pour cette opération est inférieure à la quantité requise de {targetQuantity}."

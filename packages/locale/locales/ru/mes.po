@@ -145,6 +145,9 @@ msgstr "Добавить образец"
 msgid "Add Spare Part"
 msgstr "Добавить запасную часть"
 
+msgid "Add to Home Screen"
+msgstr ""
+
 msgid "Add work centers for this location in Resources, then open Shop again. Machines on the computer MES will show here."
 msgstr "Добавьте рабочие центры для этой площадки в Ресурсах, затем снова откройте Цех. Станки на компьютере MES будут отображаться здесь."
 
@@ -676,6 +679,9 @@ msgstr "Вернуться к операции"
 msgid "Go to onboarding"
 msgstr "Перейти к первоначальной настройке"
 
+msgid "Got it"
+msgstr ""
+
 msgid "Hide description"
 msgstr "Скрыть описание"
 
@@ -721,6 +727,15 @@ msgstr "Проверить элемент"
 
 msgid "inspected"
 msgstr "проверенный"
+
+msgid "Install / Add to Home Screen"
+msgstr ""
+
+msgid "Install this shop view from Chrome so it opens like an app."
+msgstr ""
+
+msgid "Install this shop view so it opens like an app."
+msgstr ""
 
 msgid "Instructions"
 msgstr "Инструкции"
@@ -1156,6 +1171,12 @@ msgstr "Открытые производственные заказы"
 
 msgid "Open maintenance"
 msgstr "Открытое техобслуживание"
+
+msgid "Open this page in Chrome on Android."
+msgstr ""
+
+msgid "Open this page in Safari (not Chrome)."
+msgstr ""
 
 msgid "Operations"
 msgstr "Операции"
@@ -1673,6 +1694,18 @@ msgstr "Тег"
 
 msgid "Takes work center offline"
 msgstr "Выводит рабочий центр из эксплуатации"
+
+msgid "Tap Add to Home Screen, then Add."
+msgstr ""
+
+msgid "Tap Install app or Add to Home screen."
+msgstr ""
+
+msgid "Tap Share (square with an arrow)."
+msgstr ""
+
+msgid "Tap the menu (⋮) at the top right."
+msgstr ""
 
 msgid "The completed quantity for this operation is less than the required quantity of {targetQuantity}."
 msgstr "Количество готовой продукции по этой операции меньше требуемого количества {targetQuantity}."

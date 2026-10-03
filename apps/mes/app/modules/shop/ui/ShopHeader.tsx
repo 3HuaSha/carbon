@@ -1,8 +1,11 @@
-import { Count, cn } from "@carbon/react";
+import { Count, cn, IconButton } from "@carbon/react";
 import { Trans, useLingui } from "@lingui/react/macro";
-import type { ReactNode } from "react";
+import { type ReactNode, useState } from "react";
+import { LuDownload } from "react-icons/lu";
 import type { ShopMachineStatus, ShopStatusFilter } from "../shop.types";
 import { shopStatusFilters } from "../shop.types";
+import { PwaInstallSheet } from "./PwaInstallSheet";
+import { usePwaInstall } from "./usePwaInstall";
 
 const FILTER_LABELS: Record<ShopStatusFilter, () => ReactNode> = {
   all: () => <Trans>All</Trans>,
@@ -28,6 +31,15 @@ export function ShopHeader({
   onFilterChange
 }: ShopHeaderProps) {
   const { t } = useLingui();
+  const { installed, requestInstall, isIos } = usePwaInstall();
+  const [helpOpen, setHelpOpen] = useState(false);
+
+  const onInstallClick = async () => {
+    const result = await requestInstall();
+    if (result === "manual") {
+      setHelpOpen(true);
+    }
+  };
 
   return (
     <header className="sticky top-0 z-10 border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80 px-4 pt-3 pb-3">
@@ -40,11 +52,25 @@ export function ShopHeader({
             {t`${total} machines`}
           </p>
         </div>
-        <div className="flex shrink-0 flex-wrap justify-end gap-1.5 text-xs tabular-nums">
-          <Count count={counts.running} variant="green" />
-          <Count count={counts.idle} variant="gray" />
-          <Count count={counts.waitingRepair} variant="orange" />
-          <Count count={counts.inRepair} variant="red" />
+        <div className="flex shrink-0 items-start gap-2">
+          {!installed ? (
+            <IconButton
+              aria-label={t`Install / Add to Home Screen`}
+              title={t`Install / Add to Home Screen`}
+              icon={<LuDownload />}
+              variant="secondary"
+              size="md"
+              onClick={() => {
+                void onInstallClick();
+              }}
+            />
+          ) : null}
+          <div className="flex flex-wrap justify-end gap-1.5 text-xs tabular-nums">
+            <Count count={counts.running} variant="green" />
+            <Count count={counts.idle} variant="gray" />
+            <Count count={counts.waitingRepair} variant="orange" />
+            <Count count={counts.inRepair} variant="red" />
+          </div>
         </div>
       </div>
 
@@ -74,6 +100,12 @@ export function ShopHeader({
           );
         })}
       </div>
+
+      <PwaInstallSheet
+        open={helpOpen}
+        onOpenChange={setHelpOpen}
+        isIos={isIos}
+      />
     </header>
   );
 }

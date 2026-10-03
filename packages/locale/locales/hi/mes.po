@@ -145,6 +145,9 @@ msgstr "नमूना जोड़ें"
 msgid "Add Spare Part"
 msgstr "स्पेयर पार्ट जोड़ें"
 
+msgid "Add to Home Screen"
+msgstr ""
+
 msgid "Add work centers for this location in Resources, then open Shop again. Machines on the computer MES will show here."
 msgstr "इस स्थान के लिए संसाधन में वर्क सेंटर जोड़ें, फिर शॉप फिर से खोलें। कंप्यूटर MES की मशीनें यहाँ दिखेंगी।"
 
@@ -676,6 +679,9 @@ msgstr "ऑपरेशन पर वापस जाएं"
 msgid "Go to onboarding"
 msgstr "ऑनबोर्डिंग पर जाएं"
 
+msgid "Got it"
+msgstr ""
+
 msgid "Hide description"
 msgstr "विवरण छिपाएं"
 
@@ -721,6 +727,15 @@ msgstr "आइटम का निरीक्षण करें"
 
 msgid "inspected"
 msgstr "निरीक्षण किया गया"
+
+msgid "Install / Add to Home Screen"
+msgstr ""
+
+msgid "Install this shop view from Chrome so it opens like an app."
+msgstr ""
+
+msgid "Install this shop view so it opens like an app."
+msgstr ""
 
 msgid "Instructions"
 msgstr "निर्देश"
@@ -1156,6 +1171,12 @@ msgstr "खुली जॉब्स"
 
 msgid "Open maintenance"
 msgstr "खुला रखरखाव"
+
+msgid "Open this page in Chrome on Android."
+msgstr ""
+
+msgid "Open this page in Safari (not Chrome)."
+msgstr ""
 
 msgid "Operations"
 msgstr "ऑपरेशन"
@@ -1673,6 +1694,18 @@ msgstr "टैग"
 
 msgid "Takes work center offline"
 msgstr "वर्क सेंटर को ऑफ़लाइन कर देता है"
+
+msgid "Tap Add to Home Screen, then Add."
+msgstr ""
+
+msgid "Tap Install app or Add to Home screen."
+msgstr ""
+
+msgid "Tap Share (square with an arrow)."
+msgstr ""
+
+msgid "Tap the menu (⋮) at the top right."
+msgstr ""
 
 msgid "The completed quantity for this operation is less than the required quantity of {targetQuantity}."
 msgstr "इस ऑपरेशन के लिए पूर्ण मात्रा आवश्यक मात्रा {targetQuantity} से कम है।"

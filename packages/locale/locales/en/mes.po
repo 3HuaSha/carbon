@@ -145,6 +145,9 @@ msgstr "Add Sample"
 msgid "Add Spare Part"
 msgstr "Add Spare Part"
 
+msgid "Add to Home Screen"
+msgstr "Add to Home Screen"
+
 msgid "Add work centers for this location in Resources, then open Shop again. Machines on the computer MES will show here."
 msgstr "Add work centers for this location in Resources, then open Shop again. Machines on the computer MES will show here."
 
@@ -676,6 +679,9 @@ msgstr "Go back to operation"
 msgid "Go to onboarding"
 msgstr "Go to onboarding"
 
+msgid "Got it"
+msgstr "Got it"
+
 msgid "Hide description"
 msgstr "Hide description"
 
@@ -721,6 +727,15 @@ msgstr "Inspect Item"
 
 msgid "inspected"
 msgstr "inspected"
+
+msgid "Install / Add to Home Screen"
+msgstr "Install / Add to Home Screen"
+
+msgid "Install this shop view from Chrome so it opens like an app."
+msgstr "Install this shop view from Chrome so it opens like an app."
+
+msgid "Install this shop view so it opens like an app."
+msgstr "Install this shop view so it opens like an app."
 
 msgid "Instructions"
 msgstr "Instructions"
@@ -1156,6 +1171,12 @@ msgstr "Open Jobs"
 
 msgid "Open maintenance"
 msgstr "Open maintenance"
+
+msgid "Open this page in Chrome on Android."
+msgstr "Open this page in Chrome on Android."
+
+msgid "Open this page in Safari (not Chrome)."
+msgstr "Open this page in Safari (not Chrome)."
 
 msgid "Operations"
 msgstr "Operations"
@@ -1673,6 +1694,18 @@ msgstr "Tag"
 
 msgid "Takes work center offline"
 msgstr "Takes work center offline"
+
+msgid "Tap Add to Home Screen, then Add."
+msgstr "Tap Add to Home Screen, then Add."
+
+msgid "Tap Install app or Add to Home screen."
+msgstr "Tap Install app or Add to Home screen."
+
+msgid "Tap Share (square with an arrow)."
+msgstr "Tap Share (square with an arrow)."
+
+msgid "Tap the menu (⋮) at the top right."
+msgstr "Tap the menu (⋮) at the top right."
 
 msgid "The completed quantity for this operation is less than the required quantity of {targetQuantity}."
 msgstr "The completed quantity for this operation is less than the required quantity of {targetQuantity}."
