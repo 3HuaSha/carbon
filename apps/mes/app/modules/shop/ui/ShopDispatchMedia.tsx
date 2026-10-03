@@ -9,11 +9,11 @@ import { Button, cn, toast } from "@carbon/react";
 import { Trans, useLingui } from "@lingui/react/macro";
 import { useCallback, useRef, useState } from "react";
 import { LuImagePlus, LuPlay } from "react-icons/lu";
-import { useUser } from "~/hooks";
 import { path } from "~/utils/path";
 import type { ShopDispatchFile } from "../shop.types";
 
 type ShopDispatchMediaProps = {
+  companyId: string;
   dispatchId: string;
   files: ShopDispatchFile[];
   /** When true, hide the upload control (read-only gallery). */
@@ -30,6 +30,7 @@ function isVideoName(name: string) {
  * (same path as ERP MaintenanceDispatchFiles).
  */
 export function ShopDispatchMedia({
+  companyId,
   dispatchId,
   files,
   readOnly = false,
@@ -37,7 +38,6 @@ export function ShopDispatchMedia({
 }: ShopDispatchMediaProps) {
   const { t } = useLingui();
   const { carbon } = useCarbon();
-  const { company } = useUser();
   const inputRef = useRef<HTMLInputElement>(null);
   const [uploading, setUploading] = useState(false);
 
@@ -53,8 +53,8 @@ export function ShopDispatchMedia({
       setUploading(true);
       try {
         const uploader = new MediaUploader(carbon, {
-          bucket: getCompanyPrivateBucket(company.id),
-          directory: `${company.id}/tmp`
+          bucket: getCompanyPrivateBucket(companyId),
+          directory: `${companyId}/tmp`
         });
         let prepared = list;
         if (list.some((file) => isHeic(file.name, file.type))) {
@@ -67,9 +67,9 @@ export function ShopDispatchMedia({
             toast.error(t`Invalid file name`);
             continue;
           }
-          const filePath = `${company.id}/maintenance/${dispatchId}/${safeName}`;
+          const filePath = `${companyId}/maintenance/${dispatchId}/${safeName}`;
           const result = await storage(carbon)
-            .company(company.id)
+            .company(companyId)
             .upload(filePath, file, { upsert: true });
           if (result.error) {
             toast.error(t`Failed to upload ${file.name}`);
@@ -85,7 +85,7 @@ export function ShopDispatchMedia({
         if (inputRef.current) inputRef.current.value = "";
       }
     },
-    [carbon, company.id, dispatchId, onUploaded, t]
+    [carbon, companyId, dispatchId, onUploaded, t]
   );
 
   return (

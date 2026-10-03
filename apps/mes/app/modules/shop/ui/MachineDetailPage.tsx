@@ -16,7 +16,6 @@ import {
   useRevalidator
 } from "react-router";
 import Avatar from "~/components/Avatar";
-import { useUser } from "~/hooks";
 import { path } from "~/utils/path";
 import type {
   ShopCurrentWork,
@@ -33,6 +32,8 @@ import { ShopDispatchMedia } from "./ShopDispatchMedia";
 
 type MachineDetailPageProps = {
   machine: ShopMachine;
+  /** From the shop detail loader — `/shop` has no `/x` user route data. */
+  companyId: string;
   userId: string;
   people: ShopPerson[];
   commentsByDispatchId: Record<string, ShopDispatchComment[]>;
@@ -387,6 +388,7 @@ function ReportForm({
 }
 
 function DispatchActions({
+  companyId,
   dispatch,
   userId,
   people,
@@ -396,6 +398,7 @@ function DispatchActions({
   onAction,
   onUploaded
 }: {
+  companyId: string;
   dispatch: ShopOpenDispatch;
   userId: string;
   people: ShopPerson[];
@@ -492,6 +495,7 @@ function DispatchActions({
 
       <div className="mt-3">
         <ShopDispatchMedia
+          companyId={companyId}
           dispatchId={dispatch.id}
           files={files}
           readOnly={dispatch.shopKind === "break"}
@@ -589,16 +593,17 @@ function DispatchActions({
 
 /** Uploads files selected on the report form once create returns a dispatch id. */
 function PendingMediaUploader({
+  companyId,
   dispatchId,
   files,
   onDone
 }: {
+  companyId: string;
   dispatchId: string | null;
   files: File[] | null;
   onDone: () => void;
 }) {
   const { carbon } = useCarbon();
-  const { company } = useUser();
   const { t } = useLingui();
   const [startedFor, setStartedFor] = useState<string | null>(null);
 
@@ -610,8 +615,8 @@ function PendingMediaUploader({
     void (async () => {
       try {
         const uploader = new MediaUploader(carbon, {
-          bucket: getCompanyPrivateBucket(company.id),
-          directory: `${company.id}/tmp`
+          bucket: getCompanyPrivateBucket(companyId),
+          directory: `${companyId}/tmp`
         });
         let prepared = files;
         if (files.some((f) => isHeic(f.name, f.type))) {
@@ -620,8 +625,8 @@ function PendingMediaUploader({
         for (const file of prepared) {
           const safeName = safeStorageFileName(file.name);
           if (!safeName) continue;
-          const filePath = `${company.id}/maintenance/${dispatchId}/${safeName}`;
-          await storage(carbon).company(company.id).upload(filePath, file, {
+          const filePath = `${companyId}/maintenance/${dispatchId}/${safeName}`;
+          await storage(carbon).company(companyId).upload(filePath, file, {
             upsert: true
           });
         }
@@ -631,13 +636,14 @@ function PendingMediaUploader({
         onDone();
       }
     })();
-  }, [carbon, company.id, dispatchId, files, onDone, startedFor, t]);
+  }, [carbon, companyId, dispatchId, files, onDone, startedFor, t]);
 
   return null;
 }
 
 export function MachineDetailPage({
   machine,
+  companyId,
   userId,
   people,
   commentsByDispatchId,
@@ -786,6 +792,7 @@ export function MachineDetailPage({
 
       {!reportKind && primary ? (
         <DispatchActions
+          companyId={companyId}
           dispatch={primary}
           userId={userId}
           people={people}
@@ -808,6 +815,7 @@ export function MachineDetailPage({
             .map((d) => (
               <DispatchActions
                 key={d.id}
+                companyId={companyId}
                 dispatch={d}
                 userId={userId}
                 people={people}
@@ -867,6 +875,7 @@ export function MachineDetailPage({
       </section>
 
       <PendingMediaUploader
+        companyId={companyId}
         dispatchId={fetcher.data?.ok ? (fetcher.data.dispatchId ?? null) : null}
         files={pendingFiles}
         onDone={() => {
