@@ -303,22 +303,22 @@ msgid "Choose a job"
 msgstr "选择工单"
 
 msgid "Choose Open in browser / Open in Chrome (用浏览器打开)."
-msgstr ""
+msgstr "Choose Open in browser / Open in Chrome (用浏览器打开)."
 
 msgid "Choose Open in Safari."
 msgstr "选择“在 Safari 中打开”。"
 
 msgid "Chrome did not offer a one-tap install yet. Use the menu below."
-msgstr ""
+msgstr "Chrome did not offer a one-tap install yet. Use the menu below."
 
 msgid "Chrome did not offer one-tap Install yet. Stay in Chrome (not WeChat), wait for the service worker, then use Chrome’s menu."
-msgstr ""
+msgstr "Chrome 尚未提供一键安装。请留在 Chrome（不要用微信），等待 Service Worker，然后使用 Chrome 菜单。"
 
 msgid "Chrome only fires beforeinstallprompt when the site is not already installed and installability criteria are met."
-msgstr ""
+msgstr "Chrome only fires beforeinstallprompt when the site is not already installed and installability criteria are met."
 
 msgid "Chrome will not offer Install again while MES is already on your home screen. Open the app, or uninstall it to reinstall."
-msgstr ""
+msgstr "Chrome will not offer Install again while MES is already on your home screen. Open the app, or uninstall it to reinstall."
 
 msgid "Clear"
 msgstr "清除"
@@ -410,10 +410,10 @@ msgid "Continue"
 msgstr "继续"
 
 msgid "Controlled: no — Chrome will not fire the install prompt until a service worker controls this page. Hard refresh and wait a few seconds."
-msgstr ""
+msgstr "Controlled: no — Chrome will not fire the install prompt until a service worker controls this page. Hard refresh and wait a few seconds."
 
 msgid "Controlled: yes — registration is fine. Missing one-tap Install usually means Chrome already installed MES, or Chrome only offers Install from the ⋮ menu right now."
-msgstr ""
+msgstr "已控制：是 — 注册正常。缺少一键安装通常表示 Chrome 已安装 MES，或当前只能从 ⋮ 菜单安装。"
 
 #. placeholder {0}: board.unplannedCost.days
 msgid "Cost of unplanned maintenance, last {0} days"
@@ -713,7 +713,7 @@ msgid "Got it"
 msgstr "知道了"
 
 msgid "Hard refresh this page: Chrome ⋮ → refresh, or close the tab and open /shop again. Wait 3–5 seconds after Shop loads."
-msgstr ""
+msgstr "Hard refresh this page: Chrome ⋮ → refresh, or close the tab and open /shop again. Wait 3–5 seconds after Shop loads."
 
 msgid "Hide description"
 msgstr "隐藏描述"
@@ -740,7 +740,7 @@ msgid "Idle for"
 msgstr "闲置时间"
 
 msgid "If Chrome’s menu has no Install item, MES is usually already installed — check your home screen / app drawer for MES and open that icon instead."
-msgstr ""
+msgstr "如果 Chrome 菜单没有「安装」项，通常表示 MES 已安装 — 请在主屏幕/应用抽屉中查找 MES 并打开该图标。"
 
 msgid "Impact"
 msgstr "影响"
@@ -753,7 +753,7 @@ msgid "in {0}"
 msgstr "在 {0}"
 
 msgid "In Chrome: ⋮ → Settings → Site settings → All sites → this MES host → Clear and reset. Reload /shop, wait a few seconds, tap Install."
-msgstr ""
+msgstr "In Chrome: ⋮ → Settings → Site settings → All sites → this MES host → Clear and reset. Reload /shop, wait a few seconds, tap Install."
 
 msgid "In Progress"
 msgstr "进行中"
@@ -762,7 +762,7 @@ msgid "In repair"
 msgstr "维修中"
 
 msgid "In-app browsers (WeChat, QQ, UC, Instagram) block Progressive Web App install."
-msgstr ""
+msgstr "In-app browsers (WeChat, QQ, UC, Instagram) block Progressive Web App install."
 
 msgid "Inspect Item"
 msgstr "检验物品"
@@ -771,13 +771,13 @@ msgid "inspected"
 msgstr "已检验"
 
 msgid "Install"
-msgstr ""
+msgstr "Install"
 
 msgid "Install MES"
-msgstr ""
+msgstr "Install MES"
 
 msgid "Install ready — tap again"
-msgstr ""
+msgstr "Install ready — tap again"
 
 msgid "Instructions"
 msgstr "作业指导"
@@ -792,7 +792,7 @@ msgid "Inventory Adjustments"
 msgstr "库存调整"
 
 msgid "iPhone and iPad never show a one-tap Install button (Apple policy). Use Safari’s Share menu — about 15 seconds."
-msgstr ""
+msgstr "iPhone and iPad never show a one-tap Install button (Apple policy). Use Safari’s Share menu — about 15 seconds."
 
 msgid "is"
 msgstr "是"
@@ -912,7 +912,7 @@ msgid "Login"
 msgstr "登录"
 
 msgid "Look for the MES icon on your home screen or in the app drawer and open it."
-msgstr ""
+msgstr "Look for the MES icon on your home screen or in the app drawer and open it."
 
 msgid "Lot"
 msgstr "批次"
@@ -1190,7 +1190,7 @@ msgid "Oldest first"
 msgstr "最早优先"
 
 msgid "On iPhone, one-tap system install is impossible by Apple policy — Safari Add to Home Screen is the only path."
-msgstr ""
+msgstr "On iPhone, one-tap system install is impossible by Apple policy — Safari Add to Home Screen is the only path."
 
 msgid "one combined lot · planned"
 msgstr "一个组合批次 · 已计划"
@@ -1202,14 +1202,14 @@ msgid "One pick covers the whole batch — it is shared out to the jobs automati
 msgstr "一次拣货覆盖整个生产批次 — 自动分配给各工单。"
 
 msgid "One-tap Install is unavailable, but the service worker is already active. Use Chrome’s menu, or check whether MES is already on your home screen."
-msgstr ""
+msgstr "一键安装不可用，但 Service Worker 已激活。请使用 Chrome 菜单，或检查主屏幕上是否已有 MES。"
 
 #. placeholder {0}: batch.quantity
 msgid "Only {0} available"
 msgstr "仅 {0} 可用"
 
 msgid "Only Android Chrome fires the one-tap Install prompt (beforeinstallprompt)."
-msgstr ""
+msgstr "Only Android Chrome fires the one-tap Install prompt (beforeinstallprompt)."
 
 msgid "Oops. You shouldn't see this page. Eventually it will be a landing page."
 msgstr "抱歉，您不应该看到此页面。此页面最终将成为首页。"
@@ -1230,7 +1230,7 @@ msgid "Open app — Already installed"
 msgstr "打开应用 — 已安装"
 
 msgid "Open in Chrome"
-msgstr ""
+msgstr "Open in Chrome"
 
 msgid "Open inspection"
 msgstr "打开检验"
@@ -1649,7 +1649,7 @@ msgid "Serialized"
 msgstr "已序列号化"
 
 msgid "Service worker check"
-msgstr ""
+msgstr "Service worker check"
 
 msgid "Session locked"
 msgstr "会话已锁定"
@@ -1688,7 +1688,7 @@ msgid "Show keyboard shortcuts"
 msgstr "显示键盘快捷键"
 
 msgid "Sign in if needed, open Shop, wait a few seconds, then tap Install."
-msgstr ""
+msgstr "Sign in if needed, open Shop, wait a few seconds, then tap Install."
 
 msgid "Sign in with Google"
 msgstr "使用 Google 登录"
@@ -1750,7 +1750,7 @@ msgid "Statuses"
 msgstr "状态"
 
 msgid "Stay in Android Chrome — not WeChat, QQ, UC, or Samsung Internet."
-msgstr ""
+msgstr "Stay in Android Chrome — not WeChat, QQ, UC, or Samsung Internet."
 
 msgid "Stay on this page"
 msgstr "留在此页面"
@@ -1762,7 +1762,7 @@ msgid "Steps are missing"
 msgstr "缺少步骤"
 
 msgid "Still missing? Chrome ⋮ → Settings → Site settings → All sites → this host → Clear and reset, then retry."
-msgstr ""
+msgstr "Still missing? Chrome ⋮ → Settings → Site settings → All sites → this host → Clear and reset, then retry."
 
 msgid "Storage Unit"
 msgstr "存储单元"
@@ -1789,13 +1789,13 @@ msgid "Tap Add in the top right. Launch MES from your Home Screen icon afterward
 msgstr "点右上角的“添加”。之后从主屏幕图标启动 MES。"
 
 msgid "Tap Chrome ⋮ (top right) and look for Install app, Add to Home screen, or Install page as app. That menu path works even when the in-page Install button cannot show a dialog."
-msgstr ""
+msgstr "点按 Chrome 右上角 ⋮，查找「安装应用」「添加到主屏幕」或「将网页安装为应用」。即使页面内的安装按钮无法弹出对话框，此菜单路径仍然可用。"
 
 msgid "Tap Install again for the system install dialog. Or Chrome ⋮ → Install app / Add to Home screen."
-msgstr ""
+msgstr "Tap Install again for the system install dialog. Or Chrome ⋮ → Install app / Add to Home screen."
 
 msgid "Tap the menu (⋯) in this in-app browser."
-msgstr ""
+msgstr "Tap the menu (⋯) in this in-app browser."
 
 msgid "Tap the Share button at the bottom of Safari (square with an upward arrow)."
 msgstr "点 Safari 底部的共享按钮（带向上箭头的方框）。"
@@ -1847,7 +1847,7 @@ msgid "This part will be scrapped from stock. Its requirement stays open so you 
 msgstr "此零件将从库存报废。其要求保持未结，以便您可以领料替代品。"
 
 msgid "This site is already installed. Chrome will not show Install again."
-msgstr ""
+msgstr "This site is already installed. Chrome will not show Install again."
 
 msgid "This unit will be permanently scrapped and a replacement serial number will be created."
 msgstr "此单元将被永久报废，并将创建替换序列号。"
@@ -1869,7 +1869,7 @@ msgid "Time Worked: {0}"
 msgstr "工作时间：{0}"
 
 msgid "To force a fresh install: uninstall the MES app, then Chrome ⋮ → Settings → Site settings → All sites → this host → Clear and reset. Reload /shop, wait a few seconds, tap Install again."
-msgstr ""
+msgstr "要重新安装：卸载 MES 应用，然后 Chrome ⋮ → 设置 → 网站设置 → 所有网站 → 此主机 → 清除并重置。重新加载 /shop，等待几秒，再点安装。"
 
 msgid "To pick"
 msgstr "待拣货"
@@ -2005,7 +2005,7 @@ msgid "We've sent you a magic link to sign in to your account."
 msgstr "我们已向您发送了登录链接，请查收。"
 
 msgid "WeChat / QQ / UC cannot install MES. Open this link in Chrome, then tap Install."
-msgstr ""
+msgstr "WeChat / QQ / UC cannot install MES. Open this link in Chrome, then tap Install."
 
 msgid "What is {translatedTerm}?"
 msgstr "{translatedTerm}是什么?"
