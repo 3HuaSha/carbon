@@ -10,8 +10,10 @@ import {
   wasPwaInstallRemembered
 } from "./pwaInstallCapture";
 
-/** How long Install click / background probe waits for `beforeinstallprompt`. */
-const PROMPT_WAIT_MS = 2800;
+/** Desktop Chrome: short wait — prefer fast already-installed / Open app UX. */
+const PROMPT_WAIT_DESKTOP_MS = 2800;
+/** Android: SW claim + installability check is slower on cellular. */
+const PROMPT_WAIT_MOBILE_MS = 5500;
 
 function isStandaloneDisplay(): boolean {
   if (typeof window === "undefined") return false;
@@ -27,6 +29,37 @@ function detectIos(): boolean {
   if (/iPad|iPhone|iPod/i.test(ua)) return true;
   // iPadOS 13+ reports as MacIntel but has touch
   return navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1;
+}
+
+function detectAndroid(): boolean {
+  if (typeof navigator === "undefined") return false;
+  return /Android/i.test(navigator.userAgent);
+}
+
+/**
+ * WeChat / common in-app WebViews never expose a real install prompt.
+ * Guide the user to open the URL in Chrome (Android) or Safari (iOS).
+ */
+function detectInAppBrowser(): boolean {
+  if (typeof navigator === "undefined") return false;
+  const ua = navigator.userAgent;
+  return (
+    /MicroMessenger/i.test(ua) ||
+    /QQ\//i.test(ua) ||
+    /FBAN|FBAV|Instagram|Line\//i.test(ua) ||
+    (/; wv\)/i.test(ua) && /Android/i.test(ua))
+  );
+}
+
+function isLikelyPhone(): boolean {
+  if (detectIos() || detectAndroid()) return true;
+  if (typeof window === "undefined" || typeof navigator === "undefined") {
+    return false;
+  }
+  return (
+    navigator.maxTouchPoints > 0 &&
+    window.matchMedia("(max-width: 900px)").matches
+  );
 }
 
 /**
@@ -66,11 +99,15 @@ export function usePwaInstall() {
     null
   );
   const [isIos, setIsIos] = useState(false);
+  const [isAndroid, setIsAndroid] = useState(false);
+  const [isInAppBrowser, setIsInAppBrowser] = useState(false);
   const [preparing, setPreparing] = useState(false);
 
   useEffect(() => {
     ensurePwaInstallCapture();
     setIsIos(detectIos());
+    setIsAndroid(detectAndroid());
+    setIsInAppBrowser(detectInAppBrowser());
 
     // Only hide while actually running as the installed app window.
     if (isStandaloneDisplay()) {
@@ -103,11 +140,14 @@ export function usePwaInstall() {
     media.addEventListener?.("change", onDisplayMode);
 
     let cancelled = false;
+    const phone = isLikelyPhone();
 
     void (async () => {
       // Fast path: prior accept / related apps — flip the control to Open app
       // without waiting on a BIP that will never arrive.
-      if (await detectInstalledRelatedApp()) {
+      // Phones: only trust getInstalledRelatedApps / remembered after BIP miss
+      // (stale localStorage must not hide Install on Android).
+      if (!phone && (await detectInstalledRelatedApp())) {
         if (!cancelled && !getDeferredInstallPrompt()) {
           setKnownInstalled(true);
         }
@@ -116,20 +156,24 @@ export function usePwaInstall() {
 
       if (detectIos()) return;
 
-      // Heuristic: after the SW is ready, if BIP never arrives, Chrome is
-      // usually suppressing install because the PWA is already installed
-      // (desktop omnibox shows "Open in app" instead).
+      // Heuristic: after the SW is ready, if BIP never arrives on desktop,
+      // Chrome is usually suppressing install because the PWA is already
+      // installed (omnibox shows "Open in app" instead).
       await navigator.serviceWorker?.ready.catch(() => undefined);
       if (cancelled) return;
-      const late = await waitForDeferredInstallPrompt(PROMPT_WAIT_MS);
+      const late = await waitForDeferredInstallPrompt(
+        phone ? PROMPT_WAIT_MOBILE_MS : PROMPT_WAIT_DESKTOP_MS
+      );
       if (cancelled || late) return;
       if (wasPwaInstallRemembered() || (await detectInstalledRelatedApp())) {
         setKnownInstalled(true);
         return;
       }
-      // Still no BIP after SW ready — treat as already-installed for desktop
-      // Chromium so we stop pushing a dead Install affordance.
-      setKnownInstalled(true);
+      // Desktop only: treat no-BIP as already-installed for Open app UX.
+      // Phones keep Install — BIP may simply be late or criteria not met yet.
+      if (!phone) {
+        setKnownInstalled(true);
+      }
     })();
 
     return () => {
@@ -141,17 +185,24 @@ export function usePwaInstall() {
   }, []);
 
   const requestInstall = useCallback(async (): Promise<
-    "prompted" | "manual" | "already-installed"
+    "prompted" | "manual" | "already-installed" | "in-app-browser"
   > => {
     ensurePwaInstallCapture();
+
+    if (detectInAppBrowser()) {
+      return "in-app-browser";
+    }
 
     // iOS never gets beforeinstallprompt — skip the wait and show Safari steps.
     if (detectIos()) {
       return "manual";
     }
 
-    // Already known installed in a browser tab — do not wait for BIP / prompt.
-    if (knownInstalled || wasPwaInstallRemembered()) {
+    const phone = isLikelyPhone();
+
+    // Desktop Open app path: already known installed in a browser tab.
+    // Phones skip this so stale memory does not block native Install.
+    if (!phone && (knownInstalled || wasPwaInstallRemembered())) {
       return "already-installed";
     }
 
@@ -174,13 +225,17 @@ export function usePwaInstall() {
 
     setPreparing(true);
     try {
-      if (await detectInstalledRelatedApp()) {
+      // Desktop: prefer an immediate "already installed" sheet when we already
+      // know BIP cannot fire. Phones wait for BIP first.
+      if (!phone && (await detectInstalledRelatedApp())) {
         setKnownInstalled(true);
         return "already-installed";
       }
 
       await navigator.serviceWorker?.ready.catch(() => undefined);
-      const late = await waitForDeferredInstallPrompt(PROMPT_WAIT_MS);
+      const late = await waitForDeferredInstallPrompt(
+        phone ? PROMPT_WAIT_MOBILE_MS : PROMPT_WAIT_DESKTOP_MS
+      );
       if (late) {
         try {
           const outcome = await promptDeferredInstall(late);
@@ -195,9 +250,18 @@ export function usePwaInstall() {
         }
       }
 
-      // BIP never arrived — do not keep pushing Install; guide Open in app / pin.
-      setKnownInstalled(true);
-      return "already-installed";
+      if (wasPwaInstallRemembered() || (await detectInstalledRelatedApp())) {
+        setKnownInstalled(true);
+        return "already-installed";
+      }
+
+      // Desktop: BIP never arrived — guide Open in app / pin.
+      // Phone: show manual Chrome A2HS steps instead of assuming installed.
+      if (!phone) {
+        setKnownInstalled(true);
+        return "already-installed";
+      }
+      return "manual";
     } finally {
       setPreparing(false);
     }
@@ -229,6 +293,8 @@ export function usePwaInstall() {
     /** True while waiting briefly for beforeinstallprompt after a tap. */
     preparing,
     isIos,
+    isAndroid,
+    isInAppBrowser,
     requestInstall,
     openInstalledApp
   };

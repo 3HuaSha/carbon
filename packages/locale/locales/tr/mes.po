@@ -301,9 +301,29 @@ msgstr "İş emri seç"
 
 msgid "Chrome did not offer a one-tap install yet. Use the menu below — or if the address bar shows Open in app, the PWA is already installed."
 msgstr "Chrome henüz tek dokunuşla yükleme sunmadı. Aşağıdaki menüyü kullanın veya adres çubuğunda Uygulamada aç görünüyorsa PWA zaten yüklenmiştir."
+msgid "Choose Open in Chrome (or Open in browser)."
+msgstr "Chrome’da aç’ı (veya Tarayıcıda aç’ı) seçin."
 
-msgid "Chrome, Firefox, and Edge on iOS cannot native-install this app."
-msgstr "iOS’ta Chrome, Firefox ve Edge bu uygulamayı yerel olarak yükleyemez."
+msgid "Choose Open in Safari."
+msgstr "Safari’de aç’ı seçin."
+
+msgid "Chrome did not offer a one-tap install yet. Stay on this page a few seconds, tap Install again, or use the Chrome menu below."
+msgstr "Chrome henüz tek dokunuşla kurulum sunmadı. Bu sayfada birkaç saniye kalın, Kur’a yeniden dokunun veya aşağıdaki Chrome menüsünü kullanın."
+
+msgid "Chrome did not offer a one-tap install. If you already installed this site, Install app is unavailable until you uninstall or clear site data."
+msgstr "Chrome tek dokunuşla yükleme sunmadı. Bu siteyi zaten yüklediyseniz, kaldırana veya site verilerini silene kadar Uygulamayı yükle kullanılamaz."
+
+msgid "Chrome may fire beforeinstallprompt only once per engagement window. After dismiss or install, reload or clear site data before retrying."
+msgstr "Chrome, beforeinstallprompt olayını etkileşim penceresi başına yalnızca bir kez tetikleyebilir. Reddetme veya yüklemeden sonra yeniden denemeden önce yenileyin veya site verilerini temizleyin."
+
+msgid "Chrome on this phone will not offer Install again while MES is already on your home screen. Open the app, or uninstall it to reinstall."
+msgstr "MES zaten ana ekrandayken bu telefondaki Chrome yeniden Kur sunmaz. Uygulamayı açın veya yeniden kurmak için kaldırın."
+
+msgid "Chrome only fires the install prompt when the site is not already installed and installability criteria are met."
+msgstr "Chrome yükleme istemini yalnızca site henüz yüklü değilse ve yüklenebilirlik ölçütleri karşılandığında gösterir."
+
+msgid "Chrome, Firefox, and Edge on iOS cannot native-install this app — they all use WebKit without beforeinstallprompt."
+msgstr "iOS’ta Chrome, Firefox ve Edge bu uygulamayı yerel olarak kuramaz — hepsi beforeinstallprompt olmadan WebKit kullanır."
 
 msgid "Clear"
 msgstr "Temizle"
@@ -715,6 +735,9 @@ msgstr "Boşta"
 msgid "Idle for"
 msgstr "Boş olma süresi"
 
+msgid "If Install app is missing, wait a few seconds on Shop and tap the download button again — or clear site data for this host and retry."
+msgstr "Uygulamayı yükle yoksa Shop’ta birkaç saniye bekleyip indirme düğmesine yeniden dokunun — veya bu ana bilgisayarın site verilerini temizleyip yeniden deneyin."
+
 msgid "Impact"
 msgstr "Etki"
 
@@ -724,6 +747,9 @@ msgstr "İmparatorluk"
 #. placeholder {0}: precise?.text
 msgid "in {0}"
 msgstr "{0} içinde"
+
+msgid "In Chrome, tap ⋮ → Settings → Site settings → All sites → this MES host → Clear and reset, then reload /shop and tap Install again."
+msgstr "Chrome’da ⋮ → Ayarlar → Site ayarları → Tüm siteler → bu MES ana bilgisayarı → Temizle ve sıfırla’ya dokunun, sonra /shop’u yenileyip yeniden Kur’a dokunun."
 
 msgid "In Progress"
 msgstr "Devam Ediyor"
@@ -736,6 +762,8 @@ msgstr "Bu uygulama penceresinde: menü ⋮ → Yayınla, kaydet ve paylaş (Cas
 
 msgid "In the Chrome address bar, click Open in app (打开应用) to launch the installed Carbon MES window."
 msgstr "Yüklenen Carbon MES penceresini başlatmak için Chrome adres çubuğunda Uygulamada aç (Open in app) öğesine tıklayın."
+msgid "In-app browsers (WeChat, Instagram, etc.) block Progressive Web App install."
+msgstr "Uygulama içi tarayıcılar (WeChat, Instagram vb.) Progressive Web App kurulumunu engeller."
 
 msgid "Inspect Item"
 msgstr "Ürünü İncele"
@@ -758,8 +786,8 @@ msgstr "Stok düzeltme tamamlandı"
 msgid "Inventory Adjustments"
 msgstr "Stok düzeltmeleri"
 
-msgid "iPhone and iPad never show a native Install button — use Safari’s Share menu."
-msgstr "iPhone ve iPad asla yerel bir Yükle düğmesi göstermez — Safari’nin Paylaş menüsünü kullanın."
+msgid "iPhone and iPad never show a one-tap Install button. Use Safari’s Share menu — the steps below take about 15 seconds."
+msgstr "iPhone ve iPad asla tek dokunuşluk Kur düğmesi göstermez. Safari’nin Paylaş menüsünü kullanın — aşağıdaki adımlar yaklaşık 15 saniye sürer."
 
 msgid "is"
 msgstr "eşittir"
@@ -877,6 +905,9 @@ msgstr "{0} için fire kaydı"
 
 msgid "Login"
 msgstr "Giriş Yap"
+
+msgid "Look for the MES / Carbon MES icon on your home screen or in the app drawer and open it."
+msgstr "Ana ekranda veya uygulama çekmecesinde MES / Carbon MES simgesini bulun ve açın."
 
 msgid "Lot"
 msgstr "Lot"
@@ -1181,6 +1212,9 @@ msgstr "MRB kararı için NCR aç"
 msgid "Open app — Already installed"
 msgstr "Uygulamayı aç — Zaten yüklendi"
 
+msgid "Open in your browser"
+msgstr "Tarayıcınızda açın"
+
 msgid "Open inspection"
 msgstr "Muayeneyi aç"
 
@@ -1190,8 +1224,8 @@ msgstr "Açık İş emirleri"
 msgid "Open maintenance"
 msgstr "Açık bakım"
 
-msgid "Open this page in Safari (not Chrome on iOS)."
-msgstr "Bu sayfayı Safari’de açın (iOS’ta Chrome değil)."
+msgid "Open this page in Safari — not Chrome, Firefox, Edge, or WeChat. Only Safari can add MES to the Home Screen."
+msgstr "Bu sayfayı Safari’de açın — Chrome, Firefox, Edge veya WeChat’te değil. MES’i Ana Ekrana yalnızca Safari ekleyebilir."
 
 msgid "Operations"
 msgstr "Operasyonlar"
@@ -1504,6 +1538,9 @@ msgstr "Seri hurdası {trackedEntityReadableId}"
 msgid "Scrapping the selected serial"
 msgstr "Seçilen serinin hurdası"
 
+msgid "Scroll the share sheet and tap Add to Home Screen."
+msgstr "Paylaş sayfasını kaydırın ve Ana Ekrana Ekle’ye dokunun."
+
 msgid "Search"
 msgstr "Ara"
 
@@ -1627,6 +1664,9 @@ msgstr "Açıklamayı göster"
 msgid "Show keyboard shortcuts"
 msgstr "Klavye kısayollarını göster"
 
+msgid "Sign in if needed, open Shop, then tap Install again."
+msgstr "Gerekirse oturum açın, Shop’u açın, sonra yeniden Kur’a dokunun."
+
 msgid "Sign in with Google"
 msgstr "Google ile giriş yap"
 
@@ -1686,6 +1726,9 @@ msgstr "Durum"
 msgid "Statuses"
 msgstr "Durumlar"
 
+msgid "Stay in Chrome on Android (not Samsung Internet)."
+msgstr "Android’de Chrome’da kalın (Samsung Internet değil)."
+
 msgid "Stay on this page"
 msgstr "Bu sayfada kal"
 
@@ -1719,11 +1762,17 @@ msgstr "Etiket"
 msgid "Takes work center offline"
 msgstr "İş merkezini çevrimdışı yapar"
 
-msgid "Tap Add to Home Screen, then Add."
-msgstr "Ana ekrana ekle’ye, ardından Ekle’ye dokunun."
+msgid "Tap Add in the top right. Launch MES from your Home Screen icon afterward."
+msgstr "Sağ üstte Ekle’ye dokunun. Ardından Ana Ekran simgesinden MES’i açın."
 
-msgid "Tap Share (square with an arrow)."
-msgstr "Paylaş’a dokunun (oklu kare)."
+msgid "Tap the Chrome menu (⋮) at the top right, then Install app or Add to Home screen."
+msgstr "Sağ üstteki Chrome menüsüne (⋮) dokunun, sonra Uygulamayı yükle veya Ana ekrana ekle’yi seçin."
+
+msgid "Tap the menu (⋯ or Share) in this in-app browser."
+msgstr "Bu uygulama içi tarayıcıda menüye (⋯ veya Paylaş) dokunun."
+
+msgid "Tap the Share button at the bottom of Safari (square with an upward arrow)."
+msgstr "Safari’nin altındaki Paylaş düğmesine dokunun (yukarı oklu kare)."
 
 msgid "Tap the menu (⋮). If you see Install app, use it. If you see Open in app in the address bar instead, the app is already installed — follow Open app help."
 msgstr "Menüye (⋮) dokunun. Uygulamayı yükle seçeneğini görürseniz bunu kullanın. Bunun yerine adres çubuğunda Uygulamada aç görünüyorsa uygulama zaten yüklenmiştir; Uygulamayı aç yardımını takip edin."
@@ -1762,6 +1811,12 @@ msgstr "Bu öğelerin hala seçilecek malzemesi var. Şimdi bitirmek listeyi Kı
 msgid "This batch has no work instructions."
 msgstr "Bu partinin iş talimatı yok."
 
+msgid "This in-app browser cannot install MES. Open the link in Chrome, then tap Install."
+msgstr "Bu uygulama içi tarayıcı MES’i kuramaz. Bağlantıyı Chrome’da açın, sonra Kur’a dokunun."
+
+msgid "This in-app browser cannot install MES. Open the link in Safari, then Add to Home Screen."
+msgstr "Bu uygulama içi tarayıcı MES’i kuramaz. Bağlantıyı Safari’de açın, sonra Ana Ekrana Ekle’yi kullanın."
+
 msgid "This lot is expired and can't be picked."
 msgstr "Bu lot'un süresi doldu ve toplanamaz."
 
@@ -1795,6 +1850,12 @@ msgstr "Çalışma Süresi: {0}"
 
 msgid "To pick"
 msgstr "Toplanacak"
+
+msgid "To reinstall: in chrome://apps, right-click the app → Remove from Chrome. Or use ⋮ → Uninstall Carbon MES on an open app window."
+msgstr "Yeniden yüklemek için: chrome://apps içinde uygulamaya sağ tıklayın → Chrome’dan kaldır. Veya açık bir uygulama penceresinde ⋮ → Carbon MES’i kaldır."
+
+msgid "To reinstall: long-press the icon → App info → Uninstall (or Remove)."
+msgstr "Yeniden kurmak için: simgeye uzun basın → Uygulama bilgisi → Kaldır (veya Sil)."
 
 msgid "To run"
 msgstr "Çalıştırılacak"

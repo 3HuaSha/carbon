@@ -301,9 +301,29 @@ msgstr "Wählen Sie einen Fertigungsauftrag"
 
 msgid "Chrome did not offer a one-tap install yet. Use the menu below — or if the address bar shows Open in app, the PWA is already installed."
 msgstr "Chrome hat die 1-Klick-Installation noch nicht angeboten. Nutzen Sie das Menü unten – oder wenn die Adressleiste „In App öffnen“ anzeigt, ist die PWA bereits installiert."
+msgid "Choose Open in Chrome (or Open in browser)."
+msgstr "Wählen Sie In Chrome öffnen (oder Im Browser öffnen)."
 
-msgid "Chrome, Firefox, and Edge on iOS cannot native-install this app."
-msgstr "Chrome, Firefox und Edge auf iOS können diese App nicht nativ installieren."
+msgid "Choose Open in Safari."
+msgstr "Wählen Sie In Safari öffnen."
+
+msgid "Chrome did not offer a one-tap install yet. Stay on this page a few seconds, tap Install again, or use the Chrome menu below."
+msgstr "Chrome hat noch keine Ein-Tipp-Installation angeboten. Bleiben Sie einige Sekunden auf dieser Seite, tippen Sie erneut auf Installieren, oder nutzen Sie das Chrome-Menü unten."
+
+msgid "Chrome did not offer a one-tap install. If you already installed this site, Install app is unavailable until you uninstall or clear site data."
+msgstr "Chrome hat keine Ein-Tipp-Installation angeboten. Wenn Sie diese Website bereits installiert haben, ist „App installieren“ nicht verfügbar, bis Sie deinstallieren oder die Websitedaten löschen."
+
+msgid "Chrome may fire beforeinstallprompt only once per engagement window. After dismiss or install, reload or clear site data before retrying."
+msgstr "Chrome kann beforeinstallprompt nur einmal pro Engagement-Fenster auslösen. Nach Ablehnen oder Installieren Seite neu laden oder Websitedaten löschen und erneut versuchen."
+
+msgid "Chrome on this phone will not offer Install again while MES is already on your home screen. Open the app, or uninstall it to reinstall."
+msgstr "Chrome auf diesem Telefon bietet Installieren nicht erneut an, solange MES bereits auf dem Startbildschirm ist. Öffnen Sie die App oder deinstallieren Sie sie zum erneuten Installieren."
+
+msgid "Chrome only fires the install prompt when the site is not already installed and installability criteria are met."
+msgstr "Chrome zeigt die Installationsaufforderung nur, wenn die Website noch nicht installiert ist und die Installierbarkeitskriterien erfüllt sind."
+
+msgid "Chrome, Firefox, and Edge on iOS cannot native-install this app — they all use WebKit without beforeinstallprompt."
+msgstr "Chrome, Firefox und Edge unter iOS können diese App nicht nativ installieren — alle nutzen WebKit ohne beforeinstallprompt."
 
 msgid "Clear"
 msgstr "Löschen"
@@ -715,6 +735,9 @@ msgstr "Leerlauf"
 msgid "Idle for"
 msgstr "Untätig seit"
 
+msgid "If Install app is missing, wait a few seconds on Shop and tap the download button again — or clear site data for this host and retry."
+msgstr "Fehlt „App installieren“, warten Sie auf Shop einige Sekunden und tippen Sie erneut auf den Download-Button — oder löschen Sie die Websitedaten für diesen Host und versuchen Sie es erneut."
+
 msgid "Impact"
 msgstr "Auswirkung"
 
@@ -724,6 +747,9 @@ msgstr "Imperiale"
 #. placeholder {0}: precise?.text
 msgid "in {0}"
 msgstr "in {0}"
+
+msgid "In Chrome, tap ⋮ → Settings → Site settings → All sites → this MES host → Clear and reset, then reload /shop and tap Install again."
+msgstr "Tippen Sie in Chrome auf ⋮ → Einstellungen → Website-Einstellungen → Alle Websites → diesen MES-Host → Löschen und zurücksetzen, laden Sie dann /shop neu und tippen Sie erneut auf Installieren."
 
 msgid "In Progress"
 msgstr "In Bearbeitung"
@@ -736,6 +762,8 @@ msgstr "In diesem App-Fenster: Menü ⋮ → Streamen, speichern und teilen (投
 
 msgid "In the Chrome address bar, click Open in app (打开应用) to launch the installed Carbon MES window."
 msgstr "Klicken Sie in der Chrome-Adressleiste auf „In App öffnen“ (打开应用), um das installierte Carbon-MES-Fenster zu starten."
+msgid "In-app browsers (WeChat, Instagram, etc.) block Progressive Web App install."
+msgstr "In-App-Browser (WeChat, Instagram usw.) blockieren die Installation von Progressive Web Apps."
 
 msgid "Inspect Item"
 msgstr "Artikel prüfen"
@@ -758,8 +786,8 @@ msgstr "Bestandskorrektur abgeschlossen"
 msgid "Inventory Adjustments"
 msgstr "Bestandskorrekturen"
 
-msgid "iPhone and iPad never show a native Install button — use Safari’s Share menu."
-msgstr "iPhone und iPad zeigen nie einen nativen Installieren-Button — nutzen Sie das Teilen-Menü von Safari."
+msgid "iPhone and iPad never show a one-tap Install button. Use Safari’s Share menu — the steps below take about 15 seconds."
+msgstr "iPhone und iPad zeigen nie eine Ein-Tipp-Schaltfläche „Installieren“. Nutzen Sie das Teilen-Menü von Safari — die Schritte unten dauern etwa 15 Sekunden."
 
 msgid "is"
 msgstr "ist"
@@ -877,6 +905,9 @@ msgstr "Ausschuss erfassen für {0}"
 
 msgid "Login"
 msgstr "Anmelden"
+
+msgid "Look for the MES / Carbon MES icon on your home screen or in the app drawer and open it."
+msgstr "Suchen Sie das Symbol MES / Carbon MES auf dem Startbildschirm oder im App-Drawer und öffnen Sie es."
 
 msgid "Lot"
 msgstr "Charge"
@@ -1181,6 +1212,9 @@ msgstr "Öffnen Sie einen NCR für MRB-Verwendungsentscheid"
 msgid "Open app — Already installed"
 msgstr "App öffnen – Bereits installiert"
 
+msgid "Open in your browser"
+msgstr "Im Browser öffnen"
+
 msgid "Open inspection"
 msgstr "Prüfung öffnen"
 
@@ -1190,8 +1224,8 @@ msgstr "Offene Fertigungsaufträge"
 msgid "Open maintenance"
 msgstr "Offene Instandhaltung"
 
-msgid "Open this page in Safari (not Chrome on iOS)."
-msgstr "Öffnen Sie diese Seite in Safari (nicht Chrome auf iOS)."
+msgid "Open this page in Safari — not Chrome, Firefox, Edge, or WeChat. Only Safari can add MES to the Home Screen."
+msgstr "Öffnen Sie diese Seite in Safari — nicht in Chrome, Firefox, Edge oder WeChat. Nur Safari kann MES zum Startbildschirm hinzufügen."
 
 msgid "Operations"
 msgstr "Arbeitsgänge"
@@ -1504,6 +1538,9 @@ msgstr "Seriennummer {trackedEntityReadableId} wird verschrottet"
 msgid "Scrapping the selected serial"
 msgstr "Ausgewählte Seriennummer wird verschrottet"
 
+msgid "Scroll the share sheet and tap Add to Home Screen."
+msgstr "Scrollen Sie das Teilen-Menü und tippen Sie auf Zum Home-Bildschirm."
+
 msgid "Search"
 msgstr "Suchen"
 
@@ -1627,6 +1664,9 @@ msgstr "Beschreibung anzeigen"
 msgid "Show keyboard shortcuts"
 msgstr "Tastaturkürzel anzeigen"
 
+msgid "Sign in if needed, open Shop, then tap Install again."
+msgstr "Melden Sie sich bei Bedarf an, öffnen Sie Shop und tippen Sie erneut auf Installieren."
+
 msgid "Sign in with Google"
 msgstr "Mit Google anmelden"
 
@@ -1686,6 +1726,9 @@ msgstr "Status"
 msgid "Statuses"
 msgstr "Status"
 
+msgid "Stay in Chrome on Android (not Samsung Internet)."
+msgstr "Bleiben Sie unter Android in Chrome (nicht Samsung Internet)."
+
 msgid "Stay on this page"
 msgstr "Auf dieser Seite bleiben"
 
@@ -1719,11 +1762,17 @@ msgstr "Tag"
 msgid "Takes work center offline"
 msgstr "Setzt den Arbeitsplatz offline"
 
-msgid "Tap Add to Home Screen, then Add."
-msgstr "Tippen Sie auf „Zum Startbildschirm hinzufügen“, dann auf „Hinzufügen“."
+msgid "Tap Add in the top right. Launch MES from your Home Screen icon afterward."
+msgstr "Tippen Sie oben rechts auf Hinzufügen. Starten Sie MES danach über das Symbol auf dem Startbildschirm."
 
-msgid "Tap Share (square with an arrow)."
-msgstr "Tippen Sie auf Teilen (Quadrat mit Pfeil)."
+msgid "Tap the Chrome menu (⋮) at the top right, then Install app or Add to Home screen."
+msgstr "Tippen Sie oben rechts auf das Chrome-Menü (⋮), dann auf App installieren oder Zum Startbildschirm hinzufügen."
+
+msgid "Tap the menu (⋯ or Share) in this in-app browser."
+msgstr "Tippen Sie in diesem In-App-Browser auf das Menü (⋯ oder Teilen)."
+
+msgid "Tap the Share button at the bottom of Safari (square with an upward arrow)."
+msgstr "Tippen Sie unten in Safari auf Teilen (Quadrat mit Pfeil nach oben)."
 
 msgid "Tap the menu (⋮). If you see Install app, use it. If you see Open in app in the address bar instead, the app is already installed — follow Open app help."
 msgstr "Tippen Sie auf das Menü (⋮). Wenn Sie „App installieren“ sehen, verwenden Sie diese Option. Wenn Sie stattdessen „In App öffnen“ in der Adressleiste sehen, ist die App bereits installiert – folgen Sie der Hilfe zu „App öffnen“."
@@ -1762,6 +1811,12 @@ msgstr "Diese Artikel haben noch Material zum Picken. Ein Abschluss jetzt markie
 msgid "This batch has no work instructions."
 msgstr "Dieses Los hat keine Arbeitsanweisung."
 
+msgid "This in-app browser cannot install MES. Open the link in Chrome, then tap Install."
+msgstr "Dieser In-App-Browser kann MES nicht installieren. Öffnen Sie den Link in Chrome und tippen Sie auf Installieren."
+
+msgid "This in-app browser cannot install MES. Open the link in Safari, then Add to Home Screen."
+msgstr "Dieser In-App-Browser kann MES nicht installieren. Öffnen Sie den Link in Safari und fügen Sie ihn zum Home-Bildschirm hinzu."
+
 msgid "This lot is expired and can't be picked."
 msgstr "Dieses Los ist abgelaufen und kann nicht entnommen werden."
 
@@ -1795,6 +1850,12 @@ msgstr "Arbeitszeit: {0}"
 
 msgid "To pick"
 msgstr "Zu kommissionieren"
+
+msgid "To reinstall: in chrome://apps, right-click the app → Remove from Chrome. Or use ⋮ → Uninstall Carbon MES on an open app window."
+msgstr "Zum Neuinstallieren: in chrome://apps Rechtsklick auf die App → Aus Chrome entfernen. Oder ⋮ → Carbon MES deinstallieren in einem geöffneten App-Fenster."
+
+msgid "To reinstall: long-press the icon → App info → Uninstall (or Remove)."
+msgstr "Zum erneuten Installieren: Symbol lange drücken → App-Info → Deinstallieren (oder Entfernen)."
 
 msgid "To run"
 msgstr "Zu laufen"

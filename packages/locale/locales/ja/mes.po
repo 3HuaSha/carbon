@@ -301,9 +301,29 @@ msgstr "製造指図を選択"
 
 msgid "Chrome did not offer a one-tap install yet. Use the menu below — or if the address bar shows Open in app, the PWA is already installed."
 msgstr "Chrome でワンタップインストールのメッセージがまだ表示されていません。以下のメニューを使用してください。または、アドレスバーに「アプリで開く」と表示されている場合は、PWA はすでにインストールされています。"
+msgid "Choose Open in Chrome (or Open in browser)."
+msgstr "「Chromeで開く」（または「ブラウザで開く」）を選びます。"
 
-msgid "Chrome, Firefox, and Edge on iOS cannot native-install this app."
-msgstr "iOS の Chrome、Firefox、Edge ではこのアプリをネイティブインストールできません。"
+msgid "Choose Open in Safari."
+msgstr "「Safariで開く」を選びます。"
+
+msgid "Chrome did not offer a one-tap install yet. Stay on this page a few seconds, tap Install again, or use the Chrome menu below."
+msgstr "Chromeはまだワンタップインストールを提示していません。このページで数秒待ってから再度「インストール」をタップするか、下のChromeメニューを使ってください。"
+
+msgid "Chrome did not offer a one-tap install. If you already installed this site, Install app is unavailable until you uninstall or clear site data."
+msgstr "Chrome はワンタップインストールを提示しませんでした。このサイトを既にインストールしている場合、アンインストールまたはサイトデータを消去するまで「アプリをインストール」は利用できません。"
+
+msgid "Chrome may fire beforeinstallprompt only once per engagement window. After dismiss or install, reload or clear site data before retrying."
+msgstr "Chrome はエンゲージメント期間ごとに beforeinstallprompt を一度しか発火しない場合があります。却下またはインストール後は、再試行前に再読み込みするかサイトデータを消去してください。"
+
+msgid "Chrome on this phone will not offer Install again while MES is already on your home screen. Open the app, or uninstall it to reinstall."
+msgstr "ホーム画面にMESがある間、この端末のChromeは再度「インストール」を出しません。アプリを開くか、アンインストールしてから再インストールしてください。"
+
+msgid "Chrome only fires the install prompt when the site is not already installed and installability criteria are met."
+msgstr "Chrome はサイトが未インストールで、かつインストール可能条件を満たす場合にのみインストールプロンプトを表示します。"
+
+msgid "Chrome, Firefox, and Edge on iOS cannot native-install this app — they all use WebKit without beforeinstallprompt."
+msgstr "iOSのChrome、Firefox、Edgeではこのアプリをネイティブインストールできません。いずれもbeforeinstallpromptのないWebKitを使います。"
 
 msgid "Clear"
 msgstr "クリア"
@@ -715,6 +735,9 @@ msgstr "待機"
 msgid "Idle for"
 msgstr "待機時間"
 
+msgid "If Install app is missing, wait a few seconds on Shop and tap the download button again — or clear site data for this host and retry."
+msgstr "「アプリをインストール」がない場合は、Shopで数秒待ってから再度ダウンロードボタンをタップするか、このホストのサイトデータを消去して再試行してください。"
+
 msgid "Impact"
 msgstr "影響"
 
@@ -724,6 +747,9 @@ msgstr "インペリアル"
 #. placeholder {0}: precise?.text
 msgid "in {0}"
 msgstr "{0}で"
+
+msgid "In Chrome, tap ⋮ → Settings → Site settings → All sites → this MES host → Clear and reset, then reload /shop and tap Install again."
+msgstr "Chromeで⋮ → 設定 → サイトの設定 → すべてのサイト → このMESホスト → 消去してリセットの順にタップし、/shopを再読み込みしてから再度インストールをタップします。"
 
 msgid "In Progress"
 msgstr "進行中"
@@ -736,6 +762,8 @@ msgstr "そのアプリウィンドウで：メニュー ⋮ → [保存して�
 
 msgid "In the Chrome address bar, click Open in app (打开应用) to launch the installed Carbon MES window."
 msgstr "Chrome のアドレスバーで [アプリで開く] をクリックして、インストールされている Carbon MES ウィンドウを起動します。"
+msgid "In-app browsers (WeChat, Instagram, etc.) block Progressive Web App install."
+msgstr "アプリ内ブラウザ（WeChat、Instagramなど）はProgressive Web Appのインストールをブロックします。"
 
 msgid "Inspect Item"
 msgstr "アイテムを検査"
@@ -758,8 +786,8 @@ msgstr "在庫調整が完了しました"
 msgid "Inventory Adjustments"
 msgstr "在庫調整"
 
-msgid "iPhone and iPad never show a native Install button — use Safari’s Share menu."
-msgstr "iPhone と iPad ではネイティブのインストールボタンは表示されません。Safari の共有メニューを使ってください。"
+msgid "iPhone and iPad never show a one-tap Install button. Use Safari’s Share menu — the steps below take about 15 seconds."
+msgstr "iPhoneとiPadにはワンタップのインストールボタンは出ません。Safariの共有メニューを使ってください。以下の手順は約15秒です。"
 
 msgid "is"
 msgstr "が次と等しい"
@@ -877,6 +905,9 @@ msgstr "{0} のスクラップを記録"
 
 msgid "Login"
 msgstr "ログイン"
+
+msgid "Look for the MES / Carbon MES icon on your home screen or in the app drawer and open it."
+msgstr "ホーム画面またはアプリアイコン一覧でMES / Carbon MESアイコンを探して開きます。"
 
 msgid "Lot"
 msgstr "ロット"
@@ -1181,6 +1212,9 @@ msgstr "MRB処置のためにNCRを開く"
 msgid "Open app — Already installed"
 msgstr "アプリを開く — インストール済み"
 
+msgid "Open in your browser"
+msgstr "ブラウザで開く"
+
 msgid "Open inspection"
 msgstr "検査を開く"
 
@@ -1190,8 +1224,8 @@ msgstr "オープンな製造指図"
 msgid "Open maintenance"
 msgstr "オープンの保全"
 
-msgid "Open this page in Safari (not Chrome on iOS)."
-msgstr "このページを Safari で開いてください（iOS の Chrome ではありません）。"
+msgid "Open this page in Safari — not Chrome, Firefox, Edge, or WeChat. Only Safari can add MES to the Home Screen."
+msgstr "このページをSafariで開いてください（Chrome、Firefox、Edge、WeChatではありません）。ホーム画面にMESを追加できるのはSafariだけです。"
 
 msgid "Operations"
 msgstr "工程"
@@ -1504,6 +1538,9 @@ msgstr "シリアル {trackedEntityReadableId} をスクラップ中"
 msgid "Scrapping the selected serial"
 msgstr "選択したシリアルをスクラップ中"
 
+msgid "Scroll the share sheet and tap Add to Home Screen."
+msgstr "共有シートをスクロールして「ホーム画面に追加」をタップします。"
+
 msgid "Search"
 msgstr "検索"
 
@@ -1627,6 +1664,9 @@ msgstr "説明を表示"
 msgid "Show keyboard shortcuts"
 msgstr "キーボードショートカットを表示"
 
+msgid "Sign in if needed, open Shop, then tap Install again."
+msgstr "必要ならサインインし、Shopを開いてから再度インストールをタップします。"
+
 msgid "Sign in with Google"
 msgstr "Googleでサインイン"
 
@@ -1686,6 +1726,9 @@ msgstr "ステータス"
 msgid "Statuses"
 msgstr "ステータス一覧"
 
+msgid "Stay in Chrome on Android (not Samsung Internet)."
+msgstr "AndroidではChromeのままにしてください（Samsung Internetではありません）。"
+
 msgid "Stay on this page"
 msgstr "このページに留まる"
 
@@ -1719,11 +1762,17 @@ msgstr "タグ"
 msgid "Takes work center offline"
 msgstr "作業区をオフラインにします"
 
-msgid "Tap Add to Home Screen, then Add."
-msgstr "「ホーム画面に追加」をタップし、続けて「追加」をタップします。"
+msgid "Tap Add in the top right. Launch MES from your Home Screen icon afterward."
+msgstr "右上の「追加」をタップします。その後、ホーム画面のアイコンからMESを起動します。"
 
-msgid "Tap Share (square with an arrow)."
-msgstr "共有（矢印付きの四角）をタップします。"
+msgid "Tap the Chrome menu (⋮) at the top right, then Install app or Add to Home screen."
+msgstr "右上のChromeメニュー（⋮）をタップし、「アプリをインストール」または「ホーム画面に追加」を選びます。"
+
+msgid "Tap the menu (⋯ or Share) in this in-app browser."
+msgstr "このアプリ内ブラウザでメニュー（⋯または共有）をタップします。"
+
+msgid "Tap the Share button at the bottom of Safari (square with an upward arrow)."
+msgstr "Safari下部の共有ボタン（上向き矢印の四角）をタップします。"
 
 msgid "Tap the menu (⋮). If you see Install app, use it. If you see Open in app in the address bar instead, the app is already installed — follow Open app help."
 msgstr "メニュー (⋮) をタップします。[アプリをインストール] が表示されたら、それを実行します。代わりにアドレスバーに [アプリで開く] が表示されている場合は、アプリはすでにインストールされています。「アプリを開く」のヘルプに従ってください。"
@@ -1762,6 +1811,12 @@ msgstr "これらの品目にはまだピッキングする材料があります
 msgid "This batch has no work instructions."
 msgstr "このバッチには作業手順書がありません。"
 
+msgid "This in-app browser cannot install MES. Open the link in Chrome, then tap Install."
+msgstr "このアプリ内ブラウザではMESをインストールできません。リンクをChromeで開き、インストールをタップしてください。"
+
+msgid "This in-app browser cannot install MES. Open the link in Safari, then Add to Home Screen."
+msgstr "このアプリ内ブラウザではMESをインストールできません。リンクをSafariで開き、「ホーム画面に追加」してください。"
+
 msgid "This lot is expired and can't be picked."
 msgstr "このロットは期限切れであり、ピックできません。"
 
@@ -1795,6 +1850,12 @@ msgstr "作業時間: {0}"
 
 msgid "To pick"
 msgstr "ピッキング待ち"
+
+msgid "To reinstall: in chrome://apps, right-click the app → Remove from Chrome. Or use ⋮ → Uninstall Carbon MES on an open app window."
+msgstr "再インストールするには: chrome://apps でアプリを右クリック → Chrome から削除。または開いているアプリウィンドウで ⋮ → Carbon MES をアンインストール。"
+
+msgid "To reinstall: long-press the icon → App info → Uninstall (or Remove)."
+msgstr "再インストールするには：アイコンを長押し → アプリ情報 → アンインストール（または削除）。"
 
 msgid "To run"
 msgstr "実行待ち"

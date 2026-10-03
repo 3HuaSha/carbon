@@ -301,9 +301,29 @@ msgstr "एक जॉब चुनें"
 
 msgid "Chrome did not offer a one-tap install yet. Use the menu below — or if the address bar shows Open in app, the PWA is already installed."
 msgstr "Chrome ने अभी तक एक-टैप इंस्टॉल की पेशकश नहीं की है। नीचे दिए गए मेनू का उपयोग करें — या यदि एड्रेस बार में ऐप में खोलें (Open in app) दिखाई देता है, तो PWA पहले से इंस्टॉल है।"
+msgid "Choose Open in Chrome (or Open in browser)."
+msgstr "Chrome में खोलें (या ब्राउज़र में खोलें) चुनें।"
 
-msgid "Chrome, Firefox, and Edge on iOS cannot native-install this app."
-msgstr "iOS पर Chrome, Firefox और Edge इस ऐप को नेटिव रूप से इंस्टॉल नहीं कर सकते।"
+msgid "Choose Open in Safari."
+msgstr "Safari में खोलें चुनें।"
+
+msgid "Chrome did not offer a one-tap install yet. Stay on this page a few seconds, tap Install again, or use the Chrome menu below."
+msgstr "Chrome ने अभी वन-टैप इंस्टॉल नहीं दिखाया। इस पेज पर कुछ सेकंड रुकें, फिर से इंस्टॉल टैप करें, या नीचे Chrome मेनू इस्तेमाल करें।"
+
+msgid "Chrome did not offer a one-tap install. If you already installed this site, Install app is unavailable until you uninstall or clear site data."
+msgstr "Chrome ने एक-टैप इंस्टॉल नहीं दिया। यदि आपने यह साइट पहले इंस्टॉल कर ली है, तो अनइंस्टॉल करने या साइट डेटा साफ़ करने तक “ऐप इंस्टॉल करें” उपलब्ध नहीं होगा।"
+
+msgid "Chrome may fire beforeinstallprompt only once per engagement window. After dismiss or install, reload or clear site data before retrying."
+msgstr "Chrome प्रति एंगेजमेंट विंडो में beforeinstallprompt केवल एक बार चला सकता है। अस्वीकार या इंस्टॉल के बाद पुनः प्रयास से पहले रीलोड करें या साइट डेटा साफ़ करें।"
+
+msgid "Chrome on this phone will not offer Install again while MES is already on your home screen. Open the app, or uninstall it to reinstall."
+msgstr "जब MES पहले से होम स्क्रीन पर हो, इस फ़ोन पर Chrome फिर से इंस्टॉल नहीं दिखाएगा। ऐप खोलें, या फिर से इंस्टॉल करने के लिए अनइंस्टॉल करें।"
+
+msgid "Chrome only fires the install prompt when the site is not already installed and installability criteria are met."
+msgstr "Chrome इंस्टॉल प्रॉम्प्ट तभी दिखाता है जब साइट पहले से इंस्टॉल न हो और इंस्टॉल योग्यता पूरी हो।"
+
+msgid "Chrome, Firefox, and Edge on iOS cannot native-install this app — they all use WebKit without beforeinstallprompt."
+msgstr "iOS पर Chrome, Firefox और Edge इस ऐप को नेटिव रूप से इंस्टॉल नहीं कर सकते — सभी beforeinstallprompt के बिना WebKit इस्तेमाल करते हैं।"
 
 msgid "Clear"
 msgstr "साफ़ करें"
@@ -715,6 +735,9 @@ msgstr "निष्क्रिय"
 msgid "Idle for"
 msgstr "के लिए निष्क्रिय"
 
+msgid "If Install app is missing, wait a few seconds on Shop and tap the download button again — or clear site data for this host and retry."
+msgstr "यदि इंस्टॉल ऐप गायब है, तो Shop पर कुछ सेकंड रुककर डाउनलोड बटन फिर टैप करें — या इस होस्ट के साइट डेटा साफ़ करके फिर कोशिश करें।"
+
 msgid "Impact"
 msgstr "प्रभाव"
 
@@ -724,6 +747,9 @@ msgstr "इंपीरियल"
 #. placeholder {0}: precise?.text
 msgid "in {0}"
 msgstr "{0} में"
+
+msgid "In Chrome, tap ⋮ → Settings → Site settings → All sites → this MES host → Clear and reset, then reload /shop and tap Install again."
+msgstr "Chrome में ⋮ → सेटिंग → साइट सेटिंग → सभी साइटें → यह MES होस्ट → साफ़ करें और रीसेट टैप करें, फिर /shop रीलोड करके फिर से इंस्टॉल टैप करें।"
 
 msgid "In Progress"
 msgstr "प्रगति में"
@@ -736,6 +762,8 @@ msgstr "उस ऐप विंडो में: मेनू ⋮ → Cast, save
 
 msgid "In the Chrome address bar, click Open in app (打开应用) to launch the installed Carbon MES window."
 msgstr "Chrome एड्रेस बार में, इंस्टॉल की गई Carbon MES विंडो लॉन्च करने के लिए ऐप में खोलें (Open in app) पर क्लिक करें।"
+msgid "In-app browsers (WeChat, Instagram, etc.) block Progressive Web App install."
+msgstr "इन-ऐप ब्राउज़र (WeChat, Instagram आदि) Progressive Web App इंस्टॉल रोकते हैं।"
 
 msgid "Inspect Item"
 msgstr "आइटम का निरीक्षण करें"
@@ -758,8 +786,8 @@ msgstr "इन्वेंटरी समायोजन पूर्ण हु
 msgid "Inventory Adjustments"
 msgstr "इन्वेंटरी समायोजन"
 
-msgid "iPhone and iPad never show a native Install button — use Safari’s Share menu."
-msgstr "iPhone और iPad कभी नेटिव इंस्टॉल बटन नहीं दिखाते — Safari का शेयर मेनू उपयोग करें।"
+msgid "iPhone and iPad never show a one-tap Install button. Use Safari’s Share menu — the steps below take about 15 seconds."
+msgstr "iPhone और iPad कभी वन-टैप इंस्टॉल बटन नहीं दिखाते। Safari के शेयर मेनू का उपयोग करें — नीचे के चरण लगभग 15 सेकंड लेते हैं।"
 
 msgid "is"
 msgstr "है"
@@ -877,6 +905,9 @@ msgstr "{0} के लिए स्क्रैप लॉग करें"
 
 msgid "Login"
 msgstr "लॉगिन"
+
+msgid "Look for the MES / Carbon MES icon on your home screen or in the app drawer and open it."
+msgstr "होम स्क्रीन या ऐप ड्रॉअर में MES / Carbon MES आइकन ढूँढकर खोलें।"
 
 msgid "Lot"
 msgstr "लॉट"
@@ -1181,6 +1212,9 @@ msgstr "MRB निपटान के लिए एक NCR खोलें"
 msgid "Open app — Already installed"
 msgstr "ऐप खोलें — पहले से इंस्टॉल है"
 
+msgid "Open in your browser"
+msgstr "अपने ब्राउज़र में खोलें"
+
 msgid "Open inspection"
 msgstr "निरीक्षण खोलें"
 
@@ -1190,8 +1224,8 @@ msgstr "खुली जॉब्स"
 msgid "Open maintenance"
 msgstr "खुला रखरखाव"
 
-msgid "Open this page in Safari (not Chrome on iOS)."
-msgstr "यह पेज Safari में खोलें (iOS पर Chrome में नहीं)।"
+msgid "Open this page in Safari — not Chrome, Firefox, Edge, or WeChat. Only Safari can add MES to the Home Screen."
+msgstr "इस पेज को Safari में खोलें — Chrome, Firefox, Edge या WeChat में नहीं। केवल Safari MES को होम स्क्रीन पर जोड़ सकता है।"
 
 msgid "Operations"
 msgstr "ऑपरेशन"
@@ -1504,6 +1538,9 @@ msgstr "सीरीयल को स्क्रैप किया जा र�
 msgid "Scrapping the selected serial"
 msgstr "चयनित सीरीयल को स्क्रैप किया जा रहा है"
 
+msgid "Scroll the share sheet and tap Add to Home Screen."
+msgstr "शेयर शीट स्क्रॉल करें और होम स्क्रीन में जोड़ें टैप करें।"
+
 msgid "Search"
 msgstr "खोजें"
 
@@ -1627,6 +1664,9 @@ msgstr "विवरण दिखाएं"
 msgid "Show keyboard shortcuts"
 msgstr "कीबोर्ड शॉर्टकट दिखाएं"
 
+msgid "Sign in if needed, open Shop, then tap Install again."
+msgstr "ज़रूरत हो तो साइन इन करें, Shop खोलें, फिर फिर से इंस्टॉल टैप करें।"
+
 msgid "Sign in with Google"
 msgstr "Google के साथ साइन इन करें"
 
@@ -1686,6 +1726,9 @@ msgstr "स्थिति"
 msgid "Statuses"
 msgstr "स्थितियाँ"
 
+msgid "Stay in Chrome on Android (not Samsung Internet)."
+msgstr "Android पर Chrome में रहें (Samsung Internet नहीं)।"
+
 msgid "Stay on this page"
 msgstr "इस पृष्ठ पर रहें"
 
@@ -1719,11 +1762,17 @@ msgstr "टैग"
 msgid "Takes work center offline"
 msgstr "वर्क सेंटर को ऑफ़लाइन कर देता है"
 
-msgid "Tap Add to Home Screen, then Add."
-msgstr "“होम स्क्रीन पर जोड़ें” टैप करें, फिर “जोड़ें”।"
+msgid "Tap Add in the top right. Launch MES from your Home Screen icon afterward."
+msgstr "ऊपर दाएँ जोड़ें टैप करें। फिर होम स्क्रीन आइकन से MES लॉन्च करें।"
 
-msgid "Tap Share (square with an arrow)."
-msgstr "शेयर टैप करें (तीर वाला वर्ग)।"
+msgid "Tap the Chrome menu (⋮) at the top right, then Install app or Add to Home screen."
+msgstr "ऊपर दाएँ Chrome मेनू (⋮) टैप करें, फिर ऐप इंस्टॉल करें या होम स्क्रीन में जोड़ें।"
+
+msgid "Tap the menu (⋯ or Share) in this in-app browser."
+msgstr "इस इन-ऐप ब्राउज़र में मेनू (⋯ या शेयर) टैप करें।"
+
+msgid "Tap the Share button at the bottom of Safari (square with an upward arrow)."
+msgstr "Safari के नीचे शेयर बटन टैप करें (ऊपर तीर वाला वर्ग)।"
 
 msgid "Tap the menu (⋮). If you see Install app, use it. If you see Open in app in the address bar instead, the app is already installed — follow Open app help."
 msgstr "मेनू (⋮) पर टैप करें। यदि आपको ऐप इंस्टॉल करें (Install app) दिखाई देता है, तो इसका उपयोग करें। यदि आपको इसके बजाय एड्रेस बार में ऐप में खोलें (Open in app) दिखाई देता है, तो ऐप पहले से इंस्टॉल है — ऐप खोलें (Open app) सहायता का पालन करें।"
@@ -1762,6 +1811,12 @@ msgstr "इन आइटम के पास अभी भी चुनने �
 msgid "This batch has no work instructions."
 msgstr "इस बैच के पास कोई कार्य निर्देश नहीं है।"
 
+msgid "This in-app browser cannot install MES. Open the link in Chrome, then tap Install."
+msgstr "यह इन-ऐप ब्राउज़र MES इंस्टॉल नहीं कर सकता। लिंक Chrome में खोलें, फिर इंस्टॉल टैप करें।"
+
+msgid "This in-app browser cannot install MES. Open the link in Safari, then Add to Home Screen."
+msgstr "यह इन-ऐप ब्राउज़र MES इंस्टॉल नहीं कर सकता। लिंक Safari में खोलें, फिर होम स्क्रीन में जोड़ें।"
+
 msgid "This lot is expired and can't be picked."
 msgstr "यह लॉट समाप्त हो गया है और इसे चुना नहीं जा सकता।"
 
@@ -1795,6 +1850,12 @@ msgstr "समय काम किया: {0}"
 
 msgid "To pick"
 msgstr "पिकिंग के लिए"
+
+msgid "To reinstall: in chrome://apps, right-click the app → Remove from Chrome. Or use ⋮ → Uninstall Carbon MES on an open app window."
+msgstr "फिर से इंस्टॉल करने के लिए: chrome://apps में ऐप पर राइट-क्लिक → Chrome से हटाएँ। या खुली ऐप विंडो में ⋮ → Carbon MES अनइंस्टॉल करें।"
+
+msgid "To reinstall: long-press the icon → App info → Uninstall (or Remove)."
+msgstr "फिर से इंस्टॉल करने के लिए: आइकन लंबा दबाएँ → ऐप जानकारी → अनइंस्टॉल (या हटाएँ)।"
 
 msgid "To run"
 msgstr "चलाने के लिए"

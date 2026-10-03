@@ -37,29 +37,40 @@ export function ShopHeader({
     requestInstall,
     openInstalledApp,
     isIos,
+    isAndroid,
     preparing
   } = usePwaInstall();
   const [helpOpen, setHelpOpen] = useState(false);
   const [alreadyInstalledHelp, setAlreadyInstalledHelp] = useState(false);
+  const [inAppBrowserHelp, setInAppBrowserHelp] = useState(false);
 
   const onInstallClick = async () => {
     // Known-installed browser tab: open sheet with Open in app / pin steps.
     // Pages cannot programmatically trigger Chrome's omnibox Open in app.
     if (knownInstalled) {
       openInstalledApp();
+      setInAppBrowserHelp(false);
       setAlreadyInstalledHelp(true);
       setHelpOpen(true);
       return;
     }
 
     const result = await requestInstall();
+    if (result === "in-app-browser") {
+      setAlreadyInstalledHelp(false);
+      setInAppBrowserHelp(true);
+      setHelpOpen(true);
+      return;
+    }
     if (result === "already-installed") {
       openInstalledApp();
+      setInAppBrowserHelp(false);
       setAlreadyInstalledHelp(true);
       setHelpOpen(true);
       return;
     }
     if (result === "manual") {
+      setInAppBrowserHelp(false);
       setAlreadyInstalledHelp(false);
       setHelpOpen(true);
     }
@@ -142,7 +153,9 @@ export function ShopHeader({
         open={helpOpen}
         onOpenChange={setHelpOpen}
         isIos={isIos}
+        isAndroid={isAndroid}
         alreadyInstalled={alreadyInstalledHelp}
+        inAppBrowser={inAppBrowserHelp}
       />
     </header>
   );
