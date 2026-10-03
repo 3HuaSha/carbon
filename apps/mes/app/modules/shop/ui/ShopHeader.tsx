@@ -33,10 +33,17 @@ export function ShopHeader({
   const { t } = useLingui();
   const { installed, requestInstall, isIos, preparing } = usePwaInstall();
   const [helpOpen, setHelpOpen] = useState(false);
+  const [alreadyInstalledHelp, setAlreadyInstalledHelp] = useState(false);
 
   const onInstallClick = async () => {
     const result = await requestInstall();
+    if (result === "already-installed") {
+      setAlreadyInstalledHelp(true);
+      setHelpOpen(true);
+      return;
+    }
     if (result === "manual") {
+      setAlreadyInstalledHelp(false);
       setHelpOpen(true);
     }
   };
@@ -114,6 +121,7 @@ export function ShopHeader({
         open={helpOpen}
         onOpenChange={setHelpOpen}
         isIos={isIos}
+        alreadyInstalled={alreadyInstalledHelp}
       />
     </header>
   );

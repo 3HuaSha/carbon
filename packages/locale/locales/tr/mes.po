@@ -146,7 +146,7 @@ msgid "Add Spare Part"
 msgstr "Yedek Parça Ekle"
 
 msgid "Add to Home Screen"
-msgstr ""
+msgstr "Ana ekrana ekle"
 
 msgid "Add work centers for this location in Resources, then open Shop again. Machines on the computer MES will show here."
 msgstr "Bu lokasyon için Kaynaklar'da iş merkezi ekleyin, ardından Atölye'yi tekrar açın. Bilgisayar MES'indeki makineler burada görüntülenir."
@@ -175,6 +175,9 @@ msgstr "Başarısız birimleri tahsis et"
 
 msgid "Allocate units"
 msgstr "Birimleri tahsis et"
+
+msgid "App already installed"
+msgstr "Uygulama zaten yüklü"
 
 msgid "Are you sure you want to delete this step?"
 msgstr "Bu adımı silmek istediğinizden emin misiniz?"
@@ -290,17 +293,26 @@ msgstr "Kartlar"
 msgid "Chat"
 msgstr "Sohbet"
 
+msgid "Check ⋮ — if Install app is missing or greyed out, the app is already installed: open chrome://apps or uninstall from ⋮."
+msgstr "⋮ öğesini kontrol edin — Uygulamayı yükle yoksa veya soluksa uygulama zaten yüklüdür: chrome://apps açın veya ⋮ üzerinden kaldırın."
+
 msgid "Check your email"
 msgstr "E-postanızı kontrol edin"
 
 msgid "Choose a job"
 msgstr "İş emri seç"
 
-msgid "Chrome did not offer a one-tap install yet. Use the menu below, or stay on this page a few seconds and try Install again."
-msgstr ""
+msgid "Chrome did not offer a one-tap install. If you already installed this site, Install app is unavailable until you uninstall or clear site data."
+msgstr "Chrome tek dokunuşla yükleme sunmadı. Bu siteyi zaten yüklediyseniz, kaldırana veya site verilerini silene kadar Uygulamayı yükle kullanılamaz."
+
+msgid "Chrome may fire beforeinstallprompt only once per engagement window. After dismiss or install, reload or clear site data before retrying."
+msgstr "Chrome, beforeinstallprompt olayını etkileşim penceresi başına yalnızca bir kez tetikleyebilir. Reddetme veya yüklemeden sonra yeniden denemeden önce yenileyin veya site verilerini temizleyin."
+
+msgid "Chrome only fires the install prompt when the site is not already installed and installability criteria are met."
+msgstr "Chrome yükleme istemini yalnızca site henüz yüklü değilse ve yüklenebilirlik ölçütleri karşılandığında gösterir."
 
 msgid "Chrome, Firefox, and Edge on iOS cannot native-install this app."
-msgstr ""
+msgstr "iOS’ta Chrome, Firefox ve Edge bu uygulamayı yerel olarak yükleyemez."
 
 msgid "Clear"
 msgstr "Temizle"
@@ -450,6 +462,9 @@ msgstr "Yeniden işlenmesi gerekeni açıklayın..."
 
 msgid "Description"
 msgstr "Açıklama"
+
+msgid "Desktop Chrome will not show Install again while this site is already an installed app. Open the app from chrome://apps, or uninstall it to reinstall."
+msgstr "Masaüstü Chrome, bu site zaten yüklü bir uygulama iken Yükle’yi yeniden göstermez. Uygulamayı chrome://apps üzerinden açın veya yeniden yüklemek için kaldırın."
 
 msgid "Details"
 msgstr "Detaylar"
@@ -666,9 +681,6 @@ msgstr "Hesabınızı ayarlamayı tamamlayın"
 msgid "Finish with material unpicked?"
 msgstr "Malzeme seçilmeden bitir?"
 
-msgid "Firefox and Safari on desktop also use manual Add to Home Screen — only Chromium fires the Install prompt."
-msgstr ""
-
 #. placeholder {0}: formatRelativeTime( convertDateStringToIsoString(batchFacts.dueDate) )
 msgid "First due {0}"
 msgstr "İlk vade {0}"
@@ -689,7 +701,7 @@ msgid "Go to onboarding"
 msgstr "Başlangıç adımına git"
 
 msgid "Got it"
-msgstr ""
+msgstr "Anladım"
 
 msgid "Hide description"
 msgstr "Açıklamayı gizle"
@@ -738,7 +750,7 @@ msgid "inspected"
 msgstr "incelendi"
 
 msgid "Install / Add to Home Screen"
-msgstr ""
+msgstr "Yükle / Ana ekrana ekle"
 
 msgid "Instructions"
 msgstr "Talimatlar"
@@ -753,7 +765,7 @@ msgid "Inventory Adjustments"
 msgstr "Stok düzeltmeleri"
 
 msgid "iPhone and iPad never show a native Install button — use Safari’s Share menu."
-msgstr ""
+msgstr "iPhone ve iPad asla yerel bir Yükle düğmesi göstermez — Safari’nin Paylaş menüsünü kullanın."
 
 msgid "is"
 msgstr "eşittir"
@@ -1169,6 +1181,9 @@ msgstr "Bu partizeki bir iş emrini aç"
 msgid "Open an NCR for MRB disposition"
 msgstr "MRB kararı için NCR aç"
 
+msgid "Open chrome://apps in the address bar and launch Carbon MES."
+msgstr "Adres çubuğunda chrome://apps açın ve Carbon MES’i başlatın."
+
 msgid "Open inspection"
 msgstr "Muayeneyi aç"
 
@@ -1179,7 +1194,7 @@ msgid "Open maintenance"
 msgstr "Açık bakım"
 
 msgid "Open this page in Safari (not Chrome on iOS)."
-msgstr ""
+msgstr "Bu sayfayı Safari’de açın (iOS’ta Chrome değil)."
 
 msgid "Operations"
 msgstr "Operasyonlar"
@@ -1285,7 +1300,7 @@ msgid "PM schedule lapsed"
 msgstr "PM zamanlaması süresi doldu"
 
 msgid "Preparing install…"
-msgstr ""
+msgstr "Yükleme hazırlanıyor…"
 
 msgid "Press ? on any page to open this list. Shortcuts are ignored while you type in a field."
 msgstr "Herhangi bir sayfada bu listeyi açmak için ? tuşuna basın. Bir alan içinde yazarken kısayollar yoksayılır."
@@ -1702,16 +1717,10 @@ msgid "Takes work center offline"
 msgstr "İş merkezini çevrimdışı yapar"
 
 msgid "Tap Add to Home Screen, then Add."
-msgstr ""
-
-msgid "Tap Install app or Add to Home screen."
-msgstr ""
+msgstr "Ana ekrana ekle’ye, ardından Ekle’ye dokunun."
 
 msgid "Tap Share (square with an arrow)."
-msgstr ""
-
-msgid "Tap the menu (⋮) at the top right."
-msgstr ""
+msgstr "Paylaş’a dokunun (oklu kare)."
 
 msgid "The completed quantity for this operation is less than the required quantity of {targetQuantity}."
 msgstr "Bu işlem için tamamlanan miktar, gerekli miktar olan {targetQuantity}'dan azdır."
@@ -1734,6 +1743,9 @@ msgstr "Zamanlayıcı ve tamamlama tüm {0} iş emirleri tarafından paylaşıl�
 
 msgid "then"
 msgstr "sonra"
+
+msgid "Then open chrome://settings/content/all, find this MES host, delete site data, reload /shop, and tap Install again."
+msgstr "Ardından chrome://settings/content/all açın, bu MES ana bilgisayarını bulun, site verilerini silin, /shop sayfasını yenileyin ve yeniden Yükle’ye dokunun."
 
 msgid "There are no available or consumed tracked parts for this material."
 msgstr "Bu malzeme için hiçbir kullanılabilir veya tüketilmiş izlenmiş parça yoktur."
@@ -1777,6 +1789,12 @@ msgstr "Çalışma Süresi: {0}"
 
 msgid "To pick"
 msgstr "Toplanacak"
+
+msgid "To reinstall: in chrome://apps, right-click the app → Remove from Chrome. Or use ⋮ → Uninstall Carbon MES on an open app window."
+msgstr "Yeniden yüklemek için: chrome://apps içinde uygulamaya sağ tıklayın → Chrome’dan kaldır. Veya açık bir uygulama penceresinde ⋮ → Carbon MES’i kaldır."
+
+msgid "To reset: chrome://settings/content/all → remove site data for this MES host → reload, then try Install again."
+msgstr "Sıfırlamak için: chrome://settings/content/all → bu MES ana bilgisayarının site verilerini kaldır → yenile, sonra yeniden Yükle’yi deneyin."
 
 msgid "To run"
 msgstr "Çalıştırılacak"
@@ -1885,7 +1903,7 @@ msgid "Use a different account"
 msgstr "Farklı bir hesap kullan"
 
 msgid "Use Chrome on Android (or desktop Chrome)."
-msgstr ""
+msgstr "Android’de Chrome (veya masaüstü Chrome) kullanın."
 
 msgid "Used automatically at completion"
 msgstr "Tamamlama sırasında otomatik olarak kullanılır"

@@ -176,6 +176,9 @@ msgstr "Allocate failed units"
 msgid "Allocate units"
 msgstr "Allocate units"
 
+msgid "App already installed"
+msgstr "App already installed"
+
 msgid "Are you sure you want to delete this step?"
 msgstr "Are you sure you want to delete this step?"
 
@@ -290,14 +293,23 @@ msgstr "Cards"
 msgid "Chat"
 msgstr "Chat"
 
+msgid "Check ⋮ — if Install app is missing or greyed out, the app is already installed: open chrome://apps or uninstall from ⋮."
+msgstr "Check ⋮ — if Install app is missing or greyed out, the app is already installed: open chrome://apps or uninstall from ⋮."
+
 msgid "Check your email"
 msgstr "Check your email"
 
 msgid "Choose a job"
 msgstr "Choose a job"
 
-msgid "Chrome did not offer a one-tap install yet. Use the menu below, or stay on this page a few seconds and try Install again."
-msgstr "Chrome did not offer a one-tap install yet. Use the menu below, or stay on this page a few seconds and try Install again."
+msgid "Chrome did not offer a one-tap install. If you already installed this site, Install app is unavailable until you uninstall or clear site data."
+msgstr "Chrome did not offer a one-tap install. If you already installed this site, Install app is unavailable until you uninstall or clear site data."
+
+msgid "Chrome may fire beforeinstallprompt only once per engagement window. After dismiss or install, reload or clear site data before retrying."
+msgstr "Chrome may fire beforeinstallprompt only once per engagement window. After dismiss or install, reload or clear site data before retrying."
+
+msgid "Chrome only fires the install prompt when the site is not already installed and installability criteria are met."
+msgstr "Chrome only fires the install prompt when the site is not already installed and installability criteria are met."
 
 msgid "Chrome, Firefox, and Edge on iOS cannot native-install this app."
 msgstr "Chrome, Firefox, and Edge on iOS cannot native-install this app."
@@ -450,6 +462,9 @@ msgstr "Describe what needs to be reworked..."
 
 msgid "Description"
 msgstr "Description"
+
+msgid "Desktop Chrome will not show Install again while this site is already an installed app. Open the app from chrome://apps, or uninstall it to reinstall."
+msgstr "Desktop Chrome will not show Install again while this site is already an installed app. Open the app from chrome://apps, or uninstall it to reinstall."
 
 msgid "Details"
 msgstr "Details"
@@ -665,9 +680,6 @@ msgstr "Finish setting up your account"
 
 msgid "Finish with material unpicked?"
 msgstr "Finish with material unpicked?"
-
-msgid "Firefox and Safari on desktop also use manual Add to Home Screen — only Chromium fires the Install prompt."
-msgstr "Firefox and Safari on desktop also use manual Add to Home Screen — only Chromium fires the Install prompt."
 
 #. placeholder {0}: formatRelativeTime( convertDateStringToIsoString(batchFacts.dueDate) )
 msgid "First due {0}"
@@ -1168,6 +1180,9 @@ msgstr "Open a job in this batch"
 
 msgid "Open an NCR for MRB disposition"
 msgstr "Open an NCR for MRB disposition"
+
+msgid "Open chrome://apps in the address bar and launch Carbon MES."
+msgstr "Open chrome://apps in the address bar and launch Carbon MES."
 
 msgid "Open inspection"
 msgstr "Open inspection"
@@ -1704,14 +1719,8 @@ msgstr "Takes work center offline"
 msgid "Tap Add to Home Screen, then Add."
 msgstr "Tap Add to Home Screen, then Add."
 
-msgid "Tap Install app or Add to Home screen."
-msgstr "Tap Install app or Add to Home screen."
-
 msgid "Tap Share (square with an arrow)."
 msgstr "Tap Share (square with an arrow)."
-
-msgid "Tap the menu (⋮) at the top right."
-msgstr "Tap the menu (⋮) at the top right."
 
 msgid "The completed quantity for this operation is less than the required quantity of {targetQuantity}."
 msgstr "The completed quantity for this operation is less than the required quantity of {targetQuantity}."
@@ -1734,6 +1743,9 @@ msgstr "The timer and completion are shared by all {0} jobs. Steps, materials an
 
 msgid "then"
 msgstr "then"
+
+msgid "Then open chrome://settings/content/all, find this MES host, delete site data, reload /shop, and tap Install again."
+msgstr "Then open chrome://settings/content/all, find this MES host, delete site data, reload /shop, and tap Install again."
 
 msgid "There are no available or consumed tracked parts for this material."
 msgstr "There are no available or consumed tracked parts for this material."
@@ -1777,6 +1789,12 @@ msgstr "Time Worked: {0}"
 
 msgid "To pick"
 msgstr "To pick"
+
+msgid "To reinstall: in chrome://apps, right-click the app → Remove from Chrome. Or use ⋮ → Uninstall Carbon MES on an open app window."
+msgstr "To reinstall: in chrome://apps, right-click the app → Remove from Chrome. Or use ⋮ → Uninstall Carbon MES on an open app window."
+
+msgid "To reset: chrome://settings/content/all → remove site data for this MES host → reload, then try Install again."
+msgstr "To reset: chrome://settings/content/all → remove site data for this MES host → reload, then try Install again."
 
 msgid "To run"
 msgstr "To run"

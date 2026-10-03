@@ -1,11 +1,12 @@
 import { useCallback, useEffect, useState } from "react";
 import {
   type BeforeInstallPromptEvent,
-  clearDeferredInstallPrompt,
   ensurePwaInstallCapture,
   getDeferredInstallPrompt,
+  promptDeferredInstall,
   subscribeDeferredInstallPrompt,
-  waitForDeferredInstallPrompt
+  waitForDeferredInstallPrompt,
+  wasPwaInstallRemembered
 } from "./pwaInstallCapture";
 
 /** How long Install click waits for `beforeinstallprompt` before the help sheet. */
@@ -28,6 +29,24 @@ function detectIos(): boolean {
 }
 
 /**
+ * Detect whether Chromium already installed this origin as an app while the
+ * user is still in a normal browser tab (not `display-mode: standalone`).
+ */
+async function detectInstalledRelatedApp(): Promise<boolean> {
+  if (wasPwaInstallRemembered()) return true;
+  try {
+    const nav = navigator as Navigator & {
+      getInstalledRelatedApps?: () => Promise<Array<{ platform: string }>>;
+    };
+    if (typeof nav.getInstalledRelatedApps !== "function") return false;
+    const apps = await nav.getInstalledRelatedApps();
+    return apps.length > 0;
+  } catch {
+    return false;
+  }
+}
+
+/**
  * Shop PWA install affordance: read the early-captured `beforeinstallprompt`
  * (Android/desktop Chrome) and expose a click handler that calls `prompt()`
  * when possible, otherwise waits briefly then signals manual A2HS steps.
@@ -46,6 +65,9 @@ export function usePwaInstall() {
     ensurePwaInstallCapture();
     setIsIos(detectIos());
 
+    // Only hide while actually running as the installed app window.
+    // In a normal browser tab, keep Install visible so a tap can explain
+    // "already installed" when BIP will not re-fire.
     if (isStandaloneDisplay()) {
       setInstalled(true);
       return;
@@ -78,7 +100,7 @@ export function usePwaInstall() {
   }, []);
 
   const requestInstall = useCallback(async (): Promise<
-    "prompted" | "manual"
+    "prompted" | "manual" | "already-installed"
   > => {
     ensurePwaInstallCapture();
 
@@ -87,33 +109,58 @@ export function usePwaInstall() {
       return "manual";
     }
 
-    let event = getDeferredInstallPrompt() ?? deferred;
-    if (!event) {
-      setPreparing(true);
-      try {
-        // SW activation + Chrome's installability check often need a beat
-        // after first paint / first tap. Wait before falling back to the sheet.
-        await navigator.serviceWorker?.ready.catch(() => undefined);
-        event = await waitForDeferredInstallPrompt(PROMPT_WAIT_MS);
-      } finally {
-        setPreparing(false);
-      }
-    }
-
+    // CRITICAL: no await before prompt() — desktop Chrome requires the user gesture.
+    const event = getDeferredInstallPrompt() ?? deferred;
     if (event) {
       try {
-        await event.prompt();
-        await event.userChoice;
+        const outcome = await promptDeferredInstall(event);
+        setDeferred(null);
+        if (outcome === "accepted" || isStandaloneDisplay()) {
+          setInstalled(true);
+        }
+        return "prompted";
       } catch {
-        // User dismissed or browser rejected — still clear the deferred event.
+        setDeferred(getDeferredInstallPrompt());
+        return "manual";
       }
-      clearDeferredInstallPrompt();
-      setDeferred(null);
-      if (isStandaloneDisplay()) setInstalled(true);
-      return "prompted";
     }
 
-    return "manual";
+    setPreparing(true);
+    try {
+      // Prefer an immediate "already installed" sheet over waiting when we
+      // already know BIP cannot fire (prior accept / related apps).
+      if (await detectInstalledRelatedApp()) {
+        return "already-installed";
+      }
+
+      // SW activation + Chrome's installability check often need a beat
+      // after first paint / first tap. Wait before falling back to the sheet.
+      await navigator.serviceWorker?.ready.catch(() => undefined);
+      const late = await waitForDeferredInstallPrompt(PROMPT_WAIT_MS);
+      if (late) {
+        try {
+          // Gesture may already be gone on desktop; try anyway for Android.
+          const outcome = await promptDeferredInstall(late);
+          setDeferred(null);
+          if (outcome === "accepted" || isStandaloneDisplay()) {
+            setInstalled(true);
+          }
+          return "prompted";
+        } catch {
+          setDeferred(getDeferredInstallPrompt());
+        }
+      }
+
+      // BIP never arrived — common when the PWA is already installed or Chrome
+      // suppressed the event for this engagement window.
+      if (wasPwaInstallRemembered() || (await detectInstalledRelatedApp())) {
+        return "already-installed";
+      }
+
+      return "manual";
+    } finally {
+      setPreparing(false);
+    }
   }, [deferred]);
 
   return {
