@@ -145,6 +145,9 @@ msgstr "샘플 추가"
 msgid "Add Spare Part"
 msgstr "예비 부품 추가"
 
+msgid "Add to Home Screen"
+msgstr ""
+
 msgid "Add work centers for this location in Resources, then open Shop again. Machines on the computer MES will show here."
 msgstr "자원에서 이 사업장의 작업장을 추가한 뒤 Shop을 다시 여세요. 컴퓨터 MES의 기계가 여기에 표시됩니다."
 
@@ -676,6 +679,9 @@ msgstr "공정작업으로 돌아가기"
 msgid "Go to onboarding"
 msgstr "온보딩으로 이동"
 
+msgid "Got it"
+msgstr ""
+
 msgid "Hide description"
 msgstr "설명 숨기기"
 
@@ -721,6 +727,15 @@ msgstr "항목 검사"
 
 msgid "inspected"
 msgstr "검사됨"
+
+msgid "Install / Add to Home Screen"
+msgstr ""
+
+msgid "Install this shop view from Chrome so it opens like an app."
+msgstr ""
+
+msgid "Install this shop view so it opens like an app."
+msgstr ""
 
 msgid "Instructions"
 msgstr "작업 지침"
@@ -1156,6 +1171,12 @@ msgstr "작업 지시 열기"
 
 msgid "Open maintenance"
 msgstr "미결 유지보수"
+
+msgid "Open this page in Chrome on Android."
+msgstr ""
+
+msgid "Open this page in Safari (not Chrome)."
+msgstr ""
 
 msgid "Operations"
 msgstr "공정작업"
@@ -1673,6 +1694,18 @@ msgstr "태그"
 
 msgid "Takes work center offline"
 msgstr "작업장을 오프라인으로 전환"
+
+msgid "Tap Add to Home Screen, then Add."
+msgstr ""
+
+msgid "Tap Install app or Add to Home screen."
+msgstr ""
+
+msgid "Tap Share (square with an arrow)."
+msgstr ""
+
+msgid "Tap the menu (⋮) at the top right."
+msgstr ""
 
 msgid "The completed quantity for this operation is less than the required quantity of {targetQuantity}."
 msgstr "이 공정작업의 완료 수량이 필요 수량 {targetQuantity}보다 적습니다."

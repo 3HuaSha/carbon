@@ -145,6 +145,9 @@ msgstr "Örnek Ekle"
 msgid "Add Spare Part"
 msgstr "Yedek Parça Ekle"
 
+msgid "Add to Home Screen"
+msgstr ""
+
 msgid "Add work centers for this location in Resources, then open Shop again. Machines on the computer MES will show here."
 msgstr "Bu lokasyon için Kaynaklar'da iş merkezi ekleyin, ardından Atölye'yi tekrar açın. Bilgisayar MES'indeki makineler burada görüntülenir."
 
@@ -676,6 +679,9 @@ msgstr "İşleme geri dön"
 msgid "Go to onboarding"
 msgstr "Başlangıç adımına git"
 
+msgid "Got it"
+msgstr ""
+
 msgid "Hide description"
 msgstr "Açıklamayı gizle"
 
@@ -721,6 +727,15 @@ msgstr "Ürünü İncele"
 
 msgid "inspected"
 msgstr "incelendi"
+
+msgid "Install / Add to Home Screen"
+msgstr ""
+
+msgid "Install this shop view from Chrome so it opens like an app."
+msgstr ""
+
+msgid "Install this shop view so it opens like an app."
+msgstr ""
 
 msgid "Instructions"
 msgstr "Talimatlar"
@@ -1156,6 +1171,12 @@ msgstr "Açık İş emirleri"
 
 msgid "Open maintenance"
 msgstr "Açık bakım"
+
+msgid "Open this page in Chrome on Android."
+msgstr ""
+
+msgid "Open this page in Safari (not Chrome)."
+msgstr ""
 
 msgid "Operations"
 msgstr "Operasyonlar"
@@ -1673,6 +1694,18 @@ msgstr "Etiket"
 
 msgid "Takes work center offline"
 msgstr "İş merkezini çevrimdışı yapar"
+
+msgid "Tap Add to Home Screen, then Add."
+msgstr ""
+
+msgid "Tap Install app or Add to Home screen."
+msgstr ""
+
+msgid "Tap Share (square with an arrow)."
+msgstr ""
+
+msgid "Tap the menu (⋮) at the top right."
+msgstr ""
 
 msgid "The completed quantity for this operation is less than the required quantity of {targetQuantity}."
 msgstr "Bu işlem için tamamlanan miktar, gerekli miktar olan {targetQuantity}'dan azdır."

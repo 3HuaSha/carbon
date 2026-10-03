@@ -145,6 +145,9 @@ msgstr "サンプルを追加"
 msgid "Add Spare Part"
 msgstr "予備品を追加"
 
+msgid "Add to Home Screen"
+msgstr ""
+
 msgid "Add work centers for this location in Resources, then open Shop again. Machines on the computer MES will show here."
 msgstr "リソースでこの拠点の作業区を追加し、再度製造現場を開いてください。コンピューター版MESに登録された機械がここに表示されます。"
 
@@ -676,6 +679,9 @@ msgstr "操作に戻る"
 msgid "Go to onboarding"
 msgstr "オンボーディングに移動"
 
+msgid "Got it"
+msgstr ""
+
 msgid "Hide description"
 msgstr "説明を非表示"
 
@@ -721,6 +727,15 @@ msgstr "アイテムを検査"
 
 msgid "inspected"
 msgstr "検査済み"
+
+msgid "Install / Add to Home Screen"
+msgstr ""
+
+msgid "Install this shop view from Chrome so it opens like an app."
+msgstr ""
+
+msgid "Install this shop view so it opens like an app."
+msgstr ""
 
 msgid "Instructions"
 msgstr "作業手順"
@@ -1156,6 +1171,12 @@ msgstr "オープンな製造指図"
 
 msgid "Open maintenance"
 msgstr "オープンの保全"
+
+msgid "Open this page in Chrome on Android."
+msgstr ""
+
+msgid "Open this page in Safari (not Chrome)."
+msgstr ""
 
 msgid "Operations"
 msgstr "工程"
@@ -1673,6 +1694,18 @@ msgstr "タグ"
 
 msgid "Takes work center offline"
 msgstr "作業区をオフラインにします"
+
+msgid "Tap Add to Home Screen, then Add."
+msgstr ""
+
+msgid "Tap Install app or Add to Home screen."
+msgstr ""
+
+msgid "Tap Share (square with an arrow)."
+msgstr ""
+
+msgid "Tap the menu (⋮) at the top right."
+msgstr ""
 
 msgid "The completed quantity for this operation is less than the required quantity of {targetQuantity}."
 msgstr "この工程の完了数量が必要数量 {targetQuantity} を下回っています。"
