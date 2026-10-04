@@ -3,46 +3,43 @@
 // including ports, remain AGPLv3; serving them over a network requires releasing their source.
 
 import { cn } from "@carbon/react";
-import { LuPackage, LuUser } from "react-icons/lu";
+import { LuChevronRight } from "react-icons/lu";
 import type { ShopMachine, ShopMachineStatus } from "../shop.types";
-import { formatShopTilePersonLine, primaryOpenDispatch } from "../shop.utils";
+import { primaryOpenDispatch } from "../shop.utils";
 
 /**
- * 机台卡片：状态色块 + 呼吸灯 + 固定三行
- * 1 机台名 + 状态 · 2 工单 · 3 负责人（停机时同行附停机原因，省略号截断）
- * 运行中：绿色呼吸点；停机：红色；休息：蓝色；空闲：灰色
- * 纯 CSS 动效（animate-ping / transition），零 JS 开销
+ * iOS 风格机台卡片：
+ * - 白色圆角卡片 + 细阴影（iOS inset grouped 质感）
+ * - 状态色圆点，运行中带呼吸动效
+ * - 右侧 chevron，iOS 列表行手感
+ * - 纯 CSS 动效，零 JS 开销
  */
-const STATUS_STYLE: Record<
+const STATUS: Record<
   ShopMachineStatus,
-  { card: string; dot: string; label: string; labelTone: string; name: string }
+  { dot: string; label: string; labelTone: string; name: string }
 > = {
   running: {
-    card: "border-emerald-200 bg-gradient-to-b from-emerald-50 to-emerald-100/60 dark:border-emerald-800 dark:from-emerald-950/60 dark:to-emerald-900/30",
-    dot: "bg-emerald-500",
+    dot: "bg-[#34C759]",
     label: "运行",
-    labelTone: "text-emerald-700 dark:text-emerald-300",
+    labelTone: "text-[#34C759]",
     name: "运行中"
   },
   idle: {
-    card: "border-border/70 bg-card",
-    dot: "bg-slate-400",
+    dot: "bg-[#8E8E93]",
     label: "空闲",
-    labelTone: "text-muted-foreground",
+    labelTone: "text-[#8E8E93]",
     name: "空闲"
   },
   break: {
-    card: "border-sky-200 bg-gradient-to-b from-sky-50 to-sky-100/60 dark:border-sky-800 dark:from-sky-950/60 dark:to-sky-900/30",
-    dot: "bg-sky-500",
+    dot: "bg-[#007AFF]",
     label: "休息",
-    labelTone: "text-sky-700 dark:text-sky-300",
+    labelTone: "text-[#007AFF]",
     name: "休息"
   },
   down: {
-    card: "border-red-200 bg-gradient-to-b from-red-50 to-red-100/60 dark:border-red-800 dark:from-red-950/60 dark:to-red-900/30",
-    dot: "bg-red-500",
+    dot: "bg-[#FF3B30]",
     label: "停机",
-    labelTone: "text-red-700 dark:text-red-300",
+    labelTone: "text-[#FF3B30]",
     name: "停机"
   }
 };
@@ -53,93 +50,74 @@ type MachineTileProps = {
 };
 
 export function MachineTile({ machine, onSelect }: MachineTileProps) {
-  const style = STATUS_STYLE[machine.status];
+  const s = STATUS[machine.status];
   const jobId =
     machine.currentJobReadableId ?? machine.currentWork?.jobReadableId ?? null;
   const primary = primaryOpenDispatch(machine.openDispatches);
   const assigneeName = primary?.assigneeName?.trim() || null;
-  const downtimeReason =
+  const faultNote =
     machine.status === "down" ? primary?.note?.trim() || null : null;
-  const personLine = formatShopTilePersonLine({
-    status: machine.status,
-    assigneeName,
-    downtimeReason
-  });
 
   return (
     <button
       type="button"
       onClick={() => onSelect(machine)}
-      aria-label={`${machine.name} ${style.name}${jobId ? ` ${jobId}` : ""} ${personLine.text}${machine.justFixed ? " 刚修完" : ""}`}
+      aria-label={`${machine.name} ${s.name}${jobId ? ` ${jobId}` : ""}`}
       className={cn(
-        "group relative flex w-full flex-col gap-1 rounded-xl border p-2 text-left shadow-[0_1px_2px_rgba(0,0,0,0.04)]",
-        "transition-all duration-150 active:scale-[0.96]",
-        "hover:shadow-[0_2px_8px_rgba(0,0,0,0.08)]",
-        style.card
+        "flex w-full items-center gap-2 rounded-2xl bg-white px-3 py-2.5 text-left",
+        "shadow-[0_1px_3px_rgba(0,0,0,0.06)]",
+        "transition active:scale-[0.98] active:opacity-80",
+        "dark:bg-[#1C1C1E]"
       )}
     >
-      {machine.justFixed ? (
-        <span className="absolute -right-1 -top-1 z-[1] rounded px-1 py-px text-[9px] font-bold leading-tight text-white bg-amber-500 shadow-sm">
-          刚修完
-        </span>
-      ) : null}
-      <div className="flex min-w-0 items-center justify-between gap-1">
-        <span className="truncate text-[13px] font-bold leading-tight tracking-tight">
-          {machine.name}
-        </span>
-        <span className="flex shrink-0 items-center gap-1">
-          <span className="relative flex h-1.5 w-1.5">
-            {machine.status === "running" ? (
-              <span
-                className={cn(
-                  "absolute inline-flex h-full w-full animate-ping rounded-full opacity-60",
-                  style.dot
-                )}
-              />
-            ) : null}
-            <span
-              className={cn(
-                "relative inline-flex h-1.5 w-1.5 rounded-full",
-                style.dot,
-                machine.status === "running" && "animate-pulse"
-              )}
-            />
-          </span>
+      {/* 状态圆点 */}
+      <span className="relative flex h-2.5 w-2.5 shrink-0">
+        {machine.status === "running" ? (
           <span
             className={cn(
-              "text-[10px] font-semibold leading-tight",
-              style.labelTone
+              "absolute inline-flex h-full w-full animate-ping rounded-full opacity-50",
+              s.dot
             )}
-          >
-            {style.label}
-          </span>
-        </span>
-      </div>
-
-      <div className="flex min-w-0 items-center gap-1 text-[11px] leading-tight tabular-nums">
-        <LuPackage className="h-3 w-3 shrink-0 text-muted-foreground/70" />
-        {jobId ? (
-          <span className="truncate font-semibold text-foreground/90">
-            {jobId}
-          </span>
-        ) : (
-          <span className="text-muted-foreground/60">—</span>
-        )}
-      </div>
-
-      <div className="flex min-w-0 items-center gap-1 text-[10px] leading-tight text-muted-foreground">
-        <LuUser className="h-3 w-3 shrink-0 opacity-70" />
+          />
+        ) : null}
         <span
           className={cn(
-            "min-w-0 truncate",
-            personLine.tone === "unassigned" &&
-              "text-red-600/80 dark:text-red-400/80",
-            personLine.tone === "empty" && "opacity-50"
+            "relative inline-flex h-2.5 w-2.5 rounded-full",
+            s.dot,
+            machine.status === "running" && "animate-pulse"
           )}
-        >
-          {personLine.text}
+        />
+      </span>
+
+      {/* 文字区 */}
+      <span className="flex min-w-0 flex-1 flex-col gap-0.5">
+        <span className="flex min-w-0 items-baseline justify-between gap-2">
+          <span className="truncate text-[15px] font-semibold leading-tight text-black dark:text-white">
+            {machine.name}
+          </span>
+          <span className={cn("shrink-0 text-[13px] font-medium", s.labelTone)}>
+            {s.label}
+          </span>
         </span>
-      </div>
+        <span className="truncate text-[13px] tabular-nums text-[#8E8E93]">
+          {jobId ? (
+            <span className="font-medium text-black/80 dark:text-white/80">
+              {jobId}
+            </span>
+          ) : (
+            "暂无工单"
+          )}
+          {faultNote ? (
+            <span className="text-[#FF3B30]"> · {faultNote}</span>
+          ) : assigneeName ? (
+            <span> · {assigneeName}</span>
+          ) : machine.status === "down" ? (
+            <span className="text-[#FF3B30]"> · 未指派</span>
+          ) : null}
+        </span>
+      </span>
+
+      <LuChevronRight className="h-4 w-4 shrink-0 text-[#C7C7CC] dark:text-[#48484A]" />
     </button>
   );
 }
