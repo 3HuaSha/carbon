@@ -408,6 +408,35 @@ export function primaryOpenDispatch(
 }
 
 /**
+ * Line 3 of the `/shop` machine tile — always one line so tiles stay uniform height.
+ *
+ * - Down: `负责人 · 停机原因…` or `未分配 · 原因…` (reason omitted when empty)
+ * - Other statuses: assignee name, or `—` (never append downtime reason clutter)
+ */
+export function formatShopTilePersonLine(args: {
+  status: ShopMachineStatus;
+  assigneeName: string | null | undefined;
+  downtimeReason: string | null | undefined;
+}): { text: string; tone: "assignee" | "unassigned" | "empty" } {
+  const assignee = args.assigneeName?.trim() || null;
+  const reason =
+    args.status === "down" ? args.downtimeReason?.trim() || null : null;
+
+  if (args.status === "down") {
+    const person = assignee ?? "未分配";
+    return {
+      text: reason ? `${person} · ${reason}` : person,
+      tone: assignee ? "assignee" : "unassigned"
+    };
+  }
+
+  if (assignee) {
+    return { text: assignee, tone: "assignee" };
+  }
+  return { text: "—", tone: "empty" };
+}
+
+/**
  * Physical shop-floor layout for the phone PWA overview, transcribed from
  * the floor-plan photo. Fixed 3-column grid; machines are placed by name.
  * A full row of `null` renders as an aisle separator between the two zones.

@@ -5,10 +5,11 @@
 import { cn } from "@carbon/react";
 import { LuPackage, LuUser } from "react-icons/lu";
 import type { ShopMachine, ShopMachineStatus } from "../shop.types";
-import { primaryOpenDispatch } from "../shop.utils";
+import { formatShopTilePersonLine, primaryOpenDispatch } from "../shop.utils";
 
 /**
- * 机台卡片：状态色块 + 呼吸灯 + 三层信息
+ * 机台卡片：状态色块 + 呼吸灯 + 固定三行
+ * 1 机台名 + 状态 · 2 工单 · 3 负责人（停机时同行附停机原因，省略号截断）
  * 运行中：绿色呼吸点；停机：红色；休息：蓝色；空闲：灰色
  * 纯 CSS 动效（animate-ping / transition），零 JS 开销
  */
@@ -57,15 +58,19 @@ export function MachineTile({ machine, onSelect }: MachineTileProps) {
     machine.currentJobReadableId ?? machine.currentWork?.jobReadableId ?? null;
   const primary = primaryOpenDispatch(machine.openDispatches);
   const assigneeName = primary?.assigneeName?.trim() || null;
-  /** 停机原因 — never bound to the LuUser (assignee) row. */
   const downtimeReason =
     machine.status === "down" ? primary?.note?.trim() || null : null;
+  const personLine = formatShopTilePersonLine({
+    status: machine.status,
+    assigneeName,
+    downtimeReason
+  });
 
   return (
     <button
       type="button"
       onClick={() => onSelect(machine)}
-      aria-label={`${machine.name} ${style.name}${jobId ? ` ${jobId}` : ""}${downtimeReason ? ` ${downtimeReason}` : ""}${assigneeName ? ` ${assigneeName}` : ""}${machine.justFixed ? " 刚修完" : ""}`}
+      aria-label={`${machine.name} ${style.name}${jobId ? ` ${jobId}` : ""} ${personLine.text}${machine.justFixed ? " 刚修完" : ""}`}
       className={cn(
         "group relative flex w-full flex-col gap-1 rounded-xl border p-2 text-left shadow-[0_1px_2px_rgba(0,0,0,0.04)]",
         "transition-all duration-150 active:scale-[0.96]",
@@ -122,21 +127,18 @@ export function MachineTile({ machine, onSelect }: MachineTileProps) {
         )}
       </div>
 
-      {downtimeReason ? (
-        <div className="min-w-0 truncate text-[10px] font-medium leading-tight text-red-700/90 dark:text-red-300/90">
-          {downtimeReason}
-        </div>
-      ) : null}
-
       <div className="flex min-w-0 items-center gap-1 text-[10px] leading-tight text-muted-foreground">
         <LuUser className="h-3 w-3 shrink-0 opacity-70" />
-        {assigneeName ? (
-          <span className="truncate">{assigneeName}</span>
-        ) : machine.status === "down" ? (
-          <span className="text-red-600/80 dark:text-red-400/80">未分配</span>
-        ) : (
-          <span className="opacity-50">—</span>
-        )}
+        <span
+          className={cn(
+            "min-w-0 truncate",
+            personLine.tone === "unassigned" &&
+              "text-red-600/80 dark:text-red-400/80",
+            personLine.tone === "empty" && "opacity-50"
+          )}
+        >
+          {personLine.text}
+        </span>
       </div>
     </button>
   );
