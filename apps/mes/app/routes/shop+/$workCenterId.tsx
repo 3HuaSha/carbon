@@ -10,6 +10,7 @@ import {
   shopMaintenanceActions
 } from "~/modules/shop";
 import { runShopMaintenanceAction } from "~/modules/shop/shop.action.server";
+import { clearJustFixedBadge } from "~/modules/shop/shop.alerts.server";
 import { getShopMachineDetail } from "~/modules/shop/shop.server";
 import { MachineDetailPage } from "~/modules/shop/ui/MachineDetailPage";
 
@@ -24,19 +25,27 @@ export async function loader({ context, request, params }: LoaderFunctionArgs) {
 
   const workCenterId = params.workCenterId;
   if (!workCenterId) throw notFound("Work center not found");
-  // Static crew boards live at /shop/repair and /shop/mold — never treat those
-  // reserved segments as work-center ids if routing ever falls through here.
-  if (workCenterId === "repair" || workCenterId === "mold") {
+  // Static boards live at /shop/repair, /shop/mold, /shop/alerts — never treat
+  // those reserved segments as work-center ids if routing ever falls through.
+  if (
+    workCenterId === "repair" ||
+    workCenterId === "mold" ||
+    workCenterId === "alerts"
+  ) {
     throw notFound("Work center not found");
   }
 
   const serviceRole = getCarbonServiceRole();
-  const detail = await getShopMachineDetail(serviceRole, {
-    companyId,
-    locationId,
-    userId,
-    workCenterId
-  });
+  const [detail] = await Promise.all([
+    getShopMachineDetail(serviceRole, {
+      companyId,
+      locationId,
+      userId,
+      workCenterId
+    }),
+    // Visiting the machine clears 「刚修完」 for every shared PWA device.
+    clearJustFixedBadge({ companyId, workCenterId })
+  ]);
 
   if (!detail) throw notFound("Work center not found");
   // companyId must ride the loader — `/shop` is a sibling of `/x`, so

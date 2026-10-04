@@ -102,9 +102,6 @@ msgstr "{fails} записанных отказов будут НЕ заверш
 msgid "{recorded}/{0} jobs"
 msgstr "{recorded}/{0} производственных заказов"
 
-msgid "{total} machines"
-msgstr "{total} станков"
-
 msgid "+{overflow} more"
 msgstr "+{overflow} ещё"
 
@@ -707,9 +704,6 @@ msgstr "Фильтровать"
 msgid "Filter by location"
 msgstr "Фильтровать по площадке"
 
-msgid "Filter by status"
-msgstr "Фильтровать по статусу"
-
 msgid "Finish"
 msgstr "Завершить"
 
@@ -806,14 +800,8 @@ msgstr "Проверить элемент"
 msgid "inspected"
 msgstr "проверенный"
 
-msgid "Install"
-msgstr "Install"
-
 msgid "Install MES"
 msgstr "Install MES"
-
-msgid "Install ready — tap again"
-msgstr "Install ready — tap again"
 
 msgid "Instructions"
 msgstr "Инструкции"
@@ -971,9 +959,6 @@ msgstr "Станок на техобслуживание сейчас?"
 msgid "Machine status"
 msgstr "Статус машины"
 
-msgid "Machines"
-msgstr ""
-
 msgid "Maintenance"
 msgstr "Техобслуживание"
 
@@ -1106,9 +1091,6 @@ msgstr "Нет инспекции"
 
 msgid "No issue types configured"
 msgstr "Типы проблем не настроены"
-
-msgid "No machines match this filter."
-msgstr "Нет станков, соответствующих этому фильтру."
 
 msgid "No maintenance scheduled for today"
 msgstr "На сегодня техобслуживание не запланировано"
@@ -1277,9 +1259,6 @@ msgstr "Открыть производственный заказ в этой �
 msgid "Open an NCR for MRB disposition"
 msgstr "Открыть NCR для решения MRB"
 
-msgid "Open app — Already installed"
-msgstr "Открыть приложение — Уже установлено"
-
 msgid "Open in Chrome"
 msgstr "Open in Chrome"
 
@@ -1394,9 +1373,6 @@ msgstr "Пожалуйста, выберите номенклатуру"
 
 msgid "PM schedule lapsed"
 msgstr "График обслуживания истек"
-
-msgid "Preparing install…"
-msgstr "Подготовка установки…"
 
 msgid "Press ? on any page to open this list. Shortcuts are ignored while you type in a field."
 msgstr "Нажмите ? на любой странице, чтобы открыть этот список. Горячие клавиши отключены при вводе в поле."
@@ -1713,9 +1689,6 @@ msgstr "Установлено при планировании серии."
 
 msgid "Setup"
 msgstr "Наладка"
-
-msgid "Shop floor"
-msgstr "Цех"
 
 msgid "short"
 msgstr "короткий"

@@ -102,9 +102,6 @@ msgstr "{fails} sampled failure(s) are recorded and will NOT be completed — re
 msgid "{recorded}/{0} jobs"
 msgstr "{recorded}/{0} jobs"
 
-msgid "{total} machines"
-msgstr "{total} machines"
-
 msgid "+{overflow} more"
 msgstr "+{overflow} more"
 
@@ -707,9 +704,6 @@ msgstr "Filter"
 msgid "Filter by location"
 msgstr "Filter by location"
 
-msgid "Filter by status"
-msgstr "Filter by status"
-
 msgid "Finish"
 msgstr "Finish"
 
@@ -806,14 +800,8 @@ msgstr "Inspect Item"
 msgid "inspected"
 msgstr "inspected"
 
-msgid "Install"
-msgstr "Install"
-
 msgid "Install MES"
 msgstr "Install MES"
-
-msgid "Install ready — tap again"
-msgstr "Install ready — tap again"
 
 msgid "Instructions"
 msgstr "Instructions"
@@ -971,9 +959,6 @@ msgstr "Machine down for maintenance now?"
 msgid "Machine status"
 msgstr "Machine status"
 
-msgid "Machines"
-msgstr "Machines"
-
 msgid "Maintenance"
 msgstr "Maintenance"
 
@@ -1106,9 +1091,6 @@ msgstr "No inspection"
 
 msgid "No issue types configured"
 msgstr "No issue types configured"
-
-msgid "No machines match this filter."
-msgstr "No machines match this filter."
 
 msgid "No maintenance scheduled for today"
 msgstr "No maintenance scheduled for today"
@@ -1277,9 +1259,6 @@ msgstr "Open a job in this batch"
 msgid "Open an NCR for MRB disposition"
 msgstr "Open an NCR for MRB disposition"
 
-msgid "Open app — Already installed"
-msgstr "Open app — Already installed"
-
 msgid "Open in Chrome"
 msgstr "Open in Chrome"
 
@@ -1394,9 +1373,6 @@ msgstr "Please select an item"
 
 msgid "PM schedule lapsed"
 msgstr "PM schedule lapsed"
-
-msgid "Preparing install…"
-msgstr "Preparing install…"
 
 msgid "Press ? on any page to open this list. Shortcuts are ignored while you type in a field."
 msgstr "Press ? on any page to open this list. Shortcuts are ignored while you type in a field."
@@ -1713,9 +1689,6 @@ msgstr "Set when the batch was planned."
 
 msgid "Setup"
 msgstr "Setup"
-
-msgid "Shop floor"
-msgstr "Shop floor"
 
 msgid "short"
 msgstr "short"

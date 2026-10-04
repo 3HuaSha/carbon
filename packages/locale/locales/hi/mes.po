@@ -102,9 +102,6 @@ msgstr "{fails} नमूना विफलता(एं) दर्ज की �
 msgid "{recorded}/{0} jobs"
 msgstr "{recorded}/{0} जॉब्स"
 
-msgid "{total} machines"
-msgstr "{total} मशीन"
-
 msgid "+{overflow} more"
 msgstr "+{overflow} अधिक"
 
@@ -707,9 +704,6 @@ msgstr "फ़िल्टर करें"
 msgid "Filter by location"
 msgstr "स्थान के अनुसार फ़िल्टर करें"
 
-msgid "Filter by status"
-msgstr "स्थिति के अनुसार फ़िल्टर करें"
-
 msgid "Finish"
 msgstr "समाप्त करें"
 
@@ -806,14 +800,8 @@ msgstr "आइटम का निरीक्षण करें"
 msgid "inspected"
 msgstr "निरीक्षण किया गया"
 
-msgid "Install"
-msgstr "Install"
-
 msgid "Install MES"
 msgstr "Install MES"
-
-msgid "Install ready — tap again"
-msgstr "Install ready — tap again"
 
 msgid "Instructions"
 msgstr "निर्देश"
@@ -971,9 +959,6 @@ msgstr "मशीन अब रखरखाव के लिए बंद है
 msgid "Machine status"
 msgstr "मशीन स्थिति"
 
-msgid "Machines"
-msgstr ""
-
 msgid "Maintenance"
 msgstr "रखरखाव"
 
@@ -1106,9 +1091,6 @@ msgstr "कोई निरीक्षण नहीं"
 
 msgid "No issue types configured"
 msgstr "कोई समस्या प्रकार कॉन्फ़िगर नहीं किया गया"
-
-msgid "No machines match this filter."
-msgstr "इस फ़िल्टर से कोई मशीन मेल नहीं खाती।"
 
 msgid "No maintenance scheduled for today"
 msgstr "आज के लिए कोई रखरखाव निर्धारित नहीं है"
@@ -1277,9 +1259,6 @@ msgstr "इस बैच में एक जॉब खोलें"
 msgid "Open an NCR for MRB disposition"
 msgstr "MRB निपटान के लिए एक NCR खोलें"
 
-msgid "Open app — Already installed"
-msgstr "ऐप खोलें — पहले से इंस्टॉल है"
-
 msgid "Open in Chrome"
 msgstr "Open in Chrome"
 
@@ -1394,9 +1373,6 @@ msgstr "कृपया एक आइटम चुनें"
 
 msgid "PM schedule lapsed"
 msgstr "PM शेड्यूल समाप्त"
-
-msgid "Preparing install…"
-msgstr "इंस्टॉल तैयार हो रहा है…"
 
 msgid "Press ? on any page to open this list. Shortcuts are ignored while you type in a field."
 msgstr "किसी भी पृष्ठ पर ? दबाएँ इस सूची को खोलने के लिए। जब आप किसी फील्ड में टाइप करते हैं, तो शॉर्टकट को अनदेखा किया जाता है।"
@@ -1713,9 +1689,6 @@ msgstr "जब बैच की योजना बनाई गई थी त�
 
 msgid "Setup"
 msgstr "सेटअप"
-
-msgid "Shop floor"
-msgstr "शॉप फ्लोर"
 
 msgid "short"
 msgstr "छोटा"

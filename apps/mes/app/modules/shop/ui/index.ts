@@ -8,6 +8,7 @@ export {
   ensurePwaInstallCapture,
   promptDeferredInstall
 } from "./pwaInstallCapture";
+export { ShopAlertsPage } from "./ShopAlertsPage";
 export { ShopCrewPage } from "./ShopCrewPage";
 export { ShopDispatchMedia } from "./ShopDispatchMedia";
 export { ShopEmptyState } from "./ShopEmptyState";

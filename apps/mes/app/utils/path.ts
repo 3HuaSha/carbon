@@ -205,6 +205,8 @@ export const path = {
     scrapReasons: `${api}/scrap-reasons`,
     setupRequired: "/setup-required",
     shop,
+    /** Downtime / recovery reminders for the shop PWA. */
+    shopAlerts: `${shop}/alerts`,
     shopMachine: (workCenterId: string) =>
       generatePath(`${shop}/${workCenterId}`),
     /** Mold-room crew board — assigned incomplete dispatches by 模房 type. */

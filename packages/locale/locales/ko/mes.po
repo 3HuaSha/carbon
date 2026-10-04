@@ -102,9 +102,6 @@ msgstr "{fails}개의 샘플 불량이 기록되었으며 완료되지 않습니
 msgid "{recorded}/{0} jobs"
 msgstr "{recorded}/{0} 작업 지시"
 
-msgid "{total} machines"
-msgstr "{total}대 기계"
-
 msgid "+{overflow} more"
 msgstr "+{overflow} 더 보기"
 
@@ -707,9 +704,6 @@ msgstr "필터"
 msgid "Filter by location"
 msgstr "위치별 필터"
 
-msgid "Filter by status"
-msgstr "상태별 필터"
-
 msgid "Finish"
 msgstr "마감"
 
@@ -806,14 +800,8 @@ msgstr "항목 검사"
 msgid "inspected"
 msgstr "검사됨"
 
-msgid "Install"
-msgstr "Install"
-
 msgid "Install MES"
 msgstr "Install MES"
-
-msgid "Install ready — tap again"
-msgstr "Install ready — tap again"
 
 msgid "Instructions"
 msgstr "작업 지침"
@@ -971,9 +959,6 @@ msgstr "기계가 지금 유지보수 중인가요?"
 msgid "Machine status"
 msgstr "장비 상태"
 
-msgid "Machines"
-msgstr ""
-
 msgid "Maintenance"
 msgstr "유지보수"
 
@@ -1106,9 +1091,6 @@ msgstr "검사 없음"
 
 msgid "No issue types configured"
 msgstr "구성된 문제 유형이 없음"
-
-msgid "No machines match this filter."
-msgstr "이 필터와 일치하는 기계가 없습니다."
 
 msgid "No maintenance scheduled for today"
 msgstr "오늘 예정된 유지보수가 없습니다"
@@ -1277,9 +1259,6 @@ msgstr "이 배치에서 작업 지시 열기"
 msgid "Open an NCR for MRB disposition"
 msgstr "MRB 처분 결정을 위해 NCR을 여세요"
 
-msgid "Open app — Already installed"
-msgstr "앱 열기 — 이미 설치됨"
-
 msgid "Open in Chrome"
 msgstr "Open in Chrome"
 
@@ -1394,9 +1373,6 @@ msgstr "품목을 선택하세요"
 
 msgid "PM schedule lapsed"
 msgstr "PM 일정 만료됨"
-
-msgid "Preparing install…"
-msgstr "설치 준비 중…"
 
 msgid "Press ? on any page to open this list. Shortcuts are ignored while you type in a field."
 msgstr "어느 페이지에서나 ?를 누르세요. 필드에 입력하는 동안 단축키가 무시됩니다."
@@ -1713,9 +1689,6 @@ msgstr "배치가 계획되었을 때 설정됩니다."
 
 msgid "Setup"
 msgstr "설정"
-
-msgid "Shop floor"
-msgstr "현장"
 
 msgid "short"
 msgstr "부족"
