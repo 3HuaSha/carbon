@@ -41,7 +41,7 @@ export const shopIos = {
    */
   statusFill: {
     running: "shop-ios-fill-running bg-[color:var(--shop-run)]",
-    idle: "shop-ios-fill-idle !bg-white text-black",
+    idle: "shop-ios-fill-idle !bg-white !text-black",
     break: "shop-ios-fill-break bg-[color:var(--shop-break)]",
     down: "shop-ios-fill-down bg-[color:var(--shop-down)]"
   },
