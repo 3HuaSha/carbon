@@ -2,13 +2,20 @@ import { CarbonProvider } from "@carbon/auth";
 import { requireAuthSession } from "@carbon/auth/session.server";
 import { isSearchParamOnlyNavigation } from "@carbon/utils";
 import type {
+  LinksFunction,
   LoaderFunctionArgs,
   MiddlewareFunction,
   ShouldRevalidateFunction
 } from "react-router";
 import { Outlet, useLoaderData } from "react-router";
 import { userMiddleware } from "~/middleware/user";
+import ShopIos from "~/styles/shop-ios.css?url";
 import { path } from "~/utils/path";
+
+/** Cheap iOS tokens for `/shop` only — opaque surfaces, no blur. */
+export const links: LinksFunction = () => [
+  { rel: "stylesheet", href: ShopIos }
+];
 
 /**
  * Layout for the phone PWA machine overview (`/shop`).
@@ -72,7 +79,7 @@ export default function ShopLayout() {
 
   return (
     <CarbonProvider session={session}>
-      <div className="min-h-dvh w-full bg-background pb-[env(safe-area-inset-bottom)] pt-[env(safe-area-inset-top)]">
+      <div className="shop-ios min-h-dvh w-full pb-[env(safe-area-inset-bottom)] pt-[env(safe-area-inset-top)]">
         <Outlet />
       </div>
     </CarbonProvider>

@@ -14,4 +14,5 @@ export { ShopDispatchMedia } from "./ShopDispatchMedia";
 export { ShopEmptyState } from "./ShopEmptyState";
 export { ShopHeader } from "./ShopHeader";
 export { ShopTabNav } from "./ShopTabNav";
+export { shopIos } from "./shopIos";
 export { usePwaInstall } from "./usePwaInstall";

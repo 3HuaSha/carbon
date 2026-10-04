@@ -6,6 +6,7 @@ import { cn } from "@carbon/react";
 import { LuBoxes, LuFactory, LuWrench } from "react-icons/lu";
 import { Link } from "react-router";
 import { path } from "~/utils/path";
+import { shopIos } from "./shopIos";
 
 export type ShopTab = "machines" | "repair" | "mold";
 
@@ -19,19 +20,19 @@ const TABS: {
     id: "machines",
     to: path.to.shop,
     label: "机台",
-    icon: <LuFactory className="h-4 w-4" />
+    icon: <LuFactory className="h-3.5 w-3.5" />
   },
   {
     id: "repair",
     to: path.to.shopRepair,
     label: "维修",
-    icon: <LuWrench className="h-4 w-4" />
+    icon: <LuWrench className="h-3.5 w-3.5" />
   },
   {
     id: "mold",
     to: path.to.shopMold,
     label: "模房",
-    icon: <LuBoxes className="h-4 w-4" />
+    icon: <LuBoxes className="h-3.5 w-3.5" />
   }
 ];
 
@@ -39,25 +40,17 @@ type ShopTabNavProps = {
   active: ShopTab;
 };
 
-/** iOS 分段控件风格：机台 / 维修 / 模房 */
+/** iOS segmented control — color/shadow swap only (no blur). */
 export function ShopTabNav({ active }: ShopTabNavProps) {
   return (
-    <nav
-      className="flex rounded-[10px] bg-[#E3E3E8] p-[2px] dark:bg-[#1C1C1E]"
-      aria-label="车间分区"
-    >
+    <nav className={shopIos.segment} aria-label="车间分区">
       {TABS.map((tab) => {
         const selected = tab.id === active;
         return (
           <Link
             key={tab.id}
             to={tab.to}
-            className={cn(
-              "flex flex-1 items-center justify-center gap-1.5 rounded-lg px-3 py-1.5 text-[13px] transition-all duration-150 active:opacity-60",
-              selected
-                ? "bg-white font-semibold text-black shadow-[0_1px_4px_rgba(0,0,0,0.12)] dark:bg-[#2C2C2E] dark:text-white"
-                : "font-medium text-[#8E8E93]"
-            )}
+            className={cn(shopIos.segmentItem, "active:scale-[0.97] active:opacity-80")}
             aria-current={selected ? "page" : undefined}
           >
             {tab.icon}

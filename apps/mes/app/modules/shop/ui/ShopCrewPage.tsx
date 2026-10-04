@@ -1,3 +1,7 @@
+// SPDX-License-Identifier: AGPL-3.0-only
+// Carbon (github.com/crbnos/carbon). Modified or adapted versions of this file,
+// including ports, remain AGPLv3; serving them over a network requires releasing their source.
+
 import { cn, Status } from "@carbon/react";
 import { Trans, useLingui } from "@lingui/react/macro";
 import type { ReactNode } from "react";
@@ -13,6 +17,7 @@ import type {
   ShopDispatchKind
 } from "../shop.types";
 import { ShopTabNav } from "./ShopTabNav";
+import { shopIos } from "./shopIos";
 
 type ShopCrewPageProps = {
   board: ShopCrewBoard;
@@ -79,14 +84,15 @@ function TaskRow({ task }: { task: ShopCrewTask }) {
       }}
       disabled={!task.workCenterId}
       className={cn(
-        "flex w-full flex-col gap-1 rounded-md border border-border/70 bg-background px-3 py-2.5 text-left",
-        task.workCenterId && "active:scale-[0.99] transition-transform"
+        "flex w-full flex-col gap-1 px-3 py-2.5 text-left",
+        "border-t border-[color:var(--shop-hairline)]",
+        task.workCenterId && shopIos.press
       )}
     >
       <div className="flex items-start justify-between gap-2">
         <div className="min-w-0">
-          <div className="truncate text-sm font-semibold">{machineName}</div>
-          <div className="mt-0.5 flex flex-wrap items-center gap-x-2 gap-y-0.5 text-xs text-muted-foreground">
+          <div className="truncate text-[15px] font-semibold">{machineName}</div>
+          <div className={cn("mt-0.5 flex flex-wrap items-center gap-x-2 gap-y-0.5 text-[12px]", shopIos.muted)}>
             <span>
               <KindLabel kind={task.shopKind} />
             </span>
@@ -100,7 +106,7 @@ function TaskRow({ task }: { task: ShopCrewTask }) {
         <StatusLabel status={task.status} />
       </div>
       {note ? (
-        <p className="line-clamp-2 text-xs text-muted-foreground text-pretty">
+        <p className={cn("line-clamp-2 text-[13px] text-pretty", shopIos.muted)}>
           {note}
         </p>
       ) : null}
@@ -112,19 +118,19 @@ function MemberCard({ member }: { member: ShopCrewMember }) {
   const idle = member.tasks.length === 0;
 
   return (
-    <section className="rounded-lg border border-border/60 bg-card/40 px-3 py-3">
-      <div className="flex items-center gap-3">
+    <section className={shopIos.inset}>
+      <div className="flex items-center gap-3 px-3 py-3">
         <Avatar name={member.name} path={member.avatarUrl} size="md" />
         <div className="min-w-0 flex-1">
-          <div className="truncate text-sm font-semibold">{member.name}</div>
-          <div className="text-xs text-muted-foreground">
+          <div className="truncate text-[16px] font-semibold">{member.name}</div>
+          <div className={cn("text-[13px]", shopIos.muted)}>
             {idle ? (
               <Trans>Idle</Trans>
             ) : (
               <Trans>{member.tasks.length} open tasks</Trans>
             )}
             {member.employeeTypeName ? (
-              <span className="text-muted-foreground/80">
+              <span>
                 {" · "}
                 {member.employeeTypeName}
               </span>
@@ -132,23 +138,24 @@ function MemberCard({ member }: { member: ShopCrewMember }) {
           </div>
         </div>
         {idle ? (
-          <span className="shrink-0 rounded-md bg-muted px-2 py-1 text-xs text-muted-foreground">
+          <span
+            className={cn(
+              "shrink-0 rounded-md bg-[color:var(--shop-track)] px-2 py-1 text-[12px]",
+              shopIos.muted
+            )}
+          >
             <Trans>Idle</Trans>
           </span>
         ) : (
-          <span className="shrink-0 rounded-md bg-orange-100 px-2 py-1 text-xs font-medium text-orange-800 dark:bg-orange-950/50 dark:text-orange-200 tabular-nums">
+          <span className="shrink-0 rounded-md bg-[color:var(--shop-warn)]/15 px-2 py-1 text-[12px] font-semibold tabular-nums text-[color:var(--shop-warn)]">
             {member.tasks.length}
           </span>
         )}
       </div>
 
-      {member.tasks.length > 0 ? (
-        <div className="mt-3 space-y-2">
-          {member.tasks.map((task) => (
-            <TaskRow key={task.id} task={task} />
-          ))}
-        </div>
-      ) : null}
+      {member.tasks.length > 0
+        ? member.tasks.map((task) => <TaskRow key={task.id} task={task} />)
+        : null}
     </section>
   );
 }
@@ -159,13 +166,16 @@ export function ShopCrewPage({ board }: ShopCrewPageProps) {
   const tab = board.crew === "repair" ? "repair" : "mold";
 
   return (
-    <div className="mx-auto flex min-h-dvh w-full max-w-3xl flex-col">
-      <header className="sticky top-0 z-10 border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80 px-4 pt-3 pb-3 space-y-3">
+    <div
+      className={cn(
+        "mx-auto flex min-h-dvh w-full max-w-3xl flex-col",
+        shopIos.pageEnter
+      )}
+    >
+      <header className={cn("sticky top-0 z-10 px-4 pt-5 pb-3 space-y-3", shopIos.bar)}>
         <div className="min-w-0">
-          <h1 className="truncate text-lg font-semibold tracking-tight">
-            {CREW_TITLE[board.crew]()}
-          </h1>
-          <p className="mt-0.5 text-sm text-muted-foreground tabular-nums">
+          <h1 className={shopIos.largeTitle}>{CREW_TITLE[board.crew]()}</h1>
+          <p className={cn("mt-0.5 text-[15px] tabular-nums", shopIos.muted)}>
             {board.locationName?.trim() ? `${board.locationName} · ` : null}
             {t`${board.members.length} people · ${busyCount} busy`}
           </p>
@@ -175,11 +185,11 @@ export function ShopCrewPage({ board }: ShopCrewPageProps) {
 
       <div className="flex-1 space-y-3 px-4 py-4">
         {board.matchedTypeNames.length === 0 ? (
-          <div className="rounded-lg border border-dashed border-border px-4 py-10 text-center">
-            <h2 className="text-sm font-semibold">
+          <div className={cn(shopIos.inset, "px-4 py-10 text-center")}>
+            <h2 className="text-[15px] font-semibold">
               <Trans>No matching employee type</Trans>
             </h2>
-            <p className="mt-2 text-sm text-muted-foreground text-pretty">
+            <p className={cn("mt-2 text-[14px] text-pretty", shopIos.muted)}>
               {board.crew === "repair" ? (
                 <Trans>
                   Create an employee type named 维修 or 机修 (or Repair /
@@ -195,11 +205,11 @@ export function ShopCrewPage({ board }: ShopCrewPageProps) {
             </p>
           </div>
         ) : board.members.length === 0 ? (
-          <div className="rounded-lg border border-dashed border-border px-4 py-10 text-center">
-            <h2 className="text-sm font-semibold">
+          <div className={cn(shopIos.inset, "px-4 py-10 text-center")}>
+            <h2 className="text-[15px] font-semibold">
               <Trans>No people on this crew</Trans>
             </h2>
-            <p className="mt-2 text-sm text-muted-foreground text-pretty">
+            <p className={cn("mt-2 text-[14px] text-pretty", shopIos.muted)}>
               <Trans>
                 Assign active employees to one of the matched employee types.
               </Trans>{" "}
