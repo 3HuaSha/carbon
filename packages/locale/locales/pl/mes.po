@@ -212,9 +212,6 @@ msgstr "Kroki montażu"
 msgid "Assign active employees to one of the matched employee types."
 msgstr ""
 
-msgid "Assign to me"
-msgstr "Przypisz do mnie"
-
 msgid "Assigned"
 msgstr "Przypisane"
 

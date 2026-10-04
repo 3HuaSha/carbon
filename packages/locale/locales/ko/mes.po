@@ -212,9 +212,6 @@ msgstr "조립 단계"
 msgid "Assign active employees to one of the matched employee types."
 msgstr ""
 
-msgid "Assign to me"
-msgstr "나에게 배정"
-
 msgid "Assigned"
 msgstr "배정됨"
 

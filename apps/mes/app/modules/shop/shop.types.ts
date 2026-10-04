@@ -102,10 +102,11 @@ export type ShopAlert = {
 };
 
 /**
- * Assign picker groups on machine detail (fault / planned). Matched via
+ * Assign picker columns on machine detail (fault / planned). Matched via
  * `employeeType.name` aliases in `SHOP_ASSIGN_GROUP_ALIASES`.
+ * Display order: 主管 → PE → 模房 → 维修.
  */
-export const shopAssignGroups = ["supervisor", "mold", "repair"] as const;
+export const shopAssignGroups = ["supervisor", "pe", "mold", "repair"] as const;
 
 export type ShopAssignGroup = (typeof shopAssignGroups)[number];
 

@@ -212,9 +212,6 @@ msgstr "組立ステップ"
 msgid "Assign active employees to one of the matched employee types."
 msgstr ""
 
-msgid "Assign to me"
-msgstr "自分に割り当て"
-
 msgid "Assigned"
 msgstr "割当済み"
 

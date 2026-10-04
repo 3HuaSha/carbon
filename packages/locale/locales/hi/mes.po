@@ -212,9 +212,6 @@ msgstr "असेंबली चरण"
 msgid "Assign active employees to one of the matched employee types."
 msgstr ""
 
-msgid "Assign to me"
-msgstr "मुझे असाइन करें"
-
 msgid "Assigned"
 msgstr "निर्दिष्ट"
 

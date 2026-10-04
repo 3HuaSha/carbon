@@ -19,7 +19,10 @@ import type {
   ShopOpenDispatch,
   ShopPerson
 } from "../shop.types";
-import { GroupedAssignPicker } from "./GroupedAssignPicker";
+import {
+  type AssignSelection,
+  GroupedAssignPicker
+} from "./GroupedAssignPicker";
 
 type MachineDetailSheetProps = {
   machine: ShopMachine | null;
@@ -153,14 +156,17 @@ function DispatchRow({
   userId,
   people,
   busy,
-  onAssignPerson,
+  onAssignSelection,
   onAction
 }: {
   dispatch: ShopOpenDispatch;
   userId: string;
   people: ShopPerson[];
   busy: boolean;
-  onAssignPerson: (dispatch: ShopOpenDispatch, person: ShopPerson) => void;
+  onAssignSelection: (
+    dispatch: ShopOpenDispatch,
+    selection: AssignSelection
+  ) => void;
   onAction: (action: ShopMaintenanceAction, dispatch: ShopOpenDispatch) => void;
 }) {
   const assignedToMe = dispatch.assignee === userId;
@@ -168,10 +174,8 @@ function DispatchRow({
     (dispatch.shopKind === "fault" || dispatch.shopKind === "planned") &&
     (dispatch.status === "Open" || dispatch.status === "Assigned") &&
     !dispatch.isWorking;
-  const showAssignToMe =
-    canAssignPerson && (!dispatch.assignee || !assignedToMe);
   const showEnd = dispatch.isWorking;
-  // No Start/accept — Complete on any open fault/planned ticket.
+  // No Start/accept / Assign-to-me — Complete on any open fault/planned ticket.
   const showComplete =
     dispatch.status !== "Completed" && dispatch.status !== "Cancelled";
   const problemText = dispatch.note?.trim() || null;
@@ -206,17 +210,6 @@ function DispatchRow({
       ) : null}
 
       <div className={cn("mt-3 flex flex-wrap gap-2")}>
-        {showAssignToMe ? (
-          <Button
-            type="button"
-            size="sm"
-            variant="secondary"
-            isDisabled={busy}
-            onClick={() => onAction("Assign", dispatch)}
-          >
-            <Trans>Assign to me</Trans>
-          </Button>
-        ) : null}
         {showEnd ? (
           <Button
             type="button"
@@ -248,7 +241,7 @@ function DispatchRow({
             busy={busy}
             requireConfirm
             confirmLabel="确认指派"
-            onPick={(person) => onAssignPerson(dispatch, person)}
+            onSubmit={(selection) => onAssignSelection(dispatch, selection)}
           />
         </div>
       ) : null}
@@ -269,7 +262,7 @@ export function MachineDetailSheet({
   const onAction = (
     action: ShopMaintenanceAction,
     dispatch: ShopOpenDispatch,
-    assigneeId?: string
+    opts?: { assigneeId?: string; notifyUserIds?: string[] }
   ) => {
     const body = new FormData();
     body.set("action", action);
@@ -277,20 +270,20 @@ export function MachineDetailSheet({
     if (dispatch.workCenterId) {
       body.set("workCenterId", dispatch.workCenterId);
     }
-    if (assigneeId) {
-      body.set("assigneeId", assigneeId);
+    if (opts?.assigneeId) {
+      body.set("assigneeId", opts.assigneeId);
+    }
+    if (opts?.notifyUserIds && opts.notifyUserIds.length > 0) {
+      body.set("notifyUserIds", opts.notifyUserIds.join(","));
     }
     fetcher.submit(body, { method: "post" });
   };
 
-  const onReportDowntime = (assigneeId?: string) => {
+  const onReportDowntime = () => {
     if (!machine) return;
     const body = new FormData();
     body.set("action", "ReportDowntime");
     body.set("workCenterId", machine.id);
-    if (assigneeId) {
-      body.set("assigneeId", assigneeId);
-    }
     fetcher.submit(body, { method: "post" });
   };
 
@@ -362,8 +355,11 @@ export function MachineDetailSheet({
                         userId={userId}
                         people={people}
                         busy={busy}
-                        onAssignPerson={(d, person) =>
-                          onAction("Assign", d, person.id)
+                        onAssignSelection={(d, selection) =>
+                          onAction("Assign", d, {
+                            assigneeId: selection.assigneeId,
+                            notifyUserIds: selection.notifyUserIds
+                          })
                         }
                         onAction={onAction}
                       />

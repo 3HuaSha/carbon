@@ -12,18 +12,26 @@ import type {
 import { shopAssignGroups } from "./shop.types";
 
 /**
- * Configurable `employeeType.name` aliases for assign groups + crew boards.
+ * Configurable `employeeType.name` aliases for assign columns + crew boards.
  * Match is case-insensitive; the type name matches if it equals an alias or
  * contains one (so "机修班" matches "机修"). Bowen sets these names in ERP
  * Users → Employee types, then assigns people to that type.
  *
- * Display order on the assign UI: 主管 → 模房 → 维修.
+ * Display order on the assign UI: 主管 → PE → 模房 → 维修.
  */
 export const SHOP_ASSIGN_GROUP_ALIASES: Record<
   ShopAssignGroup,
   readonly string[]
 > = {
   supervisor: ["主管", "supervisor", "manager", "班长"],
+  pe: [
+    "pe",
+    "工艺",
+    "process engineer",
+    "process engineering",
+    "工艺工程师",
+    "工艺员"
+  ],
   mold: ["模房", "模具", "mold", "mould", "mold shop", "mould shop"],
   repair: ["维修", "机修", "repair", "maintenance", "machine repair"]
 };
@@ -34,9 +42,10 @@ export const SHOP_CREW_TYPE_ALIASES: Record<ShopCrewKind, readonly string[]> = {
   mold: SHOP_ASSIGN_GROUP_ALIASES.mold
 };
 
-/** ZH labels for the three assign groups (UI order). */
+/** ZH labels for the four assign columns (UI order). */
 export const SHOP_ASSIGN_GROUP_LABELS: Record<ShopAssignGroup, string> = {
   supervisor: "主管",
+  pe: "PE",
   mold: "模房",
   repair: "维修"
 };
@@ -74,8 +83,8 @@ export function matchesShopAssignGroup(
 }
 
 /**
- * Resolve which assign group an employee type belongs to. First match in
- * display order (主管 → 模房 → 维修) wins if aliases ever overlap.
+ * Resolve which assign column an employee type belongs to. First match in
+ * display order (主管 → PE → 模房 → 维修) wins if aliases ever overlap.
  */
 export function resolveShopAssignGroup(
   employeeTypeName: string | null | undefined
@@ -86,12 +95,13 @@ export function resolveShopAssignGroup(
   return null;
 }
 
-/** People bucketed into the three assign groups (empty groups included). */
+/** People bucketed into the four assign columns (empty columns included). */
 export function groupPeopleByAssignGroup(
   people: ShopPerson[]
 ): Record<ShopAssignGroup, ShopPerson[]> {
   const groups: Record<ShopAssignGroup, ShopPerson[]> = {
     supervisor: [],
+    pe: [],
     mold: [],
     repair: []
   };
@@ -101,6 +111,31 @@ export function groupPeopleByAssignGroup(
     }
   }
   return groups;
+}
+
+/**
+ * Primary Carbon `assignee` when the schema is single-user: first selected
+ * 主管 (column order), else first selected person across 主管→PE→模房→维修.
+ * Remaining selected people are Telegram-notified only (not DB assignees).
+ */
+export function resolvePrimaryAssigneeId(
+  selectedIds: readonly string[],
+  people: ShopPerson[]
+): string | null {
+  if (selectedIds.length === 0) return null;
+  const selected = new Set(selectedIds);
+  const groups = groupPeopleByAssignGroup(people);
+  for (const group of shopAssignGroups) {
+    const hit = groups[group].find((person) => selected.has(person.id));
+    if (hit) return hit.id;
+  }
+  // Selected id not in any assign column (shouldn't happen in UI) — keep first.
+  return selectedIds[0] ?? null;
+}
+
+/** Default selection for the assign picker: every 主管 is pre-selected. */
+export function defaultSelectedAssignIds(people: ShopPerson[]): string[] {
+  return groupPeopleByAssignGroup(people).supervisor.map((person) => person.id);
 }
 
 type DispatchSignals = Pick<

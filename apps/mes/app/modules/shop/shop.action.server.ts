@@ -44,16 +44,34 @@ async function notifyMaintenanceAssignment(
   args: {
     companyId: string;
     dispatchId: string;
+    /** Carbon `maintenanceDispatch.assignee` (single user). */
     assignee: string;
+    /**
+     * Everyone selected in the four-column picker (includes primary).
+     * Inngest + sync Telegram DM each; group message once.
+     */
+    notifyUserIds?: string[];
     from: string;
   }
 ): Promise<{ telegramUnbound: boolean }> {
+  const notifyUserIds = Array.from(
+    new Set(
+      (args.notifyUserIds?.length
+        ? args.notifyUserIds
+        : [args.assignee]
+      ).filter(Boolean)
+    )
+  );
+
   try {
     await trigger("notify", {
       companyId: args.companyId,
       documentId: args.dispatchId,
       event: NotificationEvent.MaintenanceDispatchAssignment,
-      recipient: { type: "user", userId: args.assignee },
+      recipient:
+        notifyUserIds.length === 1
+          ? { type: "user", userId: notifyUserIds[0]! }
+          : { type: "users", userIds: notifyUserIds },
       from: args.from
     });
   } catch (err) {
@@ -69,6 +87,7 @@ async function notifyMaintenanceAssignment(
         companyId: args.companyId,
         dispatchId: args.dispatchId,
         assigneeUserId: args.assignee,
+        notifyUserIds,
         assignerUserId: args.from
       });
       logger.info("Telegram sync fallback after Inngest notify failure", {
@@ -88,6 +107,7 @@ async function notifyMaintenanceAssignment(
     }
   }
 
+  // Flag when the primary assignee has no Telegram binding (UI flash copy).
   const chatId = await getTelegramChatIdForUser(client, {
     companyId: args.companyId,
     userId: args.assignee
@@ -106,8 +126,10 @@ export async function runShopMaintenanceAction(
     action: ShopMaintenanceAction;
     dispatchId: string | null;
     workCenterId: string | null;
-    /** When Assign / Report*, the employee to assign (defaults to actor for Assign). */
+    /** When Assign / Report*, the primary Carbon assignee (required for Assign). */
     assigneeId: string | null;
+    /** All selected people for Telegram notify (includes primary when set). */
+    notifyUserIds: string[];
     /** Plain note for Report* / optional on Assign. */
     note: string | null;
     companyId: string;
@@ -117,12 +139,14 @@ export async function runShopMaintenanceAction(
   const { action, dispatchId, workCenterId, companyId, userId } = args;
   const currentTime = datetime.timestamp();
   const note = args.note?.trim() || null;
+  const notifyUserIds = args.notifyUserIds;
 
   if (action === "ReportBreak") {
     return createShopAvailabilityDispatch(client, {
       kind: "break",
       workCenterId,
       assigneeId: args.assigneeId,
+      notifyUserIds,
       note,
       companyId,
       userId,
@@ -135,6 +159,7 @@ export async function runShopMaintenanceAction(
       kind: "planned",
       workCenterId,
       assigneeId: args.assigneeId,
+      notifyUserIds,
       note,
       companyId,
       userId,
@@ -147,6 +172,7 @@ export async function runShopMaintenanceAction(
       kind: "fault",
       workCenterId,
       assigneeId: args.assigneeId,
+      notifyUserIds,
       note,
       companyId,
       userId,
@@ -225,7 +251,11 @@ export async function runShopMaintenanceAction(
   };
 
   if (action === "Assign") {
-    const assignee = args.assigneeId || userId;
+    // No self-claim: Assign requires an explicit primary from the picker.
+    const assignee = args.assigneeId;
+    if (!assignee) {
+      return { ok: false, message: "Assignee is required" };
+    }
     const ownedAssignee = await client
       .from("employees")
       .select("id")
@@ -256,13 +286,14 @@ export async function runShopMaintenanceAction(
       companyId,
       dispatchId,
       assignee,
+      notifyUserIds: notifyUserIds.length > 0 ? notifyUserIds : [assignee],
       from: userId
     });
 
     return {
       ok: true,
       action,
-      message: assignee === userId ? "Assigned to you" : "Assigned",
+      message: "Assigned",
       telegramUnbound
     };
   }
@@ -405,13 +436,22 @@ async function createShopAvailabilityDispatch(
     kind: AvailabilityKind;
     workCenterId: string | null;
     assigneeId: string | null;
+    notifyUserIds: string[];
     note: string | null;
     companyId: string;
     userId: string;
     currentTime: string;
   }
 ): Promise<ShopMaintenanceActionResult> {
-  const { kind, workCenterId, companyId, userId, currentTime, note } = args;
+  const {
+    kind,
+    workCenterId,
+    companyId,
+    userId,
+    currentTime,
+    note,
+    notifyUserIds
+  } = args;
   if (!workCenterId) {
     return { ok: false, message: "Work center is required" };
   }
@@ -568,6 +608,7 @@ async function createShopAvailabilityDispatch(
       companyId,
       dispatchId,
       assignee,
+      notifyUserIds: notifyUserIds.length > 0 ? notifyUserIds : [assignee],
       from: userId
     });
     telegramUnbound = notify.telegramUnbound;

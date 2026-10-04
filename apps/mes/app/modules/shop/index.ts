@@ -32,6 +32,7 @@ export {
 } from "./shop.types";
 export {
   countShopStatuses,
+  defaultSelectedAssignIds,
   deriveShopMachineStatus,
   detectShopStatusTransitions,
   filterShopMachines,
@@ -41,6 +42,7 @@ export {
   matchesShopCrewEmployeeType,
   parseShopDispatchContent,
   primaryOpenDispatch,
+  resolvePrimaryAssigneeId,
   resolveShopAssignGroup,
   resolveShopDispatchKind,
   SHOP_ASSIGN_GROUP_ALIASES,

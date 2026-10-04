@@ -212,9 +212,6 @@ msgstr "装配步骤"
 msgid "Assign active employees to one of the matched employee types."
 msgstr "请把在职员工分配到上述匹配的员工类型之一。"
 
-msgid "Assign to me"
-msgstr "分配给我"
-
 msgid "Assigned"
 msgstr "已分配"
 

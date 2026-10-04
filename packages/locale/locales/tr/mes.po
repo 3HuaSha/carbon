@@ -212,9 +212,6 @@ msgstr "Montaj adımları"
 msgid "Assign active employees to one of the matched employee types."
 msgstr ""
 
-msgid "Assign to me"
-msgstr "Bana ata"
-
 msgid "Assigned"
 msgstr "Atanmış"
 
