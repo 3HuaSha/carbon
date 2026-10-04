@@ -69,7 +69,7 @@ export function ShopAlertsPage({ alerts, locationName }: ShopAlertsPageProps) {
         shopIos.pageEnter
       )}
     >
-      <div className="px-4 pb-2 pt-5">
+      <div className="px-4 pb-2 pt-3">
         <div className="flex items-center gap-1">
           <Link
             to={path.to.shop}
@@ -81,13 +81,13 @@ export function ShopAlertsPage({ alerts, locationName }: ShopAlertsPageProps) {
           >
             <LuChevronLeft className="h-6 w-6" />
           </Link>
-          <h1 className={shopIos.largeTitle}>提醒</h1>
+          <h1 className={shopIos.compactTitle}>提醒</h1>
+          {locationName?.trim() ? (
+            <span className={cn("ml-2 truncate text-[13px]", shopIos.muted)}>
+              {locationName.trim()}
+            </span>
+          ) : null}
         </div>
-        {locationName?.trim() ? (
-          <p className={cn("mt-0.5 pl-10 text-[14px]", shopIos.muted)}>
-            {locationName.trim()}
-          </p>
-        ) : null}
       </div>
 
       {alerts.length === 0 ? (

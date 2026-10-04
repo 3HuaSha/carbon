@@ -8,7 +8,8 @@ import { formatShopTilePersonLine, primaryOpenDispatch } from "../shop.utils";
 import { shopIos } from "./shopIos";
 
 /**
- * Floor-map tile — opaque iOS card, exactly three lines.
+ * Floor-map tile — status-filled card, exactly three lines.
+ * Fill color = 运行/停机/休息/空闲; white ink for glanceable contrast.
  * No continuous animations (ping/pulse) — 30+ tiles must stay cheap to paint.
  */
 const STATUS: Record<ShopMachineStatus, { label: string; name: string }> = {
@@ -44,7 +45,7 @@ export function MachineTile({ machine, onSelect }: MachineTileProps) {
       aria-label={`${machine.name} ${meta.name}${jobId ? ` ${jobId}` : ""}${personLine.text !== "—" ? ` ${personLine.text}` : ""}${machine.justFixed ? " 刚修完" : ""}`}
       className={cn(
         "relative flex w-full flex-col gap-0.5 px-2.5 py-2 text-left",
-        shopIos.card,
+        shopIos.statusFill[machine.status],
         shopIos.press
       )}
     >
@@ -55,22 +56,12 @@ export function MachineTile({ machine, onSelect }: MachineTileProps) {
       ) : null}
 
       <div className="flex min-w-0 items-center justify-between gap-1">
-        <span className="truncate text-[13px] font-semibold leading-tight tracking-tight">
+        <span className="truncate text-[13px] font-semibold leading-tight tracking-tight text-white">
           {machine.name}
         </span>
         <span className="flex shrink-0 items-center gap-1">
-          <span
-            className={cn(
-              "inline-flex h-1.5 w-1.5 rounded-full",
-              shopIos.statusDot[machine.status]
-            )}
-          />
-          <span
-            className={cn(
-              "text-[10px] font-semibold leading-tight",
-              shopIos.statusText[machine.status]
-            )}
-          >
+          <span className="inline-flex h-1.5 w-1.5 rounded-full bg-white/90" />
+          <span className="text-[10px] font-semibold leading-tight text-white">
             {meta.label}
           </span>
         </span>
@@ -79,26 +70,20 @@ export function MachineTile({ machine, onSelect }: MachineTileProps) {
       <div
         className={cn(
           "min-w-0 truncate text-[11px] leading-tight tabular-nums",
-          shopIos.muted
+          shopIos.fillMuted
         )}
       >
-        {jobId ? (
-          <span className="font-medium text-[color:var(--shop-ink)] opacity-80">
-            {jobId}
-          </span>
-        ) : (
-          "—"
-        )}
+        {jobId ? <span className="font-medium text-white">{jobId}</span> : "—"}
       </div>
 
       <div
         className={cn(
           "min-w-0 truncate text-[10px] leading-tight",
           personLine.tone === "unassigned"
-            ? "font-medium text-[color:var(--shop-down)]"
+            ? "font-semibold text-white"
             : personLine.tone === "empty"
-              ? "text-[color:var(--shop-muted)] opacity-60"
-              : shopIos.muted
+              ? shopIos.fillFaint
+              : shopIos.fillMuted
         )}
       >
         {personLine.text}

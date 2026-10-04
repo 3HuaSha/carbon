@@ -50,6 +50,40 @@
   box-shadow: var(--shop-shadow);
 }
 
+/* Machine tiles: full status fill (not white cards). White ink for contrast. */
+.shop-ios-fill-running,
+.shop-ios-fill-idle,
+.shop-ios-fill-break,
+.shop-ios-fill-down {
+  border-radius: 1rem;
+  box-shadow: var(--shop-shadow);
+  color: #ffffff;
+}
+
+.shop-ios-fill-running {
+  background: var(--shop-run);
+}
+
+.shop-ios-fill-idle {
+  background: #636366;
+}
+
+.shop-ios-fill-break {
+  background: var(--shop-break);
+}
+
+.shop-ios-fill-down {
+  background: var(--shop-down);
+}
+
+.shop-ios-fill-muted {
+  color: rgb(255 255 255 / 0.85);
+}
+
+.shop-ios-fill-faint {
+  color: rgb(255 255 255 / 0.7);
+}
+
 .shop-ios-inset {
   background: var(--shop-card);
   border-radius: 1rem;
