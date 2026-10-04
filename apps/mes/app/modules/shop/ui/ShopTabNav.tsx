@@ -39,10 +39,13 @@ type ShopTabNavProps = {
   active: ShopTab;
 };
 
-/** 顶部导航：机台 / 维修 / 模房 */
+/** iOS 分段控件风格：机台 / 维修 / 模房 */
 export function ShopTabNav({ active }: ShopTabNavProps) {
   return (
-    <nav className="flex gap-1 rounded-xl bg-muted/70 p-1" aria-label="车间分区">
+    <nav
+      className="flex rounded-[10px] bg-[#E3E3E8] p-[2px] dark:bg-[#1C1C1E]"
+      aria-label="车间分区"
+    >
       {TABS.map((tab) => {
         const selected = tab.id === active;
         return (
@@ -50,10 +53,10 @@ export function ShopTabNav({ active }: ShopTabNavProps) {
             key={tab.id}
             to={tab.to}
             className={cn(
-              "flex flex-1 items-center justify-center gap-1.5 rounded-lg px-3 py-2 text-center text-[13px] font-semibold transition-all duration-150 active:scale-[0.97]",
+              "flex flex-1 items-center justify-center gap-1.5 rounded-lg px-3 py-1.5 text-[13px] transition-all duration-150 active:opacity-60",
               selected
-                ? "bg-background text-foreground shadow-sm"
-                : "text-muted-foreground hover:text-foreground"
+                ? "bg-white font-semibold text-black shadow-[0_1px_4px_rgba(0,0,0,0.12)] dark:bg-[#2C2C2E] dark:text-white"
+                : "font-medium text-[#8E8E93]"
             )}
             aria-current={selected ? "page" : undefined}
           >
