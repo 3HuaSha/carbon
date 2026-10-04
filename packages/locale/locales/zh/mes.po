@@ -29,10 +29,6 @@ msgstr "{0} 前"
 msgid "{0} customers"
 msgstr "{0} 个客户"
 
-#. placeholder {0}: files.length
-msgid "{0} file(s) selected"
-msgstr ""
-
 #. placeholder {0}: unplanned .map( (m) => (m.job as { jobId?: string | null } | null)?.jobId ) .filter(Boolean) .join(", ")
 msgid "{0} has no lot number. Set it on the batch or job in Carbon, then complete."
 msgstr "{0}没有批次号。在Carbon中的生产批次或工单上设置，然后完成。"
@@ -91,7 +87,7 @@ msgstr "{0} 已报废"
 
 #. placeholder {0}: file.name
 msgid "{0} uploaded"
-msgstr ""
+msgstr "已上传 {0} 个"
 
 msgid "{completed} of {quantity}"
 msgstr "{completed} 的 {quantity}"
@@ -137,9 +133,6 @@ msgstr "确认并完成"
 msgid "across {0} jobs"
 msgstr "跨越 {0} 工单"
 
-msgid "Actions"
-msgstr ""
-
 msgid "Active"
 msgstr "启用"
 
@@ -159,7 +152,7 @@ msgid "Add Inventory"
 msgstr "添加库存管理"
 
 msgid "Add photo / video"
-msgstr ""
+msgstr "添加照片 / 视频"
 
 msgid "Add Sample"
 msgstr "添加样本"
@@ -224,9 +217,6 @@ msgstr "请把在职员工分配到上述匹配的员工类型之一。"
 
 msgid "Assign person"
 msgstr "分配人员"
-
-msgid "Assign person (optional)"
-msgstr ""
 
 msgid "Assign to me"
 msgstr "分配给我"
@@ -306,9 +296,6 @@ msgstr "看板视图"
 msgid "Break"
 msgstr "休息"
 
-msgid "Break / Away"
-msgstr ""
-
 msgid "But don't worry. You can use the forgot password flow to request a new magic link."
 msgstr "但别担心。您可以使用忘记密码流程来请求新的魔法链接。"
 
@@ -325,16 +312,13 @@ msgid "Cancelled"
 msgstr "已取消"
 
 msgid "Carbon client not available"
-msgstr ""
+msgstr "Carbon 客户端不可用"
 
 msgid "Carbon Logo"
 msgstr "Carbon 标志"
 
 msgid "Cards"
 msgstr "卡片"
-
-msgid "Change assignee"
-msgstr ""
 
 msgid "Chat"
 msgstr "聊天"
@@ -413,9 +397,6 @@ msgstr "列：{0}"
 msgid "Columns"
 msgstr "列"
 
-msgid "Coming in a later update"
-msgstr ""
-
 msgid "Company"
 msgstr "公司"
 
@@ -439,9 +420,6 @@ msgstr "已完成"
 
 msgid "Completing"
 msgstr "完成中"
-
-msgid "Confirm"
-msgstr ""
 
 msgid "Connecting"
 msgstr "连接中"
@@ -488,12 +466,6 @@ msgstr "创建质量问题"
 msgid "Create Rework"
 msgstr "创建返工"
 
-msgid "Created ticket, but media upload failed"
-msgstr ""
-
-msgid "Current production"
-msgstr ""
-
 msgid "Current work"
 msgstr "当前工作"
 
@@ -526,9 +498,6 @@ msgstr "删除步骤"
 
 msgid "Delete Timecard (<0/>)"
 msgstr "删除工时表 (<0/>)"
-
-msgid "Describe the fault. Notes required; photos/videos recommended."
-msgstr ""
 
 msgid "Describe the problem..."
 msgstr "描述问题..."
@@ -715,13 +684,10 @@ msgid "Failed to upload image"
 msgstr "图片上传失败"
 
 msgid "Failed to upload media"
-msgstr ""
+msgstr "媒体上传失败"
 
 msgid "Fault"
 msgstr "故障"
-
-msgid "Fault downtime"
-msgstr ""
 
 msgid "Feature"
 msgstr "功能"
@@ -800,9 +766,6 @@ msgstr "多少个？"
 msgid "I understand and want to complete without issuing"
 msgstr "我理解并希望在不发放物料的情况下完成"
 
-msgid "I'm back"
-msgstr ""
-
 msgid "I'm Still Working"
 msgstr "我还在工作"
 
@@ -862,7 +825,7 @@ msgid "Insufficient quantity"
 msgstr "数量不足"
 
 msgid "Invalid file name"
-msgstr ""
+msgstr "无效的文件名"
 
 msgid "Inventory adjustment completed"
 msgstr "库存调整已完成"
@@ -1019,9 +982,6 @@ msgstr "维护"
 
 msgid "Maintenance Completed"
 msgstr "维护已完成"
-
-msgid "Maintenance history"
-msgstr ""
 
 msgid "Maintenance overdue"
 msgstr "维护已逾期"
@@ -1196,16 +1156,13 @@ msgid "No people on this crew"
 msgstr "该班组暂无人员"
 
 msgid "No photos or videos yet"
-msgstr ""
+msgstr "暂无照片或视频"
 
 msgid "No picking lists assigned"
 msgstr "没有分配的拣货单"
 
 msgid "No printer configured"
 msgstr "未配置打印机"
-
-msgid "No recent closed tickets"
-msgstr ""
 
 msgid "No recent operations"
 msgstr "无近期工序"
@@ -1266,9 +1223,6 @@ msgstr "无"
 
 msgid "Notes"
 msgstr "备注"
-
-msgid "Notes and photos recommended (changeover / PM window)."
-msgstr ""
 
 msgid "Nothing running"
 msgstr "没有运行"
@@ -1362,17 +1316,8 @@ msgstr "操作员执行"
 msgid "Optional"
 msgstr "可选"
 
-msgid "Optional note"
-msgstr ""
-
-msgid "Optional short note (lunch, bathroom, away)."
-msgstr ""
-
 msgid "or"
 msgstr "或"
-
-msgid "Other open tickets"
-msgstr ""
 
 msgid "Output lot"
 msgstr "输出批次"
@@ -1446,9 +1391,6 @@ msgstr "退出登录"
 
 msgid "Planned"
 msgstr "已计划"
-
-msgid "Planned downtime"
-msgstr ""
 
 msgid "Please record all steps for this operation before closing."
 msgstr "请在关闭前记录此工序的所有步骤。"
@@ -1588,9 +1530,6 @@ msgstr "必填"
 
 msgid "Result"
 msgstr "结果"
-
-msgid "Resume / Complete"
-msgstr ""
 
 msgid "Retry Completion"
 msgstr "重试完成"
@@ -1998,9 +1937,6 @@ msgstr "待启动"
 msgid "Today"
 msgstr "今天"
 
-msgid "Today's yield"
-msgstr ""
-
 msgid "Toggle the sidebar"
 msgstr "切换侧栏"
 
@@ -2099,7 +2035,7 @@ msgid "Uploading {0}"
 msgstr "正在上传 {0}"
 
 msgid "Uploading…"
-msgstr ""
+msgstr "上传中…"
 
 msgid "Use a different account"
 msgstr "使用不同的帐户"
@@ -2116,9 +2052,6 @@ msgstr "验证"
 msgid "View maintenance dispatch"
 msgstr "查看维护工单"
 
-msgid "Waiting"
-msgstr "待维修"
-
 msgid "Waiting repair"
 msgstr "等待维修"
 
@@ -2127,9 +2060,6 @@ msgstr "我们已向您发送了登录链接，请查收。"
 
 msgid "WeChat / QQ / UC cannot install MES. Open this link in Chrome, then tap Install."
 msgstr "WeChat / QQ / UC cannot install MES. Open this link in Chrome, then tap Install."
-
-msgid "What happened? (required)"
-msgstr ""
 
 msgid "What is {translatedTerm}?"
 msgstr "{translatedTerm}是什么?"

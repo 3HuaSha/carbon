@@ -29,10 +29,6 @@ msgstr "{0} पहले"
 msgid "{0} customers"
 msgstr "{0} ग्राहक"
 
-#. placeholder {0}: files.length
-msgid "{0} file(s) selected"
-msgstr ""
-
 #. placeholder {0}: unplanned .map( (m) => (m.job as { jobId?: string | null } | null)?.jobId ) .filter(Boolean) .join(", ")
 msgid "{0} has no lot number. Set it on the batch or job in Carbon, then complete."
 msgstr "{0} के पास लॉट संख्या नहीं है। इसे Carbon में बैच या जॉब पर सेट करें, फिर पूर्ण करें।"
@@ -137,9 +133,6 @@ msgstr "स्वीकार करें और समाप्त करे�
 msgid "across {0} jobs"
 msgstr "{0} जॉब में"
 
-msgid "Actions"
-msgstr ""
-
 msgid "Active"
 msgstr "सक्रिय"
 
@@ -225,9 +218,6 @@ msgstr ""
 msgid "Assign person"
 msgstr "व्यक्ति असाइन करें"
 
-msgid "Assign person (optional)"
-msgstr ""
-
 msgid "Assign to me"
 msgstr "मुझे असाइन करें"
 
@@ -306,9 +296,6 @@ msgstr "बोर्ड दृश्य"
 msgid "Break"
 msgstr ""
 
-msgid "Break / Away"
-msgstr ""
-
 msgid "But don't worry. You can use the forgot password flow to request a new magic link."
 msgstr "लेकिन चिंता न करें। आप नया जादुई लिंक अनुरोध करने के लिए भूल गए पासवर्ड प्रवाह का उपयोग कर सकते हैं।"
 
@@ -332,9 +319,6 @@ msgstr "कार्बन लोगो"
 
 msgid "Cards"
 msgstr "कार्ड"
-
-msgid "Change assignee"
-msgstr ""
 
 msgid "Chat"
 msgstr "चैट"
@@ -413,9 +397,6 @@ msgstr "कॉलम: {0}"
 msgid "Columns"
 msgstr "कॉलम"
 
-msgid "Coming in a later update"
-msgstr ""
-
 msgid "Company"
 msgstr "कंपनी"
 
@@ -439,9 +420,6 @@ msgstr "पूर्ण"
 
 msgid "Completing"
 msgstr "पूर्ण हो रहा है"
-
-msgid "Confirm"
-msgstr ""
 
 msgid "Connecting"
 msgstr "जुड़ रहा है"
@@ -488,12 +466,6 @@ msgstr "गुणवत्ता समस्या बनाएं"
 msgid "Create Rework"
 msgstr "पुनः कार्य बनाएँ"
 
-msgid "Created ticket, but media upload failed"
-msgstr ""
-
-msgid "Current production"
-msgstr ""
-
 msgid "Current work"
 msgstr "वर्तमान कार्य"
 
@@ -526,9 +498,6 @@ msgstr "चरण हटाएं"
 
 msgid "Delete Timecard (<0/>)"
 msgstr "टाइमकार्ड हटाएं (<0/>)"
-
-msgid "Describe the fault. Notes required; photos/videos recommended."
-msgstr ""
 
 msgid "Describe the problem..."
 msgstr "समस्या का वर्णन करें..."
@@ -720,9 +689,6 @@ msgstr ""
 msgid "Fault"
 msgstr ""
 
-msgid "Fault downtime"
-msgstr ""
-
 msgid "Feature"
 msgstr "सुविधा"
 
@@ -799,9 +765,6 @@ msgstr "कितने?"
 
 msgid "I understand and want to complete without issuing"
 msgstr "मैं समझता हूँ और बिना जारी किए पूरा करना चाहता हूँ"
-
-msgid "I'm back"
-msgstr ""
 
 msgid "I'm Still Working"
 msgstr "मैं अभी भी काम कर रहा हूँ"
@@ -1020,9 +983,6 @@ msgstr "रखरखाव"
 msgid "Maintenance Completed"
 msgstr "रखरखाव पूर्ण"
 
-msgid "Maintenance history"
-msgstr ""
-
 msgid "Maintenance overdue"
 msgstr "रखरखाव अतिदेय"
 
@@ -1204,9 +1164,6 @@ msgstr "कोई पिकिंग सूची असाइन नहीं �
 msgid "No printer configured"
 msgstr "कोई प्रिंटर कॉन्फ़िगर नहीं किया गया"
 
-msgid "No recent closed tickets"
-msgstr ""
-
 msgid "No recent operations"
 msgstr "कोई हाल की ऑपरेशन नहीं"
 
@@ -1266,9 +1223,6 @@ msgstr "कोई नहीं"
 
 msgid "Notes"
 msgstr "नोट्स"
-
-msgid "Notes and photos recommended (changeover / PM window)."
-msgstr ""
 
 msgid "Nothing running"
 msgstr "कुछ नहीं चल रहा"
@@ -1362,17 +1316,8 @@ msgstr "ऑपरेटर द्वारा निष्पादित"
 msgid "Optional"
 msgstr "वैकल्पिक"
 
-msgid "Optional note"
-msgstr ""
-
-msgid "Optional short note (lunch, bathroom, away)."
-msgstr ""
-
 msgid "or"
 msgstr "या"
-
-msgid "Other open tickets"
-msgstr ""
 
 msgid "Output lot"
 msgstr "आउटपुट लॉट"
@@ -1446,9 +1391,6 @@ msgstr "पिन आउट"
 
 msgid "Planned"
 msgstr "नियोजित"
-
-msgid "Planned downtime"
-msgstr ""
 
 msgid "Please record all steps for this operation before closing."
 msgstr "कृपया बंद करने से पहले इस ऑपरेशन के लिए सभी चरणों को रिकॉर्ड करें।"
@@ -1588,9 +1530,6 @@ msgstr "आवश्यक"
 
 msgid "Result"
 msgstr "परिणाम"
-
-msgid "Resume / Complete"
-msgstr ""
 
 msgid "Retry Completion"
 msgstr "समापन पुनः प्रयास करें"
@@ -1998,9 +1937,6 @@ msgstr "चलाने के लिए"
 msgid "Today"
 msgstr "आज"
 
-msgid "Today's yield"
-msgstr ""
-
 msgid "Toggle the sidebar"
 msgstr "साइडबार को टॉगल करें"
 
@@ -2116,9 +2052,6 @@ msgstr "सत्यापित करें"
 msgid "View maintenance dispatch"
 msgstr "रखरखाव कार्य देखें"
 
-msgid "Waiting"
-msgstr "प्रतीक्षा में"
-
 msgid "Waiting repair"
 msgstr "मरम्मत की प्रतीक्षा में"
 
@@ -2127,9 +2060,6 @@ msgstr "हमने आपके खाते में साइन इन क
 
 msgid "WeChat / QQ / UC cannot install MES. Open this link in Chrome, then tap Install."
 msgstr "WeChat / QQ / UC cannot install MES. Open this link in Chrome, then tap Install."
-
-msgid "What happened? (required)"
-msgstr ""
 
 msgid "What is {translatedTerm}?"
 msgstr "{translatedTerm} क्या है?"

@@ -3,19 +3,17 @@ import { Trans, useLingui } from "@lingui/react/macro";
 import { type ReactNode, useState } from "react";
 import { LuDownload, LuMonitor, LuShare } from "react-icons/lu";
 import type { ShopMachineStatus, ShopStatusFilter } from "../shop.types";
-import { shopStatusFilters } from "../shop.types";
+import { shopStatusFilterChips } from "../shop.types";
 import { PwaInstallSheet } from "./PwaInstallSheet";
 import { ShopTabNav } from "./ShopTabNav";
 import { usePwaInstall } from "./usePwaInstall";
 
-const FILTER_LABELS: Record<ShopStatusFilter, () => ReactNode> = {
-  all: () => <Trans>All</Trans>,
+const FILTER_LABELS: Record<
+  (typeof shopStatusFilterChips)[number],
+  () => ReactNode
+> = {
   running: () => <Trans>Running</Trans>,
-  idle: () => <Trans>Idle</Trans>,
-  break: () => <Trans>Break</Trans>,
-  planned: () => <Trans>Planned</Trans>,
-  waitingRepair: () => <Trans>Waiting</Trans>,
-  inRepair: () => <Trans>In repair</Trans>
+  down: () => <Trans>Down</Trans>
 };
 
 type ShopHeaderProps = {
@@ -152,11 +150,7 @@ export function ShopHeader({
           ) : null}
           <div className="flex flex-wrap justify-end gap-1.5 text-xs tabular-nums">
             <Count count={counts.running} variant="green" />
-            <Count count={counts.idle} variant="gray" />
-            <Count count={counts.break} variant="blue" />
-            <Count count={counts.planned} variant="yellow" />
-            <Count count={counts.waitingRepair} variant="orange" />
-            <Count count={counts.inRepair} variant="red" />
+            <Count count={counts.down} variant="red" />
           </div>
         </div>
       </div>
@@ -170,7 +164,7 @@ export function ShopHeader({
         role="tablist"
         aria-label={t`Filter by status`}
       >
-        {shopStatusFilters.map((value) => {
+        {shopStatusFilterChips.map((value) => {
           const selected = filter === value;
           return (
             <button
@@ -178,7 +172,7 @@ export function ShopHeader({
               type="button"
               role="tab"
               aria-selected={selected}
-              onClick={() => onFilterChange(value)}
+              onClick={() => onFilterChange(selected ? "all" : value)}
               className={cn(
                 "shrink-0 rounded-md px-3 py-2 text-sm font-medium transition-colors active:scale-[0.98]",
                 selected

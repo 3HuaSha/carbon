@@ -22,6 +22,7 @@ export {
   shopDispatchKinds,
   shopMachineStatuses,
   shopMaintenanceActions,
+  shopStatusFilterChips,
   shopStatusFilters
 } from "./shop.types";
 export {

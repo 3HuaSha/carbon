@@ -89,7 +89,9 @@ export function parseShopDispatchContent(content: unknown): {
  * Derive the phone-overview status from existing MES signals.
  *
  * Priority (highest first):
- * inRepair → waitingRepair → planned → break → running → idle
+ * down (fault | planned | blocked) → break → running → idle
+ *
+ * Waiting-repair / in-repair / planned all present as one **停机** status.
  */
 export function deriveShopMachineStatus(args: {
   hasOpenProductionEvent: boolean;
@@ -98,38 +100,25 @@ export function deriveShopMachineStatus(args: {
 }): ShopMachineStatus {
   const dispatches = args.openDispatches;
 
-  const isFault = (d: DispatchSignals) =>
-    resolveShopDispatchKind(d) === "fault";
-  const isPlanned = (d: DispatchSignals) =>
-    resolveShopDispatchKind(d) === "planned";
   const isBreak = (d: DispatchSignals) =>
     resolveShopDispatchKind(d) === "break";
+  const isDownEpisode = (d: DispatchSignals) => {
+    const kind = resolveShopDispatchKind(d);
+    return kind === "fault" || kind === "planned";
+  };
 
-  // Fault actively worked — wins over planned/break.
-  if (dispatches.some((d) => isFault(d) && d.status === "In Progress")) {
-    return "inRepair";
+  // Fault or planned offline → one Down presentation (unassigned still Down).
+  if (dispatches.some(isDownEpisode)) {
+    return "down";
   }
 
-  // Fault waiting (Open / Assigned), including mold-shop / 模房 tickets.
-  if (
-    dispatches.some(
-      (d) => isFault(d) && (d.status === "Open" || d.status === "Assigned")
-    )
-  ) {
-    return "waitingRepair";
-  }
-
-  if (dispatches.some((d) => isPlanned(d))) {
-    return "planned";
-  }
-
-  if (dispatches.some((d) => isBreak(d))) {
+  if (dispatches.some(isBreak)) {
     return "break";
   }
 
   // Blocked with no classifiable open episode (stale view edge case).
   if (args.isBlocked) {
-    return "inRepair";
+    return "down";
   }
 
   if (args.hasOpenProductionEvent) {
@@ -154,9 +143,7 @@ export function countShopStatuses(
     running: 0,
     idle: 0,
     break: 0,
-    planned: 0,
-    waitingRepair: 0,
-    inRepair: 0
+    down: 0
   };
 
   for (const machine of machines) {
