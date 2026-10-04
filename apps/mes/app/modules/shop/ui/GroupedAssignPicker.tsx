@@ -14,6 +14,7 @@ import {
   resolvePrimaryAssigneeId,
   SHOP_ASSIGN_GROUP_LABELS
 } from "../shop.utils";
+import { shopIos } from "./shopIos";
 
 export type AssignSelection = {
   /** Carbon `maintenanceDispatch.assignee` (single userId). */
@@ -39,9 +40,7 @@ type GroupedAssignPickerProps = {
 
 /**
  * Four-column multi-select assign UI: 主管 / PE / 模房 / 维修.
- * 主管 defaults to all selected; other columns toggle on tap.
- * Schema is single-assignee → primary = first selected 主管 (else first overall);
- * every selected person is still Telegram-notified.
+ * Opaque inset card — selection via background swap only (no blur/motion libs).
  */
 export function GroupedAssignPicker({
   people,
@@ -62,7 +61,6 @@ export function GroupedAssignPicker({
     defaultSelectedAssignIds(people)
   );
 
-  // Re-seed 主管 defaults when the supervisor roster changes (navigation / reload).
   useEffect(() => {
     setSelectedIds(defaultSelectedKey ? defaultSelectedKey.split(",") : []);
   }, [defaultSelectedKey]);
@@ -94,21 +92,18 @@ export function GroupedAssignPicker({
     people.find((p) => p.id === selection?.assigneeId)?.name ?? null;
 
   return (
-    <div
-      className={cn(
-        "overflow-hidden rounded-xl border border-border bg-card",
-        className
-      )}
-    >
-      <div className="flex items-center justify-between gap-2 border-b border-border bg-muted/40 px-3 py-2">
-        <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-          指派给
-        </p>
+    <div className={cn(shopIos.inset, className)}>
+      <div className="flex items-center justify-between gap-2 border-b border-[color:var(--shop-hairline)] px-3 py-2">
+        <p className={shopIos.sectionLabel}>指派给</p>
         {onCancel ? (
           <button
             type="button"
             aria-label="取消"
-            className="rounded-md p-1.5 text-muted-foreground hover:bg-muted hover:text-foreground"
+            className={cn(
+              "rounded-full p-1.5",
+              shopIos.muted,
+              "active:opacity-60"
+            )}
             onClick={onCancel}
           >
             <LuX className="h-4 w-4" />
@@ -116,7 +111,10 @@ export function GroupedAssignPicker({
         ) : null}
       </div>
 
-      <div className="grid grid-cols-4 gap-px border-b border-border bg-border">
+      <div
+        className="grid grid-cols-4"
+        style={{ gap: 1, background: "var(--shop-hairline)" }}
+      >
         {shopAssignGroups.map((group) => (
           <AssignColumn
             key={group}
@@ -131,19 +129,21 @@ export function GroupedAssignPicker({
 
       <div className="flex items-center gap-2 px-3 py-2.5">
         {selectedCount > 0 ? (
-          <p className="min-w-0 flex-1 truncate text-xs text-muted-foreground">
+          <p
+            className={cn("min-w-0 flex-1 truncate text-[12px]", shopIos.muted)}
+          >
             已选 {selectedCount} 人
             {primaryName ? (
               <>
                 · 负责人{" "}
-                <span className="font-medium text-foreground">
+                <span className="font-medium text-[color:var(--shop-ink)]">
                   {primaryName}
                 </span>
               </>
             ) : null}
           </p>
         ) : (
-          <p className="min-w-0 flex-1 text-xs text-muted-foreground">
+          <p className={cn("min-w-0 flex-1 text-[12px]", shopIos.muted)}>
             {requireConfirm ? "请选择至少一位人员" : "可不选；默认已选全部主管"}
           </p>
         )}
@@ -179,15 +179,23 @@ function AssignColumn({
   onToggle: (id: string) => void;
 }) {
   return (
-    <div className="flex min-h-[8rem] flex-col bg-card">
-      <p className="border-b border-border px-1.5 py-1.5 text-center text-xs font-semibold text-foreground">
+    <div className="flex min-h-[8rem] flex-col bg-[color:var(--shop-card)]">
+      <p
+        className="px-1.5 py-1.5 text-center text-[12px] font-semibold"
+        style={{ borderBottom: "1px solid var(--shop-hairline)" }}
+      >
         {SHOP_ASSIGN_GROUP_LABELS[group]}
-        <span className="ml-0.5 tabular-nums text-muted-foreground">
+        <span className={cn("ml-0.5 tabular-nums", shopIos.muted)}>
           {people.length}
         </span>
       </p>
       {people.length === 0 ? (
-        <p className="px-1.5 py-2 text-center text-[10px] leading-snug text-muted-foreground">
+        <p
+          className={cn(
+            "px-1.5 py-2 text-center text-[10px] leading-snug",
+            shopIos.muted
+          )}
+        >
           暂无
         </p>
       ) : (
@@ -202,8 +210,11 @@ function AssignColumn({
                   onClick={() => onToggle(person.id)}
                   aria-pressed={selected}
                   className={cn(
-                    "flex w-full flex-col items-center gap-1 px-1 py-2 text-center hover:bg-muted/60 disabled:opacity-50",
-                    selected && "bg-primary/10 hover:bg-primary/15"
+                    "flex w-full flex-col items-center gap-1 px-1 py-2 text-center disabled:opacity-50",
+                    "transition-colors duration-100 ease-out",
+                    selected
+                      ? "bg-[color:var(--shop-link)]/10"
+                      : "active:bg-[color:var(--shop-track)]"
                   )}
                 >
                   <span className="relative">
@@ -213,7 +224,7 @@ function AssignColumn({
                       size="sm"
                     />
                     {selected ? (
-                      <span className="absolute -right-1 -top-1 flex h-3.5 w-3.5 items-center justify-center rounded-full bg-primary text-primary-foreground">
+                      <span className="absolute -right-1 -top-1 flex h-3.5 w-3.5 items-center justify-center rounded-full bg-[color:var(--shop-link)] text-white">
                         <LuCheck className="h-2.5 w-2.5" strokeWidth={3} />
                       </span>
                     ) : null}

@@ -72,7 +72,7 @@ export default function ShopIndexRoute() {
   );
 
   return (
-    <div className="mx-auto flex min-h-dvh w-full max-w-3xl flex-col">
+    <div className="shop-ios-page-enter mx-auto flex min-h-dvh w-full max-w-3xl flex-col">
       <ShopHeader
         locationName={locationName}
         total={machines.length}

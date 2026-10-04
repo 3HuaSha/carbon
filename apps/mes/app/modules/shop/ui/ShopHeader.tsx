@@ -11,20 +11,19 @@ import type { ShopMachineStatus, ShopStatusFilter } from "../shop.types";
 import { shopStatusFilterChips } from "../shop.types";
 import { PwaInstallSheet } from "./PwaInstallSheet";
 import { ShopTabNav } from "./ShopTabNav";
+import { shopIos } from "./shopIos";
 import { usePwaInstall } from "./usePwaInstall";
 
 /**
- * iOS 风格顶栏：
- * - 大标题（随滚动），副标题设备统计
- * - 右上：提醒铃铛（红点角标）+ 安装按钮
- * - 下方 sticky 毛玻璃条：iOS 分段筛选器
+ * iOS large-title header + opaque sticky filter strip.
+ * No backdrop-blur — solid `--shop-bg` for snappy paint on phones.
  */
 const FILTER_META: Record<
   (typeof shopStatusFilterChips)[number],
   { label: string; dotClass: string }
 > = {
-  running: { label: "运行中", dotClass: "bg-[#34C759]" },
-  down: { label: "停机", dotClass: "bg-[#FF3B30]" }
+  running: { label: "运行中", dotClass: shopIos.statusDot.running },
+  down: { label: "停机", dotClass: shopIos.statusDot.down }
 };
 
 type ShopHeaderProps = {
@@ -33,7 +32,6 @@ type ShopHeaderProps = {
   counts: Record<ShopMachineStatus, number>;
   filter: ShopStatusFilter;
   onFilterChange: (filter: ShopStatusFilter) => void;
-  /** Unread downtime / recovery reminders → `/shop/alerts`. */
   alertUnreadCount?: number;
 };
 
@@ -124,20 +122,19 @@ export function ShopHeader({
 
   return (
     <>
-      {/* 大标题区：随页面滚动 */}
-      <div className="bg-[#F2F2F7] px-4 pb-2 pt-6 dark:bg-black">
+      <div className="px-4 pb-2 pt-5">
         <div className="flex items-end justify-between gap-3">
           <div className="min-w-0">
-            <h1 className="text-[34px] font-bold leading-tight tracking-tight text-black dark:text-white">
+            <h1 className={shopIos.largeTitle}>
               {locationName?.trim() || "车间总览"}
             </h1>
-            <p className="mt-1 text-[15px] tabular-nums text-[#8E8E93] dark:text-[#98989D]">
+            <p className={cn("mt-1 text-[15px] tabular-nums", shopIos.muted)}>
               {total} 台设备 ·{" "}
-              <span className="font-semibold text-[#34C759]">
+              <span className="font-semibold text-[color:var(--shop-run)]">
                 {counts.running} 运行
               </span>{" "}
               ·{" "}
-              <span className="font-semibold text-[#FF3B30]">
+              <span className="font-semibold text-[color:var(--shop-down)]">
                 {counts.down} 停机
               </span>
             </p>
@@ -150,11 +147,14 @@ export function ShopHeader({
                   ? `提醒，${alertUnreadCount} 条未读`
                   : "提醒"
               }
-              className="relative flex h-10 w-10 items-center justify-center rounded-full text-[#007AFF] transition active:opacity-60"
+              className={cn(
+                "relative flex h-10 w-10 items-center justify-center rounded-full",
+                shopIos.link
+              )}
             >
               <LuBell className="h-[22px] w-[22px]" />
               {alertUnreadCount > 0 ? (
-                <span className="absolute right-0.5 top-0.5 flex h-[18px] min-w-[18px] items-center justify-center rounded-full bg-[#FF3B30] px-1 text-[11px] font-bold tabular-nums text-white">
+                <span className="absolute right-0.5 top-0.5 flex h-[18px] min-w-[18px] items-center justify-center rounded-full bg-[color:var(--shop-down)] px-1 text-[11px] font-bold tabular-nums text-white">
                   {alertUnreadCount > 99 ? "99+" : alertUnreadCount}
                 </span>
               ) : null}
@@ -187,13 +187,8 @@ export function ShopHeader({
         </div>
       </div>
 
-      {/* sticky 毛玻璃筛选条 */}
-      <div className="sticky top-0 z-10 border-b border-black/5 bg-[#F2F2F7]/80 px-4 py-2 backdrop-blur-xl dark:border-white/10 dark:bg-black/70">
-        <div
-          className="flex rounded-[10px] bg-[#E3E3E8] p-[2px] dark:bg-[#1C1C1E]"
-          role="tablist"
-          aria-label="按状态筛选"
-        >
+      <div className={cn("sticky top-0 z-10 px-4 py-2", shopIos.bar)}>
+        <div className={shopIos.segment} role="tablist" aria-label="按状态筛选">
           <SegmentedOption
             selected={filter === "all"}
             onClick={() => onFilterChange("all")}
@@ -210,12 +205,7 @@ export function ShopHeader({
                 role="tab"
                 aria-selected={selected}
                 onClick={() => onFilterChange(selected ? "all" : value)}
-                className={cn(
-                  "flex flex-1 items-center justify-center gap-1.5 rounded-lg px-2 py-1.5 text-[13px] transition-all duration-150 active:opacity-60",
-                  selected
-                    ? "bg-white font-semibold text-black shadow-[0_1px_4px_rgba(0,0,0,0.12)] dark:bg-[#2C2C2E] dark:text-white"
-                    : "font-medium text-[#8E8E93]"
-                )}
+                className={cn(shopIos.segmentItem, "gap-1.5")}
               >
                 <span
                   className={cn("h-1.5 w-1.5 rounded-full", meta.dotClass)}
@@ -260,12 +250,7 @@ function SegmentedOption({
       role="tab"
       aria-selected={selected}
       onClick={onClick}
-      className={cn(
-        "flex flex-1 items-center justify-center gap-1.5 rounded-lg px-2 py-1.5 text-[13px] transition-all duration-150 active:opacity-60",
-        selected
-          ? "bg-white font-semibold text-black shadow-[0_1px_4px_rgba(0,0,0,0.12)] dark:bg-[#2C2C2E] dark:text-white"
-          : "font-medium text-[#8E8E93]"
-      )}
+      className={shopIos.segmentItem}
     >
       {label}
       <span className="text-[12px] font-semibold tabular-nums opacity-80">

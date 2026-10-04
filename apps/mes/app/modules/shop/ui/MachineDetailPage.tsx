@@ -46,6 +46,7 @@ import {
   GroupedAssignPicker
 } from "./GroupedAssignPicker";
 import { ShopDispatchMedia } from "./ShopDispatchMedia";
+import { shopIos } from "./shopIos";
 
 type MachineDetailPageProps = {
   machine: ShopMachine;
@@ -67,28 +68,12 @@ type ReportKind = "break" | "planned" | "fault";
 
 const statusMeta: Record<
   ShopMachine["status"],
-  { label: string; color: "green" | "gray" | "blue" | "red"; gradient: string }
+  { label: string; color: "green" | "gray" | "blue" | "red" }
 > = {
-  running: {
-    label: "运行",
-    color: "green",
-    gradient: "from-emerald-500 to-teal-600"
-  },
-  idle: {
-    label: "空闲",
-    color: "gray",
-    gradient: "from-slate-400 to-slate-500"
-  },
-  break: {
-    label: "休息",
-    color: "blue",
-    gradient: "from-sky-500 to-blue-600"
-  },
-  down: {
-    label: "停机",
-    color: "red",
-    gradient: "from-red-500 to-rose-600"
-  }
+  running: { label: "运行", color: "green" },
+  idle: { label: "空闲", color: "gray" },
+  break: { label: "休息", color: "blue" },
+  down: { label: "停机", color: "red" }
 };
 
 function MachineStatusChip({ status }: { status: ShopMachine["status"] }) {
@@ -139,7 +124,7 @@ function SectionTitle({
   children: React.ReactNode;
 }) {
   return (
-    <h2 className="flex items-center gap-1.5 px-4 text-[13px] font-medium uppercase tracking-wide text-[#8E8E93]">
+    <h2 className={cn("flex items-center gap-1.5", shopIos.sectionLabel)}>
       {icon ? <span className="opacity-70">{icon}</span> : null}
       {children}
     </h2>
@@ -156,8 +141,8 @@ function WorkOrderSection({ work }: { work: ShopCurrentWork | null }) {
     : null;
 
   return (
-    <section className="overflow-hidden rounded-2xl bg-white shadow-[0_1px_3px_rgba(0,0,0,0.06)] dark:bg-[#1C1C1E]">
-      <div className="border-b border-border bg-muted/40 px-4 py-2.5">
+    <section className={shopIos.inset}>
+      <div className="border-b border-[color:var(--shop-hairline)] px-4 py-2.5">
         <SectionTitle icon={<LuPackage className="h-4 w-4" />}>
           当前生产
         </SectionTitle>
@@ -255,8 +240,8 @@ function ReportForm({
   const meta = reportKindMeta[kind];
 
   return (
-    <section className="overflow-hidden rounded-2xl bg-white shadow-[0_1px_3px_rgba(0,0,0,0.06)] dark:bg-[#1C1C1E]">
-      <div className="flex items-start justify-between gap-2 border-b border-border bg-muted/40 px-4 py-3">
+    <section className={shopIos.inset}>
+      <div className="flex items-start justify-between gap-2 border-b border-[color:var(--shop-hairline)] px-4 py-3">
         <div className="flex items-center gap-2.5">
           <span
             className={cn(
@@ -415,7 +400,7 @@ function DispatchActions({
     dispatch.shopKind === "break" ? "break" : "down";
 
   return (
-    <section className="overflow-hidden rounded-2xl bg-white shadow-[0_1px_3px_rgba(0,0,0,0.06)] dark:bg-[#1C1C1E]">
+    <section className={shopIos.inset}>
       <div className="flex items-start justify-between gap-2 px-4 pt-3">
         <div className="min-w-0 flex-1">
           <p className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
@@ -657,12 +642,20 @@ export function MachineDetailPage({
   };
 
   return (
-    <div className="mx-auto flex min-h-dvh w-full max-w-3xl flex-col gap-4 bg-[#F2F2F7] pb-24 dark:bg-black">
-      <header className="sticky top-0 z-10 border-b border-black/5 bg-[#F2F2F7]/80 backdrop-blur-xl dark:border-white/10 dark:bg-black/70">
+    <div
+      className={cn(
+        "mx-auto flex min-h-dvh w-full max-w-3xl flex-col gap-4 pb-24",
+        shopIos.pageEnter
+      )}
+    >
+      <header className={cn("sticky top-0 z-10", shopIos.bar)}>
         <div className="flex items-center gap-1 px-2 py-2">
           <button
             type="button"
-            className="flex items-center rounded-full py-1 pl-1 pr-2 text-[#007AFF] transition active:opacity-60"
+            className={cn(
+              "flex items-center rounded-full py-1 pl-1 pr-2",
+              shopIos.link
+            )}
             aria-label="返回"
             onClick={() => navigate(path.to.shop)}
           >
@@ -670,16 +663,16 @@ export function MachineDetailPage({
             <span className="text-[17px]">机台</span>
           </button>
           <div className="min-w-0 flex-1 text-center">
-            <h1 className="truncate text-[17px] font-semibold tracking-tight text-black dark:text-white">
+            <h1 className="truncate text-[17px] font-semibold tracking-tight">
               {machine.name}
             </h1>
             {machine.subtitle ? (
-              <p className="truncate text-[12px] text-[#8E8E93]">
+              <p className={cn("truncate text-[12px]", shopIos.muted)}>
                 {machine.subtitle}
               </p>
             ) : null}
           </div>
-          <div className="w-[76px] shrink-0 flex justify-end pr-2">
+          <div className="flex w-[76px] shrink-0 justify-end pr-2">
             <MachineStatusChip status={machine.status} />
           </div>
         </div>
@@ -708,9 +701,13 @@ export function MachineDetailPage({
                 type="button"
                 disabled={busy}
                 onClick={() => setReportKind("break")}
-                className="flex flex-col items-center gap-1.5 rounded-2xl bg-white px-2 py-4 shadow-[0_1px_3px_rgba(0,0,0,0.06)] transition active:scale-[0.97] active:opacity-80 disabled:opacity-50 dark:bg-[#1C1C1E]"
+                className={cn(
+                  "flex flex-col items-center gap-1.5 px-2 py-4 disabled:opacity-50",
+                  shopIos.card,
+                  shopIos.press
+                )}
               >
-                <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-sky-500 to-blue-600 text-white">
+                <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-[color:var(--shop-break)] text-white">
                   <LuCoffee className="h-5 w-5" />
                 </span>
                 <span className="text-xs font-medium">休息</span>
@@ -719,9 +716,13 @@ export function MachineDetailPage({
                 type="button"
                 disabled={busy}
                 onClick={() => setReportKind("planned")}
-                className="flex flex-col items-center gap-1.5 rounded-2xl bg-white px-2 py-4 shadow-[0_1px_3px_rgba(0,0,0,0.06)] transition active:scale-[0.97] active:opacity-80 disabled:opacity-50 dark:bg-[#1C1C1E]"
+                className={cn(
+                  "flex flex-col items-center gap-1.5 px-2 py-4 disabled:opacity-50",
+                  shopIos.card,
+                  shopIos.press
+                )}
               >
-                <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-amber-500 to-orange-500 text-white">
+                <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-[color:var(--shop-warn)] text-white">
                   <LuCalendarClock className="h-5 w-5" />
                 </span>
                 <span className="text-xs font-medium">计划停机</span>
@@ -730,9 +731,13 @@ export function MachineDetailPage({
                 type="button"
                 disabled={busy}
                 onClick={() => setReportKind("fault")}
-                className="flex flex-col items-center gap-1.5 rounded-2xl bg-white px-2 py-4 shadow-[0_1px_3px_rgba(0,0,0,0.06)] transition active:scale-[0.97] active:opacity-80 disabled:opacity-50 dark:bg-[#1C1C1E]"
+                className={cn(
+                  "flex flex-col items-center gap-1.5 px-2 py-4 disabled:opacity-50",
+                  shopIos.card,
+                  shopIos.press
+                )}
               >
-                <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-red-500 to-rose-600 text-white">
+                <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-[color:var(--shop-down)] text-white">
                   <LuTriangleAlert className="h-5 w-5" />
                 </span>
                 <span className="text-xs font-medium">故障报修</span>
@@ -781,11 +786,11 @@ export function MachineDetailPage({
           </section>
         ) : null}
 
-        <section className="rounded-2xl bg-white px-4 py-3 shadow-[0_1px_3px_rgba(0,0,0,0.06)] dark:bg-[#1C1C1E]">
+        <section className={cn(shopIos.card, "px-4 py-3")}>
           <SectionTitle icon={<LuTrendingUp className="h-4 w-4" />}>
             今日产量
           </SectionTitle>
-          <p className="mt-2 text-sm text-muted-foreground">
+          <p className={cn("mt-2 text-sm", shopIos.muted)}>
             后续版本上线，敬请期待
           </p>
         </section>
@@ -795,7 +800,13 @@ export function MachineDetailPage({
             维修历史
           </SectionTitle>
           {history.length === 0 ? (
-            <p className="mt-2 rounded-2xl border border-dashed border-border px-4 py-6 text-center text-sm text-muted-foreground">
+            <p
+              className={cn(
+                shopIos.card,
+                "mt-2 px-4 py-6 text-center text-sm",
+                shopIos.muted
+              )}
+            >
               暂无历史维修记录
             </p>
           ) : (
@@ -810,10 +821,7 @@ export function MachineDetailPage({
                         ? "故障维修"
                         : item.shopKind;
                 return (
-                  <li
-                    key={item.id}
-                    className="rounded-2xl bg-white px-4 py-3 shadow-[0_1px_3px_rgba(0,0,0,0.06)] dark:bg-[#1C1C1E]"
-                  >
+                  <li key={item.id} className={cn(shopIos.card, "px-4 py-3")}>
                     <div className="flex items-center justify-between gap-2">
                       <span className="text-sm font-semibold">
                         {item.note?.trim() || kindLabel}
@@ -826,7 +834,7 @@ export function MachineDetailPage({
                             : item.status}
                       </Status>
                     </div>
-                    <p className="mt-1 text-xs text-muted-foreground">
+                    <p className={cn("mt-1 text-xs", shopIos.muted)}>
                       {[
                         item.note?.trim() ? kindLabel : null,
                         item.assigneeName ?? "未分配"

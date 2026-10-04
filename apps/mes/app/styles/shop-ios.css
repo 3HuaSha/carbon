@@ -1,0 +1,131 @@
+/**
+ * MES `/shop` PWA — iOS-inspired tokens + cheap motion.
+ * Opaque surfaces only (no backdrop-filter). Transforms/opacity only.
+ * Scoped under `.shop-ios` so the rest of MES is untouched.
+ */
+
+.shop-ios {
+  --shop-bg: #f2f2f7;
+  --shop-card: #ffffff;
+  --shop-track: #e3e3e8;
+  --shop-ink: #000000;
+  --shop-muted: #8e8e93;
+  --shop-hairline: rgb(0 0 0 / 0.08);
+  --shop-link: #007aff;
+  --shop-run: #34c759;
+  --shop-down: #ff3b30;
+  --shop-break: #007aff;
+  --shop-idle: #8e8e93;
+  --shop-warn: #ff9500;
+  --shop-shadow: 0 1px 2px rgb(0 0 0 / 0.06);
+  --shop-selected-shadow: 0 1px 3px rgb(0 0 0 / 0.1);
+
+  background: var(--shop-bg);
+  color: var(--shop-ink);
+  -webkit-font-smoothing: antialiased;
+  font-family:
+    -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", system-ui,
+    sans-serif;
+}
+
+.dark .shop-ios {
+  --shop-bg: #000000;
+  --shop-card: #1c1c1e;
+  --shop-track: #1c1c1e;
+  --shop-ink: #ffffff;
+  --shop-muted: #98989d;
+  --shop-hairline: rgb(255 255 255 / 0.1);
+  --shop-shadow: 0 1px 2px rgb(0 0 0 / 0.35);
+  --shop-selected-shadow: 0 1px 3px rgb(0 0 0 / 0.45);
+}
+
+.shop-ios-bar {
+  background: var(--shop-bg);
+  border-bottom: 1px solid var(--shop-hairline);
+}
+
+.shop-ios-card {
+  background: var(--shop-card);
+  border-radius: 1rem;
+  box-shadow: var(--shop-shadow);
+}
+
+.shop-ios-inset {
+  background: var(--shop-card);
+  border-radius: 1rem;
+  box-shadow: var(--shop-shadow);
+  overflow: hidden;
+}
+
+.shop-ios-segment {
+  display: flex;
+  border-radius: 10px;
+  background: var(--shop-track);
+  padding: 2px;
+}
+
+.shop-ios-segment-item {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.375rem;
+  border-radius: 0.5rem;
+  padding: 0.375rem 0.625rem;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--shop-muted);
+  transition:
+    background-color 120ms ease-out,
+    color 120ms ease-out,
+    box-shadow 120ms ease-out,
+    transform 120ms ease-out,
+    opacity 120ms ease-out;
+}
+
+.shop-ios-segment-item[aria-current="page"],
+.shop-ios-segment-item[aria-selected="true"] {
+  background: var(--shop-card);
+  color: var(--shop-ink);
+  font-weight: 600;
+  box-shadow: var(--shop-selected-shadow);
+}
+
+.shop-ios-press {
+  transition:
+    transform 120ms ease-out,
+    opacity 120ms ease-out;
+}
+
+.shop-ios-press:active {
+  transform: scale(0.96);
+  opacity: 0.85;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .shop-ios-press,
+  .shop-ios-segment-item,
+  .shop-ios-page-enter {
+    transition: none !important;
+    animation: none !important;
+  }
+
+  .shop-ios-press:active {
+    transform: none;
+    opacity: 0.85;
+  }
+}
+
+/* One-shot page enter — opacity only, ~180ms, no layout thrash */
+@keyframes shop-ios-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.shop-ios-page-enter {
+  animation: shop-ios-fade-in 180ms ease-out both;
+}
