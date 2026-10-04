@@ -9,8 +9,8 @@ import { shopIos } from "./shopIos";
 
 /**
  * Floor-map tile — status-filled card, exactly three lines.
- * Fill color = 运行 green / 停机 red / 休息 blue / 空闲 slate (#48484A);
- * white ink for glanceable contrast. Idle must never paint as white/card.
+ * Fill: 运行 green / 停机 red / 休息 blue / 空闲 white + dark ink.
+ * Colored fills use white ink; idle never forces `text-white` (white-on-white).
  * No continuous animations (ping/pulse) — 30+ tiles must stay cheap to paint.
  */
 const STATUS: Record<ShopMachineStatus, { label: string; name: string }> = {
@@ -27,6 +27,9 @@ type MachineTileProps = {
 
 export function MachineTile({ machine, onSelect }: MachineTileProps) {
   const meta = STATUS[machine.status];
+  const isIdle = machine.status === "idle";
+  const ink = isIdle ? "text-black" : "text-white";
+  const statusDot = isIdle ? "bg-black/70" : "bg-white/90";
   const jobId =
     machine.currentJobReadableId ?? machine.currentWork?.jobReadableId ?? null;
   const primary = primaryOpenDispatch(machine.openDispatches);
@@ -57,12 +60,22 @@ export function MachineTile({ machine, onSelect }: MachineTileProps) {
       ) : null}
 
       <div className="flex min-w-0 items-center justify-between gap-1">
-        <span className="truncate text-[13px] font-semibold leading-tight tracking-tight text-white">
+        <span
+          className={cn(
+            "truncate text-[13px] font-semibold leading-tight tracking-tight",
+            ink
+          )}
+        >
           {machine.name}
         </span>
         <span className="flex shrink-0 items-center gap-1">
-          <span className="inline-flex h-1.5 w-1.5 rounded-full bg-white/90" />
-          <span className="text-[10px] font-semibold leading-tight text-white">
+          <span className={cn("inline-flex h-1.5 w-1.5 rounded-full", statusDot)} />
+          <span
+            className={cn(
+              "text-[10px] font-semibold leading-tight",
+              ink
+            )}
+          >
             {meta.label}
           </span>
         </span>
@@ -74,14 +87,18 @@ export function MachineTile({ machine, onSelect }: MachineTileProps) {
           shopIos.fillMuted
         )}
       >
-        {jobId ? <span className="font-medium text-white">{jobId}</span> : "—"}
+        {jobId ? (
+          <span className={cn("font-medium", ink)}>{jobId}</span>
+        ) : (
+          "—"
+        )}
       </div>
 
       <div
         className={cn(
           "min-w-0 truncate text-[10px] leading-tight",
           personLine.tone === "unassigned"
-            ? "font-semibold text-white"
+            ? cn("font-semibold", ink)
             : personLine.tone === "empty"
               ? shopIos.fillFaint
               : shopIos.fillMuted

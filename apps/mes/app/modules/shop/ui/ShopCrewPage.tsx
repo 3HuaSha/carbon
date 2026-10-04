@@ -29,7 +29,8 @@ const CREW_TITLE: Record<ShopCrewKind, () => ReactNode> = {
 function taskInlineLabel(task: ShopCrewTask): string {
   const machineName = task.workCenterName?.trim() || "—";
   const note = task.note?.trim();
-  return note ? `${machineName} · ${note}` : machineName;
+  // One truncated line: `T1 · T2（note）` — note sticks to its machine.
+  return note ? `${machineName}（${note}）` : machineName;
 }
 
 function MemberRow({

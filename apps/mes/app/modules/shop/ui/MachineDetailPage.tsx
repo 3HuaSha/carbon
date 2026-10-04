@@ -696,22 +696,7 @@ export function MachineDetailPage({
             <SectionTitle icon={<LuWrench className="h-4 w-4" />}>
               快捷操作
             </SectionTitle>
-            <div className="mt-2.5 grid grid-cols-3 gap-2.5">
-              <button
-                type="button"
-                disabled={busy}
-                onClick={() => setReportKind("break")}
-                className={cn(
-                  "flex flex-col items-center gap-1.5 px-2 py-4 disabled:opacity-50",
-                  shopIos.card,
-                  shopIos.press
-                )}
-              >
-                <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-[color:var(--shop-break)] text-white">
-                  <LuCoffee className="h-5 w-5" />
-                </span>
-                <span className="text-xs font-medium">休息</span>
-              </button>
+            <div className="mt-2.5 grid grid-cols-2 gap-2.5">
               <button
                 type="button"
                 disabled={busy}

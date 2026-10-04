@@ -72,13 +72,14 @@
 }
 
 .shop-ios-fill-idle {
+  /* White fill + dark ink always (ignore dark-mode --shop-ink = white). */
   background-color: var(--shop-idle-fill);
-  color: var(--shop-ink);
+  color: #000000;
   border: 1px solid var(--shop-hairline);
 }
 
 .shop-ios-fill-idle .shop-ios-fill-muted {
-  color: var(--shop-muted);
+  color: #636366;
 }
 
 .shop-ios-fill-idle .shop-ios-fill-faint {
