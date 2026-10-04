@@ -1,6 +1,6 @@
 type ShellUserRead = {
   data: unknown;
-  error: { message?: string } | null;
+  error: { message?: string; status?: number } | null;
 };
 
 export type ShellUserReadGate = "serve" | "unavailable" | "logout";
@@ -38,7 +38,10 @@ export function isAuthTransportError(
 }
 
 export function shellUserReadGate(result: ShellUserRead): ShellUserReadGate {
-  if (isShellUserReadTimeout(result.error)) return "unavailable";
+  // Match verifyAuthSession: any GoTrue/PostgREST transport blip (timeout,
+  // fetch failed, 502/503/504…) must keep the session. Only a missing /
+  // inactive user row (or a non-transport API error) logs out.
+  if (isAuthTransportError(result.error)) return "unavailable";
   if (result.error || result.data == null) return "logout";
   return "serve";
 }

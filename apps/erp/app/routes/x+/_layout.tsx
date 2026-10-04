@@ -217,12 +217,14 @@ export async function loader({ request }: LoaderFunctionArgs) {
   // One attempt already ran out the 25s cap. A timeout is not a missing user —
   // destroying the session here is what sent people to /login?reason=user-error.
   if (shellUserReadGate(userResult) === "unavailable") {
-    log.warn("Shell user read timed out; keeping the session", {
+    log.warn("Shell user read unavailable; keeping the session", {
       userId,
-      companyId
+      companyId,
+      userError: userResult.error?.message ?? null
     });
     throw new Response("User profile is temporarily unavailable", {
-      status: 503
+      status: 503,
+      headers: { "Retry-After": "5" }
     });
   }
 
@@ -234,12 +236,14 @@ export async function loader({ request }: LoaderFunctionArgs) {
   if (user.error || !user.data) {
     const fallback = await getUser(getCarbonServiceRoleSingleAttempt(), userId);
     if (shellUserReadGate(fallback) === "unavailable") {
-      log.warn("Shell user read timed out; keeping the session", {
+      log.warn("Shell user read unavailable; keeping the session", {
         userId,
-        companyId
+        companyId,
+        userError: fallback.error?.message ?? null
       });
       throw new Response("User profile is temporarily unavailable", {
-        status: 503
+        status: 503,
+        headers: { "Retry-After": "5" }
       });
     }
     if (fallback.data) {

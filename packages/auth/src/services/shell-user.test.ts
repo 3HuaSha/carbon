@@ -25,6 +25,18 @@ describe("shellUserReadGate", () => {
     );
   });
 
+  it("does not log out on non-timeout transport errors", () => {
+    expect(
+      shellUserReadGate({ data: null, error: { message: "fetch failed" } })
+    ).toBe("unavailable");
+    expect(
+      shellUserReadGate({
+        data: null,
+        error: { message: "Bad gateway", status: 502 }
+      })
+    ).toBe("unavailable");
+  });
+
   it("logs out when the user row is missing or inactive", () => {
     expect(shellUserReadGate({ data: null, error: missingOrInactive })).toBe(
       "logout"
