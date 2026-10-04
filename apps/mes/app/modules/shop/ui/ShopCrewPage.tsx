@@ -2,19 +2,17 @@
 // Carbon (github.com/crbnos/carbon). Modified or adapted versions of this file,
 // including ports, remain AGPLv3; serving them over a network requires releasing their source.
 
-import { cn, Status } from "@carbon/react";
+import { cn } from "@carbon/react";
 import { Trans, useLingui } from "@lingui/react/macro";
 import type { ReactNode } from "react";
 import { useNavigate } from "react-router";
 import Avatar from "~/components/Avatar";
-import { useDateFormatter } from "~/hooks/useDateFormatter";
 import { path } from "~/utils/path";
 import type {
   ShopCrewBoard,
   ShopCrewKind,
   ShopCrewMember,
-  ShopCrewTask,
-  ShopDispatchKind
+  ShopCrewTask
 } from "../shop.types";
 import { ShopTabNav } from "./ShopTabNav";
 import { shopIos } from "./shopIos";
@@ -28,146 +26,51 @@ const CREW_TITLE: Record<ShopCrewKind, () => ReactNode> = {
   mold: () => <Trans>Mold shop</Trans>
 };
 
-function KindLabel({ kind }: { kind: ShopDispatchKind }) {
-  switch (kind) {
-    case "fault":
-      return <Trans>Fault</Trans>;
-    case "planned":
-      return <Trans>Planned</Trans>;
-    case "break":
-      return <Trans>Break</Trans>;
-  }
-}
-
-function StatusLabel({ status }: { status: string | null }) {
-  switch (status) {
-    case "In Progress":
-      return (
-        <Status color="red" disableTooltip>
-          <Trans>In Progress</Trans>
-        </Status>
-      );
-    case "Assigned":
-      return (
-        <Status color="orange" disableTooltip>
-          <Trans>Assigned</Trans>
-        </Status>
-      );
-    case "Open":
-      return (
-        <Status color="yellow" disableTooltip>
-          <Trans>Open</Trans>
-        </Status>
-      );
-    default:
-      return status ? (
-        <Status color="gray" disableTooltip>
-          {status}
-        </Status>
-      ) : null;
-  }
-}
-
-function TaskRow({ task }: { task: ShopCrewTask }) {
-  const navigate = useNavigate();
-  const { formatTimeAgo } = useDateFormatter();
+function taskInlineLabel(task: ShopCrewTask): string {
   const machineName = task.workCenterName?.trim() || "—";
-  const note = task.note?.trim() || null;
-
-  return (
-    <button
-      type="button"
-      onClick={() => {
-        if (task.workCenterId) {
-          navigate(path.to.shopMachine(task.workCenterId));
-        }
-      }}
-      disabled={!task.workCenterId}
-      className={cn(
-        "flex w-full flex-col gap-1 px-3 py-2.5 text-left",
-        "border-t border-[color:var(--shop-hairline)]",
-        task.workCenterId && shopIos.press
-      )}
-    >
-      <div className="flex items-start justify-between gap-2">
-        <div className="min-w-0">
-          <div className="truncate text-[15px] font-semibold">
-            {machineName}
-          </div>
-          <div
-            className={cn(
-              "mt-0.5 flex flex-wrap items-center gap-x-2 gap-y-0.5 text-[12px]",
-              shopIos.muted
-            )}
-          >
-            <span>
-              <KindLabel kind={task.shopKind} />
-            </span>
-            {task.createdAt ? (
-              <span className="tabular-nums">
-                {formatTimeAgo(task.createdAt)}
-              </span>
-            ) : null}
-          </div>
-        </div>
-        <StatusLabel status={task.status} />
-      </div>
-      {note ? (
-        <p
-          className={cn("line-clamp-2 text-[13px] text-pretty", shopIos.muted)}
-        >
-          {note}
-        </p>
-      ) : null}
-    </button>
-  );
+  const note = task.note?.trim();
+  return note ? `${machineName} · ${note}` : machineName;
 }
 
-function MemberCard({ member }: { member: ShopCrewMember }) {
+function MemberRow({
+  member,
+  showHairline
+}: {
+  member: ShopCrewMember;
+  showHairline: boolean;
+}) {
+  const navigate = useNavigate();
   const idle = member.tasks.length === 0;
+  const primaryTask = member.tasks[0];
+  const canOpen = Boolean(primaryTask?.workCenterId);
+  const tasksLabel = member.tasks.map(taskInlineLabel).join(" · ");
 
   return (
-    <section className={shopIos.inset}>
-      <div className="flex items-center gap-3 px-3 py-3">
-        <Avatar name={member.name} path={member.avatarUrl} size="md" />
+    <li className={cn(showHairline && shopIos.hairlineTop)}>
+      <button
+        type="button"
+        onClick={() => {
+          if (primaryTask?.workCenterId) {
+            navigate(path.to.shopMachine(primaryTask.workCenterId));
+          }
+        }}
+        disabled={!canOpen}
+        className={cn(
+          "flex w-full items-center gap-3 px-3 py-2.5 text-left",
+          canOpen && shopIos.press
+        )}
+      >
+        <Avatar name={member.name} path={member.avatarUrl} size="sm" />
         <div className="min-w-0 flex-1">
-          <div className="truncate text-[16px] font-semibold">
+          <div className="truncate text-[15px] font-semibold leading-tight">
             {member.name}
           </div>
-          <div className={cn("text-[13px]", shopIos.muted)}>
-            {idle ? (
-              <Trans>Idle</Trans>
-            ) : (
-              <Trans>{member.tasks.length} open tasks</Trans>
-            )}
-            {member.employeeTypeName ? (
-              <span>
-                {" · "}
-                {member.employeeTypeName}
-              </span>
-            ) : null}
+          <div className={cn("mt-0.5 truncate text-[13px]", shopIos.muted)}>
+            {idle ? <Trans>Idle</Trans> : tasksLabel}
           </div>
         </div>
-        {idle ? (
-          <span
-            className={cn(
-              "shrink-0 rounded-md bg-[color:var(--shop-track)] px-2 py-1 text-[12px]",
-              shopIos.muted
-            )}
-          >
-            <Trans>Idle</Trans>
-          </span>
-        ) : (
-          <span className="shrink-0 rounded-md bg-[color:var(--shop-warn)]/15 px-2 py-1 text-[12px] font-semibold tabular-nums text-[color:var(--shop-warn)]">
-            {member.tasks.length}
-          </span>
-        )}
-      </div>
-
-      {member.tasks.length > 0
-        ? member.tasks.map((task) => <TaskRow key={task.id} task={task} />)
-        : null}
-    </section>
+      </button>
+    </li>
   );
 }
 
@@ -197,7 +100,7 @@ export function ShopCrewPage({ board }: ShopCrewPageProps) {
         <ShopTabNav active={tab} />
       </header>
 
-      <div className="flex-1 space-y-3 px-4 py-4">
+      <div className="flex-1 px-4 py-4">
         {board.matchedTypeNames.length === 0 ? (
           <div className={cn(shopIos.inset, "px-4 py-10 text-center")}>
             <h2 className="text-[15px] font-semibold">
@@ -233,9 +136,15 @@ export function ShopCrewPage({ board }: ShopCrewPageProps) {
             </p>
           </div>
         ) : (
-          board.members.map((member) => (
-            <MemberCard key={member.id} member={member} />
-          ))
+          <ul className={shopIos.inset}>
+            {board.members.map((member, index) => (
+              <MemberRow
+                key={member.id}
+                member={member}
+                showHairline={index > 0}
+              />
+            ))}
+          </ul>
         )}
       </div>
     </div>
