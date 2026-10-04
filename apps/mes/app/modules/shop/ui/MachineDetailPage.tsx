@@ -41,7 +41,10 @@ import type {
   ShopPerson
 } from "../shop.types";
 import { primaryOpenDispatch } from "../shop.utils";
-import { GroupedAssignPicker } from "./GroupedAssignPicker";
+import {
+  type AssignSelection,
+  GroupedAssignPicker
+} from "./GroupedAssignPicker";
 import { ShopDispatchMedia } from "./ShopDispatchMedia";
 
 type MachineDetailPageProps = {
@@ -239,11 +242,13 @@ function ReportForm({
   onSubmit: (args: {
     note: string;
     assigneeId?: string;
+    notifyUserIds?: string[];
     files: File[];
   }) => void;
 }) {
   const [note, setNote] = useState("");
-  const [assigneeId, setAssigneeId] = useState<string | undefined>();
+  const [assignSelection, setAssignSelection] =
+    useState<AssignSelection | null>(null);
   const [files, setFiles] = useState<File[]>([]);
   const noteRequired = kind === "fault";
   const mediaRecommended = kind === "fault" || kind === "planned";
@@ -310,15 +315,13 @@ function ReportForm({
         {kind !== "break" ? (
           <div className="mt-3">
             <p className="mb-1.5 text-xs text-muted-foreground">
-              指派人员（可选）— 主管 / 模房 / 维修
+              指派人员（可选）— 主管 / PE / 模房 / 维修 · 主管默认全选
             </p>
             <GroupedAssignPicker
               people={people}
               busy={busy}
               requireConfirm={false}
-              selectedId={assigneeId}
-              onSelectedChange={setAssigneeId}
-              onPick={(person) => setAssigneeId(person.id)}
+              onSelectionChange={setAssignSelection}
             />
           </div>
         ) : null}
@@ -332,7 +335,8 @@ function ReportForm({
             onClick={() =>
               onSubmit({
                 note: note.trim(),
-                assigneeId,
+                assigneeId: assignSelection?.assigneeId,
+                notifyUserIds: assignSelection?.notifyUserIds,
                 files
               })
             }
@@ -376,7 +380,7 @@ function DispatchActions({
   onAction: (
     action: ShopMaintenanceAction,
     dispatch: ShopOpenDispatch,
-    assigneeId?: string
+    opts?: { assigneeId?: string; notifyUserIds?: string[] }
   ) => void;
   onUploaded: () => void;
 }) {
@@ -387,9 +391,7 @@ function DispatchActions({
     (dispatch.shopKind === "fault" || dispatch.shopKind === "planned") &&
     (dispatch.status === "Open" || dispatch.status === "Assigned") &&
     !dispatch.isWorking;
-  const showAssignToMe =
-    canAssignPerson && (!dispatch.assignee || !assignedToMe);
-  // No Start/accept workflow — Complete is available on any open fault ticket.
+  // No Start/accept / 我来接单 — assign only via the four-column picker.
   const showEnd = dispatch.shopKind === "fault" && dispatch.isWorking;
   const showComplete =
     dispatch.shopKind === "fault" &&
@@ -510,17 +512,6 @@ function DispatchActions({
             暂停
           </Button>
         ) : null}
-        {showAssignToMe ? (
-          <Button
-            type="button"
-            size="sm"
-            variant="secondary"
-            isDisabled={busy}
-            onClick={() => onAction("Assign", dispatch)}
-          >
-            我来接单
-          </Button>
-        ) : null}
       </div>
 
       {canAssignPerson ? (
@@ -530,7 +521,12 @@ function DispatchActions({
             busy={busy}
             requireConfirm
             confirmLabel="确认指派"
-            onPick={(person) => onAction("Assign", dispatch, person.id)}
+            onSubmit={(selection) =>
+              onAction("Assign", dispatch, {
+                assigneeId: selection.assigneeId,
+                notifyUserIds: selection.notifyUserIds
+              })
+            }
           />
         </div>
       ) : null}
@@ -622,6 +618,7 @@ export function MachineDetailPage({
       dispatchId?: string;
       workCenterId?: string;
       assigneeId?: string;
+      notifyUserIds?: string[];
       note?: string;
     } = {}
   ) => {
@@ -630,6 +627,9 @@ export function MachineDetailPage({
     if (opts.dispatchId) body.set("dispatchId", opts.dispatchId);
     if (opts.workCenterId) body.set("workCenterId", opts.workCenterId);
     if (opts.assigneeId) body.set("assigneeId", opts.assigneeId);
+    if (opts.notifyUserIds && opts.notifyUserIds.length > 0) {
+      body.set("notifyUserIds", opts.notifyUserIds.join(","));
+    }
     if (opts.note) body.set("note", opts.note);
     fetcher.submit(body, { method: "post" });
   };
@@ -637,18 +637,20 @@ export function MachineDetailPage({
   const onAction = (
     action: ShopMaintenanceAction,
     dispatch: ShopOpenDispatch,
-    assigneeId?: string
+    opts?: { assigneeId?: string; notifyUserIds?: string[] }
   ) => {
     submit(action, {
       dispatchId: dispatch.id,
       workCenterId: dispatch.workCenterId ?? machine.id,
-      assigneeId
+      assigneeId: opts?.assigneeId,
+      notifyUserIds: opts?.notifyUserIds
     });
   };
 
   const onReport = (args: {
     note: string;
     assigneeId?: string;
+    notifyUserIds?: string[];
     files: File[];
   }) => {
     if (!reportKind) return;
@@ -662,6 +664,7 @@ export function MachineDetailPage({
     submit(action, {
       workCenterId: machine.id,
       assigneeId: args.assigneeId,
+      notifyUserIds: args.notifyUserIds,
       note: args.note
     });
   };

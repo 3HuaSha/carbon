@@ -54,7 +54,13 @@ export async function sendMaintenanceAssignmentTelegram(
   args: {
     companyId: string;
     dispatchId: string;
+    /** Primary Carbon assignee (single `maintenanceDispatch.assignee`). */
     assigneeUserId: string;
+    /**
+     * Extra people selected in the shop assign UI. Each gets a private DM;
+     * the group message lists all notified names. Defaults to [assignee].
+     */
+    notifyUserIds?: string[];
     /** Assigner / actor user id (`from` on the notify event). */
     assignerUserId: string;
   }
@@ -101,29 +107,49 @@ export async function sendMaintenanceAssignmentTelegram(
             : "fault";
   const typeLabel = shopDispatchKindLabelZh(shopKind);
 
-  const [assigneeName, assignerName] = await Promise.all([
-    getEmployeeDisplayName(client, {
-      companyId: args.companyId,
-      userId: args.assigneeUserId
-    }),
-    getEmployeeDisplayName(client, {
-      companyId: args.companyId,
-      userId: args.assignerUserId
-    })
-  ]);
+  const notifyUserIds = Array.from(
+    new Set(
+      (args.notifyUserIds?.length
+        ? args.notifyUserIds
+        : [args.assigneeUserId]
+      ).filter(Boolean)
+    )
+  );
 
-  const assigneeDisplay = assigneeName ?? "未命名";
-  const assignerDisplay = assignerName ?? "未命名";
+  const nameIds = Array.from(
+    new Set([...notifyUserIds, args.assigneeUserId, args.assignerUserId])
+  );
+  const nameEntries = await Promise.all(
+    nameIds.map(async (userId) => {
+      const name = await getEmployeeDisplayName(client, {
+        companyId: args.companyId,
+        userId
+      });
+      return [userId, name] as const;
+    })
+  );
+  const nameById = new Map(nameEntries);
+
+  const assignerDisplay = nameById.get(args.assignerUserId) ?? "未命名";
   const replyMarkup = buildMaintenanceTelegramButtons(args.dispatchId);
 
-  const mapping = await getTelegramMappingForUser(client, {
-    companyId: args.companyId,
-    userId: args.assigneeUserId
-  });
-
   let dmSent = false;
+  let primaryMapped = false;
+  const notifiedDisplays: string[] = [];
 
-  if (mapping) {
+  for (const userId of notifyUserIds) {
+    const mapping = await getTelegramMappingForUser(client, {
+      companyId: args.companyId,
+      userId
+    });
+    if (userId === args.assigneeUserId && mapping) {
+      primaryMapped = true;
+    }
+    if (!mapping) continue;
+
+    const display = nameById.get(userId) ?? "未命名";
+    notifiedDisplays.push(display);
+
     try {
       await sendTelegramMessage({
         chatId: mapping.chatId,
@@ -139,16 +165,23 @@ export async function sendMaintenanceAssignmentTelegram(
       log.info("Telegram sync DM sent", {
         companyId: args.companyId,
         dispatchId: args.dispatchId,
-        chatId: mapping.chatId
+        chatId: mapping.chatId,
+        userId
       });
     } catch (err) {
       log.error("Telegram sync DM failed", {
         companyId: args.companyId,
         dispatchId: args.dispatchId,
+        userId,
         error: err instanceof Error ? err.message : String(err)
       });
     }
   }
+
+  const groupAssigneeDisplay =
+    notifiedDisplays.length > 0
+      ? notifiedDisplays.join("、")
+      : (nameById.get(args.assigneeUserId) ?? "未命名");
 
   const groupChatId =
     TELEGRAM_MAINTENANCE_GROUP_CHAT_ID?.trim() ||
@@ -162,7 +195,7 @@ export async function sendMaintenanceAssignmentTelegram(
         text: buildMaintenanceTelegramGroupText({
           workCenterName,
           typeLabel,
-          assigneeName: assigneeDisplay,
+          assigneeName: groupAssigneeDisplay,
           assignerName: assignerDisplay
         }),
         replyMarkup,
@@ -188,7 +221,7 @@ export async function sendMaintenanceAssignmentTelegram(
   }
 
   return {
-    telegramUnbound: !mapping,
+    telegramUnbound: !primaryMapped,
     dmSent,
     groupSent
   };

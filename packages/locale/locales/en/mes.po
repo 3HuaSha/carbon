@@ -212,9 +212,6 @@ msgstr "Assembly steps"
 msgid "Assign active employees to one of the matched employee types."
 msgstr "Assign active employees to one of the matched employee types."
 
-msgid "Assign to me"
-msgstr "Assign to me"
-
 msgid "Assigned"
 msgstr "Assigned"
 

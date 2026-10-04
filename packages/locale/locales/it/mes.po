@@ -212,9 +212,6 @@ msgstr "Passi di assemblaggio"
 msgid "Assign active employees to one of the matched employee types."
 msgstr ""
 
-msgid "Assign to me"
-msgstr "Assegna a me"
-
 msgid "Assigned"
 msgstr "Assegnato"
 

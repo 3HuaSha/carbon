@@ -3,70 +3,95 @@
 // including ports, remain AGPLv3; serving them over a network requires releasing their source.
 
 import { Button, cn } from "@carbon/react";
-import { useMemo, useState } from "react";
-import { LuX } from "react-icons/lu";
+import { useEffect, useMemo, useState } from "react";
+import { LuCheck, LuX } from "react-icons/lu";
 import Avatar from "~/components/Avatar";
 import type { ShopAssignGroup, ShopPerson } from "../shop.types";
 import { shopAssignGroups } from "../shop.types";
 import {
+  defaultSelectedAssignIds,
   groupPeopleByAssignGroup,
+  resolvePrimaryAssigneeId,
   SHOP_ASSIGN_GROUP_LABELS
 } from "../shop.utils";
+
+export type AssignSelection = {
+  /** Carbon `maintenanceDispatch.assignee` (single userId). */
+  assigneeId: string;
+  /** All selected people — primary + Telegram notify targets. */
+  notifyUserIds: string[];
+};
 
 type GroupedAssignPickerProps = {
   people: ShopPerson[];
   busy?: boolean;
-  /** When set, shows a confirm button; otherwise picking a person calls onPick immediately. */
+  /**
+   * When true, shows 确认指派 and calls onSubmit only on confirm.
+   * When false (report form), selection is optional and syncs via onSelectionChange.
+   */
   requireConfirm?: boolean;
   confirmLabel?: string;
-  selectedId?: string | null;
-  onSelectedChange?: (id: string | undefined) => void;
-  onPick: (person: ShopPerson) => void;
+  onSubmit?: (selection: AssignSelection) => void;
+  onSelectionChange?: (selection: AssignSelection | null) => void;
   onCancel?: () => void;
   className?: string;
 };
 
 /**
- * Three-group assign UI: 主管 / 模房 / 维修. People are filtered by
- * `employeeType.name` aliases; empty groups still render with a short hint.
+ * Four-column multi-select assign UI: 主管 / PE / 模房 / 维修.
+ * 主管 defaults to all selected; other columns toggle on tap.
+ * Schema is single-assignee → primary = first selected 主管 (else first overall);
+ * every selected person is still Telegram-notified.
  */
 export function GroupedAssignPicker({
   people,
   busy = false,
   requireConfirm = false,
   confirmLabel = "确认指派",
-  selectedId: controlledSelectedId,
-  onSelectedChange,
-  onPick,
+  onSubmit,
+  onSelectionChange,
   onCancel,
   className
 }: GroupedAssignPickerProps) {
-  const [internalSelectedId, setInternalSelectedId] = useState<
-    string | undefined
-  >();
-  const selectedId =
-    controlledSelectedId !== undefined
-      ? (controlledSelectedId ?? undefined)
-      : internalSelectedId;
-
-  const setSelectedId = (id: string | undefined) => {
-    if (controlledSelectedId === undefined) {
-      setInternalSelectedId(id);
-    }
-    onSelectedChange?.(id);
-  };
-
   const groups = useMemo(() => groupPeopleByAssignGroup(people), [people]);
-  const selectedPerson = people.find((p) => p.id === selectedId) ?? null;
+  const defaultSelectedKey = useMemo(
+    () => defaultSelectedAssignIds(people).join(","),
+    [people]
+  );
+  const [selectedIds, setSelectedIds] = useState<string[]>(() =>
+    defaultSelectedAssignIds(people)
+  );
 
-  const onPersonClick = (person: ShopPerson) => {
+  // Re-seed 主管 defaults when the supervisor roster changes (navigation / reload).
+  useEffect(() => {
+    setSelectedIds(defaultSelectedKey ? defaultSelectedKey.split(",") : []);
+  }, [defaultSelectedKey]);
+
+  const selectedSet = useMemo(() => new Set(selectedIds), [selectedIds]);
+
+  const selection = useMemo((): AssignSelection | null => {
+    if (selectedIds.length === 0) return null;
+    const assigneeId = resolvePrimaryAssigneeId(selectedIds, people);
+    if (!assigneeId) return null;
+    return { assigneeId, notifyUserIds: selectedIds };
+  }, [people, selectedIds]);
+
+  useEffect(() => {
+    onSelectionChange?.(selection);
+  }, [onSelectionChange, selection]);
+
+  const togglePerson = (personId: string) => {
     if (busy) return;
-    if (requireConfirm) {
-      setSelectedId(person.id);
-      return;
-    }
-    onPick(person);
+    setSelectedIds((prev) =>
+      prev.includes(personId)
+        ? prev.filter((id) => id !== personId)
+        : [...prev, personId]
+    );
   };
+
+  const selectedCount = selectedIds.length;
+  const primaryName =
+    people.find((p) => p.id === selection?.assigneeId)?.name ?? null;
 
   return (
     <div
@@ -91,106 +116,111 @@ export function GroupedAssignPicker({
         ) : null}
       </div>
 
-      <div className="flex flex-col gap-3 px-3 py-3">
+      <div className="grid grid-cols-4 gap-px border-b border-border bg-border">
         {shopAssignGroups.map((group) => (
-          <AssignGroupSection
+          <AssignColumn
             key={group}
             group={group}
             people={groups[group]}
-            selectedId={selectedId}
+            selectedIds={selectedSet}
             busy={busy}
-            onPick={onPersonClick}
+            onToggle={togglePerson}
           />
         ))}
       </div>
 
-      {requireConfirm ? (
-        <div className="flex items-center gap-2 border-t border-border px-3 py-2.5">
-          {selectedPerson ? (
-            <p className="min-w-0 flex-1 truncate text-xs text-muted-foreground">
-              已选：
-              <span className="font-medium text-foreground">
-                {selectedPerson.name}
-              </span>
-            </p>
-          ) : (
-            <p className="min-w-0 flex-1 text-xs text-muted-foreground">
-              请选择一位人员
-            </p>
-          )}
+      <div className="flex items-center gap-2 px-3 py-2.5">
+        {selectedCount > 0 ? (
+          <p className="min-w-0 flex-1 truncate text-xs text-muted-foreground">
+            已选 {selectedCount} 人
+            {primaryName ? (
+              <>
+                · 负责人{" "}
+                <span className="font-medium text-foreground">
+                  {primaryName}
+                </span>
+              </>
+            ) : null}
+          </p>
+        ) : (
+          <p className="min-w-0 flex-1 text-xs text-muted-foreground">
+            {requireConfirm ? "请选择至少一位人员" : "可不选；默认已选全部主管"}
+          </p>
+        )}
+        {requireConfirm ? (
           <Button
             type="button"
             size="sm"
             variant="primary"
-            isDisabled={busy || !selectedPerson}
+            isDisabled={busy || !selection}
             onClick={() => {
-              if (selectedPerson) onPick(selectedPerson);
+              if (selection) onSubmit?.(selection);
             }}
           >
             {confirmLabel}
           </Button>
-        </div>
-      ) : null}
+        ) : null}
+      </div>
     </div>
   );
 }
 
-function AssignGroupSection({
+function AssignColumn({
   group,
   people,
-  selectedId,
+  selectedIds,
   busy,
-  onPick
+  onToggle
 }: {
   group: ShopAssignGroup;
   people: ShopPerson[];
-  selectedId: string | undefined;
+  selectedIds: Set<string>;
   busy: boolean;
-  onPick: (person: ShopPerson) => void;
+  onToggle: (id: string) => void;
 }) {
   return (
-    <div>
-      <p className="mb-1.5 text-sm font-semibold text-foreground">
+    <div className="flex min-h-[8rem] flex-col bg-card">
+      <p className="border-b border-border px-1.5 py-1.5 text-center text-xs font-semibold text-foreground">
         {SHOP_ASSIGN_GROUP_LABELS[group]}
-        <span className="ml-1.5 text-xs font-normal tabular-nums text-muted-foreground">
+        <span className="ml-0.5 tabular-nums text-muted-foreground">
           {people.length}
         </span>
       </p>
       {people.length === 0 ? (
-        <p className="rounded-lg bg-muted/40 px-3 py-2 text-xs text-muted-foreground">
-          暂无该类型人员
+        <p className="px-1.5 py-2 text-center text-[10px] leading-snug text-muted-foreground">
+          暂无
         </p>
       ) : (
-        <ul className="overflow-hidden rounded-lg border border-border">
+        <ul className="flex flex-1 flex-col">
           {people.map((person) => {
-            const selected = person.id === selectedId;
+            const selected = selectedIds.has(person.id);
             return (
-              <li
-                key={person.id}
-                className="border-b border-border last:border-b-0"
-              >
+              <li key={person.id}>
                 <button
                   type="button"
                   disabled={busy}
-                  onClick={() => onPick(person)}
+                  onClick={() => onToggle(person.id)}
+                  aria-pressed={selected}
                   className={cn(
-                    "flex w-full items-center gap-3 px-3 py-2.5 text-left hover:bg-muted/60 disabled:opacity-50",
+                    "flex w-full flex-col items-center gap-1 px-1 py-2 text-center hover:bg-muted/60 disabled:opacity-50",
                     selected && "bg-primary/10 hover:bg-primary/15"
                   )}
                 >
-                  <Avatar
-                    name={person.name}
-                    path={person.avatarUrl}
-                    size="sm"
-                  />
-                  <span className="min-w-0 flex-1 truncate text-sm font-medium">
+                  <span className="relative">
+                    <Avatar
+                      name={person.name}
+                      path={person.avatarUrl}
+                      size="sm"
+                    />
+                    {selected ? (
+                      <span className="absolute -right-1 -top-1 flex h-3.5 w-3.5 items-center justify-center rounded-full bg-primary text-primary-foreground">
+                        <LuCheck className="h-2.5 w-2.5" strokeWidth={3} />
+                      </span>
+                    ) : null}
+                  </span>
+                  <span className="line-clamp-2 w-full break-words text-[11px] font-medium leading-tight">
                     {person.name}
                   </span>
-                  {selected ? (
-                    <span className="shrink-0 text-xs font-medium text-primary">
-                      已选
-                    </span>
-                  ) : null}
                 </button>
               </li>
             );

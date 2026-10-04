@@ -212,9 +212,6 @@ msgstr "Etapas de montagem"
 msgid "Assign active employees to one of the matched employee types."
 msgstr ""
 
-msgid "Assign to me"
-msgstr "Atribuir a mim"
-
 msgid "Assigned"
 msgstr "Atribuído"
 

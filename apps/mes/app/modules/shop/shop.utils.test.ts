@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import type { ShopMachine, ShopPerson } from "./shop.types";
 import {
   countShopStatuses,
+  defaultSelectedAssignIds,
   deriveShopMachineStatus,
   detectShopStatusTransitions,
   filterShopMachines,
@@ -10,6 +11,7 @@ import {
   matchesShopAssignGroup,
   matchesShopCrewEmployeeType,
   parseShopDispatchContent,
+  resolvePrimaryAssigneeId,
   resolveShopAssignGroup,
   resolveShopDispatchKind,
   shopMachineSubtitle,
@@ -41,34 +43,70 @@ describe("matchesShopAssignGroup / resolveShopAssignGroup", () => {
     expect(matchesShopAssignGroup("机修", "supervisor")).toBe(false);
   });
 
-  it("resolves groups in display order 主管 → 模房 → 维修", () => {
+  it("matches PE aliases without colliding with other columns", () => {
+    expect(matchesShopAssignGroup("PE", "pe")).toBe(true);
+    expect(matchesShopAssignGroup("Pe", "pe")).toBe(true);
+    expect(matchesShopAssignGroup("工艺", "pe")).toBe(true);
+    expect(matchesShopAssignGroup("Process Engineer", "pe")).toBe(true);
+    expect(matchesShopAssignGroup("工艺工程师", "pe")).toBe(true);
+    expect(matchesShopAssignGroup("主管", "pe")).toBe(false);
+    expect(matchesShopAssignGroup("机修", "pe")).toBe(false);
+  });
+
+  it("resolves groups in display order 主管 → PE → 模房 → 维修", () => {
     expect(resolveShopAssignGroup("主管")).toBe("supervisor");
+    expect(resolveShopAssignGroup("PE")).toBe("pe");
+    expect(resolveShopAssignGroup("工艺员")).toBe("pe");
     expect(resolveShopAssignGroup("模房")).toBe("mold");
     expect(resolveShopAssignGroup("维修班")).toBe("repair");
     expect(resolveShopAssignGroup("Admin")).toBe(null);
   });
 });
 
-describe("groupPeopleByAssignGroup", () => {
-  it("buckets people and keeps empty groups", () => {
-    const person = (
-      overrides: Partial<ShopPerson> & Pick<ShopPerson, "id" | "name">
-    ): ShopPerson => ({
-      avatarUrl: null,
-      locationId: null,
-      employeeTypeName: null,
-      assignGroup: null,
-      ...overrides
-    });
+describe("groupPeopleByAssignGroup / primary assignee", () => {
+  const person = (
+    overrides: Partial<ShopPerson> & Pick<ShopPerson, "id" | "name">
+  ): ShopPerson => ({
+    avatarUrl: null,
+    locationId: null,
+    employeeTypeName: null,
+    assignGroup: null,
+    ...overrides
+  });
+
+  it("buckets people and keeps empty columns", () => {
     const people = [
       person({ id: "1", name: "A", assignGroup: "supervisor" }),
       person({ id: "2", name: "B", assignGroup: "repair" }),
-      person({ id: "3", name: "C", assignGroup: null })
+      person({ id: "3", name: "C", assignGroup: "pe" }),
+      person({ id: "4", name: "D", assignGroup: null })
     ];
     const groups = groupPeopleByAssignGroup(people);
     expect(groups.supervisor.map((p) => p.id)).toEqual(["1"]);
+    expect(groups.pe.map((p) => p.id)).toEqual(["3"]);
     expect(groups.mold).toEqual([]);
     expect(groups.repair.map((p) => p.id)).toEqual(["2"]);
+  });
+
+  it("defaults selection to every supervisor", () => {
+    const people = [
+      person({ id: "s1", name: "S1", assignGroup: "supervisor" }),
+      person({ id: "s2", name: "S2", assignGroup: "supervisor" }),
+      person({ id: "p1", name: "P1", assignGroup: "pe" })
+    ];
+    expect(defaultSelectedAssignIds(people)).toEqual(["s1", "s2"]);
+  });
+
+  it("picks primary = first selected 主管, else first overall column order", () => {
+    const people = [
+      person({ id: "s1", name: "S1", assignGroup: "supervisor" }),
+      person({ id: "s2", name: "S2", assignGroup: "supervisor" }),
+      person({ id: "p1", name: "P1", assignGroup: "pe" }),
+      person({ id: "r1", name: "R1", assignGroup: "repair" })
+    ];
+    expect(resolvePrimaryAssigneeId(["p1", "s2", "r1"], people)).toBe("s2");
+    expect(resolvePrimaryAssigneeId(["r1", "p1"], people)).toBe("p1");
+    expect(resolvePrimaryAssigneeId([], people)).toBe(null);
   });
 });
 

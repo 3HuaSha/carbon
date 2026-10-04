@@ -62,6 +62,10 @@ export async function action({ request }: ActionFunctionArgs) {
   const dispatchId = String(formData.get("dispatchId") ?? "") || null;
   const workCenterId = String(formData.get("workCenterId") ?? "") || null;
   const assigneeId = String(formData.get("assigneeId") ?? "") || null;
+  const notifyUserIds = String(formData.get("notifyUserIds") ?? "")
+    .split(",")
+    .map((id) => id.trim())
+    .filter(Boolean);
   const note = String(formData.get("note") ?? "") || null;
 
   if (!shopMaintenanceActions.includes(rawAction as ShopMaintenanceAction)) {
@@ -97,6 +101,7 @@ export async function action({ request }: ActionFunctionArgs) {
     dispatchId,
     workCenterId,
     assigneeId,
+    notifyUserIds,
     note,
     companyId,
     userId

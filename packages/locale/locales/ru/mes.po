@@ -212,9 +212,6 @@ msgstr "Шаги сборки"
 msgid "Assign active employees to one of the matched employee types."
 msgstr ""
 
-msgid "Assign to me"
-msgstr "Назначить мне"
-
 msgid "Assigned"
 msgstr "Назначенные"
 
