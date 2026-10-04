@@ -2,6 +2,7 @@ import type {
   ShopAlertKind,
   ShopAssignGroup,
   ShopCrewKind,
+  ShopDispatchComment,
   ShopDispatchKind,
   ShopMachine,
   ShopMachineStatus,
@@ -166,6 +167,36 @@ export function resolveShopDispatchKind(args: {
   // always set shopKind.
   if (args.shopKind === "break") return "break";
   return "fault";
+}
+
+/**
+ * Split dispatch note + comments for the machine detail UI.
+ *
+ * Reporting a fault stores the same text in `content.note` and as the first
+ * `maintenanceDispatchComment` (createdBy = reporter / session user). Show the
+ * problem as a headline only — never "Test User：停机原因". Follow-ups exclude
+ * that mirrored note row.
+ */
+export function presentShopDispatchProblem(args: {
+  note: string | null | undefined;
+  comments: ShopDispatchComment[];
+}): {
+  problemText: string | null;
+  followUpComments: ShopDispatchComment[];
+} {
+  const noteText = args.note?.trim() || null;
+  const firstComment = args.comments.find((c) => c.comment?.trim()) ?? null;
+  const problemText = noteText || firstComment?.comment?.trim() || null;
+
+  const followUpComments = args.comments.filter((c) => {
+    const text = c.comment?.trim();
+    if (!text) return false;
+    if (noteText && text === noteText) return false;
+    if (!noteText && firstComment && c.id === firstComment.id) return false;
+    return true;
+  });
+
+  return { problemText, followUpComments };
 }
 
 export function parseShopDispatchContent(content: unknown): {

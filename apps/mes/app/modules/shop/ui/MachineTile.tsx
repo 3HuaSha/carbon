@@ -57,14 +57,15 @@ export function MachineTile({ machine, onSelect }: MachineTileProps) {
     machine.currentJobReadableId ?? machine.currentWork?.jobReadableId ?? null;
   const primary = primaryOpenDispatch(machine.openDispatches);
   const assigneeName = primary?.assigneeName?.trim() || null;
-  const faultNote =
+  /** 停机原因 — never bound to the LuUser (assignee) row. */
+  const downtimeReason =
     machine.status === "down" ? primary?.note?.trim() || null : null;
 
   return (
     <button
       type="button"
       onClick={() => onSelect(machine)}
-      aria-label={`${machine.name} ${style.name}${jobId ? ` ${jobId}` : ""}${machine.justFixed ? " 刚修完" : ""}`}
+      aria-label={`${machine.name} ${style.name}${jobId ? ` ${jobId}` : ""}${downtimeReason ? ` ${downtimeReason}` : ""}${assigneeName ? ` ${assigneeName}` : ""}${machine.justFixed ? " 刚修完" : ""}`}
       className={cn(
         "group relative flex w-full flex-col gap-1 rounded-xl border p-2 text-left shadow-[0_1px_2px_rgba(0,0,0,0.04)]",
         "transition-all duration-150 active:scale-[0.96]",
@@ -121,16 +122,18 @@ export function MachineTile({ machine, onSelect }: MachineTileProps) {
         )}
       </div>
 
+      {downtimeReason ? (
+        <div className="min-w-0 truncate text-[10px] font-medium leading-tight text-red-700/90 dark:text-red-300/90">
+          {downtimeReason}
+        </div>
+      ) : null}
+
       <div className="flex min-w-0 items-center gap-1 text-[10px] leading-tight text-muted-foreground">
         <LuUser className="h-3 w-3 shrink-0 opacity-70" />
-        {faultNote ? (
-          <span className="truncate font-medium text-red-700/90 dark:text-red-300/90">
-            {faultNote}
-          </span>
-        ) : assigneeName ? (
+        {assigneeName ? (
           <span className="truncate">{assigneeName}</span>
         ) : machine.status === "down" ? (
-          <span className="text-red-600/80 dark:text-red-400/80">未指派</span>
+          <span className="text-red-600/80 dark:text-red-400/80">未分配</span>
         ) : (
           <span className="opacity-50">—</span>
         )}
