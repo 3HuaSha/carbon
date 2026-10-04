@@ -34,12 +34,16 @@ export const shopIos = {
     break: "text-[color:var(--shop-break)]",
     down: "text-[color:var(--shop-down)]"
   },
-  /** Opaque status fills for machine tiles (white ink). */
+  /**
+   * Opaque status fills for machine tiles (white ink).
+   * Tailwind `bg-*` mirrors CSS so a stale shop-ios.css (PWA SW) cannot leave
+   * idle tiles on transparent/white.
+   */
   statusFill: {
-    running: "shop-ios-fill-running",
-    idle: "shop-ios-fill-idle",
-    break: "shop-ios-fill-break",
-    down: "shop-ios-fill-down"
+    running: "shop-ios-fill-running bg-[color:var(--shop-run)]",
+    idle: "shop-ios-fill-idle !bg-[#48484A]",
+    break: "shop-ios-fill-break bg-[color:var(--shop-break)]",
+    down: "shop-ios-fill-down bg-[color:var(--shop-down)]"
   },
   fillMuted: "shop-ios-fill-muted",
   fillFaint: "shop-ios-fill-faint"

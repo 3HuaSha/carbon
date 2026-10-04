@@ -9,7 +9,8 @@ import { shopIos } from "./shopIos";
 
 /**
  * Floor-map tile — status-filled card, exactly three lines.
- * Fill color = 运行/停机/休息/空闲; white ink for glanceable contrast.
+ * Fill color = 运行 green / 停机 red / 休息 blue / 空闲 slate (#48484A);
+ * white ink for glanceable contrast. Idle must never paint as white/card.
  * No continuous animations (ping/pulse) — 30+ tiles must stay cheap to paint.
  */
 const STATUS: Record<ShopMachineStatus, { label: string; name: string }> = {

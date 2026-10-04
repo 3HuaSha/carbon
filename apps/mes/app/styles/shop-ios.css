@@ -15,7 +15,9 @@
   --shop-run: #34c759;
   --shop-down: #ff3b30;
   --shop-break: #007aff;
+  /* Dot/label language stays mid-gray; tile fill must read as slate, never white. */
   --shop-idle: #8e8e93;
+  --shop-idle-fill: #48484a;
   --shop-warn: #ff9500;
   --shop-shadow: 0 1px 2px rgb(0 0 0 / 0.06);
   --shop-selected-shadow: 0 1px 3px rgb(0 0 0 / 0.1);
@@ -61,19 +63,20 @@
 }
 
 .shop-ios-fill-running {
-  background: var(--shop-run);
+  background-color: var(--shop-run);
 }
 
+/* Slate fill + white ink — must not fall through to card white / transparent. */
 .shop-ios-fill-idle {
-  background: #636366;
+  background-color: var(--shop-idle-fill);
 }
 
 .shop-ios-fill-break {
-  background: var(--shop-break);
+  background-color: var(--shop-break);
 }
 
 .shop-ios-fill-down {
-  background: var(--shop-down);
+  background-color: var(--shop-down);
 }
 
 .shop-ios-fill-muted {
