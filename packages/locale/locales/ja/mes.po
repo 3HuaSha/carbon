@@ -215,9 +215,6 @@ msgstr "組立ステップ"
 msgid "Assign active employees to one of the matched employee types."
 msgstr ""
 
-msgid "Assign person"
-msgstr "担当者を割り当て"
-
 msgid "Assign to me"
 msgstr "自分に割り当て"
 
@@ -1149,9 +1146,6 @@ msgstr "オプションが見つかりません。"
 msgid "No options found."
 msgstr "オプションが見つかりません。"
 
-msgid "No people found"
-msgstr "該当する人がいません"
-
 msgid "No people on this crew"
 msgstr ""
 
@@ -1620,9 +1614,6 @@ msgstr "ジョブまたはアイテムIDで検索"
 
 msgid "Search operators..."
 msgstr "作業者を検索..."
-
-msgid "Search people…"
-msgstr "担当者を検索…"
 
 msgid "Search..."
 msgstr "検索..."

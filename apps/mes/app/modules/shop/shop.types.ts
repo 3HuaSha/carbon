@@ -81,12 +81,23 @@ export type ShopMachine = {
   openDispatches: ShopOpenDispatch[];
 };
 
+/**
+ * Assign picker groups on machine detail (fault / planned). Matched via
+ * `employeeType.name` aliases in `SHOP_ASSIGN_GROUP_ALIASES`.
+ */
+export const shopAssignGroups = ["supervisor", "mold", "repair"] as const;
+
+export type ShopAssignGroup = (typeof shopAssignGroups)[number];
+
 /** Employee row for the `/shop` assign-person picker. */
 export type ShopPerson = {
   id: string;
   name: string;
   avatarUrl: string | null;
   locationId: string | null;
+  employeeTypeName: string | null;
+  /** Which assign group this person falls into, if any. */
+  assignGroup: ShopAssignGroup | null;
 };
 
 export type ShopOverview = {

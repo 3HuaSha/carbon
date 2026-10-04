@@ -215,9 +215,6 @@ msgstr "असेंबली चरण"
 msgid "Assign active employees to one of the matched employee types."
 msgstr ""
 
-msgid "Assign person"
-msgstr "व्यक्ति असाइन करें"
-
 msgid "Assign to me"
 msgstr "मुझे असाइन करें"
 
@@ -1149,9 +1146,6 @@ msgstr "कोई विकल्प नहीं मिला।"
 msgid "No options found."
 msgstr "कोई विकल्प नहीं मिला।"
 
-msgid "No people found"
-msgstr "कोई व्यक्ति नहीं मिला"
-
 msgid "No people on this crew"
 msgstr ""
 
@@ -1620,9 +1614,6 @@ msgstr "जॉब या आइटम आईडी से खोजें"
 
 msgid "Search operators..."
 msgstr "ऑपरेटर खोजें..."
-
-msgid "Search people…"
-msgstr "लोग खोजें…"
 
 msgid "Search..."
 msgstr "खोजें..."

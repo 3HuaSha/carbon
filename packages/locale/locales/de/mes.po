@@ -215,9 +215,6 @@ msgstr "Montageschritte"
 msgid "Assign active employees to one of the matched employee types."
 msgstr ""
 
-msgid "Assign person"
-msgstr "Person zuweisen"
-
 msgid "Assign to me"
 msgstr "Mir zuweisen"
 
@@ -1149,9 +1146,6 @@ msgstr "Keine Option gefunden."
 msgid "No options found."
 msgstr "Keine Optionen gefunden."
 
-msgid "No people found"
-msgstr "Keine Personen gefunden"
-
 msgid "No people on this crew"
 msgstr ""
 
@@ -1620,9 +1614,6 @@ msgstr "Nach Job oder Artikel-ID suchen"
 
 msgid "Search operators..."
 msgstr "Werker suchen..."
-
-msgid "Search people…"
-msgstr "Personen suchen…"
 
 msgid "Search..."
 msgstr "Suchen..."

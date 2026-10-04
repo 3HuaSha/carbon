@@ -9,11 +9,8 @@ import {
   cn,
   Status
 } from "@carbon/react";
-import { Trans, useLingui } from "@lingui/react/macro";
-import { useEffect, useMemo, useState } from "react";
-import { LuSearch, LuX } from "react-icons/lu";
+import { Trans } from "@lingui/react/macro";
 import { type FetcherWithComponents, Link } from "react-router";
-import Avatar from "~/components/Avatar";
 import { path } from "~/utils/path";
 import type {
   ShopCurrentWork,
@@ -22,6 +19,7 @@ import type {
   ShopOpenDispatch,
   ShopPerson
 } from "../shop.types";
+import { GroupedAssignPicker } from "./GroupedAssignPicker";
 
 type MachineDetailSheetProps = {
   machine: ShopMachine | null;
@@ -150,81 +148,11 @@ function WorkOrderSection({ work }: { work: ShopCurrentWork | null }) {
   );
 }
 
-function PersonPicker({
-  people,
-  busy,
-  onPick,
-  onCancel
-}: {
-  people: ShopPerson[];
-  busy: boolean;
-  onPick: (person: ShopPerson) => void;
-  onCancel: () => void;
-}) {
-  const { t } = useLingui();
-  const [search, setSearch] = useState("");
-
-  const filtered = useMemo(() => {
-    const q = search.trim().toLowerCase();
-    if (!q) return people;
-    return people.filter((p) => p.name.toLowerCase().includes(q));
-  }, [people, search]);
-
-  return (
-    <div className="mt-3 rounded-lg border border-border">
-      <div className="flex items-center gap-2 border-b border-border px-3 py-2">
-        <LuSearch className="h-4 w-4 shrink-0 text-muted-foreground" />
-        <input
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          placeholder={t`Search people…`}
-          className="h-9 flex-1 bg-transparent text-sm outline-none placeholder:text-muted-foreground"
-          autoFocus
-        />
-        <button
-          type="button"
-          aria-label={t`Cancel`}
-          className="rounded-md p-1.5 text-muted-foreground hover:bg-muted hover:text-foreground"
-          onClick={onCancel}
-        >
-          <LuX className="h-4 w-4" />
-        </button>
-      </div>
-      <ul className="max-h-56 overflow-y-auto">
-        {filtered.length === 0 ? (
-          <li className="px-3 py-4 text-sm text-muted-foreground">
-            <Trans>No people found</Trans>
-          </li>
-        ) : (
-          filtered.map((person) => (
-            <li key={person.id}>
-              <button
-                type="button"
-                disabled={busy}
-                onClick={() => onPick(person)}
-                className="flex w-full items-center gap-3 px-3 py-2.5 text-left hover:bg-muted/60 disabled:opacity-50"
-              >
-                <Avatar name={person.name} path={person.avatarUrl} size="sm" />
-                <span className="truncate text-sm font-medium">
-                  {person.name}
-                </span>
-              </button>
-            </li>
-          ))
-        )}
-      </ul>
-    </div>
-  );
-}
-
 function DispatchRow({
   dispatch,
   userId,
   people,
   busy,
-  assigningDispatchId,
-  onAssignOpen,
-  onAssignClose,
   onAssignPerson,
   onAction
 }: {
@@ -232,14 +160,12 @@ function DispatchRow({
   userId: string;
   people: ShopPerson[];
   busy: boolean;
-  assigningDispatchId: string | null;
-  onAssignOpen: (dispatchId: string) => void;
-  onAssignClose: () => void;
   onAssignPerson: (dispatch: ShopOpenDispatch, person: ShopPerson) => void;
   onAction: (action: ShopMaintenanceAction, dispatch: ShopOpenDispatch) => void;
 }) {
   const assignedToMe = dispatch.assignee === userId;
   const canAssignPerson =
+    (dispatch.shopKind === "fault" || dispatch.shopKind === "planned") &&
     (dispatch.status === "Open" || dispatch.status === "Assigned") &&
     !dispatch.isWorking;
   const showAssignToMe =
@@ -248,7 +174,6 @@ function DispatchRow({
   // No Start/accept — Complete on any open fault/planned ticket.
   const showComplete =
     dispatch.status !== "Completed" && dispatch.status !== "Cancelled";
-  const picking = assigningDispatchId === dispatch.id;
   const problemText = dispatch.note?.trim() || null;
 
   return (
@@ -281,19 +206,6 @@ function DispatchRow({
       ) : null}
 
       <div className={cn("mt-3 flex flex-wrap gap-2")}>
-        {canAssignPerson ? (
-          <Button
-            type="button"
-            size="sm"
-            variant={picking ? "primary" : "secondary"}
-            isDisabled={busy}
-            onClick={() =>
-              picking ? onAssignClose() : onAssignOpen(dispatch.id)
-            }
-          >
-            <Trans>Assign person</Trans>
-          </Button>
-        ) : null}
         {showAssignToMe ? (
           <Button
             type="button"
@@ -329,13 +241,16 @@ function DispatchRow({
         ) : null}
       </div>
 
-      {picking ? (
-        <PersonPicker
-          people={people}
-          busy={busy}
-          onPick={(person) => onAssignPerson(dispatch, person)}
-          onCancel={onAssignClose}
-        />
+      {canAssignPerson ? (
+        <div className="mt-3">
+          <GroupedAssignPicker
+            people={people}
+            busy={busy}
+            requireConfirm
+            confirmLabel="确认指派"
+            onPick={(person) => onAssignPerson(dispatch, person)}
+          />
+        </div>
       ) : null}
     </li>
   );
@@ -350,19 +265,6 @@ export function MachineDetailSheet({
   fetcher
 }: MachineDetailSheetProps) {
   const busy = fetcher.state !== "idle";
-  const [assigningDispatchId, setAssigningDispatchId] = useState<string | null>(
-    null
-  );
-
-  useEffect(() => {
-    if (!open) setAssigningDispatchId(null);
-  }, [open]);
-
-  useEffect(() => {
-    if (fetcher.state === "idle" && fetcher.data?.ok) {
-      setAssigningDispatchId(null);
-    }
-  }, [fetcher.state, fetcher.data]);
 
   const onAction = (
     action: ShopMaintenanceAction,
@@ -460,9 +362,6 @@ export function MachineDetailSheet({
                         userId={userId}
                         people={people}
                         busy={busy}
-                        assigningDispatchId={assigningDispatchId}
-                        onAssignOpen={setAssigningDispatchId}
-                        onAssignClose={() => setAssigningDispatchId(null)}
                         onAssignPerson={(d, person) =>
                           onAction("Assign", d, person.id)
                         }

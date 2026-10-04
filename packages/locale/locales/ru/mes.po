@@ -215,9 +215,6 @@ msgstr "Шаги сборки"
 msgid "Assign active employees to one of the matched employee types."
 msgstr ""
 
-msgid "Assign person"
-msgstr "Назначить человека"
-
 msgid "Assign to me"
 msgstr "Назначить мне"
 
@@ -1149,9 +1146,6 @@ msgstr "Опция не найдена."
 msgid "No options found."
 msgstr "Варианты не найдены."
 
-msgid "No people found"
-msgstr "Люди не найдены"
-
 msgid "No people on this crew"
 msgstr ""
 
@@ -1620,9 +1614,6 @@ msgstr "Поиск по номеру работы или товара"
 
 msgid "Search operators..."
 msgstr "Поиск операторов..."
-
-msgid "Search people…"
-msgstr "Поиск людей…"
 
 msgid "Search..."
 msgstr "Поиск..."

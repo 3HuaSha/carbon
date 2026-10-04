@@ -1,3 +1,4 @@
+export { GroupedAssignPicker } from "./GroupedAssignPicker";
 export { MachineDetailPage } from "./MachineDetailPage";
 export { MachineDetailSheet } from "./MachineDetailSheet";
 export { MachineGrid } from "./MachineGrid";

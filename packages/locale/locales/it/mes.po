@@ -215,9 +215,6 @@ msgstr "Passi di assemblaggio"
 msgid "Assign active employees to one of the matched employee types."
 msgstr ""
 
-msgid "Assign person"
-msgstr "Assegna persona"
-
 msgid "Assign to me"
 msgstr "Assegna a me"
 
@@ -1149,9 +1146,6 @@ msgstr "Nessuna opzione trovata."
 msgid "No options found."
 msgstr "Nessuna opzione trovata."
 
-msgid "No people found"
-msgstr "Nessuna persona trovata"
-
 msgid "No people on this crew"
 msgstr ""
 
@@ -1620,9 +1614,6 @@ msgstr "Cerca per ID lavoro o articolo"
 
 msgid "Search operators..."
 msgstr "Cerca operatori..."
-
-msgid "Search people…"
-msgstr "Cerca persone…"
 
 msgid "Search..."
 msgstr "Cerca..."
