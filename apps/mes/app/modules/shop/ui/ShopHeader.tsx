@@ -188,11 +188,7 @@ export function ShopHeader({
       </div>
 
       <div className={cn("sticky top-0 z-10 px-4 py-2", shopIos.bar)}>
-        <div
-          className={shopIos.segment}
-          role="tablist"
-          aria-label="按状态筛选"
-        >
+        <div className={shopIos.segment} role="tablist" aria-label="按状态筛选">
           <SegmentedOption
             selected={filter === "all"}
             onClick={() => onFilterChange("all")}

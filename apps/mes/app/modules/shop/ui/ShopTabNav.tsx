@@ -50,7 +50,10 @@ export function ShopTabNav({ active }: ShopTabNavProps) {
           <Link
             key={tab.id}
             to={tab.to}
-            className={cn(shopIos.segmentItem, "active:scale-[0.97] active:opacity-80")}
+            className={cn(
+              shopIos.segmentItem,
+              "active:scale-[0.97] active:opacity-80"
+            )}
             aria-current={selected ? "page" : undefined}
           >
             {tab.icon}

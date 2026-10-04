@@ -91,8 +91,15 @@ function TaskRow({ task }: { task: ShopCrewTask }) {
     >
       <div className="flex items-start justify-between gap-2">
         <div className="min-w-0">
-          <div className="truncate text-[15px] font-semibold">{machineName}</div>
-          <div className={cn("mt-0.5 flex flex-wrap items-center gap-x-2 gap-y-0.5 text-[12px]", shopIos.muted)}>
+          <div className="truncate text-[15px] font-semibold">
+            {machineName}
+          </div>
+          <div
+            className={cn(
+              "mt-0.5 flex flex-wrap items-center gap-x-2 gap-y-0.5 text-[12px]",
+              shopIos.muted
+            )}
+          >
             <span>
               <KindLabel kind={task.shopKind} />
             </span>
@@ -106,7 +113,9 @@ function TaskRow({ task }: { task: ShopCrewTask }) {
         <StatusLabel status={task.status} />
       </div>
       {note ? (
-        <p className={cn("line-clamp-2 text-[13px] text-pretty", shopIos.muted)}>
+        <p
+          className={cn("line-clamp-2 text-[13px] text-pretty", shopIos.muted)}
+        >
           {note}
         </p>
       ) : null}
@@ -122,7 +131,9 @@ function MemberCard({ member }: { member: ShopCrewMember }) {
       <div className="flex items-center gap-3 px-3 py-3">
         <Avatar name={member.name} path={member.avatarUrl} size="md" />
         <div className="min-w-0 flex-1">
-          <div className="truncate text-[16px] font-semibold">{member.name}</div>
+          <div className="truncate text-[16px] font-semibold">
+            {member.name}
+          </div>
           <div className={cn("text-[13px]", shopIos.muted)}>
             {idle ? (
               <Trans>Idle</Trans>
@@ -172,7 +183,12 @@ export function ShopCrewPage({ board }: ShopCrewPageProps) {
         shopIos.pageEnter
       )}
     >
-      <header className={cn("sticky top-0 z-10 px-4 pt-5 pb-3 space-y-3", shopIos.bar)}>
+      <header
+        className={cn(
+          "sticky top-0 z-10 px-4 pt-5 pb-3 space-y-3",
+          shopIos.bar
+        )}
+      >
         <div className="min-w-0">
           <h1 className={shopIos.largeTitle}>{CREW_TITLE[board.crew]()}</h1>
           <p className={cn("mt-0.5 text-[15px] tabular-nums", shopIos.muted)}>

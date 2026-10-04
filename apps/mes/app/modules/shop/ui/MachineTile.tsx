@@ -4,10 +4,7 @@
 
 import { cn } from "@carbon/react";
 import type { ShopMachine, ShopMachineStatus } from "../shop.types";
-import {
-  formatShopTilePersonLine,
-  primaryOpenDispatch
-} from "../shop.utils";
+import { formatShopTilePersonLine, primaryOpenDispatch } from "../shop.utils";
 import { shopIos } from "./shopIos";
 
 /**
@@ -79,7 +76,12 @@ export function MachineTile({ machine, onSelect }: MachineTileProps) {
         </span>
       </div>
 
-      <div className={cn("min-w-0 truncate text-[11px] leading-tight tabular-nums", shopIos.muted)}>
+      <div
+        className={cn(
+          "min-w-0 truncate text-[11px] leading-tight tabular-nums",
+          shopIos.muted
+        )}
+      >
         {jobId ? (
           <span className="font-medium text-[color:var(--shop-ink)] opacity-80">
             {jobId}

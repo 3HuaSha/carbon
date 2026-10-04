@@ -93,9 +93,7 @@ export function GroupedAssignPicker({
 
   return (
     <div className={cn(shopIos.inset, className)}>
-      <div
-        className="flex items-center justify-between gap-2 border-b border-[color:var(--shop-hairline)] px-3 py-2"
-      >
+      <div className="flex items-center justify-between gap-2 border-b border-[color:var(--shop-hairline)] px-3 py-2">
         <p className={shopIos.sectionLabel}>指派给</p>
         {onCancel ? (
           <button
@@ -131,7 +129,9 @@ export function GroupedAssignPicker({
 
       <div className="flex items-center gap-2 px-3 py-2.5">
         {selectedCount > 0 ? (
-          <p className={cn("min-w-0 flex-1 truncate text-[12px]", shopIos.muted)}>
+          <p
+            className={cn("min-w-0 flex-1 truncate text-[12px]", shopIos.muted)}
+          >
             已选 {selectedCount} 人
             {primaryName ? (
               <>
@@ -190,7 +190,12 @@ function AssignColumn({
         </span>
       </p>
       {people.length === 0 ? (
-        <p className={cn("px-1.5 py-2 text-center text-[10px] leading-snug", shopIos.muted)}>
+        <p
+          className={cn(
+            "px-1.5 py-2 text-center text-[10px] leading-snug",
+            shopIos.muted
+          )}
+        >
           暂无
         </p>
       ) : (
