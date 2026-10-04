@@ -57,6 +57,8 @@ export const CarbonProvider = ({
   const lastRefreshSubmitAt = useRef(0);
   const refreshFetcherRef = useRef(refresh);
   refreshFetcherRef.current = refresh;
+  const expiresAtRef = useRef(session.expiresAt ?? 0);
+  expiresAtRef.current = session.expiresAt ?? 0;
   const REFRESH_DEBOUNCE_MS = 5_000;
 
   const trySubmitRefresh = () => {
@@ -71,6 +73,13 @@ export const CarbonProvider = ({
     });
   };
 
+  // Access tokens last hours (often 1h, optionally 24h). Only hit
+  // `/refresh-session` when we are inside the same 10-minute window the
+  // interval uses — a phone PWA `/shop` focus must not mint a new token
+  // on every app switch (that races refresh_token rotation → login).
+  const isExpiringSoon = () =>
+    expiresAtRef.current - 60 * 10 < Date.now() / 1000;
+
   // biome-ignore lint/correctness/useExhaustiveDependencies: suppressed due to migration
   useEffect(() => {
     if (session.accessToken) {
@@ -81,7 +90,7 @@ export const CarbonProvider = ({
   // biome-ignore lint/correctness/useExhaustiveDependencies: trySubmitRefresh is ref-backed
   useEffect(() => {
     const handleVisibilityChange = () => {
-      if (document.visibilityState === "visible") {
+      if (document.visibilityState === "visible" && isExpiringSoon()) {
         trySubmitRefresh();
       }
     };
@@ -102,9 +111,8 @@ export const CarbonProvider = ({
 
   useInterval(() => {
     // refresh ten minutes before expiry
-    const expiresAt = session.expiresAt ?? 0;
-    const shouldRefresh = expiresAt - 60 * 10 < Date.now() / 1000;
-    const shouldReload = expiresAt < Date.now() / 1000;
+    const shouldRefresh = isExpiringSoon();
+    const shouldReload = expiresAtRef.current < Date.now() / 1000;
 
     if (shouldReload) {
       window.location.reload();

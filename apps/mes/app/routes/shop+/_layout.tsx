@@ -1,8 +1,14 @@
 import { CarbonProvider } from "@carbon/auth";
 import { requireAuthSession } from "@carbon/auth/session.server";
-import type { LoaderFunctionArgs, MiddlewareFunction } from "react-router";
+import { isSearchParamOnlyNavigation } from "@carbon/utils";
+import type {
+  LoaderFunctionArgs,
+  MiddlewareFunction,
+  ShouldRevalidateFunction
+} from "react-router";
 import { Outlet, useLoaderData } from "react-router";
 import { userMiddleware } from "~/middleware/user";
+import { path } from "~/utils/path";
 
 /**
  * Layout for the phone PWA machine overview (`/shop`).
@@ -11,7 +17,45 @@ import { userMiddleware } from "~/middleware/user";
  * location scoping without inheriting the operator sidebar chrome. `CarbonProvider`
  * renews the session client-side so an installed PWA does not dump the operator
  * on the login page when the access token expires.
+ *
+ * `verify: false` — same as `display+`: the cookie + silent refresh is enough
+ * for the shop floor PWA. A GoTrue `getUser` on every tile tap was the
+ * "read the user again" tax Bowen asked us to stop.
  */
+export const shouldRevalidate: ShouldRevalidateFunction = ({
+  currentUrl,
+  nextUrl,
+  formMethod,
+  formAction,
+  defaultShouldRevalidate
+}) => {
+  // Keep session props fresh after an explicit refresh / company switch.
+  if (
+    currentUrl.pathname.startsWith("/refresh-session") ||
+    currentUrl.pathname.startsWith("/switch-company") ||
+    formAction === path.to.refreshSession
+  ) {
+    return true;
+  }
+
+  // Shop leaf navigations (overview ↔ machine ↔ repair/mold) do not change
+  // the access token. Re-running this loader only re-reads the cookie and
+  // risks an `isExpiringSoon` refresh under a GoTrue blip.
+  if (
+    currentUrl.pathname.startsWith("/shop") &&
+    nextUrl.pathname.startsWith("/shop") &&
+    (formMethod === undefined || formMethod === "GET")
+  ) {
+    return false;
+  }
+
+  if (isSearchParamOnlyNavigation({ currentUrl, nextUrl, formMethod })) {
+    return false;
+  }
+
+  return defaultShouldRevalidate;
+};
+
 export const middleware: MiddlewareFunction[] = [userMiddleware];
 
 export async function loader({ request }: LoaderFunctionArgs) {

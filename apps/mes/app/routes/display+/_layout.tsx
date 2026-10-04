@@ -1,6 +1,10 @@
 import { CarbonProvider } from "@carbon/auth";
 import { requireAuthSession } from "@carbon/auth/session.server";
-import type { LoaderFunctionArgs, MiddlewareFunction } from "react-router";
+import type {
+  LoaderFunctionArgs,
+  MiddlewareFunction,
+  ShouldRevalidateFunction
+} from "react-router";
 import { Outlet, useLoaderData } from "react-router";
 import { userMiddleware } from "~/middleware/user";
 
@@ -19,6 +23,18 @@ import { userMiddleware } from "~/middleware/user";
  * hour later, and then redirect to the login page and sit there. These screens
  * are meant to hang on a wall for months, so an hour of uptime is no uptime.
  */
+export const shouldRevalidate: ShouldRevalidateFunction = ({
+  formMethod,
+  defaultShouldRevalidate
+}) => {
+  // Display boards poll leaf data every ~30s. Re-running this shell only
+  // re-reads the session cookie; keep it sticky unless a mutation needs it.
+  if (formMethod === undefined || formMethod === "GET") {
+    return false;
+  }
+  return defaultShouldRevalidate;
+};
+
 export const middleware: MiddlewareFunction[] = [userMiddleware];
 
 export async function loader({ request }: LoaderFunctionArgs) {
