@@ -1,26 +1,32 @@
 import type { Database } from "@carbon/database";
-import {
-  TELEGRAM_BOT_TOKEN,
-  TELEGRAM_MAINTENANCE_GROUP_CHAT_ID
-} from "@carbon/env";
+import { TELEGRAM_BOT_TOKEN } from "@carbon/env";
 import { sendTelegramMessage } from "@carbon/lib/telegram.server";
 import { getLogger } from "@carbon/logger";
 import type { SupabaseClient } from "@supabase/supabase-js";
 import {
-  getTelegramMaintenanceGroupChatId,
-  getTelegramMappingForUser
-} from "./mapping.server";
+  resolveTelegramCrewNotifyTargets,
+  type TelegramCrewKind
+} from "./crew";
+import {
+  getEmployeeTypeNamesByUserId,
+  getTelegramCrewGroupChatId
+} from "./groups.server";
+import { getTelegramMappingForUser } from "./mapping.server";
 import {
   buildMaintenanceTelegramButtons,
   buildMaintenanceTelegramDmText,
   buildMaintenanceTelegramGroupText,
   shopDispatchKindLabelZh
 } from "./message";
+import {
+  appendTelegramAssignMessages,
+  type TelegramAssignMessageRef
+} from "./messages.server";
 
 const log = getLogger("ee", "telegram-notify");
 
 export type MaintenanceAssignmentTelegramResult = {
-  /** Assignee has no Telegram user mapping. */
+  /** Primary assignee has no Telegram user mapping. */
   telegramUnbound: boolean;
   dmSent: boolean;
   groupSent: boolean;
@@ -41,13 +47,16 @@ async function getEmployeeDisplayName(
 }
 
 /**
- * Synchronous dual notify (private DM + maintenance group) for a maintenance
+ * Synchronous dual notify (private DM + crew group(s)) for a maintenance
  * assignment. Used when Inngest is unreachable (Railway demos often set
  * `INNGEST_DEV` with no local/cloud Inngest — `trigger("notify")` fails and
  * `carbon/send-telegram` never runs).
  *
  * Prefer the Inngest path when it works; call this only as a fallback so we
  * do not double-send.
+ *
+ * Persists Telegram `chat_id` + `message_id` for every outbound assign message
+ * so Complete can edit them all to「已完成 ✓」.
  */
 export async function sendMaintenanceAssignmentTelegram(
   client: SupabaseClient<Database>,
@@ -58,7 +67,7 @@ export async function sendMaintenanceAssignmentTelegram(
     assigneeUserId: string;
     /**
      * Extra people selected in the shop assign UI. Each gets a private DM;
-     * the group message lists all notified names. Defaults to [assignee].
+     * crew groups are chosen from 维修/模房 among these people.
      */
     notifyUserIds?: string[];
     /** Assigner / actor user id (`from` on the notify event). */
@@ -129,15 +138,29 @@ export async function sendMaintenanceAssignmentTelegram(
     })
   );
   const nameById = new Map(nameEntries);
+  const typeById = await getEmployeeTypeNamesByUserId(client, {
+    companyId: args.companyId,
+    userIds: notifyUserIds
+  });
 
   const assignerDisplay = nameById.get(args.assignerUserId) ?? "未命名";
-  const replyMarkup = buildMaintenanceTelegramButtons(args.dispatchId);
+  const dmReplyMarkup = buildMaintenanceTelegramButtons(args.dispatchId);
 
   let dmSent = false;
   let primaryMapped = false;
-  const notifiedDisplays: string[] = [];
+  const notifiedPeople: Array<{
+    displayName: string;
+    employeeTypeName: string | null;
+  }> = [];
+  const messageRefs: TelegramAssignMessageRef[] = [];
 
   for (const userId of notifyUserIds) {
+    const display = nameById.get(userId) ?? "未命名";
+    notifiedPeople.push({
+      displayName: display,
+      employeeTypeName: typeById.get(userId) ?? null
+    });
+
     const mapping = await getTelegramMappingForUser(client, {
       companyId: args.companyId,
       userId
@@ -147,26 +170,31 @@ export async function sendMaintenanceAssignmentTelegram(
     }
     if (!mapping) continue;
 
-    const display = nameById.get(userId) ?? "未命名";
-    notifiedDisplays.push(display);
-
     try {
-      await sendTelegramMessage({
+      const sent = await sendTelegramMessage({
         chatId: mapping.chatId,
         text: buildMaintenanceTelegramDmText({
           workCenterName,
           typeLabel,
           assignerName: assignerDisplay
         }),
-        replyMarkup,
+        replyMarkup: dmReplyMarkup,
         force: true
       });
       dmSent = true;
+      if (sent?.messageId != null) {
+        messageRefs.push({
+          chatId: mapping.chatId,
+          messageId: sent.messageId,
+          channel: "dm"
+        });
+      }
       log.info("Telegram sync DM sent", {
         companyId: args.companyId,
         dispatchId: args.dispatchId,
         chatId: mapping.chatId,
-        userId
+        userId,
+        messageId: sent?.messageId
       });
     } catch (err) {
       log.error("Telegram sync DM failed", {
@@ -178,47 +206,72 @@ export async function sendMaintenanceAssignmentTelegram(
     }
   }
 
-  const groupAssigneeDisplay =
-    notifiedDisplays.length > 0
-      ? notifiedDisplays.join("、")
-      : (nameById.get(args.assigneeUserId) ?? "未命名");
-
-  const groupChatId =
-    TELEGRAM_MAINTENANCE_GROUP_CHAT_ID?.trim() ||
-    (await getTelegramMaintenanceGroupChatId(client, args.companyId));
+  const crewTargets = resolveTelegramCrewNotifyTargets(notifiedPeople);
+  const crewKinds = Object.keys(crewTargets) as TelegramCrewKind[];
 
   let groupSent = false;
-  if (groupChatId) {
+  for (const kind of crewKinds) {
+    const names = crewTargets[kind];
+    if (!names?.length) continue;
+
+    const groupChatId = await getTelegramCrewGroupChatId(
+      client,
+      args.companyId,
+      kind
+    );
+    if (!groupChatId) {
+      log.info("Telegram sync notify: no group chat_id for crew", {
+        companyId: args.companyId,
+        kind
+      });
+      continue;
+    }
+
     try {
-      await sendTelegramMessage({
+      // Group: text only — Complete button stays on private DM.
+      const sent = await sendTelegramMessage({
         chatId: groupChatId,
         text: buildMaintenanceTelegramGroupText({
           workCenterName,
           typeLabel,
-          assigneeName: groupAssigneeDisplay,
+          assigneeName: names.join("、"),
           assignerName: assignerDisplay
         }),
-        replyMarkup,
         force: true
       });
       groupSent = true;
+      if (sent?.messageId != null) {
+        messageRefs.push({
+          chatId: groupChatId,
+          messageId: sent.messageId,
+          channel: "group",
+          crewKind: kind
+        });
+      }
       log.info("Telegram sync group sent", {
         companyId: args.companyId,
         dispatchId: args.dispatchId,
-        chatId: groupChatId
+        kind,
+        chatId: groupChatId,
+        messageId: sent?.messageId
       });
     } catch (err) {
       log.error("Telegram sync group failed", {
         companyId: args.companyId,
         dispatchId: args.dispatchId,
+        kind,
         error: err instanceof Error ? err.message : String(err)
       });
     }
-  } else {
-    log.info(
-      "Telegram sync notify: no group chat_id (env or /setgroup mapping)"
-    );
   }
+
+  await appendTelegramAssignMessages(client, {
+    companyId: args.companyId,
+    dispatchId: args.dispatchId,
+    messages: messageRefs,
+    crewKinds,
+    updatedBy: args.assignerUserId
+  });
 
   return {
     telegramUnbound: !primaryMapped,

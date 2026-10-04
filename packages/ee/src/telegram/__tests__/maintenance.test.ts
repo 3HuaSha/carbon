@@ -74,4 +74,9 @@ describe("telegram maintenance helpers", () => {
     expect(isTelegramCommand("/setgroupish", "setgroup")).toBe(false);
     expect(isTelegramCommand("/bind", "setgroup")).toBe(false);
   });
+
+  it("documents Complete-only buttons are for DM (group sends omit markup)", () => {
+    const markup = buildMaintenanceTelegramButtons("id");
+    expect(markup.inline_keyboard[0]?.[0]?.text).toBe("完成");
+  });
 });

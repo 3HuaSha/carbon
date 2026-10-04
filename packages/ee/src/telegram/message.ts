@@ -31,7 +31,8 @@ export function buildMaintenanceTelegramDmText(args: {
 }
 
 /**
- * Maintenance group copy for a maintenance assignment (different from DM).
+ * Crew group copy for a maintenance assignment (different from DM).
+ * No Complete button — peers discuss here; actions stay in private DM.
  *
  * 📢 维修动态 · {workCenterName}
  * 类型：{type}
@@ -50,6 +51,22 @@ export function buildMaintenanceTelegramGroupText(args: {
   ].join("\n");
 }
 
+/**
+ * Replacement text for every stored assign message (DM + group) after Complete.
+ *
+ * 已完成 ✓
+ * 机台：{workCenterName}
+ * 问题：{problem}
+ */
+export function buildMaintenanceTelegramCompletedText(args: {
+  workCenterName: string;
+  problem: string;
+}): string {
+  const machine = args.workCenterName.trim() || "未知机台";
+  const problem = args.problem.trim() || "—";
+  return ["已完成 ✓", `机台：${machine}`, `问题：${problem}`].join("\n");
+}
+
 /** Prefer @username; otherwise Carbon employee display name. */
 export function formatTelegramAssigneeMention(args: {
   name?: string | null;
@@ -61,7 +78,10 @@ export function formatTelegramAssigneeMention(args: {
   return name || null;
 }
 
-/** Assign notify markup: Complete only (no Start). */
+/**
+ * Assign notify markup for **private DM only**: Complete (no Start).
+ * Do not attach to group messages.
+ */
 export function buildMaintenanceTelegramButtons(dispatchId: string) {
   return {
     inline_keyboard: [

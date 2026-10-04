@@ -376,13 +376,31 @@ export const TELEGRAM_COMPANY_ID = getEnv("TELEGRAM_COMPANY_ID", {
   isRequired: false
 });
 /**
- * Maintenance group chat id for dual notify (assign → private DM + group).
- * Negative for groups/supergroups. Get via bot `/chatid` or `/groupid` in the
- * group after adding `@vivahealthmedia_bot`. When unset, only DMs are sent.
+ * Legacy single maintenance group chat id. Treated as the **repair** group
+ * when `TELEGRAM_REPAIR_GROUP_CHAT_ID` is unset. Prefer the repair/mold vars
+ * or `/setgroup repair` / `/setgroup mold` mappings.
  */
 export const TELEGRAM_MAINTENANCE_GROUP_CHAT_ID = getEnv(
   "TELEGRAM_MAINTENANCE_GROUP_CHAT_ID",
   { isRequired: false }
+);
+/**
+ * Repair (维修/机修) crew group chat id for assign notify.
+ * Falls back to `TELEGRAM_MAINTENANCE_GROUP_CHAT_ID` then `/setgroup repair`.
+ */
+export const TELEGRAM_REPAIR_GROUP_CHAT_ID = getEnv(
+  "TELEGRAM_REPAIR_GROUP_CHAT_ID",
+  { isRequired: false }
+);
+/**
+ * Mold (模房) crew group chat id for assign notify.
+ * Falls back to `/setgroup mold` mapping when unset.
+ */
+export const TELEGRAM_MOLD_GROUP_CHAT_ID = getEnv(
+  "TELEGRAM_MOLD_GROUP_CHAT_ID",
+  {
+    isRequired: false
+  }
 );
 export const CARBON_TELEGRAM_ENABLED = isBrowser
   ? window.env?.CARBON_TELEGRAM_ENABLED === "true"
