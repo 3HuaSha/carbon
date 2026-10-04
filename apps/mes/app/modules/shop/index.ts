@@ -1,4 +1,5 @@
 export type {
+  ShopAssignGroup,
   ShopCrewBoard,
   ShopCrewKind,
   ShopCrewMember,
@@ -18,6 +19,7 @@ export type {
   ShopStatusFilter
 } from "./shop.types";
 export {
+  shopAssignGroups,
   shopCrewKinds,
   shopDispatchKinds,
   shopMachineStatuses,
@@ -29,11 +31,16 @@ export {
   countShopStatuses,
   deriveShopMachineStatus,
   filterShopMachines,
+  groupPeopleByAssignGroup,
   groupShopMachinesByArea,
+  matchesShopAssignGroup,
   matchesShopCrewEmployeeType,
   parseShopDispatchContent,
   primaryOpenDispatch,
+  resolveShopAssignGroup,
   resolveShopDispatchKind,
+  SHOP_ASSIGN_GROUP_ALIASES,
+  SHOP_ASSIGN_GROUP_LABELS,
   SHOP_CREW_TYPE_ALIASES,
   shopMachineSubtitle
 } from "./shop.utils";

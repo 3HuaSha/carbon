@@ -215,9 +215,6 @@ msgstr "Kroki montażu"
 msgid "Assign active employees to one of the matched employee types."
 msgstr ""
 
-msgid "Assign person"
-msgstr "Przypisz osobę"
-
 msgid "Assign to me"
 msgstr "Przypisz do mnie"
 
@@ -1149,9 +1146,6 @@ msgstr "Nie znaleziono opcji."
 msgid "No options found."
 msgstr "Nie znaleziono opcji."
 
-msgid "No people found"
-msgstr "Nie znaleziono osób"
-
 msgid "No people on this crew"
 msgstr ""
 
@@ -1620,9 +1614,6 @@ msgstr "Szukaj po ID zadania lub przedmiotu"
 
 msgid "Search operators..."
 msgstr "Szukaj operatorów..."
-
-msgid "Search people…"
-msgstr "Szukaj osób…"
 
 msgid "Search..."
 msgstr "Szukaj..."

@@ -10,7 +10,7 @@ import {
 } from "@carbon/files";
 import { isHeic, MediaUploader } from "@carbon/files/media";
 import { Button, cn, Status, toast } from "@carbon/react";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   LuCalendarClock,
   LuChevronLeft,
@@ -18,7 +18,6 @@ import {
   LuCoffee,
   LuHistory,
   LuPackage,
-  LuSearch,
   LuTrendingUp,
   LuTriangleAlert,
   LuWrench,
@@ -30,7 +29,6 @@ import {
   useNavigate,
   useRevalidator
 } from "react-router";
-import Avatar from "~/components/Avatar";
 import { path } from "~/utils/path";
 import type {
   ShopCurrentWork,
@@ -43,6 +41,7 @@ import type {
   ShopPerson
 } from "../shop.types";
 import { primaryOpenDispatch } from "../shop.utils";
+import { GroupedAssignPicker } from "./GroupedAssignPicker";
 import { ShopDispatchMedia } from "./ShopDispatchMedia";
 
 type MachineDetailPageProps = {
@@ -205,72 +204,6 @@ function WorkOrderSection({ work }: { work: ShopCurrentWork | null }) {
   );
 }
 
-function PersonPicker({
-  people,
-  busy,
-  onPick,
-  onCancel
-}: {
-  people: ShopPerson[];
-  busy: boolean;
-  onPick: (person: ShopPerson) => void;
-  onCancel: () => void;
-}) {
-  const [search, setSearch] = useState("");
-
-  const filtered = useMemo(() => {
-    const q = search.trim().toLowerCase();
-    if (!q) return people;
-    return people.filter((p) => p.name.toLowerCase().includes(q));
-  }, [people, search]);
-
-  return (
-    <div className="mt-3 overflow-hidden rounded-xl border border-border">
-      <div className="flex items-center gap-2 border-b border-border bg-muted/40 px-3 py-2">
-        <LuSearch className="h-4 w-4 shrink-0 text-muted-foreground" />
-        <input
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          placeholder="搜索人员…"
-          className="h-9 flex-1 bg-transparent text-sm outline-none placeholder:text-muted-foreground"
-          autoFocus
-        />
-        <button
-          type="button"
-          aria-label="取消"
-          className="rounded-md p-1.5 text-muted-foreground hover:bg-muted hover:text-foreground"
-          onClick={onCancel}
-        >
-          <LuX className="h-4 w-4" />
-        </button>
-      </div>
-      <ul className="max-h-56 overflow-y-auto">
-        {filtered.length === 0 ? (
-          <li className="px-3 py-4 text-sm text-muted-foreground">
-            未找到人员
-          </li>
-        ) : (
-          filtered.map((person) => (
-            <li key={person.id}>
-              <button
-                type="button"
-                disabled={busy}
-                onClick={() => onPick(person)}
-                className="flex w-full items-center gap-3 px-3 py-2.5 text-left hover:bg-muted/60 disabled:opacity-50"
-              >
-                <Avatar name={person.name} path={person.avatarUrl} size="sm" />
-                <span className="truncate text-sm font-medium">
-                  {person.name}
-                </span>
-              </button>
-            </li>
-          ))
-        )}
-      </ul>
-    </div>
-  );
-}
-
 const reportKindMeta: Record<
   ReportKind,
   { title: string; hint: string; icon: React.ReactNode }
@@ -311,7 +244,6 @@ function ReportForm({
 }) {
   const [note, setNote] = useState("");
   const [assigneeId, setAssigneeId] = useState<string | undefined>();
-  const [picking, setPicking] = useState(false);
   const [files, setFiles] = useState<File[]>([]);
   const noteRequired = kind === "fault";
   const mediaRecommended = kind === "fault" || kind === "planned";
@@ -377,31 +309,17 @@ function ReportForm({
 
         {kind !== "break" ? (
           <div className="mt-3">
-            <Button
-              type="button"
-              size="sm"
-              variant={picking ? "primary" : "secondary"}
-              isDisabled={busy}
-              onClick={() => setPicking((v) => !v)}
-            >
-              {assigneeId ? "更换负责人" : "指派人员（可选）"}
-            </Button>
-            {assigneeId ? (
-              <p className="mt-1 text-xs text-muted-foreground">
-                {people.find((p) => p.id === assigneeId)?.name}
-              </p>
-            ) : null}
-            {picking ? (
-              <PersonPicker
-                people={people}
-                busy={busy}
-                onPick={(person) => {
-                  setAssigneeId(person.id);
-                  setPicking(false);
-                }}
-                onCancel={() => setPicking(false)}
-              />
-            ) : null}
+            <p className="mb-1.5 text-xs text-muted-foreground">
+              指派人员（可选）— 主管 / 模房 / 维修
+            </p>
+            <GroupedAssignPicker
+              people={people}
+              busy={busy}
+              requireConfirm={false}
+              selectedId={assigneeId}
+              onSelectedChange={setAssigneeId}
+              onPick={(person) => setAssigneeId(person.id)}
+            />
           </div>
         ) : null}
 
@@ -462,7 +380,6 @@ function DispatchActions({
   ) => void;
   onUploaded: () => void;
 }) {
-  const [assigning, setAssigning] = useState(false);
   const assignedToMe = dispatch.assignee === userId;
   const isBreakOrPlanned =
     dispatch.shopKind === "break" || dispatch.shopKind === "planned";
@@ -593,17 +510,6 @@ function DispatchActions({
             暂停
           </Button>
         ) : null}
-        {canAssignPerson ? (
-          <Button
-            type="button"
-            size="sm"
-            variant={assigning ? "primary" : "secondary"}
-            isDisabled={busy}
-            onClick={() => setAssigning((v) => !v)}
-          >
-            指派人员
-          </Button>
-        ) : null}
         {showAssignToMe ? (
           <Button
             type="button"
@@ -617,16 +523,14 @@ function DispatchActions({
         ) : null}
       </div>
 
-      {assigning ? (
+      {canAssignPerson ? (
         <div className="px-4 pb-3">
-          <PersonPicker
+          <GroupedAssignPicker
             people={people}
             busy={busy}
-            onPick={(person) => {
-              onAction("Assign", dispatch, person.id);
-              setAssigning(false);
-            }}
-            onCancel={() => setAssigning(false)}
+            requireConfirm
+            confirmLabel="确认指派"
+            onPick={(person) => onAction("Assign", dispatch, person.id)}
           />
         </div>
       ) : null}

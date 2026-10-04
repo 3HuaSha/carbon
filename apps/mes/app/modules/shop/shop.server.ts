@@ -21,6 +21,7 @@ import {
   deriveShopMachineStatus,
   matchesShopCrewEmployeeType,
   parseShopDispatchContent,
+  resolveShopAssignGroup,
   resolveShopDispatchKind,
   shopMachineSubtitle
 } from "./shop.utils";
@@ -73,17 +74,22 @@ export async function getShopOverview(
     };
   }
 
-  const [blockingResult, eventsResult, dispatchesResult, peopleResult] =
-    await Promise.all([
-      client
-        .from("workCentersWithBlockingStatus")
-        .select("id, isBlocked")
-        .eq("companyId", args.companyId)
-        .in("id", workCenterIds),
-      client
-        .from("productionEvent")
-        .select(
-          `
+  const [
+    blockingResult,
+    eventsResult,
+    dispatchesResult,
+    peopleResult,
+    employeeTypesResult
+  ] = await Promise.all([
+    client
+      .from("workCentersWithBlockingStatus")
+      .select("id, isBlocked")
+      .eq("companyId", args.companyId)
+      .in("id", workCenterIds),
+    client
+      .from("productionEvent")
+      .select(
+        `
         id,
         workCenterId,
         startTime,
@@ -98,29 +104,40 @@ export async function getShopOverview(
           )
         )
       `
-        )
-        .eq("companyId", args.companyId)
-        .in("workCenterId", workCenterIds)
-        .is("endTime", null)
-        .order("startTime", { ascending: true }),
-      client
-        .from("maintenanceDispatch")
-        .select(DISPATCH_COLUMNS)
-        .eq("companyId", args.companyId)
-        .in("workCenterId", workCenterIds)
-        .in("status", [...openDispatchStatuses]),
-      client
-        .from("employees")
-        .select("id, name, avatarUrl, locationId")
-        .eq("companyId", args.companyId)
-        .eq("active", true)
-        .order("name", { ascending: true })
-    ]);
+      )
+      .eq("companyId", args.companyId)
+      .in("workCenterId", workCenterIds)
+      .is("endTime", null)
+      .order("startTime", { ascending: true }),
+    client
+      .from("maintenanceDispatch")
+      .select(DISPATCH_COLUMNS)
+      .eq("companyId", args.companyId)
+      .in("workCenterId", workCenterIds)
+      .in("status", [...openDispatchStatuses]),
+    client
+      .from("employees")
+      .select("id, name, avatarUrl, locationId, employeeTypeId")
+      .eq("companyId", args.companyId)
+      .eq("active", true)
+      .order("name", { ascending: true }),
+    client
+      .from("employeeType")
+      .select("id, name")
+      .eq("companyId", args.companyId)
+  ]);
 
   if (blockingResult.error) throw blockingResult.error;
   if (eventsResult.error) throw eventsResult.error;
   if (dispatchesResult.error) throw dispatchesResult.error;
   if (peopleResult.error) throw peopleResult.error;
+  if (employeeTypesResult.error) throw employeeTypesResult.error;
+
+  const employeeTypeNameById = new Map(
+    (employeeTypesResult.data ?? [])
+      .filter((t): t is typeof t & { id: string } => typeof t.id === "string")
+      .map((t) => [t.id, t.name ?? null] as const)
+  );
 
   const blockedById = new Map(
     (blockingResult.data ?? []).map((row) => [row.id!, row.isBlocked ?? false])
@@ -233,7 +250,11 @@ export async function getShopOverview(
     };
   });
 
-  const people = mapPeople(peopleResult.data ?? [], args.locationId);
+  const people = mapPeople(
+    peopleResult.data ?? [],
+    args.locationId,
+    employeeTypeNameById
+  );
 
   return {
     locationId: args.locationId,
@@ -502,19 +523,28 @@ function mapPeople(
     name?: string | null;
     avatarUrl?: string | null;
     locationId?: string | null;
+    employeeTypeId?: string | null;
   }[],
-  locationId: string
+  locationId: string,
+  employeeTypeNameById: Map<string, string | null>
 ): ShopPerson[] {
   return rows
     .filter(
       (row): row is typeof row & { id: string } => typeof row.id === "string"
     )
-    .map((row) => ({
-      id: row.id,
-      name: row.name?.trim() || row.id,
-      avatarUrl: row.avatarUrl ?? null,
-      locationId: row.locationId ?? null
-    }))
+    .map((row) => {
+      const employeeTypeName = row.employeeTypeId
+        ? (employeeTypeNameById.get(row.employeeTypeId) ?? null)
+        : null;
+      return {
+        id: row.id,
+        name: row.name?.trim() || row.id,
+        avatarUrl: row.avatarUrl ?? null,
+        locationId: row.locationId ?? null,
+        employeeTypeName,
+        assignGroup: resolveShopAssignGroup(employeeTypeName)
+      };
+    })
     .sort((a, b) => {
       const aHere = a.locationId === locationId ? 0 : 1;
       const bHere = b.locationId === locationId ? 0 : 1;

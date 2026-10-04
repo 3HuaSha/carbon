@@ -1,12 +1,15 @@
 import { describe, expect, it } from "vitest";
-import type { ShopMachine } from "./shop.types";
+import type { ShopMachine, ShopPerson } from "./shop.types";
 import {
   countShopStatuses,
   deriveShopMachineStatus,
   filterShopMachines,
+  groupPeopleByAssignGroup,
   groupShopMachinesByArea,
+  matchesShopAssignGroup,
   matchesShopCrewEmployeeType,
   parseShopDispatchContent,
+  resolveShopAssignGroup,
   resolveShopDispatchKind,
   shopMachineSubtitle
 } from "./shop.utils";
@@ -24,6 +27,46 @@ describe("matchesShopCrewEmployeeType", () => {
     expect(matchesShopCrewEmployeeType("Mold Shop", "mold")).toBe(true);
     expect(matchesShopCrewEmployeeType("机修", "mold")).toBe(false);
     expect(matchesShopCrewEmployeeType(null, "mold")).toBe(false);
+  });
+});
+
+describe("matchesShopAssignGroup / resolveShopAssignGroup", () => {
+  it("matches supervisor aliases", () => {
+    expect(matchesShopAssignGroup("主管", "supervisor")).toBe(true);
+    expect(matchesShopAssignGroup("班长", "supervisor")).toBe(true);
+    expect(matchesShopAssignGroup("Supervisor", "supervisor")).toBe(true);
+    expect(matchesShopAssignGroup("Manager", "supervisor")).toBe(true);
+    expect(matchesShopAssignGroup("机修", "supervisor")).toBe(false);
+  });
+
+  it("resolves groups in display order 主管 → 模房 → 维修", () => {
+    expect(resolveShopAssignGroup("主管")).toBe("supervisor");
+    expect(resolveShopAssignGroup("模房")).toBe("mold");
+    expect(resolveShopAssignGroup("维修班")).toBe("repair");
+    expect(resolveShopAssignGroup("Admin")).toBe(null);
+  });
+});
+
+describe("groupPeopleByAssignGroup", () => {
+  it("buckets people and keeps empty groups", () => {
+    const person = (
+      overrides: Partial<ShopPerson> & Pick<ShopPerson, "id" | "name">
+    ): ShopPerson => ({
+      avatarUrl: null,
+      locationId: null,
+      employeeTypeName: null,
+      assignGroup: null,
+      ...overrides
+    });
+    const people = [
+      person({ id: "1", name: "A", assignGroup: "supervisor" }),
+      person({ id: "2", name: "B", assignGroup: "repair" }),
+      person({ id: "3", name: "C", assignGroup: null })
+    ];
+    const groups = groupPeopleByAssignGroup(people);
+    expect(groups.supervisor.map((p) => p.id)).toEqual(["1"]);
+    expect(groups.mold).toEqual([]);
+    expect(groups.repair.map((p) => p.id)).toEqual(["2"]);
   });
 });
 

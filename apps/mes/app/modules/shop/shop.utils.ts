@@ -1,25 +1,59 @@
 import type {
+  ShopAssignGroup,
   ShopCrewKind,
   ShopDispatchKind,
   ShopMachine,
   ShopMachineStatus,
   ShopOpenDispatch,
+  ShopPerson,
   ShopStatusFilter
 } from "./shop.types";
+import { shopAssignGroups } from "./shop.types";
 
 /**
- * Configurable `employeeType.name` aliases for the repair / mold crew boards.
+ * Configurable `employeeType.name` aliases for assign groups + crew boards.
  * Match is case-insensitive; the type name matches if it equals an alias or
  * contains one (so "机修班" matches "机修"). Bowen sets these names in ERP
  * Users → Employee types, then assigns people to that type.
+ *
+ * Display order on the assign UI: 主管 → 模房 → 维修.
  */
+export const SHOP_ASSIGN_GROUP_ALIASES: Record<
+  ShopAssignGroup,
+  readonly string[]
+> = {
+  supervisor: ["主管", "supervisor", "manager", "班长"],
+  mold: ["模房", "模具", "mold", "mould", "mold shop", "mould shop"],
+  repair: ["维修", "机修", "repair", "maintenance", "machine repair"]
+};
+
+/** Crew boards reuse the repair / mold alias sets from assign groups. */
 export const SHOP_CREW_TYPE_ALIASES: Record<ShopCrewKind, readonly string[]> = {
-  repair: ["维修", "机修", "repair", "maintenance", "machine repair"],
-  mold: ["模房", "模具", "mold", "mould", "mold shop", "mould shop"]
+  repair: SHOP_ASSIGN_GROUP_ALIASES.repair,
+  mold: SHOP_ASSIGN_GROUP_ALIASES.mold
+};
+
+/** ZH labels for the three assign groups (UI order). */
+export const SHOP_ASSIGN_GROUP_LABELS: Record<ShopAssignGroup, string> = {
+  supervisor: "主管",
+  mold: "模房",
+  repair: "维修"
 };
 
 function normalizeTypeName(name: string): string {
   return name.trim().toLowerCase().replace(/\s+/g, " ");
+}
+
+function matchesAliasList(
+  employeeTypeName: string | null | undefined,
+  aliases: readonly string[]
+): boolean {
+  if (!employeeTypeName?.trim()) return false;
+  const normalized = normalizeTypeName(employeeTypeName);
+  return aliases.some((alias) => {
+    const needle = normalizeTypeName(alias);
+    return normalized === needle || normalized.includes(needle);
+  });
 }
 
 /** True when an `employeeType.name` belongs on the given crew board. */
@@ -27,12 +61,45 @@ export function matchesShopCrewEmployeeType(
   employeeTypeName: string | null | undefined,
   crew: ShopCrewKind
 ): boolean {
-  if (!employeeTypeName?.trim()) return false;
-  const normalized = normalizeTypeName(employeeTypeName);
-  return SHOP_CREW_TYPE_ALIASES[crew].some((alias) => {
-    const needle = normalizeTypeName(alias);
-    return normalized === needle || normalized.includes(needle);
-  });
+  return matchesAliasList(employeeTypeName, SHOP_CREW_TYPE_ALIASES[crew]);
+}
+
+/** True when an `employeeType.name` belongs in the given assign group. */
+export function matchesShopAssignGroup(
+  employeeTypeName: string | null | undefined,
+  group: ShopAssignGroup
+): boolean {
+  return matchesAliasList(employeeTypeName, SHOP_ASSIGN_GROUP_ALIASES[group]);
+}
+
+/**
+ * Resolve which assign group an employee type belongs to. First match in
+ * display order (主管 → 模房 → 维修) wins if aliases ever overlap.
+ */
+export function resolveShopAssignGroup(
+  employeeTypeName: string | null | undefined
+): ShopAssignGroup | null {
+  for (const group of shopAssignGroups) {
+    if (matchesShopAssignGroup(employeeTypeName, group)) return group;
+  }
+  return null;
+}
+
+/** People bucketed into the three assign groups (empty groups included). */
+export function groupPeopleByAssignGroup(
+  people: ShopPerson[]
+): Record<ShopAssignGroup, ShopPerson[]> {
+  const groups: Record<ShopAssignGroup, ShopPerson[]> = {
+    supervisor: [],
+    mold: [],
+    repair: []
+  };
+  for (const person of people) {
+    if (person.assignGroup) {
+      groups[person.assignGroup].push(person);
+    }
+  }
+  return groups;
 }
 
 type DispatchSignals = Pick<

@@ -215,9 +215,6 @@ msgstr "装配步骤"
 msgid "Assign active employees to one of the matched employee types."
 msgstr "请把在职员工分配到上述匹配的员工类型之一。"
 
-msgid "Assign person"
-msgstr "分配人员"
-
 msgid "Assign to me"
 msgstr "分配给我"
 
@@ -1149,9 +1146,6 @@ msgstr "未找到选项。"
 msgid "No options found."
 msgstr "未找到选项。"
 
-msgid "No people found"
-msgstr "未找到人员"
-
 msgid "No people on this crew"
 msgstr "该班组暂无人员"
 
@@ -1620,9 +1614,6 @@ msgstr "按工作或项目ID搜索"
 
 msgid "Search operators..."
 msgstr "搜索操作员..."
-
-msgid "Search people…"
-msgstr "搜索人员…"
 
 msgid "Search..."
 msgstr "搜索..."

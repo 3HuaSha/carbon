@@ -215,9 +215,6 @@ msgstr "Montaj adımları"
 msgid "Assign active employees to one of the matched employee types."
 msgstr ""
 
-msgid "Assign person"
-msgstr "Kişi ata"
-
 msgid "Assign to me"
 msgstr "Bana ata"
 
@@ -1149,9 +1146,6 @@ msgstr "Hiç seçenek bulunamadı."
 msgid "No options found."
 msgstr "Seçenek bulunamadı."
 
-msgid "No people found"
-msgstr "Kişi bulunamadı"
-
 msgid "No people on this crew"
 msgstr ""
 
@@ -1620,9 +1614,6 @@ msgstr "İş veya ürün kimliği ile ara"
 
 msgid "Search operators..."
 msgstr "Operatörleri ara..."
-
-msgid "Search people…"
-msgstr "Kişi ara…"
 
 msgid "Search..."
 msgstr "Ara..."

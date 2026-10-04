@@ -215,9 +215,6 @@ msgstr "Étapes d'assemblage"
 msgid "Assign active employees to one of the matched employee types."
 msgstr ""
 
-msgid "Assign person"
-msgstr "Assigner une personne"
-
 msgid "Assign to me"
 msgstr "M’assigner"
 
@@ -1149,9 +1146,6 @@ msgstr "Aucune option trouvée."
 msgid "No options found."
 msgstr "Aucune option trouvée."
 
-msgid "No people found"
-msgstr "Aucune personne trouvée"
-
 msgid "No people on this crew"
 msgstr ""
 
@@ -1620,9 +1614,6 @@ msgstr "Rechercher par numéro de travail ou d'article"
 
 msgid "Search operators..."
 msgstr "Rechercher des opérateurs..."
-
-msgid "Search people…"
-msgstr "Rechercher des personnes…"
 
 msgid "Search..."
 msgstr "Rechercher..."
