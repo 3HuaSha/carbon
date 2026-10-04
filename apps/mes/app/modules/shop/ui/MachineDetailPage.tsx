@@ -65,10 +65,10 @@ type ReportKind = "break" | "planned" | "fault";
 
 const statusMeta: Record<
   ShopMachine["status"],
-  { label: string; color: "green" | "gray" | "blue" | "yellow" | "orange" | "red"; gradient: string }
+  { label: string; color: "green" | "gray" | "blue" | "red"; gradient: string }
 > = {
   running: {
-    label: "运行中",
+    label: "运行",
     color: "green",
     gradient: "from-emerald-500 to-teal-600"
   },
@@ -78,22 +78,12 @@ const statusMeta: Record<
     gradient: "from-slate-400 to-slate-500"
   },
   break: {
-    label: "休息/离岗",
+    label: "休息",
     color: "blue",
     gradient: "from-sky-500 to-blue-600"
   },
-  planned: {
-    label: "计划停机",
-    color: "yellow",
-    gradient: "from-amber-500 to-orange-500"
-  },
-  waitingRepair: {
-    label: "待维修",
-    color: "orange",
-    gradient: "from-orange-500 to-amber-600"
-  },
-  inRepair: {
-    label: "维修中",
+  down: {
+    label: "停机",
     color: "red",
     gradient: "from-red-500 to-rose-600"
   }
@@ -482,15 +472,12 @@ function DispatchActions({
     !dispatch.isWorking;
   const showAssignToMe =
     canAssignPerson && (!dispatch.assignee || !assignedToMe);
-  const showStart =
-    dispatch.shopKind === "fault" &&
-    !dispatch.isWorking &&
-    dispatch.status !== "Completed" &&
-    dispatch.status !== "Cancelled";
+  // No Start/accept workflow — Complete is available on any open fault ticket.
   const showEnd = dispatch.shopKind === "fault" && dispatch.isWorking;
   const showComplete =
     dispatch.shopKind === "fault" &&
-    (dispatch.status === "In Progress" || dispatch.isWorking);
+    dispatch.status !== "Completed" &&
+    dispatch.status !== "Cancelled";
   const showResume = isBreakOrPlanned;
 
   const kindLabel =
@@ -500,18 +487,30 @@ function DispatchActions({
         ? "计划停机"
         : "故障维修";
 
+  const problemText =
+    dispatch.note?.trim() ||
+    comments.find((c) => c.comment?.trim())?.comment?.trim() ||
+    null;
+
+  const chipStatus: ShopMachine["status"] =
+    dispatch.shopKind === "break" ? "break" : "down";
+
   return (
     <section className="overflow-hidden rounded-2xl border border-border bg-card shadow-sm">
       <div className="flex items-start justify-between gap-2 px-4 pt-3">
-        <div className="min-w-0">
+        <div className="min-w-0 flex-1">
           <p className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
             <LuWrench className="h-3.5 w-3.5" />
             {kindLabel}
           </p>
-          <p className="mt-1 truncate text-sm font-bold tabular-nums">
-            {dispatch.maintenanceDispatchId ?? dispatch.id}
-          </p>
-          <p className="mt-1 text-xs text-muted-foreground">
+          {problemText ? (
+            <p className="mt-1.5 whitespace-pre-wrap text-base font-semibold leading-snug text-foreground">
+              {problemText}
+            </p>
+          ) : (
+            <p className="mt-1.5 text-sm text-muted-foreground">暂无问题描述</p>
+          )}
+          <p className="mt-1.5 text-xs text-muted-foreground">
             {dispatch.assigneeName ? (
               assignedToMe ? (
                 <span className="font-medium text-primary">已指派给你</span>
@@ -519,32 +518,26 @@ function DispatchActions({
                 <>负责人：{dispatch.assigneeName}</>
               )
             ) : (
-              "暂未指派"
+              <span className="font-medium text-foreground">未分配</span>
             )}
           </p>
         </div>
-        <MachineStatusChip
-          status={
-            dispatch.shopKind === "break"
-              ? "break"
-              : dispatch.shopKind === "planned"
-                ? "planned"
-                : dispatch.status === "In Progress"
-                  ? "inRepair"
-                  : "waitingRepair"
-          }
-        />
+        <MachineStatusChip status={chipStatus} />
       </div>
 
-      {dispatch.note ? (
-        <p className="mx-4 mt-3 whitespace-pre-wrap rounded-xl bg-muted/50 px-3 py-2 text-sm">
-          {dispatch.note}
-        </p>
-      ) : null}
-
-      {comments.length > 0 ? (
+      {comments.length > 0 && dispatch.note?.trim() ? (
         <ul className="mx-4 mt-3 flex flex-col gap-2 border-t border-border pt-3">
           {comments.map((c) => (
+            <li key={c.id} className="text-sm">
+              <span className="font-medium">{c.createdByName ?? "未知"}</span>
+              <span className="text-muted-foreground">：</span>
+              <span className="whitespace-pre-wrap">{c.comment}</span>
+            </li>
+          ))}
+        </ul>
+      ) : comments.length > 1 ? (
+        <ul className="mx-4 mt-3 flex flex-col gap-2 border-t border-border pt-3">
+          {comments.slice(1).map((c) => (
             <li key={c.id} className="text-sm">
               <span className="font-medium">{c.createdByName ?? "未知"}</span>
               <span className="text-muted-foreground">：</span>
@@ -575,18 +568,6 @@ function DispatchActions({
             className="flex-1"
           >
             {dispatch.shopKind === "break" ? "我回来了" : "恢复生产"}
-          </Button>
-        ) : null}
-        {showStart ? (
-          <Button
-            type="button"
-            size="md"
-            variant="primary"
-            isDisabled={busy}
-            onClick={() => onAction("Start", dispatch)}
-            className="flex-1"
-          >
-            开始维修
           </Button>
         ) : null}
         {showComplete ? (
@@ -923,40 +904,43 @@ export function MachineDetailPage({
             </p>
           ) : (
             <ul className="mt-2.5 flex flex-col gap-2">
-              {history.map((item) => (
-                <li
-                  key={item.id}
-                  className="rounded-2xl border border-border bg-card px-4 py-3 shadow-sm"
-                >
-                  <div className="flex items-center justify-between gap-2">
-                    <span className="text-sm font-bold tabular-nums">
-                      {item.maintenanceDispatchId ?? item.id}
-                    </span>
-                    <Status color="gray" disableTooltip>
-                      {item.status === "Completed"
-                        ? "已完成"
-                        : item.status === "Cancelled"
-                          ? "已取消"
-                          : item.status}
-                    </Status>
-                  </div>
-                  <p className="mt-1 text-xs text-muted-foreground">
-                    {item.shopKind === "break"
-                      ? "休息/离岗"
-                      : item.shopKind === "planned"
-                        ? "计划停机"
-                        : item.shopKind === "fault"
-                          ? "故障维修"
-                          : item.shopKind}
-                    {item.assigneeName ? ` · ${item.assigneeName}` : ""}
-                  </p>
-                  {item.note ? (
-                    <p className="mt-1.5 line-clamp-2 text-xs text-muted-foreground">
-                      {item.note}
+              {history.map((item) => {
+                const kindLabel =
+                  item.shopKind === "break"
+                    ? "休息/离岗"
+                    : item.shopKind === "planned"
+                      ? "计划停机"
+                      : item.shopKind === "fault"
+                        ? "故障维修"
+                        : item.shopKind;
+                return (
+                  <li
+                    key={item.id}
+                    className="rounded-2xl border border-border bg-card px-4 py-3 shadow-sm"
+                  >
+                    <div className="flex items-center justify-between gap-2">
+                      <span className="text-sm font-semibold">
+                        {item.note?.trim() || kindLabel}
+                      </span>
+                      <Status color="gray" disableTooltip>
+                        {item.status === "Completed"
+                          ? "已完成"
+                          : item.status === "Cancelled"
+                            ? "已取消"
+                            : item.status}
+                      </Status>
+                    </div>
+                    <p className="mt-1 text-xs text-muted-foreground">
+                      {[
+                        item.note?.trim() ? kindLabel : null,
+                        item.assigneeName ?? "未分配"
+                      ]
+                        .filter(Boolean)
+                        .join(" · ")}
                     </p>
-                  ) : null}
-                </li>
-              ))}
+                  </li>
+                );
+              })}
             </ul>
           )}
         </section>

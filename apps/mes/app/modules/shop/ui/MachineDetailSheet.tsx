@@ -244,24 +244,22 @@ function DispatchRow({
     !dispatch.isWorking;
   const showAssignToMe =
     canAssignPerson && (!dispatch.assignee || !assignedToMe);
-  const showStart =
-    !dispatch.isWorking &&
-    dispatch.status !== "Completed" &&
-    dispatch.status !== "Cancelled";
   const showEnd = dispatch.isWorking;
-  const showComplete = dispatch.status === "In Progress" || dispatch.isWorking;
+  // No Start/accept — Complete on any open fault/planned ticket.
+  const showComplete =
+    dispatch.status !== "Completed" && dispatch.status !== "Cancelled";
   const picking = assigningDispatchId === dispatch.id;
+  const problemText = dispatch.note?.trim() || null;
 
   return (
     <li className="rounded-lg border border-border px-3 py-3">
       <div className="flex items-start justify-between gap-2">
         <div className="min-w-0">
-          <Link
-            to={path.to.maintenanceDetail(dispatch.id)}
-            className="truncate text-sm font-medium tabular-nums text-foreground underline-offset-4 hover:underline"
-          >
-            {dispatch.maintenanceDispatchId ?? dispatch.id}
-          </Link>
+          {problemText ? (
+            <p className="text-sm font-semibold text-pretty">{problemText}</p>
+          ) : (
+            <p className="text-sm text-muted-foreground">—</p>
+          )}
           <div className="mt-1 text-xs text-muted-foreground">
             {dispatch.assigneeName ? (
               assignedToMe ? (
@@ -305,17 +303,6 @@ function DispatchRow({
             onClick={() => onAction("Assign", dispatch)}
           >
             <Trans>Assign to me</Trans>
-          </Button>
-        ) : null}
-        {showStart ? (
-          <Button
-            type="button"
-            size="sm"
-            variant="primary"
-            isDisabled={busy}
-            onClick={() => onAction("Start", dispatch)}
-          >
-            <Trans>Start</Trans>
           </Button>
         ) : null}
         {showEnd ? (

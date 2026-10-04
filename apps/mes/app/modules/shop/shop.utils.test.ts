@@ -88,7 +88,7 @@ describe("deriveShopMachineStatus", () => {
     ).toBe("idle");
   });
 
-  it("returns waitingRepair for Open or Assigned fault dispatches", () => {
+  it("returns down for Open, Assigned, or In Progress fault", () => {
     expect(
       deriveShopMachineStatus({
         hasOpenProductionEvent: true,
@@ -97,7 +97,7 @@ describe("deriveShopMachineStatus", () => {
         ],
         isBlocked: false
       })
-    ).toBe("waitingRepair");
+    ).toBe("down");
 
     expect(
       deriveShopMachineStatus({
@@ -107,10 +107,8 @@ describe("deriveShopMachineStatus", () => {
         ],
         isBlocked: false
       })
-    ).toBe("waitingRepair");
-  });
+    ).toBe("down");
 
-  it("returns inRepair for fault In Progress", () => {
     expect(
       deriveShopMachineStatus({
         hasOpenProductionEvent: true,
@@ -119,7 +117,7 @@ describe("deriveShopMachineStatus", () => {
         ],
         isBlocked: false
       })
-    ).toBe("inRepair");
+    ).toBe("down");
   });
 
   it("returns break for break shopKind even when production was running", () => {
@@ -134,7 +132,7 @@ describe("deriveShopMachineStatus", () => {
     ).toBe("break");
   });
 
-  it("returns planned for planned downtime (not waitingRepair)", () => {
+  it("returns down for planned downtime (same presentation as fault)", () => {
     expect(
       deriveShopMachineStatus({
         hasOpenProductionEvent: false,
@@ -143,33 +141,30 @@ describe("deriveShopMachineStatus", () => {
         ],
         isBlocked: false
       })
-    ).toBe("planned");
+    ).toBe("down");
   });
 
-  it("prefers fault waiting over planned", () => {
+  it("prefers down over break when both are open", () => {
     expect(
       deriveShopMachineStatus({
         hasOpenProductionEvent: false,
         openDispatches: [
-          { status: "Open", oeeImpact: "Planned", shopKind: "planned" },
+          { status: "Open", oeeImpact: "No Impact", shopKind: "break" },
           { status: "Assigned", oeeImpact: "Down", shopKind: "fault" }
         ],
         isBlocked: false
       })
-    ).toBe("waitingRepair");
+    ).toBe("down");
   });
 
-  it("prefers inRepair over waitingRepair", () => {
+  it("returns down when blocked with no open dispatch", () => {
     expect(
       deriveShopMachineStatus({
         hasOpenProductionEvent: false,
-        openDispatches: [
-          { status: "Open", oeeImpact: "Down", shopKind: "fault" },
-          { status: "In Progress", oeeImpact: "Down", shopKind: "fault" }
-        ],
-        isBlocked: false
+        openDispatches: [],
+        isBlocked: true
       })
-    ).toBe("inRepair");
+    ).toBe("down");
   });
 });
 
@@ -187,18 +182,19 @@ describe("filterShopMachines / countShopStatuses / groupShopMachinesByArea", () 
       status: "idle",
       departmentName: "Welding"
     }),
-    machine({ id: "3", name: "C", status: "inRepair", departmentName: null }),
+    machine({ id: "3", name: "C", status: "down", departmentName: null }),
     machine({ id: "4", name: "D", status: "break", departmentName: null }),
-    machine({ id: "5", name: "E", status: "planned", departmentName: null })
+    machine({ id: "5", name: "E", status: "down", departmentName: null })
   ];
 
-  it("filters by status", () => {
+  it("filters by running / down / all (idle and break still on tiles when all)", () => {
     expect(filterShopMachines(machines, "all")).toHaveLength(5);
     expect(filterShopMachines(machines, "running").map((m) => m.id)).toEqual([
       "1"
     ]);
-    expect(filterShopMachines(machines, "break").map((m) => m.id)).toEqual([
-      "4"
+    expect(filterShopMachines(machines, "down").map((m) => m.id)).toEqual([
+      "3",
+      "5"
     ]);
   });
 
@@ -207,9 +203,7 @@ describe("filterShopMachines / countShopStatuses / groupShopMachinesByArea", () 
       running: 1,
       idle: 1,
       break: 1,
-      planned: 1,
-      waitingRepair: 0,
-      inRepair: 1
+      down: 2
     });
   });
 

@@ -6,20 +6,31 @@
  * open maintenance dispatches — there is no `machine.status` column.
  */
 
+/**
+ * Display statuses on `/shop` tiles + detail.
+ * Fault, planned, and any other offline episode (except break) collapse to
+ * one **停机 / Down** presentation — one color, one label.
+ */
 export const shopMachineStatuses = [
   "running",
   "idle",
   "break",
-  "planned",
-  "waitingRepair",
-  "inRepair"
+  "down"
 ] as const;
 
 export type ShopMachineStatus = (typeof shopMachineStatuses)[number];
 
-export const shopStatusFilters = ["all", ...shopMachineStatuses] as const;
+/**
+ * Grid filter chips: Running + Down only (idle/break still show on tiles when
+ * no chip is selected — filter state `"all"`).
+ */
+export const shopStatusFilterChips = ["running", "down"] as const;
 
-export type ShopStatusFilter = (typeof shopStatusFilters)[number];
+export type ShopStatusFilterChip = (typeof shopStatusFilterChips)[number];
+
+export type ShopStatusFilter = "all" | ShopStatusFilterChip;
+
+export const shopStatusFilters = ["all", ...shopStatusFilterChips] as const;
 
 /** Availability / repair episode kind stored in `maintenanceDispatch.content.shopKind`. */
 export const shopDispatchKinds = ["break", "planned", "fault"] as const;
