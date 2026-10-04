@@ -11,6 +11,7 @@ import {
   matchesShopAssignGroup,
   matchesShopCrewEmployeeType,
   parseShopDispatchContent,
+  presentShopDispatchProblem,
   resolvePrimaryAssigneeId,
   resolveShopAssignGroup,
   resolveShopDispatchKind,
@@ -147,6 +148,62 @@ describe("parseShopDispatchContent", () => {
       shopKind: null,
       note: null
     });
+  });
+});
+
+describe("presentShopDispatchProblem", () => {
+  it("uses content.note as headline and drops the mirrored reporter comment", () => {
+    const presented = presentShopDispatchProblem({
+      note: "2号披风",
+      comments: [
+        {
+          id: "c1",
+          comment: "2号披风",
+          createdAt: null,
+          createdByName: "Test User"
+        }
+      ]
+    });
+    expect(presented.problemText).toBe("2号披风");
+    expect(presented.followUpComments).toEqual([]);
+  });
+
+  it("keeps later comments that are not the mirrored note", () => {
+    const presented = presentShopDispatchProblem({
+      note: "液压泄漏",
+      comments: [
+        {
+          id: "c1",
+          comment: "液压泄漏",
+          createdAt: null,
+          createdByName: "Test User"
+        },
+        {
+          id: "c2",
+          comment: "已换密封圈",
+          createdAt: null,
+          createdByName: "明 小"
+        }
+      ]
+    });
+    expect(presented.problemText).toBe("液压泄漏");
+    expect(presented.followUpComments.map((c) => c.id)).toEqual(["c2"]);
+  });
+
+  it("falls back to the first comment when note is empty", () => {
+    const presented = presentShopDispatchProblem({
+      note: null,
+      comments: [
+        {
+          id: "c1",
+          comment: "异响",
+          createdAt: null,
+          createdByName: "Test User"
+        }
+      ]
+    });
+    expect(presented.problemText).toBe("异响");
+    expect(presented.followUpComments).toEqual([]);
   });
 });
 

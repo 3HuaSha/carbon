@@ -40,7 +40,7 @@ import type {
   ShopOpenDispatch,
   ShopPerson
 } from "../shop.types";
-import { primaryOpenDispatch } from "../shop.utils";
+import { presentShopDispatchProblem, primaryOpenDispatch } from "../shop.utils";
 import {
   type AssignSelection,
   GroupedAssignPicker
@@ -406,10 +406,10 @@ function DispatchActions({
         ? "计划停机"
         : "故障维修";
 
-  const problemText =
-    dispatch.note?.trim() ||
-    comments.find((c) => c.comment?.trim())?.comment?.trim() ||
-    null;
+  const { problemText, followUpComments } = presentShopDispatchProblem({
+    note: dispatch.note,
+    comments
+  });
 
   const chipStatus: ShopMachine["status"] =
     dispatch.shopKind === "break" ? "break" : "down";
@@ -444,23 +444,11 @@ function DispatchActions({
         <MachineStatusChip status={chipStatus} />
       </div>
 
-      {comments.length > 0 && dispatch.note?.trim() ? (
+      {followUpComments.length > 0 ? (
         <ul className="mx-4 mt-3 flex flex-col gap-2 border-t border-border pt-3">
-          {comments.map((c) => (
-            <li key={c.id} className="text-sm">
-              <span className="font-medium">{c.createdByName ?? "未知"}</span>
-              <span className="text-muted-foreground">：</span>
-              <span className="whitespace-pre-wrap">{c.comment}</span>
-            </li>
-          ))}
-        </ul>
-      ) : comments.length > 1 ? (
-        <ul className="mx-4 mt-3 flex flex-col gap-2 border-t border-border pt-3">
-          {comments.slice(1).map((c) => (
-            <li key={c.id} className="text-sm">
-              <span className="font-medium">{c.createdByName ?? "未知"}</span>
-              <span className="text-muted-foreground">：</span>
-              <span className="whitespace-pre-wrap">{c.comment}</span>
+          {followUpComments.map((c) => (
+            <li key={c.id} className="whitespace-pre-wrap text-sm">
+              {c.comment}
             </li>
           ))}
         </ul>

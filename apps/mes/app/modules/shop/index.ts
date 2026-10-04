@@ -41,6 +41,7 @@ export {
   matchesShopAssignGroup,
   matchesShopCrewEmployeeType,
   parseShopDispatchContent,
+  presentShopDispatchProblem,
   primaryOpenDispatch,
   resolvePrimaryAssigneeId,
   resolveShopAssignGroup,
