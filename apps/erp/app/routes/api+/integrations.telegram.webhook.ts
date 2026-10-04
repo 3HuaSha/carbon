@@ -8,12 +8,15 @@ import {
   getUserByTelegramUserId,
   isTelegramCommand,
   linkTelegramUser,
+  markMaintenanceAssignTelegramCompleted,
+  parseTelegramSetGroupKind,
   resolveTelegramBindCompanyId,
   runTelegramMaintenanceAction,
-  setTelegramMaintenanceGroupChatId,
+  setTelegramCrewGroupChatId,
   setTelegramPendingBind,
   TELEGRAM_CB_COMPLETE,
   TELEGRAM_CB_START,
+  TELEGRAM_CREW_LABELS_ZH,
   TELEGRAM_PIN_LOCKOUT_PREFIX,
   unlinkTelegramByChatId
 } from "@carbon/ee/telegram.server";
@@ -146,7 +149,7 @@ async function handleMyChatMember(update: TelegramMyChatMember) {
   ) {
     await reply(
       chatId,
-      `已加入群组。\nchat_id: \`${chatId}\`\n\n请把该值设到 Railway 环境变量 TELEGRAM_MAINTENANCE_GROUP_CHAT_ID，派工通知会同步发到本群。\n也可随时发送 /chatid 或 /groupid 查看。`
+      `已加入群组。\nchat_id: \`${chatId}\`\n\n在本群发送：\n/setgroup repair — 设为维修群\n/setgroup mold — 设为模房群\n（/setgroup 无参数 = 维修群）\n\n或设 Railway：TELEGRAM_REPAIR_GROUP_CHAT_ID / TELEGRAM_MOLD_GROUP_CHAT_ID\n也可发 /chatid 查看。`
     );
   }
 }
@@ -173,13 +176,13 @@ async function handleMessage(message: TelegramMessage) {
       chatId,
       `chat_id: ${chatId}\ntype: ${message.chat.type}${
         message.chat.title ? `\ntitle: ${message.chat.title}` : ""
-      }\n\n维修群：发送 /setgroup 保存为派工通知群，或把 chat_id 设到 Railway TELEGRAM_MAINTENANCE_GROUP_CHAT_ID`
+      }\n\n维修群：/setgroup repair（或 /setgroup）\n模房群：/setgroup mold\n或 Railway TELEGRAM_REPAIR_GROUP_CHAT_ID / TELEGRAM_MOLD_GROUP_CHAT_ID`
     );
     return;
   }
 
   if (isTelegramCommand(text, "setgroup")) {
-    await handleSetGroup(message);
+    await handleSetGroup(message, text);
     return;
   }
 
@@ -192,7 +195,7 @@ async function handleMessage(message: TelegramMessage) {
     if (message.chat.type !== "private") {
       await reply(
         chatId,
-        "请私聊机器人完成绑定（发送 /bind），群里只用于派工通知与开始/完成。"
+        "请私聊机器人完成绑定（发送 /bind），群里只用于派工通知（完成请在私聊点「完成」）。"
       );
       return;
     }
@@ -384,12 +387,21 @@ async function handleEmailBindAttempt(
   );
 }
 
-async function handleSetGroup(message: TelegramMessage) {
+async function handleSetGroup(message: TelegramMessage, text: string) {
   const chatId = String(message.chat.id);
   if (message.chat.type !== "group" && message.chat.type !== "supergroup") {
     await reply(
       chatId,
-      "请在维修群里发送 /setgroup（私聊无效）。也可先发 /chatid 查看 chat_id。"
+      "请在目标群里发送 /setgroup repair 或 /setgroup mold（私聊无效）。也可先发 /chatid 查看 chat_id。"
+    );
+    return;
+  }
+
+  const kind = parseTelegramSetGroupKind(text);
+  if (!kind) {
+    await reply(
+      chatId,
+      "用法：/setgroup repair（维修群）或 /setgroup mold（模房群）。\n无参数时默认维修群。"
     );
     return;
   }
@@ -403,7 +415,7 @@ async function handleSetGroup(message: TelegramMessage) {
       chatId,
       company.reason === "ambiguous"
         ? "无法确定公司，请联系管理员配置 TELEGRAM_COMPANY_ID。"
-        : "暂无法保存维修群，请联系管理员。"
+        : "暂无法保存群组，请联系管理员。"
     );
     return;
   }
@@ -419,35 +431,44 @@ async function handleSetGroup(message: TelegramMessage) {
     createdBy = actor?.userId;
   }
 
+  const labelZh = TELEGRAM_CREW_LABELS_ZH[kind];
+  const envHint =
+    kind === "repair"
+      ? "TELEGRAM_REPAIR_GROUP_CHAT_ID（或旧名 TELEGRAM_MAINTENANCE_GROUP_CHAT_ID）"
+      : "TELEGRAM_MOLD_GROUP_CHAT_ID";
+
   try {
     const db = getDatabaseClient();
-    await setTelegramMaintenanceGroupChatId(db, {
+    await setTelegramCrewGroupChatId(db, {
       companyId: company.companyId,
+      kind,
       chatId,
       title: message.chat.title ?? null,
       createdBy,
       telegramFromId: message.from?.id
     });
 
-    logger.info("Telegram maintenance group chat configured", {
+    logger.info("Telegram crew group chat configured", {
       chatId,
+      kind,
       companyId: company.companyId,
       title: message.chat.title ?? null
     });
 
     await reply(
       chatId,
-      `已保存维修群 chat_id：${chatId}\n之后派工通知会发到本群（并私聊被指派人）。\n也可把同一值设到 Railway：TELEGRAM_MAINTENANCE_GROUP_CHAT_ID`
+      `已保存${labelZh}群 chat_id：${chatId}\n指派给${labelZh}人员时，派工通知会发到本群（并私聊被指派人；「完成」仅在私聊）。\n也可设 Railway：${envHint}`
     );
   } catch (err) {
-    logger.error("Failed to save Telegram maintenance group", {
+    logger.error("Failed to save Telegram crew group", {
       chatId,
+      kind,
       companyId: company.companyId,
       error: err instanceof Error ? err.message : String(err)
     });
     await reply(
       chatId,
-      "保存维修群失败，请稍后重试。也可先发 /chatid 查看 chat_id 并联系管理员。"
+      `保存${labelZh}群失败，请稍后重试。也可先发 /chatid 查看 chat_id 并联系管理员。`
     );
   }
 }
@@ -528,6 +549,16 @@ async function handleCallbackQuery(query: TelegramCallbackQuery) {
     return;
   }
 
+  // Complete (and Start) only from private DM — groups are peer-visible only.
+  if (isGroupChat) {
+    await answerTelegramCallbackQuery({
+      callbackQueryId: query.id,
+      text: "请私聊机器人点「完成」",
+      showAlert: true
+    });
+    return;
+  }
+
   const result = await runTelegramMaintenanceAction(getCarbonServiceRole(), {
     action,
     dispatchId,
@@ -541,26 +572,64 @@ async function handleCallbackQuery(query: TelegramCallbackQuery) {
     showAlert: !result.ok
   });
 
-  if (result.ok && messageId && query.message?.text) {
+  if (result.ok && action === "Complete") {
+    // Edit every stored assign message (all DMs + crew group) to「已完成 ✓」.
+    try {
+      const { edited } = await markMaintenanceAssignTelegramCompleted(
+        getCarbonServiceRole(),
+        {
+          companyId: mapping.companyId,
+          dispatchId,
+          force: true
+        }
+      );
+      // Fallback if assign ran before message-id tracking existed.
+      if (edited === 0 && messageId) {
+        await editTelegramMessage({
+          chatId: messageChatId,
+          messageId,
+          text: "已完成 ✓",
+          replyMarkup: { inline_keyboard: [] }
+        });
+      }
+    } catch (err) {
+      logger.warn("Failed to edit Telegram assign messages on complete", {
+        err
+      });
+      if (messageId) {
+        try {
+          await editTelegramMessage({
+            chatId: messageChatId,
+            messageId,
+            text: "已完成 ✓",
+            replyMarkup: { inline_keyboard: [] }
+          });
+        } catch {
+          // ignore
+        }
+      }
+    }
+  } else if (
+    result.ok &&
+    action === "Start" &&
+    messageId &&
+    query.message?.text
+  ) {
     const actor =
       query.from.username != null
         ? `@${query.from.username}`
         : (query.from.first_name ?? "操作员");
-    const suffix =
-      action === "Start"
-        ? `\n\n✅ 已开始（${actor}）`
-        : `\n\n✅ 已完成（${actor}）`;
     try {
       await editTelegramMessage({
         chatId: messageChatId,
         messageId,
-        text: `${query.message.text}${suffix}`,
+        text: `${query.message.text}\n\n✅ 已开始（${actor}）`,
         replyMarkup: { inline_keyboard: [] }
       });
     } catch (err) {
-      logger.warn("Failed to edit Telegram message after action", { err });
+      logger.warn("Failed to edit Telegram message after start", { err });
     }
-  } else if (!result.ok && !isGroupChat) {
+  } else if (!result.ok) {
     await reply(messageChatId, result.message);
   }
 }

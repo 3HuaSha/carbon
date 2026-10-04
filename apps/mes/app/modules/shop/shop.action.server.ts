@@ -1,6 +1,7 @@
 import type { Database } from "@carbon/database";
 import {
   getTelegramChatIdForUser,
+  markMaintenanceAssignTelegramCompleted,
   sendMaintenanceAssignmentTelegram
 } from "@carbon/ee/telegram.server";
 import { trigger } from "@carbon/jobs";
@@ -398,6 +399,21 @@ export async function runShopMaintenanceAction(
     }
 
     await stampScheduleIfOffline();
+
+    // Edit Telegram assign DMs + crew group message to「已完成 ✓」when tracked.
+    try {
+      await markMaintenanceAssignTelegramCompleted(client, {
+        companyId,
+        dispatchId,
+        force: true
+      });
+    } catch (err) {
+      logger.warn("Failed to mark Telegram assign messages completed", {
+        companyId,
+        dispatchId,
+        error: err instanceof Error ? err.message : String(err)
+      });
+    }
 
     const posting = await postMaintenanceLabor(client, {
       maintenanceDispatchIds: [dispatchId],

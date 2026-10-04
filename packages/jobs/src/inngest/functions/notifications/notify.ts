@@ -7,19 +7,21 @@ import {
 } from "@carbon/ee/notifications";
 import { getSlackUserIdByCarbonId } from "@carbon/ee/slack.server";
 import {
+  appendTelegramAssignMessages,
   buildMaintenanceTelegramButtons,
   buildMaintenanceTelegramDmText,
   buildMaintenanceTelegramGroupText,
-  getTelegramMaintenanceGroupChatId,
+  getEmployeeTypeNamesByUserId,
+  getTelegramCrewGroupChatId,
   getTelegramMappingForUser,
-  shopDispatchKindLabelZh
+  resolveTelegramCrewNotifyTargets,
+  shopDispatchKindLabelZh,
+  type TelegramAssignMessageRef,
+  type TelegramCrewKind
 } from "@carbon/ee/telegram.server";
-import {
-  ERP_URL,
-  TELEGRAM_BOT_TOKEN,
-  TELEGRAM_MAINTENANCE_GROUP_CHAT_ID
-} from "@carbon/env";
+import { ERP_URL, TELEGRAM_BOT_TOKEN } from "@carbon/env";
 import type { Events } from "@carbon/lib/events";
+import { sendTelegramMessage } from "@carbon/lib/telegram.server";
 import { getLogger } from "@carbon/logger";
 import {
   escapeSlackText,
@@ -740,118 +742,159 @@ export const notifyFunction = inngest.createFunction(
       }
     }
 
-    // MVP Telegram shortcut: maintenance assignment → private DM + optional group.
+    // MVP Telegram shortcut: maintenance assignment → private DM + crew group(s).
+    // Sends inside the step (not fan-out) so we can persist chat_id + message_id
+    // for Complete → edit all originals to「已完成 ✓」.
     // Full `telegram` preference channel is Phase C.
     if (
       TELEGRAM_BOT_TOKEN &&
       payload.event === NotificationEvent.MaintenanceDispatchAssignment &&
       userIds.length > 0
     ) {
-      const telegramEvents = await step.run(
-        "build-telegram-events",
-        async () => {
-          const workCenterName =
-            details.find((d) => d.label === "Machine")?.value?.trim() ||
-            "未知机台";
-          const typeLabel = shopDispatchKindLabelZh(
-            details.find((d) => d.label === "Kind")?.value
-          );
-          const replyMarkup =
-            buildMaintenanceTelegramButtons(primaryDocumentId);
+      await step.run("send-telegram-assign", async () => {
+        const workCenterName =
+          details.find((d) => d.label === "Machine")?.value?.trim() ||
+          "未知机台";
+        const typeLabel = shopDispatchKindLabelZh(
+          details.find((d) => d.label === "Kind")?.value
+        );
+        const dmReplyMarkup =
+          buildMaintenanceTelegramButtons(primaryDocumentId);
 
-          type TelegramSendEvent = {
-            data: {
-              chatId: string;
-              companyId: string;
-              text: string;
-              replyMarkup: ReturnType<typeof buildMaintenanceTelegramButtons>;
-            };
-            name: "carbon/send-telegram";
-          };
-
-          const nameIds = [...userIds, ...(payload.from ? [payload.from] : [])];
-          const uniqueNameIds = Array.from(new Set(nameIds));
-          const nameById = new Map<string, string>();
-          if (uniqueNameIds.length > 0) {
-            const { data: employees } = await client
-              .from("employees")
-              .select("id, name")
-              .eq("companyId", payload.companyId)
-              .in("id", uniqueNameIds);
-            for (const row of employees ?? []) {
-              const name = row.name?.trim();
-              if (name) nameById.set(row.id, name);
-            }
+        const nameIds = [...userIds, ...(payload.from ? [payload.from] : [])];
+        const uniqueNameIds = Array.from(new Set(nameIds));
+        const nameById = new Map<string, string>();
+        if (uniqueNameIds.length > 0) {
+          const { data: employees } = await client
+            .from("employees")
+            .select("id, name")
+            .eq("companyId", payload.companyId)
+            .in("id", uniqueNameIds);
+          for (const row of employees ?? []) {
+            const name = row.name?.trim();
+            if (name && row.id) nameById.set(row.id, name);
           }
-
-          const assignerDisplay =
-            (payload.from ? nameById.get(payload.from) : null) ?? "未命名";
-
-          const events: TelegramSendEvent[] = [];
-          const assigneeDisplays: string[] = [];
-
-          for (const userId of userIds) {
-            const mapping = await getTelegramMappingForUser(client, {
-              companyId: payload.companyId,
-              userId
-            });
-            if (!mapping) continue;
-
-            const assigneeDisplay = nameById.get(userId) ?? "未命名";
-            assigneeDisplays.push(assigneeDisplay);
-
-            events.push({
-              data: {
-                chatId: mapping.chatId,
-                companyId: payload.companyId,
-                text: buildMaintenanceTelegramDmText({
-                  workCenterName,
-                  typeLabel,
-                  assignerName: assignerDisplay
-                }),
-                replyMarkup
-              },
-              name: "carbon/send-telegram" as const
-            });
-          }
-
-          const groupChatId =
-            TELEGRAM_MAINTENANCE_GROUP_CHAT_ID?.trim() ||
-            (await getTelegramMaintenanceGroupChatId(
-              client,
-              payload.companyId
-            ));
-          if (groupChatId) {
-            events.push({
-              data: {
-                chatId: groupChatId,
-                companyId: payload.companyId,
-                text: buildMaintenanceTelegramGroupText({
-                  workCenterName,
-                  typeLabel,
-                  assigneeName:
-                    assigneeDisplays.length > 0
-                      ? assigneeDisplays.join("、")
-                      : "未命名",
-                  assignerName: assignerDisplay
-                }),
-                replyMarkup
-              },
-              name: "carbon/send-telegram" as const
-            });
-          } else {
-            telegramNotifyLog.info(
-              "Skipping Telegram group notify — TELEGRAM_MAINTENANCE_GROUP_CHAT_ID unset and no /setgroup mapping"
-            );
-          }
-
-          return events;
         }
-      );
 
-      if (telegramEvents.length > 0) {
-        await step.sendEvent("fan-out-telegram", telegramEvents);
-      }
+        const typeById = await getEmployeeTypeNamesByUserId(client, {
+          companyId: payload.companyId,
+          userIds
+        });
+
+        const assignerDisplay =
+          (payload.from ? nameById.get(payload.from) : null) ?? "未命名";
+
+        const messageRefs: TelegramAssignMessageRef[] = [];
+        const notifiedPeople: Array<{
+          displayName: string;
+          employeeTypeName: string | null;
+        }> = [];
+
+        for (const userId of userIds) {
+          const assigneeDisplay = nameById.get(userId) ?? "未命名";
+          notifiedPeople.push({
+            displayName: assigneeDisplay,
+            employeeTypeName: typeById.get(userId) ?? null
+          });
+
+          const mapping = await getTelegramMappingForUser(client, {
+            companyId: payload.companyId,
+            userId
+          });
+          if (!mapping) continue;
+
+          try {
+            const sent = await sendTelegramMessage({
+              chatId: mapping.chatId,
+              text: buildMaintenanceTelegramDmText({
+                workCenterName,
+                typeLabel,
+                assignerName: assignerDisplay
+              }),
+              replyMarkup: dmReplyMarkup
+            });
+            if (sent?.messageId != null) {
+              messageRefs.push({
+                chatId: mapping.chatId,
+                messageId: sent.messageId,
+                channel: "dm"
+              });
+            }
+          } catch (err) {
+            telegramNotifyLog.error("Telegram DM send failed", {
+              companyId: payload.companyId,
+              dispatchId: primaryDocumentId,
+              userId,
+              error: err instanceof Error ? err.message : String(err)
+            });
+          }
+        }
+
+        const crewTargets = resolveTelegramCrewNotifyTargets(notifiedPeople);
+        const crewKinds = Object.keys(crewTargets) as TelegramCrewKind[];
+
+        for (const kind of crewKinds) {
+          const names = crewTargets[kind];
+          if (!names?.length) continue;
+
+          const groupChatId = await getTelegramCrewGroupChatId(
+            client,
+            payload.companyId,
+            kind
+          );
+          if (!groupChatId) {
+            telegramNotifyLog.info(
+              "Skipping Telegram group notify — no chat_id for crew",
+              { kind, companyId: payload.companyId }
+            );
+            continue;
+          }
+
+          try {
+            // Group: text only — Complete button stays on private DM.
+            const sent = await sendTelegramMessage({
+              chatId: groupChatId,
+              text: buildMaintenanceTelegramGroupText({
+                workCenterName,
+                typeLabel,
+                assigneeName: names.join("、"),
+                assignerName: assignerDisplay
+              })
+            });
+            if (sent?.messageId != null) {
+              messageRefs.push({
+                chatId: groupChatId,
+                messageId: sent.messageId,
+                channel: "group",
+                crewKind: kind
+              });
+            }
+          } catch (err) {
+            telegramNotifyLog.error("Telegram group send failed", {
+              companyId: payload.companyId,
+              dispatchId: primaryDocumentId,
+              kind,
+              error: err instanceof Error ? err.message : String(err)
+            });
+          }
+        }
+
+        const updatedBy = payload.from ?? userIds[0];
+        if (updatedBy && (messageRefs.length > 0 || crewKinds.length > 0)) {
+          await appendTelegramAssignMessages(client, {
+            companyId: payload.companyId,
+            dispatchId: primaryDocumentId,
+            messages: messageRefs,
+            crewKinds,
+            updatedBy
+          });
+        }
+
+        return {
+          dmCount: messageRefs.filter((m) => m.channel === "dm").length,
+          groupCount: messageRefs.filter((m) => m.channel === "group").length
+        };
+      });
     }
   }
 );

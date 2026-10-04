@@ -3,11 +3,13 @@ import type { Kysely, KyselyDatabase } from "@carbon/database/client";
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { createMappingService } from "../accounting/core/external-mapping";
 import {
+  TELEGRAM_CREW_GROUP_ENTITY_ID,
   TELEGRAM_INTEGRATION,
   TELEGRAM_MAINTENANCE_GROUP_ENTITY,
   TELEGRAM_MAINTENANCE_GROUP_ENTITY_ID,
   TELEGRAM_USER_ENTITY
 } from "./constants";
+import type { TelegramCrewKind } from "./crew";
 
 export type TelegramUserMapping = {
   companyId: string;
@@ -175,14 +177,15 @@ export async function unlinkTelegramByChatId(
 }
 
 /**
- * Persist the maintenance group chat for dual notify (DM + group).
- * Prefer Railway `TELEGRAM_MAINTENANCE_GROUP_CHAT_ID`; this mapping is the
- * runtime fallback after `/setgroup` in Telegram.
+ * Persist a crew group chat for assign notify (DM + crew group).
+ * Prefer Railway `TELEGRAM_REPAIR_GROUP_CHAT_ID` / `TELEGRAM_MOLD_GROUP_CHAT_ID`;
+ * this mapping is the runtime fallback after `/setgroup repair|mold`.
  */
-export async function setTelegramMaintenanceGroupChatId(
+export async function setTelegramCrewGroupChatId(
   db: Kysely<KyselyDatabase>,
   args: {
     companyId: string;
+    kind: TelegramCrewKind;
     chatId: string;
     title?: string | null;
     /** Carbon `user.id` only — never a Telegram numeric user id (FK). */
@@ -194,12 +197,13 @@ export async function setTelegramMaintenanceGroupChatId(
   const mapping = createMappingService(db, args.companyId);
   await mapping.link(
     TELEGRAM_MAINTENANCE_GROUP_ENTITY,
-    TELEGRAM_MAINTENANCE_GROUP_ENTITY_ID,
+    TELEGRAM_CREW_GROUP_ENTITY_ID[args.kind],
     TELEGRAM_INTEGRATION,
     args.chatId,
     {
       createdBy: args.createdBy,
       metadata: {
+        kind: args.kind,
         title: args.title ?? undefined,
         setAt: new Date().toISOString(),
         telegramFromId: args.telegramFromId
@@ -210,19 +214,69 @@ export async function setTelegramMaintenanceGroupChatId(
   );
 }
 
+/**
+ * @deprecated Use `setTelegramCrewGroupChatId` with `kind: "repair"`.
+ * Bare `/setgroup` still routes here → repair.
+ */
+export async function setTelegramMaintenanceGroupChatId(
+  db: Kysely<KyselyDatabase>,
+  args: {
+    companyId: string;
+    chatId: string;
+    title?: string | null;
+    createdBy?: string;
+    telegramFromId?: string | number;
+  }
+): Promise<void> {
+  await setTelegramCrewGroupChatId(db, { ...args, kind: "repair" });
+}
+
+/**
+ * Mapping-only lookup for a crew group. Repair also accepts legacy
+ * `entityId = "default"` from the pre-dual-group `/setgroup`.
+ */
+export async function getTelegramCrewGroupChatIdFromMapping(
+  client: SupabaseClient<Database>,
+  companyId: string,
+  kind: TelegramCrewKind
+): Promise<string | null> {
+  const entityIds =
+    kind === "repair"
+      ? [
+          TELEGRAM_CREW_GROUP_ENTITY_ID.repair,
+          TELEGRAM_CREW_GROUP_ENTITY_ID.legacy,
+          TELEGRAM_MAINTENANCE_GROUP_ENTITY_ID
+        ]
+      : [TELEGRAM_CREW_GROUP_ENTITY_ID.mold];
+
+  const { data, error } = await client
+    .from("externalIntegrationMapping")
+    .select("externalId, entityId")
+    .eq("companyId", companyId)
+    .eq("integration", TELEGRAM_INTEGRATION)
+    .eq("entityType", TELEGRAM_MAINTENANCE_GROUP_ENTITY)
+    .in("entityId", entityIds);
+
+  if (error || !data?.length) return null;
+
+  // Prefer explicit `repair` over legacy `default`.
+  const preferred = data.find(
+    (row) => row.entityId === TELEGRAM_CREW_GROUP_ENTITY_ID[kind]
+  );
+  if (preferred?.externalId) return preferred.externalId;
+  const legacy = data.find(
+    (row) => row.entityId === TELEGRAM_CREW_GROUP_ENTITY_ID.legacy
+  );
+  return legacy?.externalId ?? null;
+}
+
+/**
+ * @deprecated Use `getTelegramCrewGroupChatId` / env repair vars.
+ * Returns the repair (or legacy default) mapping only — no env.
+ */
 export async function getTelegramMaintenanceGroupChatId(
   client: SupabaseClient<Database>,
   companyId: string
 ): Promise<string | null> {
-  const { data, error } = await client
-    .from("externalIntegrationMapping")
-    .select("externalId")
-    .eq("companyId", companyId)
-    .eq("integration", TELEGRAM_INTEGRATION)
-    .eq("entityType", TELEGRAM_MAINTENANCE_GROUP_ENTITY)
-    .eq("entityId", TELEGRAM_MAINTENANCE_GROUP_ENTITY_ID)
-    .maybeSingle();
-
-  if (error || !data?.externalId) return null;
-  return data.externalId;
+  return getTelegramCrewGroupChatIdFromMapping(client, companyId, "repair");
 }
