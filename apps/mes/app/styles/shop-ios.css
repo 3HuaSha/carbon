@@ -15,9 +15,9 @@
   --shop-run: #34c759;
   --shop-down: #ff3b30;
   --shop-break: #007aff;
-  /* Dot/label language stays mid-gray; tile fill must read as slate, never white. */
+  /* Idle tiles use white fill + dark ink (other statuses keep solid color fills). */
   --shop-idle: #8e8e93;
-  --shop-idle-fill: #48484a;
+  --shop-idle-fill: #ffffff;
   --shop-warn: #ff9500;
   --shop-shadow: 0 1px 2px rgb(0 0 0 / 0.06);
   --shop-selected-shadow: 0 1px 3px rgb(0 0 0 / 0.1);
@@ -52,13 +52,18 @@
   box-shadow: var(--shop-shadow);
 }
 
-/* Machine tiles: full status fill (not white cards). White ink for contrast. */
+/* Machine tiles: status fills. Colored statuses use white ink; idle is white + dark ink. */
 .shop-ios-fill-running,
 .shop-ios-fill-idle,
 .shop-ios-fill-break,
 .shop-ios-fill-down {
   border-radius: 1rem;
   box-shadow: var(--shop-shadow);
+}
+
+.shop-ios-fill-running,
+.shop-ios-fill-break,
+.shop-ios-fill-down {
   color: #ffffff;
 }
 
@@ -66,9 +71,18 @@
   background-color: var(--shop-run);
 }
 
-/* Slate fill + white ink — must not fall through to card white / transparent. */
 .shop-ios-fill-idle {
   background-color: var(--shop-idle-fill);
+  color: var(--shop-ink);
+  border: 1px solid var(--shop-hairline);
+}
+
+.shop-ios-fill-idle .shop-ios-fill-muted {
+  color: var(--shop-muted);
+}
+
+.shop-ios-fill-idle .shop-ios-fill-faint {
+  color: rgb(0 0 0 / 0.45);
 }
 
 .shop-ios-fill-break {
