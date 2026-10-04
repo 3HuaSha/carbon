@@ -29,6 +29,10 @@ msgstr "{0} önce"
 msgid "{0} customers"
 msgstr "{0} müşteri"
 
+#. placeholder {0}: files.length
+msgid "{0} file(s) selected"
+msgstr ""
+
 #. placeholder {0}: unplanned .map( (m) => (m.job as { jobId?: string | null } | null)?.jobId ) .filter(Boolean) .join(", ")
 msgid "{0} has no lot number. Set it on the batch or job in Carbon, then complete."
 msgstr "{0} Lot numarasına sahip değil. Bunu Carbon'da Partide veya İş emrinde ayarla, sonra Tamamla."
@@ -133,6 +137,9 @@ msgstr "Onayla ve bitir"
 msgid "across {0} jobs"
 msgstr "{0} İş emri arasında"
 
+msgid "Actions"
+msgstr ""
+
 msgid "Active"
 msgstr "Aktif"
 
@@ -218,6 +225,9 @@ msgstr ""
 msgid "Assign person"
 msgstr "Kişi ata"
 
+msgid "Assign person (optional)"
+msgstr ""
+
 msgid "Assign to me"
 msgstr "Bana ata"
 
@@ -296,6 +306,9 @@ msgstr "Pano görünümü"
 msgid "Break"
 msgstr ""
 
+msgid "Break / Away"
+msgstr ""
+
 msgid "But don't worry. You can use the forgot password flow to request a new magic link."
 msgstr "Ama endişelenmeyin. Yeni bir sihirli bağlantı talep etmek için şifremi unuttum akışını kullanabilirsiniz."
 
@@ -319,6 +332,9 @@ msgstr "Carbon Logosu"
 
 msgid "Cards"
 msgstr "Kartlar"
+
+msgid "Change assignee"
+msgstr ""
 
 msgid "Chat"
 msgstr "Sohbet"
@@ -397,6 +413,9 @@ msgstr "Sütun: {0}"
 msgid "Columns"
 msgstr "Sütunlar"
 
+msgid "Coming in a later update"
+msgstr ""
+
 msgid "Company"
 msgstr "Şirket"
 
@@ -420,6 +439,9 @@ msgstr "Tamamlandı"
 
 msgid "Completing"
 msgstr "Tamamlanıyor"
+
+msgid "Confirm"
+msgstr ""
 
 msgid "Connecting"
 msgstr "Bağlanıyor"
@@ -466,6 +488,12 @@ msgstr "Kalite Sorunu Oluştur"
 msgid "Create Rework"
 msgstr "İşlemi Yeniden Oluştur"
 
+msgid "Created ticket, but media upload failed"
+msgstr ""
+
+msgid "Current production"
+msgstr ""
+
 msgid "Current work"
 msgstr "Mevcut iş"
 
@@ -498,6 +526,9 @@ msgstr "Adımı Sil"
 
 msgid "Delete Timecard (<0/>)"
 msgstr "Zaman Kartını Sil (<0/>)"
+
+msgid "Describe the fault. Notes required; photos/videos recommended."
+msgstr ""
 
 msgid "Describe the problem..."
 msgstr "Sorunu açıklayın..."
@@ -689,6 +720,9 @@ msgstr ""
 msgid "Fault"
 msgstr ""
 
+msgid "Fault downtime"
+msgstr ""
+
 msgid "Feature"
 msgstr "Özellik"
 
@@ -765,6 +799,9 @@ msgstr "Kaç tane?"
 
 msgid "I understand and want to complete without issuing"
 msgstr "Anladığımı ve çıkarmadan tamamlamak istediğimi anlıyorum"
+
+msgid "I'm back"
+msgstr ""
 
 msgid "I'm Still Working"
 msgstr "Hala Çalışıyorum"
@@ -983,6 +1020,9 @@ msgstr "Bakım"
 msgid "Maintenance Completed"
 msgstr "Bakım Tamamlandı"
 
+msgid "Maintenance history"
+msgstr ""
+
 msgid "Maintenance overdue"
 msgstr "Bakım gecikmiş"
 
@@ -1164,6 +1204,9 @@ msgstr "Atanmış toplama listesi yok"
 msgid "No printer configured"
 msgstr "Yazıcı yapılandırılmadı"
 
+msgid "No recent closed tickets"
+msgstr ""
+
 msgid "No recent operations"
 msgstr "Son operasyon yok"
 
@@ -1223,6 +1266,9 @@ msgstr "Hiçbiri"
 
 msgid "Notes"
 msgstr "Notlar"
+
+msgid "Notes and photos recommended (changeover / PM window)."
+msgstr ""
 
 msgid "Nothing running"
 msgstr "Hiçbir şey çalışmıyor"
@@ -1316,8 +1362,17 @@ msgstr "Operatör Tarafından Yapıldı"
 msgid "Optional"
 msgstr "İsteğe bağlı"
 
+msgid "Optional note"
+msgstr ""
+
+msgid "Optional short note (lunch, bathroom, away)."
+msgstr ""
+
 msgid "or"
 msgstr "veya"
+
+msgid "Other open tickets"
+msgstr ""
 
 msgid "Output lot"
 msgstr "Çıktı Lotu"
@@ -1391,6 +1446,9 @@ msgstr "Çıkış Yap"
 
 msgid "Planned"
 msgstr "Planlı"
+
+msgid "Planned downtime"
+msgstr ""
 
 msgid "Please record all steps for this operation before closing."
 msgstr "Bu işlemi kapatmadan önce tüm adımları kaydetmeniz gerekmektedir."
@@ -1530,6 +1588,9 @@ msgstr "Gerekli"
 
 msgid "Result"
 msgstr "Sonuç"
+
+msgid "Resume / Complete"
+msgstr ""
 
 msgid "Retry Completion"
 msgstr "Tamamlanmayı Yeniden Dene"
@@ -1937,6 +1998,9 @@ msgstr "Çalıştırılacak"
 msgid "Today"
 msgstr "Bugün"
 
+msgid "Today's yield"
+msgstr ""
+
 msgid "Toggle the sidebar"
 msgstr "Kenar çubuğunu aç/kapat"
 
@@ -2063,6 +2127,9 @@ msgstr "Hesabınıza giriş yapmak için size bir sihirli bağlantı gönderdik.
 
 msgid "WeChat / QQ / UC cannot install MES. Open this link in Chrome, then tap Install."
 msgstr "WeChat / QQ / UC cannot install MES. Open this link in Chrome, then tap Install."
+
+msgid "What happened? (required)"
+msgstr ""
 
 msgid "What is {translatedTerm}?"
 msgstr "{translatedTerm} nedir?"

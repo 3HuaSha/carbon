@@ -29,6 +29,10 @@ msgstr "{0} fa"
 msgid "{0} customers"
 msgstr "{0} clienti"
 
+#. placeholder {0}: files.length
+msgid "{0} file(s) selected"
+msgstr ""
+
 #. placeholder {0}: unplanned .map( (m) => (m.job as { jobId?: string | null } | null)?.jobId ) .filter(Boolean) .join(", ")
 msgid "{0} has no lot number. Set it on the batch or job in Carbon, then complete."
 msgstr "{0} non ha alcun numero di Lotto. Impostalo sul Lotto di produzione o sull'Ordine di produzione in Carbon, quindi completa."
@@ -133,6 +137,9 @@ msgstr "Riconosci e completa"
 msgid "across {0} jobs"
 msgstr "su {0} Ordini di produzione"
 
+msgid "Actions"
+msgstr ""
+
 msgid "Active"
 msgstr "Attivo"
 
@@ -218,6 +225,9 @@ msgstr ""
 msgid "Assign person"
 msgstr "Assegna persona"
 
+msgid "Assign person (optional)"
+msgstr ""
+
 msgid "Assign to me"
 msgstr "Assegna a me"
 
@@ -296,6 +306,9 @@ msgstr "Vista bacheca"
 msgid "Break"
 msgstr ""
 
+msgid "Break / Away"
+msgstr ""
+
 msgid "But don't worry. You can use the forgot password flow to request a new magic link."
 msgstr "Ma non preoccuparti. Puoi utilizzare il flusso password dimenticata per richiedere un nuovo magic link."
 
@@ -319,6 +332,9 @@ msgstr "Logo Carbon"
 
 msgid "Cards"
 msgstr "Schede"
+
+msgid "Change assignee"
+msgstr ""
 
 msgid "Chat"
 msgstr "Chat"
@@ -397,6 +413,9 @@ msgstr "Colonna: {0}"
 msgid "Columns"
 msgstr "Colonne"
 
+msgid "Coming in a later update"
+msgstr ""
+
 msgid "Company"
 msgstr "Azienda"
 
@@ -420,6 +439,9 @@ msgstr "Completato"
 
 msgid "Completing"
 msgstr "Completamento in corso"
+
+msgid "Confirm"
+msgstr ""
 
 msgid "Connecting"
 msgstr "Collegamento in corso"
@@ -466,6 +488,12 @@ msgstr "Crea Problema di Qualità"
 msgid "Create Rework"
 msgstr "Crea rilavorazione"
 
+msgid "Created ticket, but media upload failed"
+msgstr ""
+
+msgid "Current production"
+msgstr ""
+
 msgid "Current work"
 msgstr "Lavoro attuale"
 
@@ -498,6 +526,9 @@ msgstr "Elimina passo"
 
 msgid "Delete Timecard (<0/>)"
 msgstr "Elimina Scheda Orario (<0/>)"
+
+msgid "Describe the fault. Notes required; photos/videos recommended."
+msgstr ""
 
 msgid "Describe the problem..."
 msgstr "Descrivi il problema..."
@@ -689,6 +720,9 @@ msgstr ""
 msgid "Fault"
 msgstr ""
 
+msgid "Fault downtime"
+msgstr ""
+
 msgid "Feature"
 msgstr "Funzionalità"
 
@@ -765,6 +799,9 @@ msgstr "Quanti?"
 
 msgid "I understand and want to complete without issuing"
 msgstr "Comprendo e desidero completare senza prelevare"
+
+msgid "I'm back"
+msgstr ""
 
 msgid "I'm Still Working"
 msgstr "Sto Ancora Lavorando"
@@ -983,6 +1020,9 @@ msgstr "Manutenzione"
 msgid "Maintenance Completed"
 msgstr "Manutenzione Completata"
 
+msgid "Maintenance history"
+msgstr ""
+
 msgid "Maintenance overdue"
 msgstr "Manutenzione in ritardo"
 
@@ -1164,6 +1204,9 @@ msgstr "Nessuna lista di prelievo assegnata"
 msgid "No printer configured"
 msgstr "Nessuna stampante configurata"
 
+msgid "No recent closed tickets"
+msgstr ""
+
 msgid "No recent operations"
 msgstr "Nessuna operazione recente"
 
@@ -1223,6 +1266,9 @@ msgstr "Nessuno"
 
 msgid "Notes"
 msgstr "Note"
+
+msgid "Notes and photos recommended (changeover / PM window)."
+msgstr ""
 
 msgid "Nothing running"
 msgstr "Niente in esecuzione"
@@ -1316,8 +1362,17 @@ msgstr "Eseguito dall'Operatore"
 msgid "Optional"
 msgstr "Facoltativo"
 
+msgid "Optional note"
+msgstr ""
+
+msgid "Optional short note (lunch, bathroom, away)."
+msgstr ""
+
 msgid "or"
 msgstr "o"
+
+msgid "Other open tickets"
+msgstr ""
 
 msgid "Output lot"
 msgstr "Lotto di output"
@@ -1391,6 +1446,9 @@ msgstr "Disconnetti"
 
 msgid "Planned"
 msgstr "Pianificato"
+
+msgid "Planned downtime"
+msgstr ""
 
 msgid "Please record all steps for this operation before closing."
 msgstr "Registra tutti i passi per questa operazione prima di chiudere."
@@ -1530,6 +1588,9 @@ msgstr "Obbligatorio"
 
 msgid "Result"
 msgstr "Risultato"
+
+msgid "Resume / Complete"
+msgstr ""
 
 msgid "Retry Completion"
 msgstr "Ritenta Completamento"
@@ -1937,6 +1998,9 @@ msgstr "Da eseguire"
 msgid "Today"
 msgstr "Oggi"
 
+msgid "Today's yield"
+msgstr ""
+
 msgid "Toggle the sidebar"
 msgstr "Attiva/disattiva la barra laterale"
 
@@ -2063,6 +2127,9 @@ msgstr "Ti abbiamo inviato un link di accesso al tuo account."
 
 msgid "WeChat / QQ / UC cannot install MES. Open this link in Chrome, then tap Install."
 msgstr "WeChat / QQ / UC cannot install MES. Open this link in Chrome, then tap Install."
+
+msgid "What happened? (required)"
+msgstr ""
 
 msgid "What is {translatedTerm}?"
 msgstr "Cos'è {translatedTerm}?"
