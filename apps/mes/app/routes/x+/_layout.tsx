@@ -143,14 +143,17 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
     getUser(shellUserClient, userId)
   ]);
 
-  // One attempt already ran out the 25s cap. A timeout is not a missing user.
+  // Transport/timeout on the shell user read is not a missing user — keep
+  // the session (same spirit as verifyAuthSession fail-open).
   if (shellUserReadGate(userResult) === "unavailable") {
-    log.warn("Shell user read timed out; keeping the session", {
+    log.warn("Shell user read unavailable; keeping the session", {
       userId,
-      companyId
+      companyId,
+      userError: userResult.error?.message ?? null
     });
     throw new Response("User profile is temporarily unavailable", {
-      status: 503
+      status: 503,
+      headers: { "Retry-After": "5" }
     });
   }
 
@@ -160,12 +163,14 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
   if (user.error || !user.data) {
     const fallback = await getUser(getCarbonServiceRoleSingleAttempt(), userId);
     if (shellUserReadGate(fallback) === "unavailable") {
-      log.warn("Shell user read timed out; keeping the session", {
+      log.warn("Shell user read unavailable; keeping the session", {
         userId,
-        companyId
+        companyId,
+        userError: fallback.error?.message ?? null
       });
       throw new Response("User profile is temporarily unavailable", {
-        status: 503
+        status: 503,
+        headers: { "Retry-After": "5" }
       });
     }
     if (fallback.data) {
