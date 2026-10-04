@@ -185,17 +185,15 @@ export function ShopCrewPage({ board }: ShopCrewPageProps) {
     >
       <header
         className={cn(
-          "sticky top-0 z-10 px-4 pt-5 pb-3 space-y-3",
+          "sticky top-0 z-10 px-4 pt-3 pb-2 space-y-2",
           shopIos.bar
         )}
       >
-        <div className="min-w-0">
-          <h1 className={shopIos.largeTitle}>{CREW_TITLE[board.crew]()}</h1>
-          <p className={cn("mt-0.5 text-[15px] tabular-nums", shopIos.muted)}>
-            {board.locationName?.trim() ? `${board.locationName} · ` : null}
-            {t`${board.members.length} people · ${busyCount} busy`}
-          </p>
-        </div>
+        <h1 className="sr-only">{CREW_TITLE[board.crew]()}</h1>
+        <p className={cn("truncate text-[13px] tabular-nums", shopIos.muted)}>
+          {board.locationName?.trim() ? `${board.locationName} · ` : null}
+          {t`${board.members.length} people · ${busyCount} busy`}
+        </p>
         <ShopTabNav active={tab} />
       </header>
 

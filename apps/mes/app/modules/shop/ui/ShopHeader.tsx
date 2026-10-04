@@ -15,7 +15,8 @@ import { shopIos } from "./shopIos";
 import { usePwaInstall } from "./usePwaInstall";
 
 /**
- * iOS large-title header + opaque sticky filter strip.
+ * Compact header (no large titles) + opaque sticky filter strip.
+ * Tabs 机台/维修/模房 + status filters stay; big “车间总览” titles are gone.
  * No backdrop-blur — solid `--shop-bg` for snappy paint on phones.
  */
 const FILTER_META: Record<
@@ -120,26 +121,30 @@ export function ShopHeader({
             ? "用 Chrome 打开"
             : "安装应用";
 
+  const location = locationName?.trim() || null;
+
   return (
     <>
-      <div className="px-4 pb-2 pt-5">
-        <div className="flex items-end justify-between gap-3">
-          <div className="min-w-0">
-            <h1 className={shopIos.largeTitle}>
-              {locationName?.trim() || "车间总览"}
-            </h1>
-            <p className={cn("mt-1 text-[15px] tabular-nums", shopIos.muted)}>
-              {total} 台设备 ·{" "}
-              <span className="font-semibold text-[color:var(--shop-run)]">
-                {counts.running} 运行
-              </span>{" "}
-              ·{" "}
-              <span className="font-semibold text-[color:var(--shop-down)]">
-                {counts.down} 停机
-              </span>
-            </p>
-          </div>
-          <div className="flex shrink-0 items-center gap-1 pb-1">
+      <div className="px-4 pb-2 pt-3">
+        <h1 className="sr-only">{location || "车间总览"}</h1>
+        <div className="flex items-center justify-between gap-2">
+          <p
+            className={cn(
+              "min-w-0 truncate text-[13px] tabular-nums",
+              shopIos.muted
+            )}
+          >
+            {location ? `${location} · ` : null}
+            {total} 台 ·{" "}
+            <span className="font-semibold text-[color:var(--shop-run)]">
+              {counts.running} 运行
+            </span>{" "}
+            ·{" "}
+            <span className="font-semibold text-[color:var(--shop-down)]">
+              {counts.down} 停机
+            </span>
+          </p>
+          <div className="flex shrink-0 items-center gap-0.5">
             <Link
               to={path.to.shopAlerts}
               aria-label={
@@ -148,13 +153,13 @@ export function ShopHeader({
                   : "提醒"
               }
               className={cn(
-                "relative flex h-10 w-10 items-center justify-center rounded-full",
+                "relative flex h-9 w-9 items-center justify-center rounded-full",
                 shopIos.link
               )}
             >
-              <LuBell className="h-[22px] w-[22px]" />
+              <LuBell className="h-5 w-5" />
               {alertUnreadCount > 0 ? (
-                <span className="absolute right-0.5 top-0.5 flex h-[18px] min-w-[18px] items-center justify-center rounded-full bg-[color:var(--shop-down)] px-1 text-[11px] font-bold tabular-nums text-white">
+                <span className="absolute right-0 top-0 flex h-[16px] min-w-[16px] items-center justify-center rounded-full bg-[color:var(--shop-down)] px-1 text-[10px] font-bold tabular-nums text-white">
                   {alertUnreadCount > 99 ? "99+" : alertUnreadCount}
                 </span>
               ) : null}
@@ -182,7 +187,7 @@ export function ShopHeader({
             ) : null}
           </div>
         </div>
-        <div className="mt-3">
+        <div className="mt-2">
           <ShopTabNav active="machines" />
         </div>
       </div>

@@ -15,7 +15,8 @@ export const shopIos = {
   segmentItem: "shop-ios-segment-item",
   press: "shop-ios-press",
   pageEnter: "shop-ios-page-enter",
-  largeTitle: "text-[34px] font-bold leading-tight tracking-tight text-balance",
+  /** Compact nav title — large iOS titles waste vertical space on the floor PWA. */
+  compactTitle: "text-[17px] font-semibold leading-tight tracking-tight",
   sectionLabel:
     "text-[13px] font-medium uppercase tracking-wide text-[color:var(--shop-muted)]",
   muted: "text-[color:var(--shop-muted)]",
@@ -32,5 +33,14 @@ export const shopIos = {
     idle: "text-[color:var(--shop-muted)]",
     break: "text-[color:var(--shop-break)]",
     down: "text-[color:var(--shop-down)]"
-  }
+  },
+  /** Opaque status fills for machine tiles (white ink). */
+  statusFill: {
+    running: "shop-ios-fill-running",
+    idle: "shop-ios-fill-idle",
+    break: "shop-ios-fill-break",
+    down: "shop-ios-fill-down"
+  },
+  fillMuted: "shop-ios-fill-muted",
+  fillFaint: "shop-ios-fill-faint"
 } as const;
