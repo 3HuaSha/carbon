@@ -1,6 +1,9 @@
-import { Count, cn, IconButton } from "@carbon/react";
-import { Trans, useLingui } from "@lingui/react/macro";
-import { type ReactNode, useState } from "react";
+// SPDX-License-Identifier: AGPL-3.0-only
+// Carbon (github.com/crbnos/carbon). Modified or adapted versions of this file,
+// including ports, remain AGPLv3; serving them over a network requires releasing their source.
+
+import { cn, IconButton } from "@carbon/react";
+import { useState } from "react";
 import { LuDownload, LuMonitor, LuShare } from "react-icons/lu";
 import type { ShopMachineStatus, ShopStatusFilter } from "../shop.types";
 import { shopStatusFilterChips } from "../shop.types";
@@ -8,12 +11,20 @@ import { PwaInstallSheet } from "./PwaInstallSheet";
 import { ShopTabNav } from "./ShopTabNav";
 import { usePwaInstall } from "./usePwaInstall";
 
-const FILTER_LABELS: Record<
+const FILTER_META: Record<
   (typeof shopStatusFilterChips)[number],
-  () => ReactNode
+  { label: string; activeClass: string; dotClass: string }
 > = {
-  running: () => <Trans>Running</Trans>,
-  down: () => <Trans>Down</Trans>
+  running: {
+    label: "运行中",
+    activeClass: "bg-emerald-600 text-white shadow-sm",
+    dotClass: "bg-emerald-500"
+  },
+  down: {
+    label: "停机",
+    activeClass: "bg-red-600 text-white shadow-sm",
+    dotClass: "bg-red-500"
+  }
 };
 
 type ShopHeaderProps = {
@@ -31,7 +42,6 @@ export function ShopHeader({
   filter,
   onFilterChange
 }: ShopHeaderProps) {
-  const { t } = useLingui();
   const {
     installed,
     knownInstalled,
@@ -102,31 +112,39 @@ export function ShopHeader({
   };
 
   const installAria = preparing
-    ? t`Preparing install…`
+    ? "正在准备安装…"
     : readyRetry || retryHint
-      ? t`Install ready — tap again`
+      ? "安装已就绪，再点一次"
       : knownInstalled
-        ? t`Open app — Already installed`
+        ? "打开应用 — 已安装"
         : isIos
-          ? t`Add to Home Screen`
+          ? "添加到主屏幕"
           : isInAppBrowser
-            ? t`Open in Chrome`
-            : canPrompt
-              ? t`Install`
-              : t`Install`;
+            ? "用 Chrome 打开"
+            : "安装应用";
 
   return (
-    <header className="sticky top-0 z-10 border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80 px-4 pt-3 pb-3">
-      <div className="flex items-start justify-between gap-3">
-        <div className="min-w-0">
-          <h1 className="truncate text-lg font-semibold tracking-tight">
-            {locationName?.trim() || t`Shop floor`}
-          </h1>
-          <p className="mt-0.5 text-sm text-muted-foreground tabular-nums">
-            {t`${total} machines`}
-          </p>
-        </div>
-        <div className="flex shrink-0 items-start gap-2">
+    <header className="sticky top-0 z-10 border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80">
+      <div className="px-4 pb-3 pt-3">
+        <div className="flex items-start justify-between gap-3">
+          <div className="min-w-0">
+            <h1 className="truncate text-xl font-bold tracking-tight">
+              {locationName?.trim() || "车间总览"}
+            </h1>
+            <p className="mt-0.5 flex items-center gap-1.5 text-[13px] tabular-nums text-muted-foreground">
+              <span className="font-semibold text-foreground">{total}</span>
+              台设备
+              <span className="mx-0.5 text-border">|</span>
+              <span className="inline-flex items-center gap-1">
+                <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
+                {counts.running} 运行
+              </span>
+              <span className="inline-flex items-center gap-1">
+                <span className="h-1.5 w-1.5 rounded-full bg-red-500" />
+                {counts.down} 停机
+              </span>
+            </p>
+          </div>
           {!installed ? (
             <IconButton
               aria-label={installAria}
@@ -148,42 +166,59 @@ export function ShopHeader({
               }}
             />
           ) : null}
-          <div className="flex flex-wrap justify-end gap-1.5 text-xs tabular-nums">
-            <Count count={counts.running} variant="green" />
-            <Count count={counts.down} variant="red" />
-          </div>
         </div>
-      </div>
 
-      <div className="mt-3">
-        <ShopTabNav active="machines" />
-      </div>
+        <div className="mt-3">
+          <ShopTabNav active="machines" />
+        </div>
 
-      <div
-        className="mt-3 flex gap-2 overflow-x-auto pb-0.5 -mx-1 px-1"
-        role="tablist"
-        aria-label={t`Filter by status`}
-      >
-        {shopStatusFilterChips.map((value) => {
-          const selected = filter === value;
-          return (
-            <button
-              key={value}
-              type="button"
-              role="tab"
-              aria-selected={selected}
-              onClick={() => onFilterChange(selected ? "all" : value)}
-              className={cn(
-                "shrink-0 rounded-md px-3 py-2 text-sm font-medium transition-colors active:scale-[0.98]",
-                selected
-                  ? "bg-foreground text-background"
-                  : "bg-muted text-muted-foreground"
-              )}
-            >
-              {FILTER_LABELS[value]()}
-            </button>
-          );
-        })}
+        <div
+          className="mt-3 flex gap-1 rounded-xl bg-muted/70 p-1"
+          role="tablist"
+          aria-label="按状态筛选"
+        >
+          <FilterChip
+            selected={filter === "all"}
+            onClick={() => onFilterChange("all")}
+            label="全部"
+            count={total}
+          />
+          {shopStatusFilterChips.map((value) => {
+            const meta = FILTER_META[value];
+            const selected = filter === value;
+            return (
+              <button
+                key={value}
+                type="button"
+                role="tab"
+                aria-selected={selected}
+                onClick={() => onFilterChange(selected ? "all" : value)}
+                className={cn(
+                  "flex flex-1 items-center justify-center gap-1.5 rounded-lg px-3 py-2 text-[13px] font-semibold transition-all duration-150 active:scale-[0.97]",
+                  selected
+                    ? meta.activeClass
+                    : "text-muted-foreground hover:text-foreground"
+                )}
+              >
+                <span
+                  className={cn(
+                    "h-1.5 w-1.5 rounded-full",
+                    selected ? "bg-white" : meta.dotClass
+                  )}
+                />
+                {meta.label}
+                <span
+                  className={cn(
+                    "rounded-full px-1.5 py-0.5 text-[11px] font-bold tabular-nums",
+                    selected ? "bg-white/25" : "bg-background"
+                  )}
+                >
+                  {counts[value]}
+                </span>
+              </button>
+            );
+          })}
+        </div>
       </div>
 
       <PwaInstallSheet
@@ -196,5 +231,42 @@ export function ShopHeader({
         swControllerUrl={swControllerUrl}
       />
     </header>
+  );
+}
+
+function FilterChip({
+  selected,
+  onClick,
+  label,
+  count
+}: {
+  selected: boolean;
+  onClick: () => void;
+  label: string;
+  count: number;
+}) {
+  return (
+    <button
+      type="button"
+      role="tab"
+      aria-selected={selected}
+      onClick={onClick}
+      className={cn(
+        "flex flex-1 items-center justify-center gap-1.5 rounded-lg px-3 py-2 text-[13px] font-semibold transition-all duration-150 active:scale-[0.97]",
+        selected
+          ? "bg-foreground text-background shadow-sm"
+          : "text-muted-foreground hover:text-foreground"
+      )}
+    >
+      {label}
+      <span
+        className={cn(
+          "rounded-full px-1.5 py-0.5 text-[11px] font-bold tabular-nums",
+          selected ? "bg-background/25" : "bg-background"
+        )}
+      >
+        {count}
+      </span>
+    </button>
   );
 }
