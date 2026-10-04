@@ -139,8 +139,8 @@ function SectionTitle({
   children: React.ReactNode;
 }) {
   return (
-    <h2 className="flex items-center gap-1.5 text-sm font-semibold text-foreground">
-      {icon ? <span className="text-muted-foreground">{icon}</span> : null}
+    <h2 className="flex items-center gap-1.5 px-4 text-[13px] font-medium uppercase tracking-wide text-[#8E8E93]">
+      {icon ? <span className="opacity-70">{icon}</span> : null}
       {children}
     </h2>
   );
@@ -156,7 +156,7 @@ function WorkOrderSection({ work }: { work: ShopCurrentWork | null }) {
     : null;
 
   return (
-    <section className="overflow-hidden rounded-2xl border border-border bg-card shadow-sm">
+    <section className="overflow-hidden rounded-2xl bg-white shadow-[0_1px_3px_rgba(0,0,0,0.06)] dark:bg-[#1C1C1E]">
       <div className="border-b border-border bg-muted/40 px-4 py-2.5">
         <SectionTitle icon={<LuPackage className="h-4 w-4" />}>
           当前生产
@@ -255,7 +255,7 @@ function ReportForm({
   const meta = reportKindMeta[kind];
 
   return (
-    <section className="overflow-hidden rounded-2xl border border-border bg-card shadow-sm">
+    <section className="overflow-hidden rounded-2xl bg-white shadow-[0_1px_3px_rgba(0,0,0,0.06)] dark:bg-[#1C1C1E]">
       <div className="flex items-start justify-between gap-2 border-b border-border bg-muted/40 px-4 py-3">
         <div className="flex items-center gap-2.5">
           <span
@@ -415,7 +415,7 @@ function DispatchActions({
     dispatch.shopKind === "break" ? "break" : "down";
 
   return (
-    <section className="overflow-hidden rounded-2xl border border-border bg-card shadow-sm">
+    <section className="overflow-hidden rounded-2xl bg-white shadow-[0_1px_3px_rgba(0,0,0,0.06)] dark:bg-[#1C1C1E]">
       <div className="flex items-start justify-between gap-2 px-4 pt-3">
         <div className="min-w-0 flex-1">
           <p className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
@@ -592,7 +592,6 @@ export function MachineDetailPage({
     machine.status === "running" ||
     machine.status === "idle" ||
     machine.openDispatches.length === 0;
-  const meta = statusMeta[machine.status];
 
   useEffect(() => {
     if (fetcher.state !== "idle" || !fetcher.data?.ok) return;
@@ -658,30 +657,32 @@ export function MachineDetailPage({
   };
 
   return (
-    <div className="mx-auto flex min-h-dvh w-full max-w-3xl flex-col gap-4 bg-muted/30 pb-24">
-      <header className="sticky top-0 z-10 border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80">
-        <div className="flex items-center gap-2 px-2 py-2">
+    <div className="mx-auto flex min-h-dvh w-full max-w-3xl flex-col gap-4 bg-[#F2F2F7] pb-24 dark:bg-black">
+      <header className="sticky top-0 z-10 border-b border-black/5 bg-[#F2F2F7]/80 backdrop-blur-xl dark:border-white/10 dark:bg-black/70">
+        <div className="flex items-center gap-1 px-2 py-2">
           <button
             type="button"
-            className="rounded-md p-2 text-foreground hover:bg-muted"
+            className="flex items-center rounded-full py-1 pl-1 pr-2 text-[#007AFF] transition active:opacity-60"
             aria-label="返回"
             onClick={() => navigate(path.to.shop)}
           >
-            <LuChevronLeft className="h-5 w-5" />
+            <LuChevronLeft className="h-6 w-6" />
+            <span className="text-[17px]">机台</span>
           </button>
-          <div className="min-w-0 flex-1">
-            <h1 className="truncate text-lg font-bold tracking-tight">
+          <div className="min-w-0 flex-1 text-center">
+            <h1 className="truncate text-[17px] font-semibold tracking-tight text-black dark:text-white">
               {machine.name}
             </h1>
             {machine.subtitle ? (
-              <p className="truncate text-xs text-muted-foreground">
+              <p className="truncate text-[12px] text-[#8E8E93]">
                 {machine.subtitle}
               </p>
             ) : null}
           </div>
-          <MachineStatusChip status={machine.status} />
+          <div className="w-[76px] shrink-0 flex justify-end pr-2">
+            <MachineStatusChip status={machine.status} />
+          </div>
         </div>
-        <div className={cn("h-1 w-full bg-gradient-to-r", meta.gradient)} />
       </header>
 
       <div className="flex flex-col gap-4 px-4">
@@ -707,7 +708,7 @@ export function MachineDetailPage({
                 type="button"
                 disabled={busy}
                 onClick={() => setReportKind("break")}
-                className="flex flex-col items-center gap-1.5 rounded-2xl border border-border bg-card px-2 py-4 shadow-sm transition active:scale-95 disabled:opacity-50"
+                className="flex flex-col items-center gap-1.5 rounded-2xl bg-white px-2 py-4 shadow-[0_1px_3px_rgba(0,0,0,0.06)] transition active:scale-[0.97] active:opacity-80 disabled:opacity-50 dark:bg-[#1C1C1E]"
               >
                 <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-sky-500 to-blue-600 text-white">
                   <LuCoffee className="h-5 w-5" />
@@ -718,7 +719,7 @@ export function MachineDetailPage({
                 type="button"
                 disabled={busy}
                 onClick={() => setReportKind("planned")}
-                className="flex flex-col items-center gap-1.5 rounded-2xl border border-border bg-card px-2 py-4 shadow-sm transition active:scale-95 disabled:opacity-50"
+                className="flex flex-col items-center gap-1.5 rounded-2xl bg-white px-2 py-4 shadow-[0_1px_3px_rgba(0,0,0,0.06)] transition active:scale-[0.97] active:opacity-80 disabled:opacity-50 dark:bg-[#1C1C1E]"
               >
                 <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-amber-500 to-orange-500 text-white">
                   <LuCalendarClock className="h-5 w-5" />
@@ -729,7 +730,7 @@ export function MachineDetailPage({
                 type="button"
                 disabled={busy}
                 onClick={() => setReportKind("fault")}
-                className="flex flex-col items-center gap-1.5 rounded-2xl border border-border bg-card px-2 py-4 shadow-sm transition active:scale-95 disabled:opacity-50"
+                className="flex flex-col items-center gap-1.5 rounded-2xl bg-white px-2 py-4 shadow-[0_1px_3px_rgba(0,0,0,0.06)] transition active:scale-[0.97] active:opacity-80 disabled:opacity-50 dark:bg-[#1C1C1E]"
               >
                 <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-red-500 to-rose-600 text-white">
                   <LuTriangleAlert className="h-5 w-5" />
@@ -780,7 +781,7 @@ export function MachineDetailPage({
           </section>
         ) : null}
 
-        <section className="rounded-2xl border border-border bg-card px-4 py-3 shadow-sm">
+        <section className="rounded-2xl bg-white px-4 py-3 shadow-[0_1px_3px_rgba(0,0,0,0.06)] dark:bg-[#1C1C1E]">
           <SectionTitle icon={<LuTrendingUp className="h-4 w-4" />}>
             今日产量
           </SectionTitle>
@@ -811,7 +812,7 @@ export function MachineDetailPage({
                 return (
                   <li
                     key={item.id}
-                    className="rounded-2xl border border-border bg-card px-4 py-3 shadow-sm"
+                    className="rounded-2xl bg-white px-4 py-3 shadow-[0_1px_3px_rgba(0,0,0,0.06)] dark:bg-[#1C1C1E]"
                   >
                     <div className="flex items-center justify-between gap-2">
                       <span className="text-sm font-semibold">
