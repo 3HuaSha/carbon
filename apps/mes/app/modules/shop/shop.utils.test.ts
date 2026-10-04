@@ -6,6 +6,7 @@ import {
   deriveShopMachineStatus,
   detectShopStatusTransitions,
   filterShopMachines,
+  formatShopTilePersonLine,
   groupPeopleByAssignGroup,
   groupShopMachinesByArea,
   matchesShopAssignGroup,
@@ -18,6 +19,55 @@ import {
   shopMachineSubtitle,
   shopStatusSnapshotFromMachines
 } from "./shop.utils";
+
+describe("formatShopTilePersonLine", () => {
+  it("joins assignee and downtime reason on one line when down", () => {
+    expect(
+      formatShopTilePersonLine({
+        status: "down",
+        assigneeName: "明 小",
+        downtimeReason: "2号披风液压泄漏"
+      })
+    ).toEqual({ text: "明 小 · 2号披风液压泄漏", tone: "assignee" });
+  });
+
+  it("uses 未分配 then reason when down and unassigned", () => {
+    expect(
+      formatShopTilePersonLine({
+        status: "down",
+        assigneeName: null,
+        downtimeReason: "异响"
+      })
+    ).toEqual({ text: "未分配 · 异响", tone: "unassigned" });
+  });
+
+  it("omits reason clutter when not down", () => {
+    expect(
+      formatShopTilePersonLine({
+        status: "running",
+        assigneeName: "明 小",
+        downtimeReason: "should-not-show"
+      })
+    ).toEqual({ text: "明 小", tone: "assignee" });
+    expect(
+      formatShopTilePersonLine({
+        status: "idle",
+        assigneeName: null,
+        downtimeReason: "should-not-show"
+      })
+    ).toEqual({ text: "—", tone: "empty" });
+  });
+
+  it("shows 未分配 alone when down with no reason", () => {
+    expect(
+      formatShopTilePersonLine({
+        status: "down",
+        assigneeName: "  ",
+        downtimeReason: null
+      })
+    ).toEqual({ text: "未分配", tone: "unassigned" });
+  });
+});
 
 describe("matchesShopCrewEmployeeType", () => {
   it("matches Chinese and English repair aliases", () => {

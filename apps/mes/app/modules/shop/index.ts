@@ -36,6 +36,7 @@ export {
   deriveShopMachineStatus,
   detectShopStatusTransitions,
   filterShopMachines,
+  formatShopTilePersonLine,
   groupPeopleByAssignGroup,
   groupShopMachinesByArea,
   matchesShopAssignGroup,
