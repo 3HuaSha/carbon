@@ -102,9 +102,6 @@ msgstr "{fails} 个抽样不合格已被记录，将不会被完成 — 从操�
 msgid "{recorded}/{0} jobs"
 msgstr "{recorded}/{0} 个工单"
 
-msgid "{total} machines"
-msgstr "{total} 台机器"
-
 msgid "+{overflow} more"
 msgstr "还有 +{overflow} 个"
 
@@ -707,9 +704,6 @@ msgstr "筛选"
 msgid "Filter by location"
 msgstr "按位置筛选"
 
-msgid "Filter by status"
-msgstr "按状态筛选"
-
 msgid "Finish"
 msgstr "完成"
 
@@ -806,14 +800,8 @@ msgstr "检验物品"
 msgid "inspected"
 msgstr "已检验"
 
-msgid "Install"
-msgstr "Install"
-
 msgid "Install MES"
 msgstr "Install MES"
-
-msgid "Install ready — tap again"
-msgstr "Install ready — tap again"
 
 msgid "Instructions"
 msgstr "作业指导"
@@ -971,9 +959,6 @@ msgstr "机器现在正在维护吗？"
 msgid "Machine status"
 msgstr "机器状态"
 
-msgid "Machines"
-msgstr "机台"
-
 msgid "Maintenance"
 msgstr "维护"
 
@@ -1106,9 +1091,6 @@ msgstr "无检验"
 
 msgid "No issue types configured"
 msgstr "未配置问题类型"
-
-msgid "No machines match this filter."
-msgstr "没有符合此筛选条件的机器。"
 
 msgid "No maintenance scheduled for today"
 msgstr "今天没有计划的维护"
@@ -1277,9 +1259,6 @@ msgstr "打开此生产批次中的工单"
 msgid "Open an NCR for MRB disposition"
 msgstr "为MRB处置打开NCR"
 
-msgid "Open app — Already installed"
-msgstr "打开应用 — 已安装"
-
 msgid "Open in Chrome"
 msgstr "Open in Chrome"
 
@@ -1394,9 +1373,6 @@ msgstr "请选择一个物料"
 
 msgid "PM schedule lapsed"
 msgstr "PM排程已逾期"
-
-msgid "Preparing install…"
-msgstr "正在准备安装…"
 
 msgid "Press ? on any page to open this list. Shortcuts are ignored while you type in a field."
 msgstr "在任何页面按 ? 打开此列表。在字段中输入时快捷键不可用。"
@@ -1713,9 +1689,6 @@ msgstr "在规划生产批次时设置。"
 
 msgid "Setup"
 msgstr "换型"
-
-msgid "Shop floor"
-msgstr "车间"
 
 msgid "short"
 msgstr "短缺"

@@ -79,6 +79,26 @@ export type ShopMachine = {
   currentWork: ShopCurrentWork | null;
   isBlocked: boolean;
   openDispatches: ShopOpenDispatch[];
+  /**
+   * True when downtime just ended (停机 → 空闲). Cleared when someone opens
+   * `/shop/:workCenterId`. Server-backed (Redis) so every shop device sees it.
+   */
+  justFixed?: boolean;
+};
+
+/** Reminder kinds written when machine status crosses downtime boundaries. */
+export const shopAlertKinds = ["down", "recovered"] as const;
+
+export type ShopAlertKind = (typeof shopAlertKinds)[number];
+
+/** One row on the `/shop/alerts` 提醒 page. */
+export type ShopAlert = {
+  id: string;
+  kind: ShopAlertKind;
+  workCenterId: string;
+  workCenterName: string;
+  /** ISO timestamp when the transition was detected. */
+  createdAt: string;
 };
 
 /**

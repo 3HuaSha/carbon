@@ -102,9 +102,6 @@ msgstr "{fails} örnek hata(ları) kaydedildi ve tamamlanmayacak — bunları i�
 msgid "{recorded}/{0} jobs"
 msgstr "{recorded}/{0} iş emirleri"
 
-msgid "{total} machines"
-msgstr "{total} makine"
-
 msgid "+{overflow} more"
 msgstr "+{overflow} daha fazla"
 
@@ -707,9 +704,6 @@ msgstr "Filtrele"
 msgid "Filter by location"
 msgstr "Konuma göre filtrele"
 
-msgid "Filter by status"
-msgstr "Duruma göre filtrele"
-
 msgid "Finish"
 msgstr "Bitir"
 
@@ -806,14 +800,8 @@ msgstr "Ürünü İncele"
 msgid "inspected"
 msgstr "incelendi"
 
-msgid "Install"
-msgstr "Install"
-
 msgid "Install MES"
 msgstr "Install MES"
-
-msgid "Install ready — tap again"
-msgstr "Install ready — tap again"
 
 msgid "Instructions"
 msgstr "Talimatlar"
@@ -971,9 +959,6 @@ msgstr "Makine şu anda bakım için kapalı mı?"
 msgid "Machine status"
 msgstr "Makine durumu"
 
-msgid "Machines"
-msgstr ""
-
 msgid "Maintenance"
 msgstr "Bakım"
 
@@ -1106,9 +1091,6 @@ msgstr "Muayene yok"
 
 msgid "No issue types configured"
 msgstr "Sorun türü yapılandırılmadı"
-
-msgid "No machines match this filter."
-msgstr "Bu filtreyle eşleşen makine yok."
 
 msgid "No maintenance scheduled for today"
 msgstr "Bugün planlanmış bakım yok"
@@ -1277,9 +1259,6 @@ msgstr "Bu partizeki bir iş emrini aç"
 msgid "Open an NCR for MRB disposition"
 msgstr "MRB kararı için NCR aç"
 
-msgid "Open app — Already installed"
-msgstr "Uygulamayı aç — Zaten yüklendi"
-
 msgid "Open in Chrome"
 msgstr "Open in Chrome"
 
@@ -1394,9 +1373,6 @@ msgstr "Lütfen bir ürün seçin"
 
 msgid "PM schedule lapsed"
 msgstr "PM zamanlaması süresi doldu"
-
-msgid "Preparing install…"
-msgstr "Yükleme hazırlanıyor…"
 
 msgid "Press ? on any page to open this list. Shortcuts are ignored while you type in a field."
 msgstr "Herhangi bir sayfada bu listeyi açmak için ? tuşuna basın. Bir alan içinde yazarken kısayollar yoksayılır."
@@ -1713,9 +1689,6 @@ msgstr "Parti planlandığında ayarlandı."
 
 msgid "Setup"
 msgstr "Kurulum"
-
-msgid "Shop floor"
-msgstr "Atölye"
 
 msgid "short"
 msgstr "kısa"

@@ -102,9 +102,6 @@ msgstr "{fails} fallo(s) muestreado(s) registrado(s) y NO serán completado(s) �
 msgid "{recorded}/{0} jobs"
 msgstr "{recorded}/{0} órdenes de trabajo"
 
-msgid "{total} machines"
-msgstr "{total} máquinas"
-
 msgid "+{overflow} more"
 msgstr "+{overflow} más"
 
@@ -707,9 +704,6 @@ msgstr "Filtrar"
 msgid "Filter by location"
 msgstr "Filtrar por ubicación"
 
-msgid "Filter by status"
-msgstr "Filtrar por estado"
-
 msgid "Finish"
 msgstr "Finalizar"
 
@@ -806,14 +800,8 @@ msgstr "Inspeccionar artículo"
 msgid "inspected"
 msgstr "inspeccionado"
 
-msgid "Install"
-msgstr "Install"
-
 msgid "Install MES"
 msgstr "Install MES"
-
-msgid "Install ready — tap again"
-msgstr "Install ready — tap again"
 
 msgid "Instructions"
 msgstr "Instrucciones"
@@ -971,9 +959,6 @@ msgstr "¿Máquina fuera de servicio por mantenimiento ahora?"
 msgid "Machine status"
 msgstr "Estado de la máquina"
 
-msgid "Machines"
-msgstr ""
-
 msgid "Maintenance"
 msgstr "Mantenimiento"
 
@@ -1106,9 +1091,6 @@ msgstr "Sin inspección"
 
 msgid "No issue types configured"
 msgstr "No hay tipos de problema configurados"
-
-msgid "No machines match this filter."
-msgstr "Ninguna máquina coincide con este filtro."
 
 msgid "No maintenance scheduled for today"
 msgstr "No hay mantenimiento programado para hoy"
@@ -1277,9 +1259,6 @@ msgstr "Abrir una orden de trabajo en este lote de producción"
 msgid "Open an NCR for MRB disposition"
 msgstr "Abrir un NCR para la disposición de MRB"
 
-msgid "Open app — Already installed"
-msgstr "Abrir aplicación — Ya instalada"
-
 msgid "Open in Chrome"
 msgstr "Open in Chrome"
 
@@ -1394,9 +1373,6 @@ msgstr "Por favor seleccione un artículo"
 
 msgid "PM schedule lapsed"
 msgstr "Cronograma de PM caducado"
-
-msgid "Preparing install…"
-msgstr "Preparando instalación…"
 
 msgid "Press ? on any page to open this list. Shortcuts are ignored while you type in a field."
 msgstr "Presione ? en cualquier página para abrir la lista. Los atajos se ignoran mientras escribe en un campo."
@@ -1713,9 +1689,6 @@ msgstr "Se establece cuando el lote de producción fue planificado."
 
 msgid "Setup"
 msgstr "Preparación"
-
-msgid "Shop floor"
-msgstr "Planta"
 
 msgid "short"
 msgstr "corto"

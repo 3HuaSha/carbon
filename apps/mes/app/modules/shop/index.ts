@@ -1,4 +1,6 @@
 export type {
+  ShopAlert,
+  ShopAlertKind,
   ShopAssignGroup,
   ShopCrewBoard,
   ShopCrewKind,
@@ -19,6 +21,7 @@ export type {
   ShopStatusFilter
 } from "./shop.types";
 export {
+  shopAlertKinds,
   shopAssignGroups,
   shopCrewKinds,
   shopDispatchKinds,
@@ -30,6 +33,7 @@ export {
 export {
   countShopStatuses,
   deriveShopMachineStatus,
+  detectShopStatusTransitions,
   filterShopMachines,
   groupPeopleByAssignGroup,
   groupShopMachinesByArea,
@@ -42,5 +46,6 @@ export {
   SHOP_ASSIGN_GROUP_ALIASES,
   SHOP_ASSIGN_GROUP_LABELS,
   SHOP_CREW_TYPE_ALIASES,
-  shopMachineSubtitle
+  shopMachineSubtitle,
+  shopStatusSnapshotFromMachines
 } from "./shop.utils";

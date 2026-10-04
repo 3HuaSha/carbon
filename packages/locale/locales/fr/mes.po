@@ -102,9 +102,6 @@ msgstr "{fails} défaut(s) échantillonné(s) enregistré(s) et ne seront PAS co
 msgid "{recorded}/{0} jobs"
 msgstr "{recorded}/{0} ordres de fabrication"
 
-msgid "{total} machines"
-msgstr "{total} machines"
-
 msgid "+{overflow} more"
 msgstr "+{overflow} autres"
 
@@ -707,9 +704,6 @@ msgstr "Filtre"
 msgid "Filter by location"
 msgstr "Filtrer par emplacement"
 
-msgid "Filter by status"
-msgstr "Filtrer par statut"
-
 msgid "Finish"
 msgstr "Terminer"
 
@@ -806,14 +800,8 @@ msgstr "Inspecter l'article"
 msgid "inspected"
 msgstr "inspecté"
 
-msgid "Install"
-msgstr "Install"
-
 msgid "Install MES"
 msgstr "Install MES"
-
-msgid "Install ready — tap again"
-msgstr "Install ready — tap again"
 
 msgid "Instructions"
 msgstr "Instructions"
@@ -971,9 +959,6 @@ msgstr "Machine arrêtée pour maintenance actuellement ?"
 msgid "Machine status"
 msgstr "État de la machine"
 
-msgid "Machines"
-msgstr ""
-
 msgid "Maintenance"
 msgstr "Maintenance"
 
@@ -1106,9 +1091,6 @@ msgstr "Pas d’inspection"
 
 msgid "No issue types configured"
 msgstr "Aucun type de problème configuré"
-
-msgid "No machines match this filter."
-msgstr "Aucune machine ne correspond à ce filtre."
 
 msgid "No maintenance scheduled for today"
 msgstr "Aucune maintenance planifiée pour aujourd'hui"
@@ -1277,9 +1259,6 @@ msgstr "Ouvrir un ordre de fabrication dans ce lot de production"
 msgid "Open an NCR for MRB disposition"
 msgstr "Ouvrir une NCR pour le traitement du MRB"
 
-msgid "Open app — Already installed"
-msgstr "Ouvrir l'application — Déjà installée"
-
 msgid "Open in Chrome"
 msgstr "Open in Chrome"
 
@@ -1394,9 +1373,6 @@ msgstr "Veuillez sélectionner un article"
 
 msgid "PM schedule lapsed"
 msgstr "Calendrier PM dépassé"
-
-msgid "Preparing install…"
-msgstr "Préparation de l’installation…"
 
 msgid "Press ? on any page to open this list. Shortcuts are ignored while you type in a field."
 msgstr "Appuyez sur ? n'importe où pour ouvrir cette liste. Les raccourcis sont ignorés lorsque vous tapez dans un champ."
@@ -1713,9 +1689,6 @@ msgstr "Défini lors de la planification du lot de production."
 
 msgid "Setup"
 msgstr "Réglage"
-
-msgid "Shop floor"
-msgstr "Atelier"
 
 msgid "short"
 msgstr "court"

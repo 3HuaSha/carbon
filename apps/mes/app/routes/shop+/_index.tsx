@@ -1,9 +1,10 @@
 import { notFound } from "@carbon/auth";
 import { requirePermissions } from "@carbon/auth/auth.server";
 import { getCarbonServiceRole } from "@carbon/auth/client.server";
+import { useInterval } from "@carbon/react";
 import { useCallback, useState } from "react";
 import type { LoaderFunctionArgs } from "react-router";
-import { useLoaderData, useNavigate } from "react-router";
+import { useLoaderData, useNavigate, useRevalidator } from "react-router";
 import { userContext } from "~/context";
 import {
   countShopStatuses,
@@ -11,9 +12,13 @@ import {
   type ShopMachine,
   type ShopStatusFilter
 } from "~/modules/shop";
+import { syncShopAlertsForOverview } from "~/modules/shop/shop.alerts.server";
 import { getShopOverview } from "~/modules/shop/shop.server";
 import { MachineGrid, ShopEmptyState, ShopHeader } from "~/modules/shop/ui";
 import { path } from "~/utils/path";
+
+/** Poll so shared PWAs pick up Telegram / other-device status transitions. */
+const SHOP_POLL_MS = 20_000;
 
 /**
  * Phone PWA machine overview. Lists every active work center at the session
@@ -32,13 +37,29 @@ export async function loader({ context, request }: LoaderFunctionArgs) {
     userId
   });
 
-  return overview;
+  const synced = await syncShopAlertsForOverview({
+    companyId,
+    locationId,
+    machines: overview.machines
+  });
+
+  return {
+    ...overview,
+    machines: synced.machines,
+    alertUnreadCount: synced.unreadCount
+  };
 }
 
 export default function ShopIndexRoute() {
-  const { locationName, machines } = useLoaderData<typeof loader>();
+  const { locationName, machines, alertUnreadCount } =
+    useLoaderData<typeof loader>();
   const [filter, setFilter] = useState<ShopStatusFilter>("all");
   const navigate = useNavigate();
+  const revalidator = useRevalidator();
+
+  useInterval(() => {
+    if (revalidator.state === "idle") revalidator.revalidate();
+  }, SHOP_POLL_MS);
 
   const counts = countShopStatuses(machines);
   const visible = filterShopMachines(machines, filter);
@@ -58,6 +79,7 @@ export default function ShopIndexRoute() {
         counts={counts}
         filter={filter}
         onFilterChange={setFilter}
+        alertUnreadCount={alertUnreadCount}
       />
 
       {machines.length === 0 ? (

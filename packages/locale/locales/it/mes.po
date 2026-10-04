@@ -102,9 +102,6 @@ msgstr "{fails} errore(i) campionato(i) registrato(i) e NON sarà(sarranno) comp
 msgid "{recorded}/{0} jobs"
 msgstr "Registrato/{0} ordini di produzione"
 
-msgid "{total} machines"
-msgstr "{total} macchine"
-
 msgid "+{overflow} more"
 msgstr "+{overflow} altri"
 
@@ -707,9 +704,6 @@ msgstr "Filtro"
 msgid "Filter by location"
 msgstr "Filtra per ubicazione"
 
-msgid "Filter by status"
-msgstr "Filtra per stato"
-
 msgid "Finish"
 msgstr "Termina"
 
@@ -806,14 +800,8 @@ msgstr "Ispeziona Articolo"
 msgid "inspected"
 msgstr "ispezionato"
 
-msgid "Install"
-msgstr "Install"
-
 msgid "Install MES"
 msgstr "Install MES"
-
-msgid "Install ready — tap again"
-msgstr "Install ready — tap again"
 
 msgid "Instructions"
 msgstr "Istruzioni"
@@ -971,9 +959,6 @@ msgstr "Macchina in manutenzione adesso?"
 msgid "Machine status"
 msgstr "Stato macchina"
 
-msgid "Machines"
-msgstr ""
-
 msgid "Maintenance"
 msgstr "Manutenzione"
 
@@ -1106,9 +1091,6 @@ msgstr "Nessuna ispezione"
 
 msgid "No issue types configured"
 msgstr "Nessun tipo di problema configurato"
-
-msgid "No machines match this filter."
-msgstr "Nessuna macchina corrisponde a questo filtro."
 
 msgid "No maintenance scheduled for today"
 msgstr "Nessuna manutenzione programmata per oggi"
@@ -1277,9 +1259,6 @@ msgstr "Apri un ordine di produzione in questo lotto di produzione"
 msgid "Open an NCR for MRB disposition"
 msgstr "Apri un NCR per la disposizione MRB"
 
-msgid "Open app — Already installed"
-msgstr "Apri app — Già installata"
-
 msgid "Open in Chrome"
 msgstr "Open in Chrome"
 
@@ -1394,9 +1373,6 @@ msgstr "Selezionare un articolo"
 
 msgid "PM schedule lapsed"
 msgstr "Pianificazione PM scaduta"
-
-msgid "Preparing install…"
-msgstr "Preparazione installazione…"
 
 msgid "Press ? on any page to open this list. Shortcuts are ignored while you type in a field."
 msgstr "Premi ? su qualsiasi pagina per aprire questo elenco. Le scorciatoie vengono ignorate mentre digiti in un campo."
@@ -1713,9 +1689,6 @@ msgstr "Impostato quando il Lotto di produzione è stato pianificato."
 
 msgid "Setup"
 msgstr "Attrezzaggio"
-
-msgid "Shop floor"
-msgstr "Officina"
 
 msgid "short"
 msgstr "breve"

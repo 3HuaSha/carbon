@@ -1,4 +1,5 @@
 import type {
+  ShopAlertKind,
   ShopAssignGroup,
   ShopCrewKind,
   ShopDispatchKind,
@@ -218,6 +219,69 @@ export function countShopStatuses(
   }
 
   return counts;
+}
+
+/** Transition detected while syncing the last-seen status snapshot. */
+export type ShopStatusTransition = {
+  kind: ShopAlertKind;
+  workCenterId: string;
+  workCenterName: string;
+  /** True when this transition should light the 「刚修完」 badge. */
+  justFixed: boolean;
+};
+
+/**
+ * Diff previous vs current shop statuses.
+ *
+ * Alerts:
+ * - any → 停机 (down)
+ * - 停机 → 空闲 (idle) — also marks justFixed
+ *
+ * Machines with no prior snapshot are skipped (first load / new work center)
+ * so we don't flood the 提醒 page on cold start.
+ */
+export function detectShopStatusTransitions(
+  previous: Record<string, ShopMachineStatus>,
+  current: { id: string; name: string; status: ShopMachineStatus }[]
+): ShopStatusTransition[] {
+  const transitions: ShopStatusTransition[] = [];
+
+  for (const machine of current) {
+    const prev = previous[machine.id];
+    if (prev === undefined) continue;
+
+    if (machine.status === "down" && prev !== "down") {
+      transitions.push({
+        kind: "down",
+        workCenterId: machine.id,
+        workCenterName: machine.name,
+        justFixed: false
+      });
+      continue;
+    }
+
+    if (prev === "down" && machine.status === "idle") {
+      transitions.push({
+        kind: "recovered",
+        workCenterId: machine.id,
+        workCenterName: machine.name,
+        justFixed: true
+      });
+    }
+  }
+
+  return transitions;
+}
+
+/** Snapshot map written after each `/shop` sync. */
+export function shopStatusSnapshotFromMachines(
+  machines: { id: string; status: ShopMachineStatus }[]
+): Record<string, ShopMachineStatus> {
+  const snapshot: Record<string, ShopMachineStatus> = {};
+  for (const machine of machines) {
+    snapshot[machine.id] = machine.status;
+  }
+  return snapshot;
 }
 
 /** Group machines by department; null/empty department → single "Other" bucket last. */

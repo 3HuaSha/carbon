@@ -102,9 +102,6 @@ msgstr "{fails} erfasste Fehler werden NICHT abgeschlossen – beheben Sie diese
 msgid "{recorded}/{0} jobs"
 msgstr "{recorded}/{0} Fertigungsaufträge"
 
-msgid "{total} machines"
-msgstr "{total} Maschinen"
-
 msgid "+{overflow} more"
 msgstr "+{overflow} weitere"
 
@@ -707,9 +704,6 @@ msgstr "Filter"
 msgid "Filter by location"
 msgstr "Nach Standort filtern"
 
-msgid "Filter by status"
-msgstr "Nach Status filtern"
-
 msgid "Finish"
 msgstr "Fertig"
 
@@ -806,14 +800,8 @@ msgstr "Artikel prüfen"
 msgid "inspected"
 msgstr "geprüft"
 
-msgid "Install"
-msgstr "Install"
-
 msgid "Install MES"
 msgstr "Install MES"
-
-msgid "Install ready — tap again"
-msgstr "Install ready — tap again"
 
 msgid "Instructions"
 msgstr "Anweisungen"
@@ -971,9 +959,6 @@ msgstr "Maschine jetzt zur Instandhaltung außer Betrieb?"
 msgid "Machine status"
 msgstr "Maschinenstatus"
 
-msgid "Machines"
-msgstr ""
-
 msgid "Maintenance"
 msgstr "Instandhaltung"
 
@@ -1106,9 +1091,6 @@ msgstr "Keine Prüfung"
 
 msgid "No issue types configured"
 msgstr "Keine Problemtypen konfiguriert"
-
-msgid "No machines match this filter."
-msgstr "Keine Maschinen entsprechen diesem Filter."
 
 msgid "No maintenance scheduled for today"
 msgstr "Keine Instandhaltung für heute geplant"
@@ -1277,9 +1259,6 @@ msgstr "Öffnen Sie einen Fertigungsauftrag in diesem Los"
 msgid "Open an NCR for MRB disposition"
 msgstr "Öffnen Sie einen NCR für MRB-Verwendungsentscheid"
 
-msgid "Open app — Already installed"
-msgstr "App öffnen – Bereits installiert"
-
 msgid "Open in Chrome"
 msgstr "Open in Chrome"
 
@@ -1394,9 +1373,6 @@ msgstr "Bitte wählen Sie einen Artikel aus"
 
 msgid "PM schedule lapsed"
 msgstr "Wartungsplan abgelaufen"
-
-msgid "Preparing install…"
-msgstr "Installation wird vorbereitet…"
 
 msgid "Press ? on any page to open this list. Shortcuts are ignored while you type in a field."
 msgstr "Drücken Sie ? auf jeder Seite, um diese Liste zu öffnen. Tastaturverknüpfungen werden ignoriert, während Sie in einem Feld tippen."
@@ -1713,9 +1689,6 @@ msgstr "Eingestellt, wenn das Los geplant wurde."
 
 msgid "Setup"
 msgstr "Rüsten"
-
-msgid "Shop floor"
-msgstr "Werkstatt"
 
 msgid "short"
 msgstr "kurz"

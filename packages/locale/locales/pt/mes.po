@@ -102,9 +102,6 @@ msgstr "{fails} falha(s) amostrada(s) registrada(s) e NÃO será(ão) concluída
 msgid "{recorded}/{0} jobs"
 msgstr "{recorded}/{0} ordens de produção"
 
-msgid "{total} machines"
-msgstr "{total} máquinas"
-
 msgid "+{overflow} more"
 msgstr "+{overflow} mais"
 
@@ -707,9 +704,6 @@ msgstr "Filtro"
 msgid "Filter by location"
 msgstr "Filtrar por localização"
 
-msgid "Filter by status"
-msgstr "Filtrar por status"
-
 msgid "Finish"
 msgstr "Concluir"
 
@@ -806,14 +800,8 @@ msgstr "Inspecionar Item"
 msgid "inspected"
 msgstr "inspecionado"
 
-msgid "Install"
-msgstr "Install"
-
 msgid "Install MES"
 msgstr "Install MES"
-
-msgid "Install ready — tap again"
-msgstr "Install ready — tap again"
 
 msgid "Instructions"
 msgstr "Instruções"
@@ -971,9 +959,6 @@ msgstr "Máquina inativa para manutenção agora?"
 msgid "Machine status"
 msgstr "Estado da máquina"
 
-msgid "Machines"
-msgstr ""
-
 msgid "Maintenance"
 msgstr "Manutenção"
 
@@ -1106,9 +1091,6 @@ msgstr "Sem inspeção"
 
 msgid "No issue types configured"
 msgstr "Nenhum tipo de problema configurado"
-
-msgid "No machines match this filter."
-msgstr "Nenhuma máquina corresponde a este filtro."
 
 msgid "No maintenance scheduled for today"
 msgstr "Nenhuma manutenção programada para hoje"
@@ -1277,9 +1259,6 @@ msgstr "Abrir uma ordem de produção neste lote de produção"
 msgid "Open an NCR for MRB disposition"
 msgstr "Abrir um NCR para disposição MRB"
 
-msgid "Open app — Already installed"
-msgstr "Abrir aplicativo — Já instalado"
-
 msgid "Open in Chrome"
 msgstr "Open in Chrome"
 
@@ -1394,9 +1373,6 @@ msgstr "Por favor, selecione um item"
 
 msgid "PM schedule lapsed"
 msgstr "Cronograma de PM expirou"
-
-msgid "Preparing install…"
-msgstr "A preparar instalação…"
 
 msgid "Press ? on any page to open this list. Shortcuts are ignored while you type in a field."
 msgstr "Pressione ? em qualquer página para abrir esta lista. Os atalhos são ignorados enquanto você digita em um campo."
@@ -1713,9 +1689,6 @@ msgstr "Definido quando o lote de produção é planejado."
 
 msgid "Setup"
 msgstr "Setup"
-
-msgid "Shop floor"
-msgstr "Chão de fábrica"
 
 msgid "short"
 msgstr "curto"

@@ -64,14 +64,19 @@ export function MachineTile({ machine, onSelect }: MachineTileProps) {
     <button
       type="button"
       onClick={() => onSelect(machine)}
-      aria-label={`${machine.name} ${style.name}${jobId ? ` ${jobId}` : ""}`}
+      aria-label={`${machine.name} ${style.name}${jobId ? ` ${jobId}` : ""}${machine.justFixed ? " 刚修完" : ""}`}
       className={cn(
-        "group flex w-full flex-col gap-1 rounded-xl border p-2 text-left shadow-[0_1px_2px_rgba(0,0,0,0.04)]",
+        "group relative flex w-full flex-col gap-1 rounded-xl border p-2 text-left shadow-[0_1px_2px_rgba(0,0,0,0.04)]",
         "transition-all duration-150 active:scale-[0.96]",
         "hover:shadow-[0_2px_8px_rgba(0,0,0,0.08)]",
         style.card
       )}
     >
+      {machine.justFixed ? (
+        <span className="absolute -right-1 -top-1 z-[1] rounded px-1 py-px text-[9px] font-bold leading-tight text-white bg-amber-500 shadow-sm">
+          刚修完
+        </span>
+      ) : null}
       <div className="flex min-w-0 items-center justify-between gap-1">
         <span className="truncate text-[13px] font-bold leading-tight tracking-tight">
           {machine.name}

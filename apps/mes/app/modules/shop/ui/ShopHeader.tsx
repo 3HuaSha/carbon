@@ -4,7 +4,9 @@
 
 import { cn, IconButton } from "@carbon/react";
 import { useState } from "react";
-import { LuDownload, LuMonitor, LuShare } from "react-icons/lu";
+import { LuBell, LuDownload, LuMonitor, LuShare } from "react-icons/lu";
+import { Link } from "react-router";
+import { path } from "~/utils/path";
 import type { ShopMachineStatus, ShopStatusFilter } from "../shop.types";
 import { shopStatusFilterChips } from "../shop.types";
 import { PwaInstallSheet } from "./PwaInstallSheet";
@@ -33,6 +35,8 @@ type ShopHeaderProps = {
   counts: Record<ShopMachineStatus, number>;
   filter: ShopStatusFilter;
   onFilterChange: (filter: ShopStatusFilter) => void;
+  /** Unread downtime / recovery reminders → `/shop/alerts`. */
+  alertUnreadCount?: number;
 };
 
 export function ShopHeader({
@@ -40,12 +44,12 @@ export function ShopHeader({
   total,
   counts,
   filter,
-  onFilterChange
+  onFilterChange,
+  alertUnreadCount = 0
 }: ShopHeaderProps) {
   const {
     installed,
     knownInstalled,
-    canPrompt,
     requestInstall,
     openInstalledApp,
     isIos,
@@ -145,27 +149,45 @@ export function ShopHeader({
               </span>
             </p>
           </div>
-          {!installed ? (
-            <IconButton
-              aria-label={installAria}
-              title={installAria}
-              icon={
-                knownInstalled ? (
-                  <LuMonitor />
-                ) : isIos ? (
-                  <LuShare />
-                ) : (
-                  <LuDownload />
-                )
+          <div className="flex shrink-0 items-center gap-1.5">
+            <Link
+              to={path.to.shopAlerts}
+              className="relative inline-flex h-9 w-9 items-center justify-center rounded-md text-foreground active:bg-muted"
+              aria-label={
+                alertUnreadCount > 0
+                  ? `提醒，${alertUnreadCount} 条未读`
+                  : "提醒"
               }
-              variant="secondary"
-              size="md"
-              isDisabled={preparing}
-              onClick={() => {
-                void onInstallClick();
-              }}
-            />
-          ) : null}
+            >
+              <LuBell className="h-5 w-5" />
+              {alertUnreadCount > 0 ? (
+                <span className="absolute -right-0.5 -top-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-red-600 px-1 text-[10px] font-bold leading-none text-white tabular-nums">
+                  {alertUnreadCount > 99 ? "99+" : alertUnreadCount}
+                </span>
+              ) : null}
+            </Link>
+            {!installed ? (
+              <IconButton
+                aria-label={installAria}
+                title={installAria}
+                icon={
+                  knownInstalled ? (
+                    <LuMonitor />
+                  ) : isIos ? (
+                    <LuShare />
+                  ) : (
+                    <LuDownload />
+                  )
+                }
+                variant="secondary"
+                size="md"
+                isDisabled={preparing}
+                onClick={() => {
+                  void onInstallClick();
+                }}
+              />
+            ) : null}
+          </div>
         </div>
 
         <div className="mt-3">

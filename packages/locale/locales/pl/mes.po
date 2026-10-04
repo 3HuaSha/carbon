@@ -102,9 +102,6 @@ msgstr "{fails} zarejestrowanych niepowodzeń będzie NIEUKOŃCZONYCH — rozwi�
 msgid "{recorded}/{0} jobs"
 msgstr "{recorded}/{0} zleceń produkcyjnych"
 
-msgid "{total} machines"
-msgstr "{total} maszyn"
-
 msgid "+{overflow} more"
 msgstr "+{overflow} więcej"
 
@@ -707,9 +704,6 @@ msgstr "Filtr"
 msgid "Filter by location"
 msgstr "Filtruj według lokalizacji"
 
-msgid "Filter by status"
-msgstr "Filtruj według statusu"
-
 msgid "Finish"
 msgstr "Zakończ"
 
@@ -806,14 +800,8 @@ msgstr "Zbadaj artykuł"
 msgid "inspected"
 msgstr "zbadane"
 
-msgid "Install"
-msgstr "Install"
-
 msgid "Install MES"
 msgstr "Install MES"
-
-msgid "Install ready — tap again"
-msgstr "Install ready — tap again"
 
 msgid "Instructions"
 msgstr "Instrukcje"
@@ -971,9 +959,6 @@ msgstr "Maszyna niedostępna z powodu utrzymania ruchu teraz?"
 msgid "Machine status"
 msgstr "Status maszyny"
 
-msgid "Machines"
-msgstr ""
-
 msgid "Maintenance"
 msgstr "Utrzymanie ruchu"
 
@@ -1106,9 +1091,6 @@ msgstr "Brak kontroli"
 
 msgid "No issue types configured"
 msgstr "Nie skonfigurowano żadnych typów problemów"
-
-msgid "No machines match this filter."
-msgstr "Brak maszyn pasujących do tego filtra."
 
 msgid "No maintenance scheduled for today"
 msgstr "Brak zaplanowanego utrzymania ruchu na dziś"
@@ -1277,9 +1259,6 @@ msgstr "Otwórz zlecenie produkcyjne w tej partii produkcyjnej"
 msgid "Open an NCR for MRB disposition"
 msgstr "Otwórz NCR dla dyspozycji MRB"
 
-msgid "Open app — Already installed"
-msgstr "Otwórz aplikację — Już zainstalowano"
-
 msgid "Open in Chrome"
 msgstr "Open in Chrome"
 
@@ -1394,9 +1373,6 @@ msgstr "Wybierz pozycję"
 
 msgid "PM schedule lapsed"
 msgstr "Harmonogram PM wygasł"
-
-msgid "Preparing install…"
-msgstr "Przygotowywanie instalacji…"
 
 msgid "Press ? on any page to open this list. Shortcuts are ignored while you type in a field."
 msgstr "Naciśnij ? na dowolnej stronie, aby otworzyć tę listę. Skróty klawiszowe są ignorowane podczas wpisywania w polu."
@@ -1713,9 +1689,6 @@ msgstr "Ustawiono, gdy partia produkcyjna została zaplanowana."
 
 msgid "Setup"
 msgstr "Ustawienie"
-
-msgid "Shop floor"
-msgstr "Hala produkcyjna"
 
 msgid "short"
 msgstr "krótkie"

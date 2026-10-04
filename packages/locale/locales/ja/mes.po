@@ -102,9 +102,6 @@ msgstr "{fails}件のサンプル不良が記録されており、完了され�
 msgid "{recorded}/{0} jobs"
 msgstr "{recorded}/{0}件の製造指図"
 
-msgid "{total} machines"
-msgstr "{total}台の機械"
-
 msgid "+{overflow} more"
 msgstr "+{overflow} その他"
 
@@ -707,9 +704,6 @@ msgstr "絞り込み"
 msgid "Filter by location"
 msgstr "拠点で絞り込み"
 
-msgid "Filter by status"
-msgstr "ステータスで絞り込み"
-
 msgid "Finish"
 msgstr "完了"
 
@@ -806,14 +800,8 @@ msgstr "アイテムを検査"
 msgid "inspected"
 msgstr "検査済み"
 
-msgid "Install"
-msgstr "Install"
-
 msgid "Install MES"
 msgstr "Install MES"
-
-msgid "Install ready — tap again"
-msgstr "Install ready — tap again"
 
 msgid "Instructions"
 msgstr "作業手順"
@@ -971,9 +959,6 @@ msgstr "機械が今保全中ですか？"
 msgid "Machine status"
 msgstr "機械ステータス"
 
-msgid "Machines"
-msgstr ""
-
 msgid "Maintenance"
 msgstr "保全"
 
@@ -1106,9 +1091,6 @@ msgstr "検査なし"
 
 msgid "No issue types configured"
 msgstr "構成されたイシュータイプがありません"
-
-msgid "No machines match this filter."
-msgstr "この絞り込み条件に一致する機械がありません。"
 
 msgid "No maintenance scheduled for today"
 msgstr "本日の保全予定はありません。"
@@ -1277,9 +1259,6 @@ msgstr "このバッチの製造指図を開く"
 msgid "Open an NCR for MRB disposition"
 msgstr "MRB処置のためにNCRを開く"
 
-msgid "Open app — Already installed"
-msgstr "アプリを開く — インストール済み"
-
 msgid "Open in Chrome"
 msgstr "Open in Chrome"
 
@@ -1394,9 +1373,6 @@ msgstr "品目を選択してください"
 
 msgid "PM schedule lapsed"
 msgstr "PM スケジュール失効"
-
-msgid "Preparing install…"
-msgstr "インストールを準備中…"
 
 msgid "Press ? on any page to open this list. Shortcuts are ignored while you type in a field."
 msgstr "任意のページで「?」を押すとこのリストが表示されます。フィールドへの入力中はショートカットが無視されます。"
@@ -1713,9 +1689,6 @@ msgstr "バッチが計画されたときに設定します。"
 
 msgid "Setup"
 msgstr "段取り"
-
-msgid "Shop floor"
-msgstr "製造現場"
 
 msgid "short"
 msgstr "短縮"
