@@ -87,7 +87,7 @@ msgstr "{0} 已报废"
 
 #. placeholder {0}: file.name
 msgid "{0} uploaded"
-msgstr ""
+msgstr "已上传 {0} 个"
 
 msgid "{completed} of {quantity}"
 msgstr "{completed} 的 {quantity}"
@@ -152,7 +152,7 @@ msgid "Add Inventory"
 msgstr "添加库存管理"
 
 msgid "Add photo / video"
-msgstr ""
+msgstr "添加照片 / 视频"
 
 msgid "Add Sample"
 msgstr "添加样本"
@@ -312,7 +312,7 @@ msgid "Cancelled"
 msgstr "已取消"
 
 msgid "Carbon client not available"
-msgstr ""
+msgstr "Carbon 客户端不可用"
 
 msgid "Carbon Logo"
 msgstr "Carbon 标志"
@@ -684,7 +684,7 @@ msgid "Failed to upload image"
 msgstr "图片上传失败"
 
 msgid "Failed to upload media"
-msgstr ""
+msgstr "媒体上传失败"
 
 msgid "Fault"
 msgstr "故障"
@@ -825,7 +825,7 @@ msgid "Insufficient quantity"
 msgstr "数量不足"
 
 msgid "Invalid file name"
-msgstr ""
+msgstr "无效的文件名"
 
 msgid "Inventory adjustment completed"
 msgstr "库存调整已完成"
@@ -1156,7 +1156,7 @@ msgid "No people on this crew"
 msgstr "该班组暂无人员"
 
 msgid "No photos or videos yet"
-msgstr ""
+msgstr "暂无照片或视频"
 
 msgid "No picking lists assigned"
 msgstr "没有分配的拣货单"
@@ -2035,7 +2035,7 @@ msgid "Uploading {0}"
 msgstr "正在上传 {0}"
 
 msgid "Uploading…"
-msgstr ""
+msgstr "上传中…"
 
 msgid "Use a different account"
 msgstr "使用不同的帐户"
