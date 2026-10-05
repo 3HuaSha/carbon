@@ -82,6 +82,7 @@ export async function action({ request }: ActionFunctionArgs) {
     .map((id) => id.trim())
     .filter(Boolean);
   const note = String(formData.get("note") ?? "") || null;
+  const reasonPreset = String(formData.get("reasonPreset") ?? "") || null;
 
   if (!shopMaintenanceActions.includes(rawAction as ShopMaintenanceAction)) {
     return data(
@@ -120,6 +121,7 @@ export async function action({ request }: ActionFunctionArgs) {
     assigneeId,
     notifyUserIds,
     note,
+    reasonPreset,
     companyId,
     userId
   });

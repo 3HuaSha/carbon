@@ -9,6 +9,7 @@ import {
   formatShopTilePersonLine,
   groupPeopleByAssignGroup,
   groupShopMachinesByArea,
+  isNonBlockingShopDispatch,
   isShopMachinePhysicallyRunning,
   mapMeterStatusCode,
   matchesShopAssignGroup,
@@ -202,20 +203,64 @@ describe("parseShopDispatchContent", () => {
   it("reads shopKind and note from content JSON", () => {
     expect(
       parseShopDispatchContent({ shopKind: "planned", note: " changeover " })
-    ).toEqual({ shopKind: "planned", note: "changeover" });
+    ).toEqual({ shopKind: "planned", note: "changeover", reasonPreset: null });
   });
 
   it("reads issue shopKind", () => {
     expect(
       parseShopDispatchContent({ shopKind: "issue", note: "异响待查" })
-    ).toEqual({ shopKind: "issue", note: "异响待查" });
+    ).toEqual({ shopKind: "issue", note: "异响待查", reasonPreset: null });
+  });
+
+  it("reads reasonPreset for planned", () => {
+    expect(
+      parseShopDispatchContent({
+        shopKind: "planned",
+        note: "换模",
+        reasonPreset: "换模"
+      })
+    ).toEqual({
+      shopKind: "planned",
+      note: "换模",
+      reasonPreset: "换模"
+    });
   });
 
   it("returns nulls for empty content", () => {
     expect(parseShopDispatchContent({})).toEqual({
       shopKind: null,
-      note: null
+      note: null,
+      reasonPreset: null
     });
+  });
+});
+
+describe("isNonBlockingShopDispatch", () => {
+  it("treats issue as non-blocking", () => {
+    expect(
+      isNonBlockingShopDispatch({
+        shopKind: "issue",
+        oeeImpact: "No Impact"
+      })
+    ).toBe(true);
+  });
+
+  it("treats planned + No Impact as non-blocking (PWA 计划停机)", () => {
+    expect(
+      isNonBlockingShopDispatch({
+        shopKind: "planned",
+        oeeImpact: "No Impact"
+      })
+    ).toBe(true);
+  });
+
+  it("treats legacy planned + Planned as blocking", () => {
+    expect(
+      isNonBlockingShopDispatch({
+        shopKind: "planned",
+        oeeImpact: "Planned"
+      })
+    ).toBe(false);
   });
 });
 
@@ -391,6 +436,28 @@ describe("deriveShopMachineStatus", () => {
         hasOpenProductionEvent: false,
         openDispatches: [
           { status: "Assigned", oeeImpact: "No Impact", shopKind: "issue" }
+        ],
+        isBlocked: false
+      })
+    ).toBe("idle");
+  });
+
+  it("ignores non-blocking planned (计划停机) for status", () => {
+    expect(
+      deriveShopMachineStatus({
+        hasOpenProductionEvent: true,
+        openDispatches: [
+          { status: "Open", oeeImpact: "No Impact", shopKind: "planned" }
+        ],
+        isBlocked: false
+      })
+    ).toBe("running");
+
+    expect(
+      deriveShopMachineStatus({
+        hasOpenProductionEvent: false,
+        openDispatches: [
+          { status: "Assigned", oeeImpact: "No Impact", shopKind: "planned" }
         ],
         isBlocked: false
       })

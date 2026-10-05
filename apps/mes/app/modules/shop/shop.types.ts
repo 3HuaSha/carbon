@@ -38,6 +38,8 @@ export const shopStatusFilters = ["all", ...shopStatusFilterChips] as const;
 /**
  * Availability / repair episode kind stored in `maintenanceDispatch.content.shopKind`.
  * `issue` = non-blocking 「报问题」 (machine stays running/idle/break).
+ * `planned` may be non-blocking (PWA 计划停机, oeeImpact No Impact) or legacy
+ * blocking downtime (oeeImpact Planned, takesWorkCenterOffline true).
  */
 export const shopDispatchKinds = [
   "break",
@@ -45,6 +47,11 @@ export const shopDispatchKinds = [
   "fault",
   "issue"
 ] as const;
+
+/** Reason chips for non-blocking 计划停机 on machine detail. */
+export const shopPlannedReasonPresets = ["换模", "保养", "其他"] as const;
+
+export type ShopPlannedReasonPreset = (typeof shopPlannedReasonPresets)[number];
 
 export type ShopDispatchKind = (typeof shopDispatchKinds)[number];
 
@@ -103,13 +110,14 @@ export type ShopMachine = {
 };
 
 /**
- * Reminder kinds: status-boundary transitions, non-blocking 「报问题」,
- * and entering 待开机 after Complete.
+ * Reminder kinds: status-boundary transitions, non-blocking 「报问题」 /
+ * 「计划停机」, and entering 待开机 after Complete.
  */
 export const shopAlertKinds = [
   "down",
   "recovered",
   "issue",
+  "planned",
   "awaitingStart"
 ] as const;
 
@@ -123,7 +131,7 @@ export type ShopAlert = {
   workCenterName: string;
   /** ISO timestamp when the transition was detected / issue was reported. */
   createdAt: string;
-  /** Optional problem note (set for `issue` alerts). */
+  /** Optional problem note (set for `issue` / `planned` alerts). */
   note?: string | null;
 };
 

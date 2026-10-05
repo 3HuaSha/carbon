@@ -146,6 +146,8 @@ export async function runShopMaintenanceAction(
     notifyUserIds: string[];
     /** Plain note for Report* / optional on Assign. */
     note: string | null;
+    /** Optional 换模/保养/其他 chip for non-blocking 计划停机. */
+    reasonPreset?: string | null;
     companyId: string;
     userId: string;
   }
@@ -169,12 +171,13 @@ export async function runShopMaintenanceAction(
   }
 
   if (action === "ReportPlanned") {
-    return createShopAvailabilityDispatch(client, {
-      kind: "planned",
+    return createShopIssueDispatch(client, {
+      shopKind: "planned",
       workCenterId,
       assigneeId: args.assigneeId,
       notifyUserIds,
       note,
+      reasonPreset: args.reasonPreset ?? null,
       companyId,
       userId,
       currentTime
@@ -196,10 +199,12 @@ export async function runShopMaintenanceAction(
 
   if (action === "ReportIssue") {
     return createShopIssueDispatch(client, {
+      shopKind: "issue",
       workCenterId,
       assigneeId: args.assigneeId,
       notifyUserIds,
       note,
+      reasonPreset: null,
       companyId,
       userId,
       currentTime
@@ -735,23 +740,36 @@ function successMessage(kind: AvailabilityKind, assigned: boolean): string {
 }
 
 /**
- * Non-blocking 「报问题」: create a maintenance dispatch that does NOT take the
- * work center offline, does NOT end production events, and appears in 提醒.
+ * Non-blocking 「报问题」 / 「计划停机」: create a maintenance dispatch that does
+ * NOT take the work center offline, does NOT end production events, and
+ * appears in 提醒. Differ only by shopKind (+ optional reasonPreset for planned).
+ * Meter (when bridged) remains the source of run/stop — ticket type alone must
+ * not paint 维修中/停机.
  */
 async function createShopIssueDispatch(
   client: SupabaseClient<Database>,
   args: {
+    shopKind: "issue" | "planned";
     workCenterId: string | null;
     assigneeId: string | null;
     notifyUserIds: string[];
     note: string | null;
+    reasonPreset: string | null;
     companyId: string;
     userId: string;
     currentTime: string;
   }
 ): Promise<ShopMaintenanceActionResult> {
-  const { workCenterId, companyId, userId, currentTime, note, notifyUserIds } =
-    args;
+  const {
+    shopKind,
+    workCenterId,
+    companyId,
+    userId,
+    currentTime,
+    note,
+    notifyUserIds,
+    reasonPreset
+  } = args;
 
   if (!workCenterId) {
     return { ok: false, message: "Work center is required" };
@@ -760,7 +778,10 @@ async function createShopIssueDispatch(
   if (!note) {
     return {
       ok: false,
-      message: "Please describe the problem before reporting"
+      message:
+        shopKind === "planned"
+          ? "Please choose a reason or add a note"
+          : "Please describe the problem before reporting"
     };
   }
 
@@ -774,7 +795,8 @@ async function createShopIssueDispatch(
   if (!workCenter.data) {
     logger.warn("Work center not found for shop issue report", {
       companyId,
-      workCenterId
+      workCenterId,
+      shopKind
     });
     return { ok: false, message: "Work center not found" };
   }
@@ -802,14 +824,16 @@ async function createShopIssueDispatch(
   if (nextSequence.error || !nextSequence.data) {
     logger.error("Failed to get maintenance dispatch sequence for issue", {
       companyId,
+      shopKind,
       error: nextSequence.error
     });
     return { ok: false, message: "Failed to create maintenance dispatch" };
   }
 
   const content = {
-    shopKind: "issue" as const,
-    note
+    shopKind,
+    note,
+    ...(reasonPreset ? { reasonPreset } : {})
   };
 
   const insertDispatch = await client
@@ -819,9 +843,11 @@ async function createShopIssueDispatch(
         maintenanceDispatchId: nextSequence.data,
         status: assignee ? "Assigned" : "Open",
         priority: "Medium",
-        severity: "Support Required",
+        severity: shopKind === "planned" ? "Preventive" : "Support Required",
         oeeImpact: "No Impact",
-        // Key difference from 故障报修 / planned / break: machine stays up.
+        // Key difference from blocking 故障报修 / legacy planned / break:
+        // machine status stays Carbon/Meter-derived — ticket type alone does
+        // not force 停机.
         takesWorkCenterOffline: false,
         source: "Reactive",
         workCenterId,
@@ -840,6 +866,7 @@ async function createShopIssueDispatch(
     logger.error("Failed to create shop issue dispatch", {
       companyId,
       workCenterId,
+      shopKind,
       error: insertDispatch.error
     });
     return { ok: false, message: "Failed to create maintenance dispatch" };
@@ -865,12 +892,14 @@ async function createShopIssueDispatch(
         locationId,
         workCenterId,
         workCenterName: workCenter.data.name ?? workCenterId,
-        note
+        note,
+        kind: shopKind
       });
     } catch (err) {
       logger.warn("Failed to append shop issue alert (Redis fail-soft)", {
         companyId,
         workCenterId,
+        shopKind,
         error: err instanceof Error ? err.message : String(err)
       });
     }
@@ -888,10 +917,20 @@ async function createShopIssueDispatch(
     telegramUnbound = notify.telegramUnbound;
   }
 
+  const action = shopKind === "planned" ? "ReportPlanned" : "ReportIssue";
+  const message =
+    shopKind === "planned"
+      ? assignee
+        ? "Planned stop reported and assigned"
+        : "Planned stop reported"
+      : assignee
+        ? "Problem reported and assigned"
+        : "Problem reported";
+
   return {
     ok: true,
-    action: "ReportIssue",
-    message: assignee ? "Problem reported and assigned" : "Problem reported",
+    action,
+    message,
     dispatchId,
     telegramUnbound
   };

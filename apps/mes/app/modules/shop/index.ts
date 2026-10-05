@@ -18,6 +18,7 @@ export type {
   ShopOpenDispatch,
   ShopOverview,
   ShopPerson,
+  ShopPlannedReasonPreset,
   ShopStatusFilter
 } from "./shop.types";
 export {
@@ -27,6 +28,7 @@ export {
   shopDispatchKinds,
   shopMachineStatuses,
   shopMaintenanceActions,
+  shopPlannedReasonPresets,
   shopStatusFilterChips,
   shopStatusFilters
 } from "./shop.types";
@@ -39,6 +41,7 @@ export {
   formatShopTilePersonLine,
   groupPeopleByAssignGroup,
   groupShopMachinesByArea,
+  isNonBlockingShopDispatch,
   isShopMachinePhysicallyRunning,
   matchesShopAssignGroup,
   matchesShopCrewEmployeeType,

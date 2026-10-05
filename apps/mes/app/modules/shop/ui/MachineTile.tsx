@@ -4,7 +4,11 @@
 
 import { cn } from "@carbon/react";
 import type { ShopMachine, ShopMachineStatus } from "../shop.types";
-import { formatShopTilePersonLine, primaryOpenDispatch } from "../shop.utils";
+import {
+  formatShopTilePersonLine,
+  isNonBlockingShopDispatch,
+  primaryOpenDispatch
+} from "../shop.utils";
 import { shopIos } from "./shopIos";
 
 /**
@@ -52,20 +56,24 @@ export function MachineTile({ machine, onSelect }: MachineTileProps) {
     machine.currentWork?.jobReadableId ??
     null;
   const primary = primaryOpenDispatch(machine.openDispatches);
-  const issueDispatch =
-    machine.openDispatches.find((d) => d.shopKind === "issue") ?? null;
+  const nonBlockingDispatch =
+    machine.openDispatches.find((d) => isNonBlockingShopDispatch(d)) ?? null;
 
-  // Open 报问题 alone must not look like 维修 downtime — overlay assignee/note
-  // on running/idle/offline tiles; blocking down still uses downtime line.
+  // Open 报问题 / 计划停机 alone must not look like 维修 downtime — overlay
+  // assignee/note on running/idle/offline tiles; blocking down still uses downtime line.
   const personLine =
-    issueDispatch &&
+    nonBlockingDispatch &&
     machine.status !== "down" &&
     machine.status !== "break" &&
     machine.status !== "awaitingStart"
-      ? formatIssuePersonLine(issueDispatch.assigneeName, issueDispatch.note)
+      ? formatIssuePersonLine(
+          nonBlockingDispatch.assigneeName,
+          nonBlockingDispatch.note
+        )
       : formatShopTilePersonLine({
           status: machine.status,
-          assigneeName: primary?.assigneeName ?? issueDispatch?.assigneeName,
+          assigneeName:
+            primary?.assigneeName ?? nonBlockingDispatch?.assigneeName,
           downtimeReason:
             machine.status === "down" ? primary?.note?.trim() || null : null
         });

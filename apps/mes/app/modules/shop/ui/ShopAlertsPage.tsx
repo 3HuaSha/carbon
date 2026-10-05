@@ -8,6 +8,7 @@ import { getLocalTimeZone, parseDate, today } from "@internationalized/date";
 import { useMemo } from "react";
 import {
   LuBellOff,
+  LuCalendarClock,
   LuChevronLeft,
   LuChevronRight,
   LuCircleAlert,
@@ -49,6 +50,15 @@ function alertMeta(alert: ShopAlert) {
       detail: note || "有新的问题反馈（未停机）",
       iconBg: "bg-[color:var(--shop-warn)]",
       Icon: LuMessageSquareText
+    };
+  }
+  if (alert.kind === "planned") {
+    const note = alert.note?.trim();
+    return {
+      title: `${alert.workCenterName} 计划停机`,
+      detail: note || "计划停机（换模/保养，未强制标停机）",
+      iconBg: "bg-amber-500",
+      Icon: LuCalendarClock
     };
   }
   if (alert.kind === "awaitingStart") {
@@ -115,7 +125,7 @@ export function ShopAlertsPage({ alerts, locationName }: ShopAlertsPageProps) {
           </span>
           <p className="mt-2 text-[17px] font-semibold">暂无提醒</p>
           <p className={cn("text-[14px]", shopIos.muted)}>
-            机台停机、恢复、报问题或待开机时会出现在这里
+            机台停机、恢复、报问题、计划停机或待开机时会出现在这里
           </p>
         </div>
       ) : (
