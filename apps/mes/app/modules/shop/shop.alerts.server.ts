@@ -86,6 +86,7 @@ function parseAlerts(raw: string | null): ShopAlert[] {
         r.kind === "down" ||
         r.kind === "recovered" ||
         r.kind === "issue" ||
+        r.kind === "planned" ||
         r.kind === "awaitingStart"
           ? r.kind
           : null;
@@ -359,7 +360,7 @@ export async function clearAwaitingStart(args: {
 }
 
 /**
- * Push a non-blocking 「报问题」 row into the shared shop 提醒 feed.
+ * Push a non-blocking 「报问题」 / 「计划停机」 row into the shared shop 提醒 feed.
  * Status does not change, so this is not driven by the status-snapshot diff.
  */
 export async function appendShopIssueAlert(args: {
@@ -368,10 +369,12 @@ export async function appendShopIssueAlert(args: {
   workCenterId: string;
   workCenterName: string;
   note: string | null;
+  /** Defaults to `issue`; pass `planned` for 计划停机. */
+  kind?: "issue" | "planned";
 }): Promise<void> {
   await appendShopAlert({
     ...args,
-    kind: "issue",
+    kind: args.kind ?? "issue",
     note: args.note
   });
 }
@@ -395,7 +398,7 @@ async function appendShopAlert(args: {
   locationId: string;
   workCenterId: string;
   workCenterName: string;
-  kind: "issue" | "awaitingStart";
+  kind: "issue" | "planned" | "awaitingStart";
   note: string | null;
 }): Promise<void> {
   const listKey = alertsKey(args.companyId, args.locationId);

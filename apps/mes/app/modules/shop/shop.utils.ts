@@ -236,15 +236,20 @@ export function presentShopDispatchProblem(args: {
 export function parseShopDispatchContent(content: unknown): {
   shopKind: ShopDispatchKind | null;
   note: string | null;
+  reasonPreset: string | null;
 } {
   if (!content || typeof content !== "object" || Array.isArray(content)) {
-    return { shopKind: null, note: null };
+    return { shopKind: null, note: null, reasonPreset: null };
   }
   const record = content as Record<string, unknown>;
   const rawKind = typeof record.shopKind === "string" ? record.shopKind : null;
   const note =
     typeof record.note === "string" && record.note.trim()
       ? record.note.trim()
+      : null;
+  const reasonPreset =
+    typeof record.reasonPreset === "string" && record.reasonPreset.trim()
+      ? record.reasonPreset.trim()
       : null;
   const shopKind =
     rawKind === "break" ||
@@ -253,7 +258,20 @@ export function parseShopDispatchContent(content: unknown): {
     rawKind === "issue"
       ? rawKind
       : null;
-  return { shopKind, note };
+  return { shopKind, note, reasonPreset };
+}
+
+/**
+ * Non-blocking PWA tickets (报问题 / 计划停机) must not paint the tile as 停机.
+ * Legacy blocking planned still uses oeeImpact `Planned` + takesWorkCenterOffline.
+ */
+export function isNonBlockingShopDispatch(args: {
+  shopKind?: string | null;
+  oeeImpact?: string | null;
+}): boolean {
+  const kind = resolveShopDispatchKind(args);
+  if (kind === "issue") return true;
+  return kind === "planned" && args.oeeImpact === "No Impact";
 }
 
 /**
@@ -262,8 +280,8 @@ export function parseShopDispatchContent(content: unknown): {
  * Priority (highest first):
  * down (fault | planned | blocked) → break → running → idle
  *
- * Non-blocking 「报问题」 (`issue`) is ignored for status.
- * Waiting-repair / in-repair / planned all present as one **停机** status.
+ * Non-blocking 「报问题」 / 「计划停机」 are ignored for status (Meter owns run/stop).
+ * Waiting-repair / in-repair / legacy blocking planned present as one **停机**.
  */
 export function deriveShopMachineStatus(args: {
   hasOpenProductionEvent: boolean;
@@ -276,7 +294,8 @@ export function deriveShopMachineStatus(args: {
     resolveShopDispatchKind(d) === "break";
   const isDownEpisode = (d: DispatchSignals) => {
     const kind = resolveShopDispatchKind(d);
-    // Non-blocking 「报问题」 (`issue`) must not flip the tile to 停机.
+    // Non-blocking 报问题 / 计划停机 must not flip the tile to 停机.
+    if (isNonBlockingShopDispatch(d)) return false;
     return kind === "fault" || kind === "planned";
   };
 
@@ -499,10 +518,12 @@ export function primaryOpenDispatch(
     const kind = resolveShopDispatchKind(d);
     if (kind === "fault" && d.status === "In Progress") return 0;
     if (kind === "fault") return 1;
-    if (kind === "planned") return 2;
+    // Blocking planned above break; non-blocking planned/issue below.
+    if (kind === "planned" && !isNonBlockingShopDispatch(d)) return 2;
     if (kind === "break") return 3;
+    if (kind === "planned") return 4;
     // Non-blocking issues sit below availability episodes.
-    return 4;
+    return 5;
   };
   return [...dispatches].sort((a, b) => rank(a) - rank(b))[0] ?? null;
 }

@@ -12,6 +12,7 @@ import { isHeic, MediaUploader } from "@carbon/files/media";
 import { Button, cn, Status, toast } from "@carbon/react";
 import { useEffect, useState } from "react";
 import {
+  LuCalendarClock,
   LuChevronLeft,
   LuClipboardCheck,
   LuCoffee,
@@ -37,9 +38,15 @@ import type {
   ShopMachine,
   ShopMaintenanceAction,
   ShopOpenDispatch,
-  ShopPerson
+  ShopPerson,
+  ShopPlannedReasonPreset
 } from "../shop.types";
-import { presentShopDispatchProblem, primaryOpenDispatch } from "../shop.utils";
+import { shopPlannedReasonPresets } from "../shop.types";
+import {
+  isNonBlockingShopDispatch,
+  presentShopDispatchProblem,
+  primaryOpenDispatch
+} from "../shop.utils";
 import {
   type AssignSelection,
   GroupedAssignPicker
@@ -63,7 +70,7 @@ type MachineDetailPageProps = {
   }>;
 };
 
-type ReportKind = "break" | "issue";
+type ReportKind = "break" | "issue" | "planned";
 
 const statusMeta: Record<
   ShopMachine["status"],
@@ -202,6 +209,11 @@ const reportKindMeta: Record<
     hint: "简单备注即可（吃饭、上厕所、短暂离开）。",
     icon: <LuCoffee className="h-5 w-5" />
   },
+  planned: {
+    title: "计划停机",
+    hint: "换模、保养等。机台状态仍以运行信号为准，不强制标成维修中。",
+    icon: <LuCalendarClock className="h-5 w-5" />
+  },
   issue: {
     title: "报问题",
     hint: "机台不停机。描述问题、可拍照，并指派相关人员。",
@@ -222,22 +234,36 @@ function ReportForm({
   onCancel: () => void;
   onSubmit: (args: {
     note: string;
+    reasonPreset?: ShopPlannedReasonPreset;
     assigneeId?: string;
     notifyUserIds?: string[];
     files: File[];
   }) => void;
 }) {
   const [note, setNote] = useState("");
+  const [reasonPreset, setReasonPreset] =
+    useState<ShopPlannedReasonPreset | null>(null);
   const [assignSelection, setAssignSelection] =
     useState<AssignSelection | null>(null);
   const [files, setFiles] = useState<File[]>([]);
-  const noteRequired = kind === "issue";
-  const mediaRecommended = kind === "issue";
+  const noteRequired =
+    kind === "issue" || (kind === "planned" && reasonPreset === "其他");
+  const canSubmitPlanned =
+    kind === "planned" &&
+    reasonPreset != null &&
+    (reasonPreset !== "其他" || note.trim().length > 0);
+  const canSubmit =
+    kind === "planned"
+      ? canSubmitPlanned
+      : !noteRequired || note.trim().length > 0;
+  const mediaRecommended = kind === "issue" || kind === "planned";
   const meta = reportKindMeta[kind];
   const iconClass =
-    kind === "issue"
-      ? "bg-gradient-to-br from-teal-500 to-cyan-600"
-      : "bg-gradient-to-br from-sky-500 to-blue-600";
+    kind === "planned"
+      ? "bg-gradient-to-br from-amber-500 to-orange-500"
+      : kind === "issue"
+        ? "bg-gradient-to-br from-teal-500 to-cyan-600"
+        : "bg-gradient-to-br from-sky-500 to-blue-600";
 
   return (
     <section className={shopIos.inset}>
@@ -267,11 +293,46 @@ function ReportForm({
       </div>
 
       <div className="px-4 py-3">
+        {kind === "planned" ? (
+          <div className="mb-3">
+            <p className="mb-1.5 text-xs text-muted-foreground">原因</p>
+            <div className="flex flex-wrap gap-2">
+              {shopPlannedReasonPresets.map((preset) => {
+                const selected = reasonPreset === preset;
+                return (
+                  <button
+                    key={preset}
+                    type="button"
+                    disabled={busy}
+                    onClick={() => setReasonPreset(preset)}
+                    className={cn(
+                      "rounded-lg px-3 py-1.5 text-sm font-medium transition-colors",
+                      selected
+                        ? "bg-amber-500 text-white"
+                        : "bg-muted text-foreground hover:bg-muted/80"
+                    )}
+                  >
+                    {preset}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        ) : null}
+
         <textarea
           value={note}
           onChange={(e) => setNote(e.target.value)}
           rows={kind === "break" ? 2 : 4}
-          placeholder={noteRequired ? "发生了什么？（必填）" : "备注（可选）"}
+          placeholder={
+            kind === "planned"
+              ? reasonPreset === "其他"
+                ? "补充说明（必填）"
+                : "补充说明（可选）"
+              : noteRequired
+                ? "发生了什么？（必填）"
+                : "备注（可选）"
+          }
           className="w-full rounded-xl border border-border bg-background px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-ring"
         />
 
@@ -311,16 +372,28 @@ function ReportForm({
           <Button
             type="button"
             size="md"
-            variant={kind === "issue" ? "secondary" : "primary"}
-            isDisabled={busy || (noteRequired && !note.trim())}
-            onClick={() =>
+            variant={
+              kind === "issue" || kind === "planned" ? "secondary" : "primary"
+            }
+            isDisabled={busy || !canSubmit}
+            onClick={() => {
+              const trimmed = note.trim();
+              const resolvedNote =
+                kind === "planned" && reasonPreset
+                  ? reasonPreset === "其他"
+                    ? trimmed
+                    : trimmed
+                      ? `${reasonPreset} — ${trimmed}`
+                      : reasonPreset
+                  : trimmed;
               onSubmit({
-                note: note.trim(),
+                note: resolvedNote,
+                reasonPreset: reasonPreset ?? undefined,
                 assigneeId: assignSelection?.assigneeId,
                 notifyUserIds: assignSelection?.notifyUserIds,
                 files
-              })
-            }
+              });
+            }}
             className="flex-1"
           >
             确认提交
@@ -366,29 +439,30 @@ function DispatchActions({
   onUploaded: () => void;
 }) {
   const assignedToMe = dispatch.assignee === userId;
-  const isBreakOrPlanned =
-    dispatch.shopKind === "break" || dispatch.shopKind === "planned";
-  const isIssue = dispatch.shopKind === "issue";
+  const nonBlocking = isNonBlockingShopDispatch(dispatch);
+  const isBreakOrBlockingPlanned =
+    dispatch.shopKind === "break" ||
+    (dispatch.shopKind === "planned" && !nonBlocking);
   const canAssignPerson =
     (dispatch.shopKind === "fault" ||
       dispatch.shopKind === "planned" ||
-      isIssue) &&
+      dispatch.shopKind === "issue") &&
     (dispatch.status === "Open" || dispatch.status === "Assigned") &&
     !dispatch.isWorking;
   // No Start/accept / 我来接单 — assign only via the four-column picker.
   const showEnd = dispatch.shopKind === "fault" && dispatch.isWorking;
   const showComplete =
-    (dispatch.shopKind === "fault" || isIssue) &&
+    (dispatch.shopKind === "fault" || nonBlocking) &&
     dispatch.status !== "Completed" &&
     dispatch.status !== "Cancelled";
-  const showResume = isBreakOrPlanned;
+  const showResume = isBreakOrBlockingPlanned;
 
   const kindLabel =
     dispatch.shopKind === "break"
       ? "休息 / 离岗"
       : dispatch.shopKind === "planned"
         ? "计划停机"
-        : isIssue
+        : dispatch.shopKind === "issue"
           ? "报问题"
           : "故障维修";
 
@@ -397,8 +471,8 @@ function DispatchActions({
     comments
   });
 
-  // Issue tickets are non-blocking — chip reflects that, not 停机.
-  const chipStatus: ShopMachine["status"] | null = isIssue
+  // Non-blocking tickets — chip reflects 未停机, not 停机 (Meter owns run/stop).
+  const chipStatus: ShopMachine["status"] | null = nonBlocking
     ? null
     : dispatch.shopKind === "break"
       ? "break"
@@ -409,8 +483,12 @@ function DispatchActions({
       <div className="flex items-start justify-between gap-2 px-4 pt-3">
         <div className="min-w-0 flex-1">
           <p className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-            {isIssue ? (
-              <LuMessageSquareText className="h-3.5 w-3.5" />
+            {nonBlocking ? (
+              dispatch.shopKind === "planned" ? (
+                <LuCalendarClock className="h-3.5 w-3.5" />
+              ) : (
+                <LuMessageSquareText className="h-3.5 w-3.5" />
+              )
             ) : (
               <LuWrench className="h-3.5 w-3.5" />
             )}
@@ -486,7 +564,7 @@ function DispatchActions({
             onClick={() => onAction("Complete", dispatch)}
             className="flex-1"
           >
-            {isIssue ? "问题已处理" : "维修完成"}
+            {nonBlocking ? "问题已处理" : "维修完成"}
           </Button>
         ) : null}
         {showEnd ? (
@@ -588,10 +666,11 @@ export function MachineDetailPage({
   const [pendingFiles, setPendingFiles] = useState<File[] | null>(null);
 
   const primary = primaryOpenDispatch(machine.openDispatches);
-  const openIssue = machine.openDispatches.find((d) => d.shopKind === "issue");
-  // Single quick action 报问题 — hide create when an open issue already exists
-  // (operator reassigns on that ticket instead).
-  const canReportIssue = !openIssue && !reportKind;
+  const openNonBlocking = machine.openDispatches.find((d) =>
+    isNonBlockingShopDispatch(d)
+  );
+  // Hide create when an open 报问题 / 计划停机 already exists (reassign on ticket).
+  const canReport = !openNonBlocking && !reportKind;
   const showAwaitingStartConfirm = machine.status === "awaitingStart";
 
   useEffect(() => {
@@ -608,6 +687,7 @@ export function MachineDetailPage({
       assigneeId?: string;
       notifyUserIds?: string[];
       note?: string;
+      reasonPreset?: string;
     } = {}
   ) => {
     const body = new FormData();
@@ -619,6 +699,7 @@ export function MachineDetailPage({
       body.set("notifyUserIds", opts.notifyUserIds.join(","));
     }
     if (opts.note) body.set("note", opts.note);
+    if (opts.reasonPreset) body.set("reasonPreset", opts.reasonPreset);
     fetcher.submit(body, { method: "post" });
   };
 
@@ -637,19 +718,25 @@ export function MachineDetailPage({
 
   const onReport = (args: {
     note: string;
+    reasonPreset?: ShopPlannedReasonPreset;
     assigneeId?: string;
     notifyUserIds?: string[];
     files: File[];
   }) => {
     if (!reportKind) return;
     const action: ShopMaintenanceAction =
-      reportKind === "break" ? "ReportBreak" : "ReportIssue";
+      reportKind === "break"
+        ? "ReportBreak"
+        : reportKind === "planned"
+          ? "ReportPlanned"
+          : "ReportIssue";
     if (args.files.length > 0) setPendingFiles(args.files);
     submit(action, {
       workCenterId: machine.id,
       assigneeId: args.assigneeId,
       notifyUserIds: args.notifyUserIds,
-      note: args.note
+      note: args.note,
+      reasonPreset: args.reasonPreset
     });
   };
 
@@ -739,12 +826,12 @@ export function MachineDetailPage({
           />
         ) : null}
 
-        {!reportKind && canReportIssue ? (
+        {!reportKind && canReport ? (
           <section>
             <SectionTitle icon={<LuWrench className="h-4 w-4" />}>
               快捷操作
             </SectionTitle>
-            <div className="mt-2.5 grid grid-cols-1 gap-2.5">
+            <div className="mt-2.5 grid grid-cols-2 gap-2.5">
               <button
                 type="button"
                 disabled={busy}
@@ -759,6 +846,21 @@ export function MachineDetailPage({
                   <LuMessageSquareText className="h-5 w-5" />
                 </span>
                 <span className="text-xs font-medium">报问题</span>
+              </button>
+              <button
+                type="button"
+                disabled={busy}
+                onClick={() => setReportKind("planned")}
+                className={cn(
+                  "flex flex-col items-center gap-1.5 px-1.5 py-4 disabled:opacity-50",
+                  shopIos.card,
+                  shopIos.press
+                )}
+              >
+                <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-500 text-white">
+                  <LuCalendarClock className="h-5 w-5" />
+                </span>
+                <span className="text-xs font-medium">计划停机</span>
               </button>
             </div>
           </section>
