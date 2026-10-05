@@ -156,7 +156,8 @@ export function resolveShopDispatchKind(args: {
   if (
     args.shopKind === "break" ||
     args.shopKind === "planned" ||
-    args.shopKind === "fault"
+    args.shopKind === "fault" ||
+    args.shopKind === "issue"
   ) {
     return args.shopKind;
   }
@@ -213,7 +214,10 @@ export function parseShopDispatchContent(content: unknown): {
       ? record.note.trim()
       : null;
   const shopKind =
-    rawKind === "break" || rawKind === "planned" || rawKind === "fault"
+    rawKind === "break" ||
+    rawKind === "planned" ||
+    rawKind === "fault" ||
+    rawKind === "issue"
       ? rawKind
       : null;
   return { shopKind, note };
@@ -238,6 +242,7 @@ export function deriveShopMachineStatus(args: {
     resolveShopDispatchKind(d) === "break";
   const isDownEpisode = (d: DispatchSignals) => {
     const kind = resolveShopDispatchKind(d);
+    // Non-blocking 「报问题」 (`issue`) must not flip the tile to 停机.
     return kind === "fault" || kind === "planned";
   };
 
@@ -402,7 +407,9 @@ export function primaryOpenDispatch(
     if (kind === "fault" && d.status === "In Progress") return 0;
     if (kind === "fault") return 1;
     if (kind === "planned") return 2;
-    return 3;
+    if (kind === "break") return 3;
+    // Non-blocking issues sit below availability episodes.
+    return 4;
   };
   return [...dispatches].sort((a, b) => rank(a) - rank(b))[0] ?? null;
 }

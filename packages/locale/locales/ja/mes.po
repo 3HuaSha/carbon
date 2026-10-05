@@ -60,10 +60,6 @@ msgstr "{0} / {1} 完了"
 msgid "{0} of {1} completed"
 msgstr "{0} / {1} 完了済み"
 
-#. placeholder {0}: member.tasks.length
-msgid "{0} open tasks"
-msgstr ""
-
 #. placeholder {0}: board.members.length
 msgid "{0} people · {busyCount} busy"
 msgstr ""
@@ -283,9 +279,6 @@ msgstr "ブロック中"
 
 msgid "Board view"
 msgstr "ボード表示"
-
-msgid "Break"
-msgstr ""
 
 msgid "But don't worry. You can use the forgot password flow to request a new magic link."
 msgstr "ご心配なく。パスワード忘却フローを使用して新しいマジックリンクをリクエストできます。"
@@ -675,9 +668,6 @@ msgid "Failed to upload image"
 msgstr "画像のアップロードに失敗しました"
 
 msgid "Failed to upload media"
-msgstr ""
-
-msgid "Fault"
 msgstr ""
 
 msgid "Feature"

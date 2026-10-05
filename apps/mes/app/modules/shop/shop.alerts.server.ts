@@ -62,17 +62,35 @@ function parseAlerts(raw: string | null): ShopAlert[] {
   try {
     const parsed = JSON.parse(raw) as unknown;
     if (!Array.isArray(parsed)) return [];
-    return parsed.filter((row): row is ShopAlert => {
-      if (!row || typeof row !== "object") return false;
+    const out: ShopAlert[] = [];
+    for (const row of parsed) {
+      if (!row || typeof row !== "object") continue;
       const r = row as Record<string, unknown>;
-      return (
-        typeof r.id === "string" &&
-        (r.kind === "down" || r.kind === "recovered") &&
-        typeof r.workCenterId === "string" &&
-        typeof r.workCenterName === "string" &&
-        typeof r.createdAt === "string"
-      );
-    });
+      const kind =
+        r.kind === "down" || r.kind === "recovered" || r.kind === "issue"
+          ? r.kind
+          : null;
+      if (
+        typeof r.id !== "string" ||
+        !kind ||
+        typeof r.workCenterId !== "string" ||
+        typeof r.workCenterName !== "string" ||
+        typeof r.createdAt !== "string"
+      ) {
+        continue;
+      }
+      const note =
+        typeof r.note === "string" ? r.note : r.note == null ? undefined : null;
+      out.push({
+        id: r.id,
+        kind,
+        workCenterId: r.workCenterId,
+        workCenterName: r.workCenterName,
+        createdAt: r.createdAt,
+        ...(note !== undefined ? { note } : {})
+      });
+    }
+    return out;
   } catch {
     return [];
   }
@@ -237,6 +255,32 @@ export async function clearJustFixedBadge(args: {
   workCenterId: string;
 }): Promise<void> {
   await redis.del(justFixedKey(args.companyId, args.workCenterId));
+}
+
+/**
+ * Push a non-blocking 「报问题」 row into the shared shop 提醒 feed.
+ * Status does not change, so this is not driven by the status-snapshot diff.
+ */
+export async function appendShopIssueAlert(args: {
+  companyId: string;
+  locationId: string;
+  workCenterId: string;
+  workCenterName: string;
+  note: string | null;
+}): Promise<void> {
+  const listKey = alertsKey(args.companyId, args.locationId);
+  const rawAlerts = await redis.get(listKey);
+  const existing = parseAlerts(rawAlerts);
+  const alert: ShopAlert = {
+    id: newAlertId(),
+    kind: "issue",
+    workCenterId: args.workCenterId,
+    workCenterName: args.workCenterName,
+    createdAt: datetime.timestamp(),
+    note: args.note
+  };
+  const alerts = [alert, ...existing].slice(0, MAX_ALERTS);
+  await redis.set(listKey, JSON.stringify(alerts), "EX", ALERTS_TTL_SECONDS);
 }
 
 function countUnreadAlerts(alerts: ShopAlert[], seenAt: string | null): number {

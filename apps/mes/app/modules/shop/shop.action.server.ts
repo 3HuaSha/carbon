@@ -22,6 +22,7 @@ import {
   notifyScheduleInputsChanged
 } from "~/services/operations.service";
 import { openDispatchStatuses } from "~/utils/display";
+import { appendShopIssueAlert } from "./shop.alerts.server";
 import type { ShopDispatchKind, ShopMaintenanceAction } from "./shop.types";
 import { parseShopDispatchContent } from "./shop.utils";
 
@@ -171,6 +172,18 @@ export async function runShopMaintenanceAction(
   if (action === "ReportDowntime") {
     return createShopAvailabilityDispatch(client, {
       kind: "fault",
+      workCenterId,
+      assigneeId: args.assigneeId,
+      notifyUserIds,
+      note,
+      companyId,
+      userId,
+      currentTime
+    });
+  }
+
+  if (action === "ReportIssue") {
+    return createShopIssueDispatch(client, {
       workCenterId,
       assigneeId: args.assigneeId,
       notifyUserIds,
@@ -440,7 +453,8 @@ export async function runShopMaintenanceAction(
   return { ok: false, message: "Unknown action" };
 }
 
-type AvailabilityKind = ShopDispatchKind;
+/** Offline availability episodes only — not non-blocking `issue`. */
+type AvailabilityKind = Exclude<ShopDispatchKind, "issue">;
 
 /**
  * Create break / planned / fault availability episode on a work center.
@@ -691,6 +705,169 @@ function successMessage(kind: AvailabilityKind, assigned: boolean): string {
   return assigned
     ? "Machine set to waiting repair and assigned"
     : "Machine set to waiting repair";
+}
+
+/**
+ * Non-blocking 「报问题」: create a maintenance dispatch that does NOT take the
+ * work center offline, does NOT end production events, and appears in 提醒.
+ */
+async function createShopIssueDispatch(
+  client: SupabaseClient<Database>,
+  args: {
+    workCenterId: string | null;
+    assigneeId: string | null;
+    notifyUserIds: string[];
+    note: string | null;
+    companyId: string;
+    userId: string;
+    currentTime: string;
+  }
+): Promise<ShopMaintenanceActionResult> {
+  const { workCenterId, companyId, userId, currentTime, note, notifyUserIds } =
+    args;
+
+  if (!workCenterId) {
+    return { ok: false, message: "Work center is required" };
+  }
+
+  if (!note) {
+    return {
+      ok: false,
+      message: "Please describe the problem before reporting"
+    };
+  }
+
+  const workCenter = await client
+    .from("workCenter")
+    .select("id, name, locationId")
+    .eq("id", workCenterId)
+    .eq("companyId", companyId)
+    .maybeSingle();
+
+  if (!workCenter.data) {
+    logger.warn("Work center not found for shop issue report", {
+      companyId,
+      workCenterId
+    });
+    return { ok: false, message: "Work center not found" };
+  }
+
+  let assignee: string | undefined;
+  if (args.assigneeId) {
+    const ownedAssignee = await client
+      .from("employees")
+      .select("id")
+      .eq("id", args.assigneeId)
+      .eq("companyId", companyId)
+      .eq("active", true)
+      .maybeSingle();
+    if (!ownedAssignee.data) {
+      return { ok: false, message: "Assignee not found in this company" };
+    }
+    assignee = args.assigneeId;
+  }
+
+  const nextSequence = await client.rpc("get_next_sequence", {
+    sequence_name: "maintenanceDispatch",
+    company_id: companyId
+  });
+
+  if (nextSequence.error || !nextSequence.data) {
+    logger.error("Failed to get maintenance dispatch sequence for issue", {
+      companyId,
+      error: nextSequence.error
+    });
+    return { ok: false, message: "Failed to create maintenance dispatch" };
+  }
+
+  const content = {
+    shopKind: "issue" as const,
+    note
+  };
+
+  const insertDispatch = await client
+    .from("maintenanceDispatch")
+    .insert([
+      {
+        maintenanceDispatchId: nextSequence.data,
+        status: assignee ? "Assigned" : "Open",
+        priority: "Medium",
+        severity: "Support Required",
+        oeeImpact: "No Impact",
+        // Key difference from 故障报修 / planned / break: machine stays up.
+        takesWorkCenterOffline: false,
+        source: "Reactive",
+        workCenterId,
+        locationId: workCenter.data.locationId ?? undefined,
+        assignee,
+        plannedStartTime: currentTime,
+        content,
+        companyId,
+        createdBy: userId
+      }
+    ])
+    .select("id")
+    .single();
+
+  if (insertDispatch.error || !insertDispatch.data?.id) {
+    logger.error("Failed to create shop issue dispatch", {
+      companyId,
+      workCenterId,
+      error: insertDispatch.error
+    });
+    return { ok: false, message: "Failed to create maintenance dispatch" };
+  }
+
+  const dispatchId = insertDispatch.data.id;
+
+  await client.from("maintenanceDispatchComment").insert([
+    {
+      maintenanceDispatchId: dispatchId,
+      comment: note,
+      companyId,
+      createdBy: userId
+    }
+  ]);
+
+  // Shared PWA 提醒 bell — status snapshot will not detect this (no downtime).
+  const locationId = workCenter.data.locationId;
+  if (locationId) {
+    try {
+      await appendShopIssueAlert({
+        companyId,
+        locationId,
+        workCenterId,
+        workCenterName: workCenter.data.name ?? workCenterId,
+        note
+      });
+    } catch (err) {
+      logger.warn("Failed to append shop issue alert (Redis fail-soft)", {
+        companyId,
+        workCenterId,
+        error: err instanceof Error ? err.message : String(err)
+      });
+    }
+  }
+
+  let telegramUnbound: boolean | undefined;
+  if (assignee) {
+    const notify = await notifyMaintenanceAssignment(client, {
+      companyId,
+      dispatchId,
+      assignee,
+      notifyUserIds: notifyUserIds.length > 0 ? notifyUserIds : [assignee],
+      from: userId
+    });
+    telegramUnbound = notify.telegramUnbound;
+  }
+
+  return {
+    ok: true,
+    action: "ReportIssue",
+    message: assignee ? "Problem reported and assigned" : "Problem reported",
+    dispatchId,
+    telegramUnbound
+  };
 }
 
 /** Complete a break or planned episode without repair labor clock. */

@@ -78,7 +78,8 @@ export async function action({ request }: ActionFunctionArgs) {
   const reportActions = new Set([
     "ReportBreak",
     "ReportPlanned",
-    "ReportDowntime"
+    "ReportDowntime",
+    "ReportIssue"
   ]);
 
   if (!reportActions.has(rawAction) && !dispatchId) {

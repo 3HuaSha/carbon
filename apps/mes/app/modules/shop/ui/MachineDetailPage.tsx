@@ -17,6 +17,7 @@ import {
   LuClipboardCheck,
   LuCoffee,
   LuHistory,
+  LuMessageSquareText,
   LuPackage,
   LuTrendingUp,
   LuTriangleAlert,
@@ -64,7 +65,7 @@ type MachineDetailPageProps = {
   }>;
 };
 
-type ReportKind = "break" | "planned" | "fault";
+type ReportKind = "break" | "planned" | "fault" | "issue";
 
 const statusMeta: Record<
   ShopMachine["status"],
@@ -210,6 +211,11 @@ const reportKindMeta: Record<
     title: "故障报修",
     hint: "请描述故障现象（必填），建议拍照或录像。",
     icon: <LuTriangleAlert className="h-5 w-5" />
+  },
+  issue: {
+    title: "报问题",
+    hint: "机台不停机。描述问题、可拍照，并指派相关人员。",
+    icon: <LuMessageSquareText className="h-5 w-5" />
   }
 };
 
@@ -235,9 +241,18 @@ function ReportForm({
   const [assignSelection, setAssignSelection] =
     useState<AssignSelection | null>(null);
   const [files, setFiles] = useState<File[]>([]);
-  const noteRequired = kind === "fault";
-  const mediaRecommended = kind === "fault" || kind === "planned";
+  const noteRequired = kind === "fault" || kind === "issue";
+  const mediaRecommended =
+    kind === "fault" || kind === "planned" || kind === "issue";
   const meta = reportKindMeta[kind];
+  const iconClass =
+    kind === "fault"
+      ? "bg-gradient-to-br from-red-500 to-rose-600"
+      : kind === "planned"
+        ? "bg-gradient-to-br from-amber-500 to-orange-500"
+        : kind === "issue"
+          ? "bg-gradient-to-br from-teal-500 to-cyan-600"
+          : "bg-gradient-to-br from-sky-500 to-blue-600";
 
   return (
     <section className={shopIos.inset}>
@@ -246,11 +261,7 @@ function ReportForm({
           <span
             className={cn(
               "flex h-9 w-9 items-center justify-center rounded-xl text-white",
-              kind === "fault"
-                ? "bg-gradient-to-br from-red-500 to-rose-600"
-                : kind === "planned"
-                  ? "bg-gradient-to-br from-amber-500 to-orange-500"
-                  : "bg-gradient-to-br from-sky-500 to-blue-600"
+              iconClass
             )}
           >
             {meta.icon}
@@ -315,7 +326,13 @@ function ReportForm({
           <Button
             type="button"
             size="md"
-            variant={kind === "fault" ? "destructive" : "primary"}
+            variant={
+              kind === "fault"
+                ? "destructive"
+                : kind === "issue"
+                  ? "secondary"
+                  : "primary"
+            }
             isDisabled={busy || (noteRequired && !note.trim())}
             onClick={() =>
               onSubmit({
@@ -372,14 +389,17 @@ function DispatchActions({
   const assignedToMe = dispatch.assignee === userId;
   const isBreakOrPlanned =
     dispatch.shopKind === "break" || dispatch.shopKind === "planned";
+  const isIssue = dispatch.shopKind === "issue";
   const canAssignPerson =
-    (dispatch.shopKind === "fault" || dispatch.shopKind === "planned") &&
+    (dispatch.shopKind === "fault" ||
+      dispatch.shopKind === "planned" ||
+      isIssue) &&
     (dispatch.status === "Open" || dispatch.status === "Assigned") &&
     !dispatch.isWorking;
   // No Start/accept / 我来接单 — assign only via the four-column picker.
   const showEnd = dispatch.shopKind === "fault" && dispatch.isWorking;
   const showComplete =
-    dispatch.shopKind === "fault" &&
+    (dispatch.shopKind === "fault" || isIssue) &&
     dispatch.status !== "Completed" &&
     dispatch.status !== "Cancelled";
   const showResume = isBreakOrPlanned;
@@ -389,22 +409,32 @@ function DispatchActions({
       ? "休息 / 离岗"
       : dispatch.shopKind === "planned"
         ? "计划停机"
-        : "故障维修";
+        : isIssue
+          ? "报问题"
+          : "故障维修";
 
   const { problemText, followUpComments } = presentShopDispatchProblem({
     note: dispatch.note,
     comments
   });
 
-  const chipStatus: ShopMachine["status"] =
-    dispatch.shopKind === "break" ? "break" : "down";
+  // Issue tickets are non-blocking — chip reflects that, not 停机.
+  const chipStatus: ShopMachine["status"] | null = isIssue
+    ? null
+    : dispatch.shopKind === "break"
+      ? "break"
+      : "down";
 
   return (
     <section className={shopIos.inset}>
       <div className="flex items-start justify-between gap-2 px-4 pt-3">
         <div className="min-w-0 flex-1">
           <p className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-            <LuWrench className="h-3.5 w-3.5" />
+            {isIssue ? (
+              <LuMessageSquareText className="h-3.5 w-3.5" />
+            ) : (
+              <LuWrench className="h-3.5 w-3.5" />
+            )}
             {kindLabel}
           </p>
           {problemText ? (
@@ -426,7 +456,13 @@ function DispatchActions({
             )}
           </p>
         </div>
-        <MachineStatusChip status={chipStatus} />
+        {chipStatus ? (
+          <MachineStatusChip status={chipStatus} />
+        ) : (
+          <Status color="orange" disableTooltip>
+            未停机
+          </Status>
+        )}
       </div>
 
       {followUpComments.length > 0 ? (
@@ -471,7 +507,7 @@ function DispatchActions({
             onClick={() => onAction("Complete", dispatch)}
             className="flex-1"
           >
-            维修完成
+            {isIssue ? "问题已处理" : "维修完成"}
           </Button>
         ) : null}
         {showEnd ? (
@@ -631,7 +667,9 @@ export function MachineDetailPage({
         ? "ReportBreak"
         : reportKind === "planned"
           ? "ReportPlanned"
-          : "ReportDowntime";
+          : reportKind === "issue"
+            ? "ReportIssue"
+            : "ReportDowntime";
     if (args.files.length > 0) setPendingFiles(args.files);
     submit(action, {
       workCenterId: machine.id,
@@ -696,13 +734,13 @@ export function MachineDetailPage({
             <SectionTitle icon={<LuWrench className="h-4 w-4" />}>
               快捷操作
             </SectionTitle>
-            <div className="mt-2.5 grid grid-cols-2 gap-2.5">
+            <div className="mt-2.5 grid grid-cols-3 gap-2.5">
               <button
                 type="button"
                 disabled={busy}
                 onClick={() => setReportKind("planned")}
                 className={cn(
-                  "flex flex-col items-center gap-1.5 px-2 py-4 disabled:opacity-50",
+                  "flex flex-col items-center gap-1.5 px-1.5 py-4 disabled:opacity-50",
                   shopIos.card,
                   shopIos.press
                 )}
@@ -717,7 +755,7 @@ export function MachineDetailPage({
                 disabled={busy}
                 onClick={() => setReportKind("fault")}
                 className={cn(
-                  "flex flex-col items-center gap-1.5 px-2 py-4 disabled:opacity-50",
+                  "flex flex-col items-center gap-1.5 px-1.5 py-4 disabled:opacity-50",
                   shopIos.card,
                   shopIos.press
                 )}
@@ -726,6 +764,21 @@ export function MachineDetailPage({
                   <LuTriangleAlert className="h-5 w-5" />
                 </span>
                 <span className="text-xs font-medium">故障报修</span>
+              </button>
+              <button
+                type="button"
+                disabled={busy}
+                onClick={() => setReportKind("issue")}
+                className={cn(
+                  "flex flex-col items-center gap-1.5 px-1.5 py-4 disabled:opacity-50",
+                  shopIos.card,
+                  shopIos.press
+                )}
+              >
+                <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-teal-600 text-white">
+                  <LuMessageSquareText className="h-5 w-5" />
+                </span>
+                <span className="text-xs font-medium">报问题</span>
               </button>
             </div>
           </section>
@@ -804,7 +857,9 @@ export function MachineDetailPage({
                       ? "计划停机"
                       : item.shopKind === "fault"
                         ? "故障维修"
-                        : item.shopKind;
+                        : item.shopKind === "issue"
+                          ? "报问题"
+                          : item.shopKind;
                 return (
                   <li key={item.id} className={cn(shopIos.card, "px-4 py-3")}>
                     <div className="flex items-center justify-between gap-2">
