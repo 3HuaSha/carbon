@@ -60,10 +60,6 @@ msgstr "{0} / {1} 已完成"
 msgid "{0} of {1} completed"
 msgstr "{0} / {1} 已完成"
 
-#. placeholder {0}: member.tasks.length
-msgid "{0} open tasks"
-msgstr "{0} 个未完成任务"
-
 #. placeholder {0}: board.members.length
 msgid "{0} people · {busyCount} busy"
 msgstr "{0} 人 · {busyCount} 人忙碌"
@@ -283,9 +279,6 @@ msgstr "阻塞中"
 
 msgid "Board view"
 msgstr "看板视图"
-
-msgid "Break"
-msgstr "休息"
 
 msgid "But don't worry. You can use the forgot password flow to request a new magic link."
 msgstr "但别担心。您可以使用忘记密码流程来请求新的魔法链接。"
@@ -676,9 +669,6 @@ msgstr "图片上传失败"
 
 msgid "Failed to upload media"
 msgstr "媒体上传失败"
-
-msgid "Fault"
-msgstr "故障"
 
 msgid "Feature"
 msgstr "功能"

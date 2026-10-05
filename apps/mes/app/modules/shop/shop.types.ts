@@ -32,8 +32,16 @@ export type ShopStatusFilter = "all" | ShopStatusFilterChip;
 
 export const shopStatusFilters = ["all", ...shopStatusFilterChips] as const;
 
-/** Availability / repair episode kind stored in `maintenanceDispatch.content.shopKind`. */
-export const shopDispatchKinds = ["break", "planned", "fault"] as const;
+/**
+ * Availability / repair episode kind stored in `maintenanceDispatch.content.shopKind`.
+ * `issue` = non-blocking 「报问题」 (machine stays running/idle/break).
+ */
+export const shopDispatchKinds = [
+  "break",
+  "planned",
+  "fault",
+  "issue"
+] as const;
 
 export type ShopDispatchKind = (typeof shopDispatchKinds)[number];
 
@@ -86,8 +94,10 @@ export type ShopMachine = {
   justFixed?: boolean;
 };
 
-/** Reminder kinds written when machine status crosses downtime boundaries. */
-export const shopAlertKinds = ["down", "recovered"] as const;
+/**
+ * Reminder kinds: status-boundary transitions plus non-blocking 「报问题」.
+ */
+export const shopAlertKinds = ["down", "recovered", "issue"] as const;
 
 export type ShopAlertKind = (typeof shopAlertKinds)[number];
 
@@ -97,8 +107,10 @@ export type ShopAlert = {
   kind: ShopAlertKind;
   workCenterId: string;
   workCenterName: string;
-  /** ISO timestamp when the transition was detected. */
+  /** ISO timestamp when the transition was detected / issue was reported. */
   createdAt: string;
+  /** Optional problem note (set for `issue` alerts). */
+  note?: string | null;
 };
 
 /**
@@ -175,6 +187,8 @@ export const shopMaintenanceActions = [
   "ReportBreak",
   "ReportPlanned",
   "ReportDowntime",
+  /** Non-blocking problem report — does not take the machine offline. */
+  "ReportIssue",
   "ResumeAvailability",
   "Assign",
   "Start",

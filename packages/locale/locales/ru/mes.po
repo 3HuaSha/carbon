@@ -60,10 +60,6 @@ msgstr "{0} из {1} завершено"
 msgid "{0} of {1} completed"
 msgstr "{0} из {1} завершено"
 
-#. placeholder {0}: member.tasks.length
-msgid "{0} open tasks"
-msgstr ""
-
 #. placeholder {0}: board.members.length
 msgid "{0} people · {busyCount} busy"
 msgstr ""
@@ -283,9 +279,6 @@ msgstr "Блокирующие"
 
 msgid "Board view"
 msgstr "Вид доски"
-
-msgid "Break"
-msgstr ""
 
 msgid "But don't worry. You can use the forgot password flow to request a new magic link."
 msgstr "Но не волнуйтесь. Вы можете использовать функцию восстановления пароля, чтобы запросить новую волшебную ссылку."
@@ -675,9 +668,6 @@ msgid "Failed to upload image"
 msgstr "Не удалось загрузить изображение"
 
 msgid "Failed to upload media"
-msgstr ""
-
-msgid "Fault"
 msgstr ""
 
 msgid "Feature"

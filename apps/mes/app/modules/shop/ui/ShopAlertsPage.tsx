@@ -11,6 +11,7 @@ import {
   LuChevronLeft,
   LuChevronRight,
   LuCircleAlert,
+  LuMessageSquareText,
   LuWrench
 } from "react-icons/lu";
 import { Link } from "react-router";
@@ -39,6 +40,15 @@ function alertMeta(alert: ShopAlert) {
       detail: "机台状态变为停机",
       iconBg: "bg-[color:var(--shop-down)]",
       Icon: LuCircleAlert
+    };
+  }
+  if (alert.kind === "issue") {
+    const note = alert.note?.trim();
+    return {
+      title: `${alert.workCenterName} 报问题`,
+      detail: note || "有新的问题反馈（未停机）",
+      iconBg: "bg-[color:var(--shop-warn)]",
+      Icon: LuMessageSquareText
     };
   }
   return {
@@ -97,7 +107,7 @@ export function ShopAlertsPage({ alerts, locationName }: ShopAlertsPageProps) {
           </span>
           <p className="mt-2 text-[17px] font-semibold">暂无提醒</p>
           <p className={cn("text-[14px]", shopIos.muted)}>
-            机台停机或恢复时会出现在这里
+            机台停机、恢复或报问题时会出现在这里
           </p>
         </div>
       ) : (

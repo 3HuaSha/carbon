@@ -180,6 +180,12 @@ describe("resolveShopDispatchKind", () => {
     ).toBe("break");
   });
 
+  it("keeps non-blocking issue even when oeeImpact is No Impact", () => {
+    expect(
+      resolveShopDispatchKind({ shopKind: "issue", oeeImpact: "No Impact" })
+    ).toBe("issue");
+  });
+
   it("infers planned / fault from oeeImpact", () => {
     expect(resolveShopDispatchKind({ oeeImpact: "Planned" })).toBe("planned");
     expect(resolveShopDispatchKind({ oeeImpact: "Down" })).toBe("fault");
@@ -191,6 +197,12 @@ describe("parseShopDispatchContent", () => {
     expect(
       parseShopDispatchContent({ shopKind: "planned", note: " changeover " })
     ).toEqual({ shopKind: "planned", note: "changeover" });
+  });
+
+  it("reads issue shopKind", () => {
+    expect(
+      parseShopDispatchContent({ shopKind: "issue", note: "异响待查" })
+    ).toEqual({ shopKind: "issue", note: "异响待查" });
   });
 
   it("returns nulls for empty content", () => {
@@ -355,6 +367,28 @@ describe("deriveShopMachineStatus", () => {
         isBlocked: true
       })
     ).toBe("down");
+  });
+
+  it("ignores non-blocking issue dispatches for status", () => {
+    expect(
+      deriveShopMachineStatus({
+        hasOpenProductionEvent: true,
+        openDispatches: [
+          { status: "Open", oeeImpact: "No Impact", shopKind: "issue" }
+        ],
+        isBlocked: false
+      })
+    ).toBe("running");
+
+    expect(
+      deriveShopMachineStatus({
+        hasOpenProductionEvent: false,
+        openDispatches: [
+          { status: "Assigned", oeeImpact: "No Impact", shopKind: "issue" }
+        ],
+        isBlocked: false
+      })
+    ).toBe("idle");
   });
 });
 

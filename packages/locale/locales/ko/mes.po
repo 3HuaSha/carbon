@@ -60,10 +60,6 @@ msgstr "{1} 중 {0} 완료"
 msgid "{0} of {1} completed"
 msgstr "{1} 중 {0} 완료됨"
 
-#. placeholder {0}: member.tasks.length
-msgid "{0} open tasks"
-msgstr ""
-
 #. placeholder {0}: board.members.length
 msgid "{0} people · {busyCount} busy"
 msgstr ""
@@ -283,9 +279,6 @@ msgstr "차단"
 
 msgid "Board view"
 msgstr "보드 보기"
-
-msgid "Break"
-msgstr ""
 
 msgid "But don't worry. You can use the forgot password flow to request a new magic link."
 msgstr "걱정하지 마세요. 비밀번호 찾기를 통해 새 매직 링크를 요청할 수 있습니다."
@@ -675,9 +668,6 @@ msgid "Failed to upload image"
 msgstr "이미지를 업로드하지 못했습니다"
 
 msgid "Failed to upload media"
-msgstr ""
-
-msgid "Fault"
 msgstr ""
 
 msgid "Feature"

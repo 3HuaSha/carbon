@@ -60,10 +60,6 @@ msgstr "{0} sur {1} terminé(s)"
 msgid "{0} of {1} completed"
 msgstr "{0} sur {1} terminé(s)"
 
-#. placeholder {0}: member.tasks.length
-msgid "{0} open tasks"
-msgstr ""
-
 #. placeholder {0}: board.members.length
 msgid "{0} people · {busyCount} busy"
 msgstr ""
@@ -283,9 +279,6 @@ msgstr "Bloquant"
 
 msgid "Board view"
 msgstr "Vue tableau"
-
-msgid "Break"
-msgstr ""
 
 msgid "But don't worry. You can use the forgot password flow to request a new magic link."
 msgstr "Mais ne vous inquiétez pas. Vous pouvez utiliser la procédure de réinitialisation de mot de passe pour demander un nouveau lien magique."
@@ -675,9 +668,6 @@ msgid "Failed to upload image"
 msgstr "Échec du téléversement de l'image"
 
 msgid "Failed to upload media"
-msgstr ""
-
-msgid "Fault"
 msgstr ""
 
 msgid "Feature"
