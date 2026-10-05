@@ -26,24 +26,30 @@ export const shopIos = {
     running: "bg-[color:var(--shop-run)]",
     idle: "bg-[color:var(--shop-idle)]",
     break: "bg-[color:var(--shop-break)]",
-    down: "bg-[color:var(--shop-down)]"
+    down: "bg-[color:var(--shop-down)]",
+    awaitingStart: "bg-[color:var(--shop-warn)]",
+    offline: "bg-[color:var(--shop-idle)]"
   },
   statusText: {
     running: "text-[color:var(--shop-run)]",
     idle: "text-[color:var(--shop-muted)]",
     break: "text-[color:var(--shop-break)]",
-    down: "text-[color:var(--shop-down)]"
+    down: "text-[color:var(--shop-down)]",
+    awaitingStart: "text-[color:var(--shop-warn)]",
+    offline: "text-[color:var(--shop-muted)]"
   },
   /**
    * Opaque status fills for machine tiles.
-   * Idle = white fill + dark ink; other statuses use solid color + white ink.
+   * Idle/offline = white fill + dark ink; other statuses use solid color + white ink.
    * Tailwind `bg-*` mirrors CSS so a stale shop-ios.css (PWA SW) cannot drift.
    */
   statusFill: {
     running: "shop-ios-fill-running bg-[color:var(--shop-run)]",
     idle: "shop-ios-fill-idle !bg-white !text-black",
     break: "shop-ios-fill-break bg-[color:var(--shop-break)]",
-    down: "shop-ios-fill-down bg-[color:var(--shop-down)]"
+    down: "shop-ios-fill-down bg-[color:var(--shop-down)]",
+    awaitingStart: "shop-ios-fill-awaiting bg-[color:var(--shop-warn)]",
+    offline: "shop-ios-fill-offline !bg-white !text-black"
   },
   fillMuted: "shop-ios-fill-muted",
   fillFaint: "shop-ios-fill-faint"

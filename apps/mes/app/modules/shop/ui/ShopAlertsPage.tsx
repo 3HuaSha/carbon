@@ -51,6 +51,14 @@ function alertMeta(alert: ShopAlert) {
       Icon: LuMessageSquareText
     };
   }
+  if (alert.kind === "awaitingStart") {
+    return {
+      title: `${alert.workCenterName} 待开机`,
+      detail: "问题已处理，等待确认开机",
+      iconBg: "bg-[color:var(--shop-warn)]",
+      Icon: LuWrench
+    };
+  }
   return {
     title: `${alert.workCenterName} 已恢复`,
     detail: "停机已恢复为空闲",
@@ -107,7 +115,7 @@ export function ShopAlertsPage({ alerts, locationName }: ShopAlertsPageProps) {
           </span>
           <p className="mt-2 text-[17px] font-semibold">暂无提醒</p>
           <p className={cn("text-[14px]", shopIos.muted)}>
-            机台停机、恢复或报问题时会出现在这里
+            机台停机、恢复、报问题或待开机时会出现在这里
           </p>
         </div>
       ) : (

@@ -39,8 +39,10 @@ export {
   formatShopTilePersonLine,
   groupPeopleByAssignGroup,
   groupShopMachinesByArea,
+  isShopMachinePhysicallyRunning,
   matchesShopAssignGroup,
   matchesShopCrewEmployeeType,
+  mergeShopMachineStatus,
   parseShopDispatchContent,
   presentShopDispatchProblem,
   primaryOpenDispatch,
@@ -51,5 +53,6 @@ export {
   SHOP_ASSIGN_GROUP_LABELS,
   SHOP_CREW_TYPE_ALIASES,
   shopMachineSubtitle,
+  shopStatusFromMeterPhysical,
   shopStatusSnapshotFromMachines
 } from "./shop.utils";

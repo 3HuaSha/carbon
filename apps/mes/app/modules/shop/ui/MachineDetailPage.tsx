@@ -12,7 +12,6 @@ import { isHeic, MediaUploader } from "@carbon/files/media";
 import { Button, cn, Status, toast } from "@carbon/react";
 import { useEffect, useState } from "react";
 import {
-  LuCalendarClock,
   LuChevronLeft,
   LuClipboardCheck,
   LuCoffee,
@@ -20,7 +19,6 @@ import {
   LuMessageSquareText,
   LuPackage,
   LuTrendingUp,
-  LuTriangleAlert,
   LuWrench,
   LuX
 } from "react-icons/lu";
@@ -65,16 +63,18 @@ type MachineDetailPageProps = {
   }>;
 };
 
-type ReportKind = "break" | "planned" | "fault" | "issue";
+type ReportKind = "break" | "issue";
 
 const statusMeta: Record<
   ShopMachine["status"],
-  { label: string; color: "green" | "gray" | "blue" | "red" }
+  { label: string; color: "green" | "gray" | "blue" | "red" | "orange" }
 > = {
   running: { label: "运行", color: "green" },
   idle: { label: "空闲", color: "gray" },
   break: { label: "休息", color: "blue" },
-  down: { label: "停机", color: "red" }
+  down: { label: "停机", color: "red" },
+  awaitingStart: { label: "待开机", color: "orange" },
+  offline: { label: "离线", color: "gray" }
 };
 
 function MachineStatusChip({ status }: { status: ShopMachine["status"] }) {
@@ -202,16 +202,6 @@ const reportKindMeta: Record<
     hint: "简单备注即可（吃饭、上厕所、短暂离开）。",
     icon: <LuCoffee className="h-5 w-5" />
   },
-  planned: {
-    title: "计划停机",
-    hint: "建议填写备注并拍照（换模、保养、计划维护）。",
-    icon: <LuCalendarClock className="h-5 w-5" />
-  },
-  fault: {
-    title: "故障报修",
-    hint: "请描述故障现象（必填），建议拍照或录像。",
-    icon: <LuTriangleAlert className="h-5 w-5" />
-  },
   issue: {
     title: "报问题",
     hint: "机台不停机。描述问题、可拍照，并指派相关人员。",
@@ -241,18 +231,13 @@ function ReportForm({
   const [assignSelection, setAssignSelection] =
     useState<AssignSelection | null>(null);
   const [files, setFiles] = useState<File[]>([]);
-  const noteRequired = kind === "fault" || kind === "issue";
-  const mediaRecommended =
-    kind === "fault" || kind === "planned" || kind === "issue";
+  const noteRequired = kind === "issue";
+  const mediaRecommended = kind === "issue";
   const meta = reportKindMeta[kind];
   const iconClass =
-    kind === "fault"
-      ? "bg-gradient-to-br from-red-500 to-rose-600"
-      : kind === "planned"
-        ? "bg-gradient-to-br from-amber-500 to-orange-500"
-        : kind === "issue"
-          ? "bg-gradient-to-br from-teal-500 to-cyan-600"
-          : "bg-gradient-to-br from-sky-500 to-blue-600";
+    kind === "issue"
+      ? "bg-gradient-to-br from-teal-500 to-cyan-600"
+      : "bg-gradient-to-br from-sky-500 to-blue-600";
 
   return (
     <section className={shopIos.inset}>
@@ -326,13 +311,7 @@ function ReportForm({
           <Button
             type="button"
             size="md"
-            variant={
-              kind === "fault"
-                ? "destructive"
-                : kind === "issue"
-                  ? "secondary"
-                  : "primary"
-            }
+            variant={kind === "issue" ? "secondary" : "primary"}
             isDisabled={busy || (noteRequired && !note.trim())}
             onClick={() =>
               onSubmit({
@@ -609,10 +588,11 @@ export function MachineDetailPage({
   const [pendingFiles, setPendingFiles] = useState<File[] | null>(null);
 
   const primary = primaryOpenDispatch(machine.openDispatches);
-  const canReport =
-    machine.status === "running" ||
-    machine.status === "idle" ||
-    machine.openDispatches.length === 0;
+  const openIssue = machine.openDispatches.find((d) => d.shopKind === "issue");
+  // Single quick action 报问题 — hide create when an open issue already exists
+  // (operator reassigns on that ticket instead).
+  const canReportIssue = !openIssue && !reportKind;
+  const showAwaitingStartConfirm = machine.status === "awaitingStart";
 
   useEffect(() => {
     if (fetcher.state !== "idle" || !fetcher.data?.ok) return;
@@ -663,13 +643,7 @@ export function MachineDetailPage({
   }) => {
     if (!reportKind) return;
     const action: ShopMaintenanceAction =
-      reportKind === "break"
-        ? "ReportBreak"
-        : reportKind === "planned"
-          ? "ReportPlanned"
-          : reportKind === "issue"
-            ? "ReportIssue"
-            : "ReportDowntime";
+      reportKind === "break" ? "ReportBreak" : "ReportIssue";
     if (args.files.length > 0) setPendingFiles(args.files);
     submit(action, {
       workCenterId: machine.id,
@@ -678,6 +652,19 @@ export function MachineDetailPage({
       note: args.note
     });
   };
+
+  // Prefer Meter 单号 on the detail "当前生产" headline when present.
+  const workForDisplay: ShopCurrentWork | null = machine.meterWorkOrder
+    ? {
+        jobReadableId: machine.meterWorkOrder,
+        jobId: machine.currentWork?.jobId ?? null,
+        jobOperationId: machine.currentWork?.jobOperationId ?? null,
+        operationStatus: machine.currentWork?.operationStatus ?? null,
+        operationType: machine.currentWork?.operationType ?? null,
+        inspectionId: machine.currentWork?.inspectionId ?? null,
+        inspectionStatus: machine.currentWork?.inspectionStatus ?? null
+      }
+    : machine.currentWork;
 
   return (
     <div
@@ -717,7 +704,30 @@ export function MachineDetailPage({
       </header>
 
       <div className="flex flex-col gap-4 px-4">
-        <WorkOrderSection work={machine.currentWork} />
+        <WorkOrderSection work={workForDisplay} />
+
+        {showAwaitingStartConfirm && !reportKind ? (
+          <section className={shopIos.inset}>
+            <div className="px-4 py-3">
+              <p className="text-sm font-semibold text-foreground">待开机</p>
+              <p className={cn("mt-1 text-xs", shopIos.muted)}>
+                问题已处理。确认机台已开机后点击下方按钮。
+              </p>
+              <Button
+                type="button"
+                size="md"
+                variant="primary"
+                isDisabled={busy}
+                className="mt-3 w-full"
+                onClick={() =>
+                  submit("ConfirmStarted", { workCenterId: machine.id })
+                }
+              >
+                已开机
+              </Button>
+            </div>
+          </section>
+        ) : null}
 
         {reportKind ? (
           <ReportForm
@@ -729,42 +739,12 @@ export function MachineDetailPage({
           />
         ) : null}
 
-        {!reportKind && canReport ? (
+        {!reportKind && canReportIssue ? (
           <section>
             <SectionTitle icon={<LuWrench className="h-4 w-4" />}>
               快捷操作
             </SectionTitle>
-            <div className="mt-2.5 grid grid-cols-3 gap-2.5">
-              <button
-                type="button"
-                disabled={busy}
-                onClick={() => setReportKind("planned")}
-                className={cn(
-                  "flex flex-col items-center gap-1.5 px-1.5 py-4 disabled:opacity-50",
-                  shopIos.card,
-                  shopIos.press
-                )}
-              >
-                <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-[color:var(--shop-warn)] text-white">
-                  <LuCalendarClock className="h-5 w-5" />
-                </span>
-                <span className="text-xs font-medium">计划停机</span>
-              </button>
-              <button
-                type="button"
-                disabled={busy}
-                onClick={() => setReportKind("fault")}
-                className={cn(
-                  "flex flex-col items-center gap-1.5 px-1.5 py-4 disabled:opacity-50",
-                  shopIos.card,
-                  shopIos.press
-                )}
-              >
-                <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-[color:var(--shop-down)] text-white">
-                  <LuTriangleAlert className="h-5 w-5" />
-                </span>
-                <span className="text-xs font-medium">故障报修</span>
-              </button>
+            <div className="mt-2.5 grid grid-cols-1 gap-2.5">
               <button
                 type="button"
                 disabled={busy}

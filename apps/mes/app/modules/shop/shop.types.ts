@@ -8,14 +8,17 @@
 
 /**
  * Display statuses on `/shop` tiles + detail.
- * Fault, planned, and any other offline episode (except break) collapse to
- * one **停机 / Down** presentation — one color, one label.
+ * Fault / planned (blocking) + Meter stop collapse to **停机**.
+ * `awaitingStart` = 待开机 after Complete when not running.
+ * `offline` = Meter power-off / unreachable pulse (code 4).
  */
 export const shopMachineStatuses = [
   "running",
   "idle",
   "break",
-  "down"
+  "down",
+  "awaitingStart",
+  "offline"
 ] as const;
 
 export type ShopMachineStatus = (typeof shopMachineStatuses)[number];
@@ -92,12 +95,23 @@ export type ShopMachine = {
    * `/shop/:workCenterId`. Server-backed (Redis) so every shop device sees it.
    */
   justFixed?: boolean;
+  /**
+   * Actual current WO from MachineMeter (`Index_`), when the API is configured
+   * and returned a value. Prefer this on the grid over Carbon productionEvent.
+   */
+  meterWorkOrder?: string | null;
 };
 
 /**
- * Reminder kinds: status-boundary transitions plus non-blocking 「报问题」.
+ * Reminder kinds: status-boundary transitions, non-blocking 「报问题」,
+ * and entering 待开机 after Complete.
  */
-export const shopAlertKinds = ["down", "recovered", "issue"] as const;
+export const shopAlertKinds = [
+  "down",
+  "recovered",
+  "issue",
+  "awaitingStart"
+] as const;
 
 export type ShopAlertKind = (typeof shopAlertKinds)[number];
 
@@ -140,6 +154,15 @@ export type ShopOverview = {
   machines: ShopMachine[];
   /** Active employees in the company (location peers sorted first in the UI). */
   people: ShopPerson[];
+  /**
+   * Meter physical status by workCenterId when MachineMeter was reachable.
+   * Used by alert sync for 待开机 auto-clear; null entries when Meter unset.
+   */
+  meterPhysicalByWorkCenterId?: Record<
+    string,
+    "running" | "idle" | "stopped" | "offline" | "unknown" | null
+  >;
+  meterAvailable?: boolean;
 };
 
 /** Comment row shown on the machine detail page. */
@@ -180,6 +203,11 @@ export type ShopMachineDetail = {
   filesByDispatchId: Record<string, ShopDispatchFile[]>;
   /** Recent closed dispatches (minimal Phase 1 list). */
   history: ShopDispatchHistoryItem[];
+  meterPhysicalByWorkCenterId?: Record<
+    string,
+    "running" | "idle" | "stopped" | "offline" | "unknown" | null
+  >;
+  meterAvailable?: boolean;
 };
 
 /** Mutations from the `/shop` detail page. */
@@ -193,7 +221,9 @@ export const shopMaintenanceActions = [
   "Assign",
   "Start",
   "End",
-  "Complete"
+  "Complete",
+  /** Clear Redis 待开机 after operator confirms the machine is running. */
+  "ConfirmStarted"
 ] as const;
 
 export type ShopMaintenanceAction = (typeof shopMaintenanceActions)[number];

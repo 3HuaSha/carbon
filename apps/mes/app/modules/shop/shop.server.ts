@@ -2,6 +2,11 @@ import type { Database } from "@carbon/database";
 import { storage } from "@carbon/files";
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { openDispatchStatuses } from "~/utils/display";
+import {
+  fetchMeterShopSnapshot,
+  type MeterShopSnapshot,
+  meterSnapshotForWorkCenterName
+} from "./shop.meter.server";
 import type {
   ShopCrewBoard,
   ShopCrewKind,
@@ -19,7 +24,9 @@ import type {
 } from "./shop.types";
 import {
   deriveShopMachineStatus,
+  type MeterPhysicalStatus,
   matchesShopCrewEmployeeType,
+  mergeShopMachineStatus,
   parseShopDispatchContent,
   resolveShopAssignGroup,
   resolveShopDispatchKind,
@@ -256,14 +263,68 @@ export async function getShopOverview(
     employeeTypeNameById
   );
 
+  // MachineMeter overlay (fail open when unset / unreachable from cloud).
+  const meter = await fetchMeterShopSnapshot();
+  const enriched = applyMeterToShopMachines(machines, meter);
+  const meterPhysicalRecord: Record<string, MeterPhysicalStatus | null> = {};
+  for (const [id, status] of enriched.meterPhysicalByWorkCenterId) {
+    meterPhysicalRecord[id] = status;
+  }
+
   return {
     locationId: args.locationId,
     locationName:
       locationResult.data?.name ?? workCenters[0]?.locationName ?? null,
     userId: args.userId,
-    machines,
-    people
+    machines: enriched.machines,
+    people,
+    meterPhysicalByWorkCenterId: meterPhysicalRecord,
+    meterAvailable: meter.available
   };
+}
+
+/**
+ * Prefer Meter physical status + Index_ 单号 when the API is configured and
+ * reachable. Carbon blocking downtime / break still win; open 报问题 does not.
+ */
+export function applyMeterToShopMachines(
+  machines: ShopMachine[],
+  meter: MeterShopSnapshot
+): {
+  machines: ShopMachine[];
+  meterPhysicalByWorkCenterId: Map<string, MeterPhysicalStatus | null>;
+} {
+  const meterPhysicalByWorkCenterId = new Map<
+    string,
+    MeterPhysicalStatus | null
+  >();
+
+  if (!meter.available) {
+    for (const m of machines) {
+      meterPhysicalByWorkCenterId.set(m.id, null);
+    }
+    return { machines, meterPhysicalByWorkCenterId };
+  }
+
+  const next = machines.map((machine) => {
+    const snap = meterSnapshotForWorkCenterName(meter, machine.name);
+    const physical = snap?.physicalStatus ?? null;
+    meterPhysicalByWorkCenterId.set(machine.id, physical);
+    const meterWorkOrder = snap?.workOrder?.trim() || null;
+    return {
+      ...machine,
+      status: mergeShopMachineStatus({
+        carbonStatus: machine.status,
+        meterPhysical: physical,
+        awaitingStart: false
+      }),
+      meterWorkOrder,
+      // Grid line 2: prefer Meter/scan 单号 (actual) over Carbon productionEvent.
+      currentJobReadableId: meterWorkOrder || machine.currentJobReadableId
+    };
+  });
+
+  return { machines: next, meterPhysicalByWorkCenterId };
 }
 
 /**
@@ -314,7 +375,9 @@ export async function getShopMachineDetail(
     locationName: overview.locationName,
     commentsByDispatchId,
     filesByDispatchId,
-    history
+    history,
+    meterPhysicalByWorkCenterId: overview.meterPhysicalByWorkCenterId,
+    meterAvailable: overview.meterAvailable
   };
 }
 
