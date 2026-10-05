@@ -10,7 +10,10 @@ import {
   shopMaintenanceActions
 } from "~/modules/shop";
 import { runShopMaintenanceAction } from "~/modules/shop/shop.action.server";
-import { clearJustFixedBadge } from "~/modules/shop/shop.alerts.server";
+import {
+  clearJustFixedBadge,
+  syncShopAlertsForOverview
+} from "~/modules/shop/shop.alerts.server";
 import { getShopMachineDetail } from "~/modules/shop/shop.server";
 import { MachineDetailPage } from "~/modules/shop/ui/MachineDetailPage";
 
@@ -48,9 +51,21 @@ export async function loader({ context, request, params }: LoaderFunctionArgs) {
   ]);
 
   if (!detail) throw notFound("Work center not found");
+
+  // Apply Redis 待开机 overlay (same as overview sync) for the detail chip.
+  const synced = await syncShopAlertsForOverview({
+    companyId,
+    locationId,
+    machines: [detail.machine],
+    meterPhysicalByWorkCenterId: new Map(
+      Object.entries(detail.meterPhysicalByWorkCenterId ?? {})
+    )
+  });
+  const machine = synced.machines[0] ?? detail.machine;
+
   // companyId must ride the loader — `/shop` is a sibling of `/x`, so
   // `useUser()` (which reads authenticated-root route data) cannot supply it.
-  return { ...detail, companyId };
+  return { ...detail, machine, companyId };
 }
 
 export async function action({ request }: ActionFunctionArgs) {
@@ -79,7 +94,8 @@ export async function action({ request }: ActionFunctionArgs) {
     "ReportBreak",
     "ReportPlanned",
     "ReportDowntime",
-    "ReportIssue"
+    "ReportIssue",
+    "ConfirmStarted"
   ]);
 
   if (!reportActions.has(rawAction) && !dispatchId) {

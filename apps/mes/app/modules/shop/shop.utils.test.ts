@@ -9,14 +9,20 @@ import {
   formatShopTilePersonLine,
   groupPeopleByAssignGroup,
   groupShopMachinesByArea,
+  isShopMachinePhysicallyRunning,
+  mapMeterStatusCode,
   matchesShopAssignGroup,
   matchesShopCrewEmployeeType,
+  mergeShopMachineStatus,
+  normalizeMeterMachineId,
+  normalizeMeterWorkOrder,
   parseShopDispatchContent,
   presentShopDispatchProblem,
   resolvePrimaryAssigneeId,
   resolveShopAssignGroup,
   resolveShopDispatchKind,
   shopMachineSubtitle,
+  shopStatusFromMeterPhysical,
   shopStatusSnapshotFromMachines
 } from "./shop.utils";
 
@@ -58,14 +64,14 @@ describe("formatShopTilePersonLine", () => {
     ).toEqual({ text: "—", tone: "empty" });
   });
 
-  it("shows 未分配 alone when down with no reason", () => {
+  it("shows 待开机 placeholder when awaiting start and unassigned", () => {
     expect(
       formatShopTilePersonLine({
-        status: "down",
-        assigneeName: "  ",
+        status: "awaitingStart",
+        assigneeName: null,
         downtimeReason: null
       })
-    ).toEqual({ text: "未分配", tone: "unassigned" });
+    ).toEqual({ text: "待开机", tone: "empty" });
   });
 });
 
@@ -392,6 +398,97 @@ describe("deriveShopMachineStatus", () => {
   });
 });
 
+describe("mergeShopMachineStatus / Meter / 待开机", () => {
+  it("maps Meter codes to physical statuses", () => {
+    expect(mapMeterStatusCode("1")).toBe("running");
+    expect(mapMeterStatusCode("0")).toBe("idle");
+    expect(mapMeterStatusCode("2")).toBe("stopped");
+    expect(mapMeterStatusCode("3")).toBe("stopped");
+    expect(mapMeterStatusCode("4")).toBe("offline");
+    expect(shopStatusFromMeterPhysical("running")).toBe("running");
+    expect(shopStatusFromMeterPhysical("stopped")).toBe("down");
+    expect(shopStatusFromMeterPhysical("offline")).toBe("offline");
+  });
+
+  it("normalizes machine ids and Index_ 单号", () => {
+    expect(normalizeMeterMachineId(" t1 ")).toBe("T1");
+    expect(normalizeMeterWorkOrder("WO-123")).toBe("WO-123");
+    expect(normalizeMeterWorkOrder("NULL")).toBe(null);
+    expect(normalizeMeterWorkOrder("-")).toBe(null);
+  });
+
+  it("keeps Carbon blocking down over Meter running", () => {
+    expect(
+      mergeShopMachineStatus({
+        carbonStatus: "down",
+        meterPhysical: "running",
+        awaitingStart: true
+      })
+    ).toBe("down");
+  });
+
+  it("applies 待开机 when not running", () => {
+    expect(
+      mergeShopMachineStatus({
+        carbonStatus: "idle",
+        meterPhysical: "idle",
+        awaitingStart: true
+      })
+    ).toBe("awaitingStart");
+  });
+
+  it("does not enter 待开机 when Meter says running", () => {
+    expect(
+      mergeShopMachineStatus({
+        carbonStatus: "idle",
+        meterPhysical: "running",
+        awaitingStart: true
+      })
+    ).toBe("running");
+  });
+
+  it("prefers Meter physical when no Carbon downtime", () => {
+    expect(
+      mergeShopMachineStatus({
+        carbonStatus: "idle",
+        meterPhysical: "stopped",
+        awaitingStart: false
+      })
+    ).toBe("down");
+  });
+
+  it("Complete 待开机 rule: Meter when available else productionEvent", () => {
+    expect(
+      isShopMachinePhysicallyRunning({
+        meterAvailable: true,
+        meterPhysical: "idle",
+        hasOpenProductionEvent: true
+      })
+    ).toBe(false);
+    expect(
+      isShopMachinePhysicallyRunning({
+        meterAvailable: true,
+        meterPhysical: "running",
+        hasOpenProductionEvent: false
+      })
+    ).toBe(true);
+    expect(
+      isShopMachinePhysicallyRunning({
+        meterAvailable: false,
+        meterPhysical: null,
+        hasOpenProductionEvent: true
+      })
+    ).toBe(true);
+    expect(
+      isShopMachinePhysicallyRunning({
+        meterAvailable: false,
+        meterPhysical: null,
+        hasOpenProductionEvent: false
+      })
+    ).toBe(false);
+  });
+});
+
 describe("filterShopMachines / countShopStatuses / groupShopMachinesByArea", () => {
   const machines: ShopMachine[] = [
     machine({
@@ -427,7 +524,9 @@ describe("filterShopMachines / countShopStatuses / groupShopMachinesByArea", () 
       running: 1,
       idle: 1,
       break: 1,
-      down: 2
+      down: 2,
+      awaitingStart: 0,
+      offline: 0
     });
   });
 

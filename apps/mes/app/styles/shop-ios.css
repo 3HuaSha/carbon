@@ -52,18 +52,21 @@
   box-shadow: var(--shop-shadow);
 }
 
-/* Machine tiles: status fills. Colored statuses use white ink; idle is white + dark ink. */
+/* Machine tiles: status fills. Colored statuses use white ink; idle/offline is white + dark ink. */
 .shop-ios-fill-running,
 .shop-ios-fill-idle,
 .shop-ios-fill-break,
-.shop-ios-fill-down {
+.shop-ios-fill-down,
+.shop-ios-fill-awaiting,
+.shop-ios-fill-offline {
   border-radius: 1rem;
   box-shadow: var(--shop-shadow);
 }
 
 .shop-ios-fill-running,
 .shop-ios-fill-break,
-.shop-ios-fill-down {
+.shop-ios-fill-down,
+.shop-ios-fill-awaiting {
   color: #ffffff;
 }
 
@@ -71,18 +74,21 @@
   background-color: var(--shop-run);
 }
 
-.shop-ios-fill-idle {
+.shop-ios-fill-idle,
+.shop-ios-fill-offline {
   /* White fill + dark ink always (ignore dark-mode --shop-ink = white). */
   background-color: var(--shop-idle-fill);
   color: #000000;
   border: 1px solid var(--shop-hairline);
 }
 
-.shop-ios-fill-idle .shop-ios-fill-muted {
+.shop-ios-fill-idle .shop-ios-fill-muted,
+.shop-ios-fill-offline .shop-ios-fill-muted {
   color: #636366;
 }
 
-.shop-ios-fill-idle .shop-ios-fill-faint {
+.shop-ios-fill-idle .shop-ios-fill-faint,
+.shop-ios-fill-offline .shop-ios-fill-faint {
   color: rgb(0 0 0 / 0.45);
 }
 
@@ -92,6 +98,10 @@
 
 .shop-ios-fill-down {
   background-color: var(--shop-down);
+}
+
+.shop-ios-fill-awaiting {
+  background-color: var(--shop-warn);
 }
 
 .shop-ios-fill-muted {

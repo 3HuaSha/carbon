@@ -12,6 +12,39 @@ import type {
 } from "./shop.types";
 import { shopAssignGroups } from "./shop.types";
 
+/** Raw Meter status codes → physical shop meaning (kanban MACHINE_STATUS_MAP). */
+export type MeterPhysicalStatus =
+  | "running"
+  | "idle"
+  | "stopped"
+  | "offline"
+  | "unknown";
+
+export function normalizeMeterMachineId(value: unknown): string {
+  return String(value ?? "")
+    .trim()
+    .toUpperCase();
+}
+
+export function normalizeMeterWorkOrder(value: unknown): string | null {
+  const index = String(value ?? "").trim();
+  if (!index || index.toUpperCase() === "NULL" || index === "-") return null;
+  return index;
+}
+
+/**
+ * Map MachineMeter `MachineStatus` codes (kanban constants):
+ * 1 → running, 0 → idle, 2/3 → stopped, 4 → offline.
+ */
+export function mapMeterStatusCode(raw: unknown): MeterPhysicalStatus {
+  const code = String(raw ?? "").trim();
+  if (code === "1") return "running";
+  if (code === "0") return "idle";
+  if (code === "2" || code === "3") return "stopped";
+  if (code === "4") return "offline";
+  return "unknown";
+}
+
 /**
  * Configurable `employeeType.name` aliases for assign columns + crew boards.
  * Match is case-insensitive; the type name matches if it equals an alias or
@@ -224,11 +257,12 @@ export function parseShopDispatchContent(content: unknown): {
 }
 
 /**
- * Derive the phone-overview status from existing MES signals.
+ * Derive the phone-overview status from existing MES signals (Carbon only).
  *
  * Priority (highest first):
  * down (fault | planned | blocked) → break → running → idle
  *
+ * Non-blocking 「报问题」 (`issue`) is ignored for status.
  * Waiting-repair / in-repair / planned all present as one **停机** status.
  */
 export function deriveShopMachineStatus(args: {
@@ -267,6 +301,63 @@ export function deriveShopMachineStatus(args: {
   return "idle";
 }
 
+/** Physical Meter pulse → shop tile status (when no Carbon blocking episode). */
+export function shopStatusFromMeterPhysical(
+  physical: "running" | "idle" | "stopped" | "offline" | "unknown" | null
+): ShopMachineStatus | null {
+  if (physical === "running") return "running";
+  if (physical === "idle") return "idle";
+  if (physical === "stopped") return "down";
+  if (physical === "offline") return "offline";
+  return null;
+}
+
+/**
+ * Merge Carbon derivation + optional Meter pulse + Redis 待开机.
+ *
+ * Priority:
+ * 1. Carbon blocking downtime (fault/planned/blocked) or break
+ * 2. Redis 待开机 (unless physically running — then clear overlay)
+ * 3. Meter physical status when available
+ * 4. Carbon running/idle from production events
+ */
+export function mergeShopMachineStatus(args: {
+  carbonStatus: ShopMachineStatus;
+  meterPhysical?: "running" | "idle" | "stopped" | "offline" | "unknown" | null;
+  awaitingStart?: boolean;
+}): ShopMachineStatus {
+  const { carbonStatus, meterPhysical = null, awaitingStart = false } = args;
+
+  if (carbonStatus === "down" || carbonStatus === "break") {
+    return carbonStatus;
+  }
+
+  const meterSaysRunning = meterPhysical === "running";
+  if (awaitingStart && !meterSaysRunning && carbonStatus !== "running") {
+    return "awaitingStart";
+  }
+
+  const fromMeter = shopStatusFromMeterPhysical(meterPhysical);
+  if (fromMeter) return fromMeter;
+
+  return carbonStatus;
+}
+
+/**
+ * True when the machine is physically running for 待开机 Complete rules.
+ * Prefer Meter when available; else open Carbon productionEvent.
+ */
+export function isShopMachinePhysicallyRunning(args: {
+  meterPhysical?: "running" | "idle" | "stopped" | "offline" | "unknown" | null;
+  meterAvailable?: boolean;
+  hasOpenProductionEvent: boolean;
+}): boolean {
+  if (args.meterAvailable && args.meterPhysical != null) {
+    return args.meterPhysical === "running";
+  }
+  return args.hasOpenProductionEvent;
+}
+
 export function filterShopMachines(
   machines: ShopMachine[],
   filter: ShopStatusFilter
@@ -282,7 +373,9 @@ export function countShopStatuses(
     running: 0,
     idle: 0,
     break: 0,
-    down: 0
+    down: 0,
+    awaitingStart: 0,
+    offline: 0
   };
 
   for (const machine of machines) {
@@ -418,6 +511,7 @@ export function primaryOpenDispatch(
  * Line 3 of the `/shop` machine tile — always one line so tiles stay uniform height.
  *
  * - Down: `负责人 · 停机原因…` or `未分配 · 原因…` (reason omitted when empty)
+ * - Awaiting start: assignee if any, else `待开机`
  * - Other statuses: assignee name, or `—` (never append downtime reason clutter)
  */
 export function formatShopTilePersonLine(args: {
@@ -435,6 +529,11 @@ export function formatShopTilePersonLine(args: {
       text: reason ? `${person} · ${reason}` : person,
       tone: assignee ? "assignee" : "unassigned"
     };
+  }
+
+  if (args.status === "awaitingStart") {
+    if (assignee) return { text: assignee, tone: "assignee" };
+    return { text: "待开机", tone: "empty" };
   }
 
   if (assignee) {

@@ -9,15 +9,17 @@ import { shopIos } from "./shopIos";
 
 /**
  * Floor-map tile — status-filled card, exactly three lines.
- * Fill: 运行 green / 停机 red / 休息 blue / 空闲 white + dark ink.
- * Colored fills use white ink; idle never forces `text-white` (white-on-white).
+ * Fill: 运行 green / 停机 red / 休息 blue / 待开机 amber / 空闲·离线 white + dark ink.
+ * Colored fills use white ink; idle/offline never force `text-white`.
  * No continuous animations (ping/pulse) — 30+ tiles must stay cheap to paint.
  */
 const STATUS: Record<ShopMachineStatus, { label: string; name: string }> = {
   running: { label: "运行", name: "运行中" },
   idle: { label: "空闲", name: "空闲" },
   break: { label: "休息", name: "休息" },
-  down: { label: "停机", name: "停机" }
+  down: { label: "停机", name: "停机" },
+  awaitingStart: { label: "待开机", name: "待开机" },
+  offline: { label: "离线", name: "离线" }
 };
 
 type MachineTileProps = {
@@ -25,22 +27,48 @@ type MachineTileProps = {
   onSelect: (machine: ShopMachine) => void;
 };
 
+function formatIssuePersonLine(
+  assigneeName: string | null | undefined,
+  note: string | null | undefined
+): { text: string; tone: "assignee" | "unassigned" | "empty" } {
+  const assignee = assigneeName?.trim() || null;
+  const reason = note?.trim() || null;
+  if (assignee && reason) {
+    return { text: `${assignee} · ${reason}`, tone: "assignee" };
+  }
+  if (assignee) return { text: assignee, tone: "assignee" };
+  if (reason) return { text: reason, tone: "unassigned" };
+  return { text: "—", tone: "empty" };
+}
+
 export function MachineTile({ machine, onSelect }: MachineTileProps) {
   const meta = STATUS[machine.status];
-  const isIdle = machine.status === "idle";
-  const ink = isIdle ? "text-black" : "text-white";
-  const statusDot = isIdle ? "bg-black/70" : "bg-white/90";
+  const lightInk = machine.status === "idle" || machine.status === "offline";
+  const ink = lightInk ? "text-black" : "text-white";
+  const statusDot = lightInk ? "bg-black/70" : "bg-white/90";
   const jobId =
-    machine.currentJobReadableId ?? machine.currentWork?.jobReadableId ?? null;
+    machine.meterWorkOrder ??
+    machine.currentJobReadableId ??
+    machine.currentWork?.jobReadableId ??
+    null;
   const primary = primaryOpenDispatch(machine.openDispatches);
-  const assigneeName = primary?.assigneeName?.trim() || null;
-  const downtimeReason =
-    machine.status === "down" ? primary?.note?.trim() || null : null;
-  const personLine = formatShopTilePersonLine({
-    status: machine.status,
-    assigneeName,
-    downtimeReason
-  });
+  const issueDispatch =
+    machine.openDispatches.find((d) => d.shopKind === "issue") ?? null;
+
+  // Open 报问题 alone must not look like 维修 downtime — overlay assignee/note
+  // on running/idle/offline tiles; blocking down still uses downtime line.
+  const personLine =
+    issueDispatch &&
+    machine.status !== "down" &&
+    machine.status !== "break" &&
+    machine.status !== "awaitingStart"
+      ? formatIssuePersonLine(issueDispatch.assigneeName, issueDispatch.note)
+      : formatShopTilePersonLine({
+          status: machine.status,
+          assigneeName: primary?.assigneeName ?? issueDispatch?.assigneeName,
+          downtimeReason:
+            machine.status === "down" ? primary?.note?.trim() || null : null
+        });
 
   return (
     <button
@@ -69,13 +97,10 @@ export function MachineTile({ machine, onSelect }: MachineTileProps) {
           {machine.name}
         </span>
         <span className="flex shrink-0 items-center gap-1">
-          <span className={cn("inline-flex h-1.5 w-1.5 rounded-full", statusDot)} />
           <span
-            className={cn(
-              "text-[10px] font-semibold leading-tight",
-              ink
-            )}
-          >
+            className={cn("inline-flex h-1.5 w-1.5 rounded-full", statusDot)}
+          />
+          <span className={cn("text-[10px] font-semibold leading-tight", ink)}>
             {meta.label}
           </span>
         </span>
@@ -87,11 +112,7 @@ export function MachineTile({ machine, onSelect }: MachineTileProps) {
           shopIos.fillMuted
         )}
       >
-        {jobId ? (
-          <span className={cn("font-medium", ink)}>{jobId}</span>
-        ) : (
-          "—"
-        )}
+        {jobId ? <span className={cn("font-medium", ink)}>{jobId}</span> : "—"}
       </div>
 
       <div

@@ -22,9 +22,21 @@ import {
   notifyScheduleInputsChanged
 } from "~/services/operations.service";
 import { openDispatchStatuses } from "~/utils/display";
-import { appendShopIssueAlert } from "./shop.alerts.server";
+import {
+  appendShopAwaitingStartAlert,
+  appendShopIssueAlert,
+  clearAwaitingStart,
+  setAwaitingStart
+} from "./shop.alerts.server";
+import {
+  fetchMeterShopSnapshot,
+  meterSnapshotForWorkCenterName
+} from "./shop.meter.server";
 import type { ShopDispatchKind, ShopMaintenanceAction } from "./shop.types";
-import { parseShopDispatchContent } from "./shop.utils";
+import {
+  isShopMachinePhysicallyRunning,
+  parseShopDispatchContent
+} from "./shop.utils";
 
 const logger = getLogger("mes", "shop-maintenance");
 
@@ -191,6 +203,13 @@ export async function runShopMaintenanceAction(
       companyId,
       userId,
       currentTime
+    });
+  }
+
+  if (action === "ConfirmStarted") {
+    return confirmShopMachineStarted(client, {
+      workCenterId,
+      companyId
     });
   }
 
@@ -433,6 +452,14 @@ export async function runShopMaintenanceAction(
       companyId,
       userId
     });
+
+    // 待开机: if machine is not running at Complete, persist Redis flag + alert.
+    await maybeEnterAwaitingStartAfterComplete(client, {
+      companyId,
+      workCenterId: resolvedWorkCenterId,
+      dispatchWorkCenterId: ownedDispatch.data.workCenterId
+    });
+
     if (posting.error) {
       logger.error("Failed to post maintenance labor", {
         companyId,
@@ -993,4 +1020,126 @@ async function appendDispatchNote(
       createdBy: args.userId
     }
   ]);
+}
+
+/** Operator tapped 已开机 — clear Redis 待开机 for this work center. */
+async function confirmShopMachineStarted(
+  client: SupabaseClient<Database>,
+  args: { workCenterId: string | null; companyId: string }
+): Promise<ShopMaintenanceActionResult> {
+  const { workCenterId, companyId } = args;
+  if (!workCenterId) {
+    return { ok: false, message: "Work center is required" };
+  }
+
+  const owned = await client
+    .from("workCenter")
+    .select("id")
+    .eq("id", workCenterId)
+    .eq("companyId", companyId)
+    .maybeSingle();
+
+  if (!owned.data) {
+    return { ok: false, message: "Work center not found" };
+  }
+
+  try {
+    await clearAwaitingStart({ companyId, workCenterId });
+  } catch (err) {
+    logger.warn("Failed to clear awaiting-start (Redis fail-soft)", {
+      companyId,
+      workCenterId,
+      error: err instanceof Error ? err.message : String(err)
+    });
+  }
+
+  return {
+    ok: true,
+    action: "ConfirmStarted",
+    message: "已开机"
+  };
+}
+
+/**
+ * After Complete: if the work center is not running (Meter when available,
+ * else open productionEvent), set 待开机 + 提醒 alert.
+ */
+async function maybeEnterAwaitingStartAfterComplete(
+  client: SupabaseClient<Database>,
+  args: {
+    companyId: string;
+    workCenterId: string | null;
+    dispatchWorkCenterId: string | null;
+  }
+): Promise<void> {
+  const workCenterId = args.workCenterId || args.dispatchWorkCenterId;
+  if (!workCenterId) return;
+
+  const workCenter = await client
+    .from("workCenter")
+    .select("id, name, locationId")
+    .eq("id", workCenterId)
+    .eq("companyId", args.companyId)
+    .maybeSingle();
+
+  if (!workCenter.data) return;
+
+  let meterAvailable = false;
+  let meterPhysical:
+    | "running"
+    | "idle"
+    | "stopped"
+    | "offline"
+    | "unknown"
+    | null = null;
+  try {
+    const meter = await fetchMeterShopSnapshot();
+    meterAvailable = meter.available;
+    const snap = meterSnapshotForWorkCenterName(meter, workCenter.data.name);
+    meterPhysical = snap?.physicalStatus ?? null;
+  } catch {
+    meterAvailable = false;
+  }
+
+  const openEvents = await client
+    .from("productionEvent")
+    .select("id")
+    .eq("companyId", args.companyId)
+    .eq("workCenterId", workCenterId)
+    .is("endTime", null)
+    .limit(1);
+
+  const hasOpenProductionEvent = (openEvents.data ?? []).length > 0;
+  const running = isShopMachinePhysicallyRunning({
+    meterAvailable,
+    meterPhysical,
+    hasOpenProductionEvent
+  });
+
+  if (running) return;
+
+  try {
+    await setAwaitingStart({
+      companyId: args.companyId,
+      workCenterId
+    });
+    const locationId = workCenter.data.locationId;
+    if (locationId) {
+      await appendShopAwaitingStartAlert({
+        companyId: args.companyId,
+        locationId,
+        workCenterId,
+        workCenterName: workCenter.data.name ?? workCenterId
+      });
+    }
+  } catch (err) {
+    logger.warn(
+      "Failed to set awaiting-start after Complete (Redis fail-soft)",
+      {
+        companyId: args.companyId,
+        workCenterId,
+        error: err instanceof Error ? err.message : String(err)
+      }
+    );
+  }
 }

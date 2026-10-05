@@ -40,7 +40,10 @@ export async function loader({ context, request }: LoaderFunctionArgs) {
   const synced = await syncShopAlertsForOverview({
     companyId,
     locationId,
-    machines: overview.machines
+    machines: overview.machines,
+    meterPhysicalByWorkCenterId: new Map(
+      Object.entries(overview.meterPhysicalByWorkCenterId ?? {})
+    )
   });
 
   return {

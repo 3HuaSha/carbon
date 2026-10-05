@@ -202,6 +202,24 @@ export const MES_URL =
 export const ASSEMBLER_SERVICE_URL = getEnv("ASSEMBLER_SERVICE_URL", {
   isRequired: false
 });
+
+/**
+ * MachineMeter HTTP base (no trailing slash), e.g. a VPN/proxy reachable from
+ * Railway — not the factory LAN `172.21.*` host unless the runtime can reach it.
+ * Unset → MES `/shop` stays Carbon-only (fail open).
+ */
+export const MACHINE_METER_API_BASE_URL = getEnv("MACHINE_METER_API_BASE_URL", {
+  isRequired: false,
+  isSecret: false
+});
+/** Per-request timeout for MachineMeter GETs (ms). Default 8000. */
+export const MACHINE_METER_API_TIMEOUT_MS = getEnv(
+  "MACHINE_METER_API_TIMEOUT_MS",
+  {
+    isRequired: false,
+    isSecret: false
+  }
+);
 // Dev-only (crbn-written): local kong port for the storage-URL rewrite in
 // internalizeStorageUrl. Unset in prod.
 export const PORT_API = getEnv("PORT_API", {
