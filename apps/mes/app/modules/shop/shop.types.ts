@@ -103,8 +103,9 @@ export type ShopMachine = {
 };
 
 /**
- * Reminder kinds: status-boundary transitions, non-blocking 「报问题」,
- * and entering 待开机 after Complete.
+ * Reminder kinds, all appended by explicit actions: `down` = 报修 (fault
+ * reported), `recovered` = 已修好 (repair completed), `issue` = 报问题.
+ * `awaitingStart` is no longer written; kept so older stored rows still parse.
  */
 export const shopAlertKinds = [
   "down",

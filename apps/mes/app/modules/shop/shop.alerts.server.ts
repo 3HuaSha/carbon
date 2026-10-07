@@ -12,23 +12,14 @@
 
 import { redis } from "@carbon/kv";
 import { datetime } from "@carbon/utils";
-import type { ShopAlert, ShopMachine, ShopMachineStatus } from "./shop.types";
+import type { ShopAlert, ShopAlertKind, ShopMachine } from "./shop.types";
 import type { MeterPhysicalStatus } from "./shop.utils";
-import {
-  detectShopStatusTransitions,
-  mergeShopMachineStatus,
-  shopStatusSnapshotFromMachines
-} from "./shop.utils";
+import { mergeShopMachineStatus } from "./shop.utils";
 
 const ALERTS_TTL_SECONDS = 60 * 60 * 24 * 7; // 7 days
 const JUST_FIXED_TTL_SECONDS = 60 * 60 * 48; // 48 hours
 const AWAITING_START_TTL_SECONDS = 60 * 60 * 48; // 48 hours
 const MAX_ALERTS = 50;
-const SNAPSHOT_TTL_SECONDS = 60 * 60 * 24 * 14;
-
-function statusSnapKey(companyId: string, locationId: string) {
-  return `shop:statusSnap:${companyId}:${locationId}`;
-}
 
 function alertsKey(companyId: string, locationId: string) {
   return `shop:alerts:${companyId}:${locationId}`;
@@ -44,33 +35,6 @@ function justFixedKey(companyId: string, workCenterId: string) {
 
 function awaitingStartKey(companyId: string, workCenterId: string) {
   return `shop:awaitingStart:${companyId}:${workCenterId}`;
-}
-
-function isShopMachineStatus(value: unknown): value is ShopMachineStatus {
-  return (
-    value === "running" ||
-    value === "idle" ||
-    value === "break" ||
-    value === "down" ||
-    value === "awaitingStart" ||
-    value === "offline"
-  );
-}
-
-function parseSnapshot(raw: string | null): Record<string, ShopMachineStatus> {
-  if (!raw) return {};
-  try {
-    const parsed = JSON.parse(raw) as Record<string, unknown>;
-    const out: Record<string, ShopMachineStatus> = {};
-    for (const [id, status] of Object.entries(parsed)) {
-      if (isShopMachineStatus(status)) {
-        out[id] = status;
-      }
-    }
-    return out;
-  } catch {
-    return {};
-  }
 }
 
 function parseAlerts(raw: string | null): ShopAlert[] {
@@ -128,11 +92,12 @@ export type ShopAlertsSyncResult = {
 };
 
 /**
- * Compare last-seen statuses to the current overview, append alerts, set
- * 「刚修完」 flags, refresh the snapshot, and stamp badges onto machines.
+ * Read the 提醒 feed, apply Redis 待开机 overlays (auto-clearing them when the
+ * machine is physically running again), and stamp 「刚修完」 badges.
  *
- * Also applies Redis 待开机 overlays (and auto-clears them when the machine
- * is physically running again).
+ * Alerts are NOT derived from status changes: Meter reports every physical
+ * stop/start, which flooded the feed. Only explicit actions append alerts
+ * (报修 / 报问题 / 已修好).
  */
 export async function syncShopAlertsForOverview(args: {
   companyId: string;
@@ -142,11 +107,9 @@ export async function syncShopAlertsForOverview(args: {
   meterPhysicalByWorkCenterId?: Map<string, MeterPhysicalStatus | null>;
 }): Promise<ShopAlertsSyncResult> {
   const { companyId, locationId, machines } = args;
-  const snapKey = statusSnapKey(companyId, locationId);
   const listKey = alertsKey(companyId, locationId);
 
-  const [rawSnap, rawAlerts, rawSeen, awaitingStartIds] = await Promise.all([
-    redis.get(snapKey),
+  const [rawAlerts, rawSeen, awaitingStartIds] = await Promise.all([
     redis.get(listKey),
     redis.get(alertsSeenKey(companyId, locationId)),
     getAwaitingStartWorkCenterIds(
@@ -189,55 +152,11 @@ export async function syncShopAlertsForOverview(args: {
     };
   });
 
-  const previous = parseSnapshot(rawSnap);
-  const existingAlerts = parseAlerts(rawAlerts);
-  const transitions = detectShopStatusTransitions(previous, withAwaiting);
-
-  const nowIso = datetime.timestamp();
-  const newAlerts: ShopAlert[] = transitions.map((t) => ({
-    id: newAlertId(),
-    kind: t.kind,
-    workCenterId: t.workCenterId,
-    workCenterName: t.workCenterName,
-    createdAt: nowIso
-  }));
-
-  const justFixedFromTransitions = transitions
-    .filter((t) => t.justFixed)
-    .map((t) => t.workCenterId);
-
-  if (justFixedFromTransitions.length > 0) {
-    await Promise.all(
-      justFixedFromTransitions.map((workCenterId) =>
-        redis.set(
-          justFixedKey(companyId, workCenterId),
-          "1",
-          "EX",
-          JUST_FIXED_TTL_SECONDS
-        )
-      )
-    );
-  }
-
-  const alerts =
-    newAlerts.length > 0
-      ? [...newAlerts, ...existingAlerts].slice(0, MAX_ALERTS)
-      : existingAlerts;
-
-  if (newAlerts.length > 0) {
-    await redis.set(listKey, JSON.stringify(alerts), "EX", ALERTS_TTL_SECONDS);
-  } else if (rawAlerts) {
+  const alerts = parseAlerts(rawAlerts);
+  if (rawAlerts) {
     // Refresh TTL so an active shop keeps the list alive.
-    await redis.set(listKey, JSON.stringify(alerts), "EX", ALERTS_TTL_SECONDS);
+    await redis.expire(listKey, ALERTS_TTL_SECONDS);
   }
-
-  const snapshot = shopStatusSnapshotFromMachines(withAwaiting);
-  await redis.set(
-    snapKey,
-    JSON.stringify(snapshot),
-    "EX",
-    SNAPSHOT_TTL_SECONDS
-  );
 
   const justFixedIds = await getJustFixedWorkCenterIds(
     companyId,
@@ -376,18 +295,33 @@ export async function appendShopIssueAlert(args: {
   });
 }
 
-/** Push a 待开机 row into the shared shop 提醒 feed. */
-export async function appendShopAwaitingStartAlert(args: {
+/** Push a 「报修」 (fault reported, machine down) row into the 提醒 feed. */
+export async function appendShopRepairRequestAlert(args: {
+  companyId: string;
+  locationId: string;
+  workCenterId: string;
+  workCenterName: string;
+  note: string | null;
+}): Promise<void> {
+  await appendShopAlert({ ...args, kind: "down" });
+}
+
+/** Push a 「已修好」 row into the 提醒 feed and light the 刚修完 badge. */
+export async function appendShopRepairedAlert(args: {
   companyId: string;
   locationId: string;
   workCenterId: string;
   workCenterName: string;
 }): Promise<void> {
-  await appendShopAlert({
-    ...args,
-    kind: "awaitingStart",
-    note: null
-  });
+  await Promise.all([
+    appendShopAlert({ ...args, kind: "recovered", note: null }),
+    redis.set(
+      justFixedKey(args.companyId, args.workCenterId),
+      "1",
+      "EX",
+      JUST_FIXED_TTL_SECONDS
+    )
+  ]);
 }
 
 async function appendShopAlert(args: {
@@ -395,7 +329,7 @@ async function appendShopAlert(args: {
   locationId: string;
   workCenterId: string;
   workCenterName: string;
-  kind: "issue" | "awaitingStart";
+  kind: ShopAlertKind;
   note: string | null;
 }): Promise<void> {
   const listKey = alertsKey(args.companyId, args.locationId);

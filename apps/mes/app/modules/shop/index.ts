@@ -34,7 +34,6 @@ export {
   countShopStatuses,
   defaultSelectedAssignIds,
   deriveShopMachineStatus,
-  detectShopStatusTransitions,
   filterShopMachines,
   formatShopTilePersonLine,
   groupPeopleByAssignGroup,
@@ -53,6 +52,5 @@ export {
   SHOP_ASSIGN_GROUP_LABELS,
   SHOP_CREW_TYPE_ALIASES,
   shopMachineSubtitle,
-  shopStatusFromMeterPhysical,
-  shopStatusSnapshotFromMachines
+  shopStatusFromMeterPhysical
 } from "./shop.utils";
