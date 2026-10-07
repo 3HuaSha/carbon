@@ -1,3 +1,5 @@
+import { timingSafeEqual } from "node:crypto";
+import { SHOP_INTERNAL_SECRET } from "@carbon/auth";
 import type { Database } from "@carbon/database";
 import {
   getTelegramChatIdForUser,
@@ -5,6 +7,7 @@ import {
   sendMaintenanceAssignmentTelegram
 } from "@carbon/ee/telegram.server";
 import { trigger } from "@carbon/jobs";
+import { redis } from "@carbon/kv";
 import { getLogger } from "@carbon/logger";
 import { NotificationEvent } from "@carbon/notifications";
 import { datetime } from "@carbon/utils";
@@ -1078,6 +1081,55 @@ async function confirmShopMachineStarted(
     action: "ConfirmStarted",
     message: "已开机"
   };
+}
+
+const REPAIR_FOLLOW_UP_TTL_SECONDS = 60 * 60 * 48;
+
+/** Constant-time check of the ERP → MES shared secret; false when unset. */
+export function isValidShopInternalSecret(request: Request): boolean {
+  if (!SHOP_INTERNAL_SECRET) return false;
+  const provided = request.headers.get("x-shop-internal-secret") ?? "";
+  const expected = Buffer.from(SHOP_INTERNAL_SECRET);
+  const actual = Buffer.from(provided);
+  return actual.length === expected.length && timingSafeEqual(actual, expected);
+}
+
+/**
+ * Same follow-up as the PWA Complete, for a dispatch completed elsewhere
+ * (Telegram → ERP). Runs at most once per dispatch, and only once the
+ * dispatch is actually Completed in this company.
+ */
+export async function runShopRepairCompleteFollowUp(
+  client: SupabaseClient<Database>,
+  args: { companyId: string; dispatchId: string }
+): Promise<{ ok: boolean; message: string }> {
+  const dispatch = await client
+    .from("maintenanceDispatch")
+    .select("id, workCenterId, status")
+    .eq("id", args.dispatchId)
+    .eq("companyId", args.companyId)
+    .maybeSingle();
+
+  if (!dispatch.data) return { ok: false, message: "dispatch not found" };
+  if (dispatch.data.status !== "Completed") {
+    return { ok: false, message: "dispatch not completed" };
+  }
+
+  const claimed = await redis.set(
+    `shop:repairFollowUp:${args.companyId}:${args.dispatchId}`,
+    "1",
+    "EX",
+    REPAIR_FOLLOW_UP_TTL_SECONDS,
+    "NX"
+  );
+  if (claimed !== "OK") return { ok: true, message: "already handled" };
+
+  await afterShopRepairComplete(client, {
+    companyId: args.companyId,
+    workCenterId: null,
+    dispatchWorkCenterId: dispatch.data.workCenterId
+  });
+  return { ok: true, message: "ok" };
 }
 
 /**

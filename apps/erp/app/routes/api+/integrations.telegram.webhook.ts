@@ -21,6 +21,8 @@ import {
   unlinkTelegramByChatId
 } from "@carbon/ee/telegram.server";
 import {
+  MES_INTERNAL_URL,
+  SHOP_INTERNAL_SECRET,
   TELEGRAM_BOT_TOKEN,
   TELEGRAM_BOT_USERNAME,
   TELEGRAM_COMPANY_ID,
@@ -53,6 +55,41 @@ const LOCKED_BIND_ERROR = "尝试次数过多，请稍后再试";
 
 const BIND_INTRO =
   "欢迎使用维修通知机器人。\n\n请发送你在 Carbon 里登记的邮箱完成绑定（区分大小写不敏感）。\n之后派工通知会推到这里，开始/完成不用再验证。";
+
+/**
+ * Let MES run the same 已修好 提醒 / push / 待开机 follow-up as a PWA Complete.
+ * Best-effort: the dispatch is already completed, so a failure only logs.
+ */
+async function notifyMesRepairComplete(companyId: string, dispatchId: string) {
+  if (!MES_INTERNAL_URL || !SHOP_INTERNAL_SECRET) return;
+  try {
+    const response = await fetch(
+      `${MES_INTERNAL_URL.replace(/\/$/, "")}/api/internal/shop/repair-complete`,
+      {
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+          "x-shop-internal-secret": SHOP_INTERNAL_SECRET
+        },
+        body: JSON.stringify({ companyId, dispatchId }),
+        signal: AbortSignal.timeout(8000)
+      }
+    );
+    if (!response.ok) {
+      logger.warn("MES repair-complete hook rejected", {
+        companyId,
+        dispatchId,
+        status: response.status
+      });
+    }
+  } catch (err) {
+    logger.warn("MES repair-complete hook failed", {
+      companyId,
+      dispatchId,
+      error: err instanceof Error ? err.message : String(err)
+    });
+  }
+}
 
 function isValidTelegramSecret(request: Request): boolean {
   if (!TELEGRAM_WEBHOOK_SECRET) return false;
@@ -573,6 +610,7 @@ async function handleCallbackQuery(query: TelegramCallbackQuery) {
   });
 
   if (result.ok && action === "Complete") {
+    await notifyMesRepairComplete(mapping.companyId, dispatchId);
     // Edit every stored assign message (all DMs + crew group) to「已完成 ✓」.
     try {
       const { edited } = await markMaintenanceAssignTelegramCompleted(

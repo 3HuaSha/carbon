@@ -429,14 +429,30 @@ export const WEB_PUSH_VAPID_PUBLIC_KEY = getEnv("WEB_PUSH_VAPID_PUBLIC_KEY", {
   isRequired: false,
   isSecret: false
 });
-export const WEB_PUSH_VAPID_PRIVATE_KEY = getEnv(
-  "WEB_PUSH_VAPID_PRIVATE_KEY",
-  { isRequired: false, isSecret: true }
-);
+export const WEB_PUSH_VAPID_PRIVATE_KEY = getEnv("WEB_PUSH_VAPID_PRIVATE_KEY", {
+  isRequired: false,
+  isSecret: true
+});
 /** `mailto:` or `https:` contact the push services may use (VAPID `sub`). */
 export const WEB_PUSH_VAPID_SUBJECT =
   getEnv("WEB_PUSH_VAPID_SUBJECT", { isRequired: false, isSecret: false }) ||
   "mailto:admin@localhost";
+
+/**
+ * Server-to-server hook from ERP (Telegram 完成) to MES so the shop 已修好
+ * 提醒 / push / 待开机 follow-up runs where the push keys and Meter live.
+ * `MES_INTERNAL_URL` is the MES origin on the private network
+ * (e.g. `http://mes:3000`); both must be set on ERP, the secret on MES.
+ * Unset → the hook is skipped (fail open).
+ */
+export const MES_INTERNAL_URL = getEnv("MES_INTERNAL_URL", {
+  isRequired: false,
+  isSecret: true
+});
+export const SHOP_INTERNAL_SECRET = getEnv("SHOP_INTERNAL_SECRET", {
+  isRequired: false,
+  isSecret: true
+});
 
 export const CARBON_TELEGRAM_ENABLED = isBrowser
   ? window.env?.CARBON_TELEGRAM_ENABLED === "true"
