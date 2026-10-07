@@ -60,7 +60,7 @@ export default function ShopIndexRoute() {
   const { locationName, machines, alertUnreadCount } =
     useLoaderData<typeof loader>();
   const [machineType, setMachineType] =
-    useState<ShopMachineTypeFilter>("all");
+    useState<ShopMachineTypeFilter>("T");
   const navigate = useNavigate();
   const revalidator = useRevalidator();
 
@@ -97,7 +97,7 @@ export default function ShopIndexRoute() {
         <MachineGrid
           machines={visible}
           onSelect={onSelect}
-          preserveFloorPlan={machineType === "all" || machineType === "T"}
+          preserveFloorPlan={machineType === "T"}
         />
       )}
     </div>

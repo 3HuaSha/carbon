@@ -1,5 +1,15 @@
 # Lessons Learned
 
+## Shop shortcuts need reserved space beside the content
+
+**Context:** Moving repair/mold shortcuts into thumb reach on the phone PWA.
+
+**Problem:** A fixed bottom dock covered the lower page and did not match the requested left-side placement.
+
+**Rule:** Use compact shortcuts in a left gutter and reserve that same gutter in the shop layout. Keep the page bottom free and account for device safe-area insets.
+
+**Applies to:** `ShopTabNav` and the `/shop` layout.
+
 Recurring patterns and mistakes to avoid. Review at session start for relevant tasks.
 
 Format: `Context → Problem → Rule → Applies to`

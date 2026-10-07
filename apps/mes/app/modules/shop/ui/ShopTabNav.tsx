@@ -15,49 +15,48 @@ const CREW_LINKS = [
   { id: "mold", to: path.to.shopMold, label: "模房", icon: LuBoxes }
 ] as const;
 
-/** Left-aligned, thumb-sized shortcuts stay within reach while scrolling. */
+/** Compact shortcuts sit in the reserved left gutter, clear of page content. */
 export function ShopTabNav({ active }: { active: ShopTab }) {
   return (
-    <div className="fixed inset-x-0 bottom-0 z-20 border-t border-[color:var(--shop-hairline)] bg-[color:var(--shop-bg)]">
-      <nav
-        aria-label="车间分区"
-        className="mx-auto flex w-full max-w-3xl items-center gap-2 px-4 pt-2 pb-[calc(0.5rem+env(safe-area-inset-bottom))]"
-      >
-        {CREW_LINKS.map((tab) => {
-          const selected = tab.id === active;
-          const Icon = tab.icon;
-          return (
-            <Link
-              key={tab.id}
-              to={tab.to}
-              aria-current={selected ? "page" : undefined}
-              className={cn(
-                "flex h-14 min-w-[76px] flex-col items-center justify-center gap-1 rounded-2xl text-[14px] font-semibold",
-                "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[color:var(--shop-link)]",
-                shopIos.press,
-                selected
-                  ? "bg-[color:var(--shop-link)] text-white"
-                  : "bg-[color:var(--shop-card)] text-[color:var(--shop-ink)] shadow-sm"
-              )}
-            >
-              <Icon aria-hidden className="h-5 w-5" />
-              {tab.label}
-            </Link>
-          );
-        })}
-        {active !== "machines" ? (
+    <nav
+      aria-label="车间分区"
+      className="fixed bottom-[calc(25svh+env(safe-area-inset-bottom))] left-[env(safe-area-inset-left)] z-20 flex w-[52px] flex-col items-center gap-2"
+    >
+      {CREW_LINKS.map((tab) => {
+        const selected = tab.id === active;
+        const Icon = tab.icon;
+        return (
           <Link
-            to={path.to.shop}
+            key={tab.id}
+            to={tab.to}
+            aria-current={selected ? "page" : undefined}
             className={cn(
-              "ml-auto flex h-14 min-w-[64px] flex-col items-center justify-center gap-1 rounded-2xl text-[13px] font-semibold",
-              shopIos.link
+              "flex h-12 w-10 flex-col items-center justify-center gap-0.5 rounded-xl text-[12px] font-semibold",
+              "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[color:var(--shop-link)]",
+              shopIos.press,
+              selected
+                ? "bg-[color:var(--shop-link)] text-white"
+                : "bg-[color:var(--shop-card)] text-[color:var(--shop-ink)] shadow-sm"
             )}
           >
-            <LuFactory aria-hidden className="h-5 w-5" />
-            机台
+            <Icon aria-hidden className="h-4 w-4" />
+            {tab.label}
           </Link>
-        ) : null}
-      </nav>
-    </div>
+        );
+      })}
+      {active !== "machines" ? (
+        <Link
+          to={path.to.shop}
+          className={cn(
+            "flex h-12 w-10 flex-col items-center justify-center gap-0.5 rounded-xl text-[12px] font-semibold",
+            "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[color:var(--shop-link)]",
+            shopIos.link
+          )}
+        >
+          <LuFactory aria-hidden className="h-4 w-4" />
+          机台
+        </Link>
+      ) : null}
+    </nav>
   );
 }

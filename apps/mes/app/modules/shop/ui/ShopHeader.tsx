@@ -18,7 +18,7 @@ import { usePwaInstall } from "./usePwaInstall";
 
 /**
  * Compact header (no large titles) + opaque sticky filter strip.
- * Machine-type filters stay at the top; crew shortcuts live in the bottom dock.
+ * Machine-type filters stay at the top; crew shortcuts use the left gutter.
  * No backdrop-blur — solid `--shop-bg` for snappy paint on phones.
  */
 type ShopHeaderProps = {

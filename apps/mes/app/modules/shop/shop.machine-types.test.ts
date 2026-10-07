@@ -34,10 +34,8 @@ describe("shop machine types", () => {
     ]);
   });
 
-  it("retains other machine types in the all view", () => {
-    expect(filterShopMachinesByType(machines, "all")).toEqual(machines);
+  it("counts the four machine categories", () => {
     expect(countShopMachineTypes(machines)).toEqual({
-      all: 6,
       T: 1,
       C: 1,
       CM_FM: 2,
@@ -48,7 +46,6 @@ describe("shop machine types", () => {
   it("handles an empty category and empty overview", () => {
     expect(filterShopMachinesByType([{ name: "T1" }], "SH")).toEqual([]);
     expect(countShopMachineTypes([])).toEqual({
-      all: 0,
       T: 0,
       C: 0,
       CM_FM: 0,

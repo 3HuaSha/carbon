@@ -3,7 +3,6 @@
 // including ports, remain AGPLv3; serving them over a network requires releasing their source.
 
 export const shopMachineTypeOptions = [
-  { id: "all", label: "全部" },
   { id: "T", label: "T" },
   { id: "C", label: "C" },
   { id: "CM_FM", label: "CM/FM" },
@@ -18,7 +17,7 @@ type NamedMachine = { name: string };
 /** Check the longer CM prefix before C so the groups never overlap. */
 export function getShopMachineType(
   name: string
-): Exclude<ShopMachineTypeFilter, "all"> | null {
+): ShopMachineTypeFilter | null {
   const normalized = name.trim().toUpperCase();
   if (normalized.startsWith("CM") || normalized.startsWith("FM")) return "CM_FM";
   if (normalized.startsWith("SH")) return "SH";
@@ -31,14 +30,13 @@ export function filterShopMachinesByType<T extends NamedMachine>(
   machines: T[],
   filter: ShopMachineTypeFilter
 ): T[] {
-  if (filter === "all") return machines;
   return machines.filter((machine) => getShopMachineType(machine.name) === filter);
 }
 
 export function countShopMachineTypes(
   machines: NamedMachine[]
 ): Record<ShopMachineTypeFilter, number> {
-  const counts = { all: machines.length, T: 0, C: 0, CM_FM: 0, SH: 0 };
+  const counts = { T: 0, C: 0, CM_FM: 0, SH: 0 };
   for (const machine of machines) {
     const type = getShopMachineType(machine.name);
     if (type) counts[type] += 1;

@@ -86,7 +86,7 @@ export default function ShopLayout() {
 
   return (
     <CarbonProvider session={session}>
-      <div className="shop-ios min-h-dvh w-full pb-[calc(5.5rem+env(safe-area-inset-bottom))] pt-[env(safe-area-inset-top)]">
+      <div className="shop-ios min-h-dvh w-full pl-[calc(52px+env(safe-area-inset-left))] pr-[env(safe-area-inset-right)] pb-[env(safe-area-inset-bottom)] pt-[env(safe-area-inset-top)]">
         <Outlet />
         <ShopTabNav active={activeTab} />
       </div>
