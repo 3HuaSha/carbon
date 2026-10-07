@@ -71,6 +71,7 @@ const statusMeta: Record<
 > = {
   running: { label: "运行", color: "green" },
   idle: { label: "空闲", color: "gray" },
+  standby: { label: "待机", color: "gray" },
   break: { label: "休息", color: "blue" },
   down: { label: "停机", color: "red" },
   awaitingStart: { label: "待开机", color: "orange" },

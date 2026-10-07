@@ -404,8 +404,10 @@ describe("mergeShopMachineStatus / Meter / 待开机", () => {
     expect(mapMeterStatusCode("3")).toBe("stopped");
     expect(mapMeterStatusCode("4")).toBe("offline");
     expect(shopStatusFromMeterPhysical("running")).toBe("running");
-    expect(shopStatusFromMeterPhysical("stopped")).toBe("down");
-    expect(shopStatusFromMeterPhysical("offline")).toBe("offline");
+    expect(shopStatusFromMeterPhysical("stopped")).toBe("idle");
+    expect(shopStatusFromMeterPhysical("stopped", true)).toBe("standby");
+    expect(shopStatusFromMeterPhysical("idle", true)).toBe("standby");
+    expect(shopStatusFromMeterPhysical("offline", true)).toBe("offline");
   });
 
   it("normalizes machine ids and Index_ 单号", () => {
@@ -445,14 +447,39 @@ describe("mergeShopMachineStatus / Meter / 待开机", () => {
     ).toBe("running");
   });
 
-  it("prefers Meter physical when no Carbon downtime", () => {
+  it("never shows a Meter stop as 停机 — 待机 with a work order, else 空闲", () => {
     expect(
       mergeShopMachineStatus({
         carbonStatus: "idle",
         meterPhysical: "stopped",
         awaitingStart: false
       })
-    ).toBe("down");
+    ).toBe("idle");
+    expect(
+      mergeShopMachineStatus({
+        carbonStatus: "idle",
+        meterPhysical: "stopped",
+        hasWorkOrder: true
+      })
+    ).toBe("standby");
+    expect(
+      mergeShopMachineStatus({
+        carbonStatus: "idle",
+        meterPhysical: "running",
+        hasWorkOrder: true
+      })
+    ).toBe("running");
+  });
+
+  it("keeps 待开机 over 待机 when a work order is held", () => {
+    expect(
+      mergeShopMachineStatus({
+        carbonStatus: "idle",
+        meterPhysical: "idle",
+        awaitingStart: true,
+        hasWorkOrder: true
+      })
+    ).toBe("awaitingStart");
   });
 
   it("Complete 待开机 rule: Meter when available else productionEvent", () => {
@@ -521,6 +548,7 @@ describe("filterShopMachines / countShopStatuses / groupShopMachinesByArea", () 
     expect(countShopStatuses(machines)).toEqual({
       running: 1,
       idle: 1,
+      standby: 0,
       break: 1,
       down: 2,
       awaitingStart: 0,

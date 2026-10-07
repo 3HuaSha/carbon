@@ -25,6 +25,7 @@ export const shopIos = {
   statusDot: {
     running: "bg-[color:var(--shop-run)]",
     idle: "bg-[color:var(--shop-idle)]",
+    standby: "bg-[color:var(--shop-standby)]",
     break: "bg-[color:var(--shop-break)]",
     down: "bg-[color:var(--shop-down)]",
     awaitingStart: "bg-[color:var(--shop-warn)]",
@@ -33,6 +34,7 @@ export const shopIos = {
   statusText: {
     running: "text-[color:var(--shop-run)]",
     idle: "text-[color:var(--shop-muted)]",
+    standby: "text-[color:var(--shop-standby)]",
     break: "text-[color:var(--shop-break)]",
     down: "text-[color:var(--shop-down)]",
     awaitingStart: "text-[color:var(--shop-warn)]",
@@ -46,6 +48,7 @@ export const shopIos = {
   statusFill: {
     running: "shop-ios-fill-running bg-[color:var(--shop-run)]",
     idle: "shop-ios-fill-idle !bg-white !text-black",
+    standby: "shop-ios-fill-standby bg-[color:var(--shop-standby)]",
     break: "shop-ios-fill-break bg-[color:var(--shop-break)]",
     down: "shop-ios-fill-down bg-[color:var(--shop-down)]",
     awaitingStart: "shop-ios-fill-awaiting bg-[color:var(--shop-warn)]",
