@@ -9,9 +9,9 @@ import { shopIos } from "./shopIos";
 
 /**
  * Floor-map tile — status-filled card, exactly three lines.
- * Fill: 运行 green / 停机 red / 休息 blue / 待开机 amber / 待机 dark gray /
- * 空闲·离线 white + dark ink.
- * Colored fills use white ink; idle/offline never force `text-white`.
+ * Fill: 运行 green / 停机 red / 休息 blue / 待开机 amber / 待机 yellow /
+ * 空闲·离线 white.
+ * Colored fills use white ink; 待机 (yellow) and idle/offline use dark ink.
  * No continuous animations (ping/pulse) — 30+ tiles must stay cheap to paint.
  */
 const STATUS: Record<ShopMachineStatus, { label: string; name: string }> = {
@@ -45,7 +45,10 @@ function formatIssuePersonLine(
 
 export function MachineTile({ machine, onSelect }: MachineTileProps) {
   const meta = STATUS[machine.status];
-  const lightInk = machine.status === "idle" || machine.status === "offline";
+  const lightInk =
+    machine.status === "idle" ||
+    machine.status === "offline" ||
+    machine.status === "standby";
   const ink = lightInk ? "text-black" : "text-white";
   const statusDot = lightInk ? "bg-black/70" : "bg-white/90";
   const jobId =

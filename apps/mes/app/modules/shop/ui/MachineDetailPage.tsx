@@ -67,11 +67,14 @@ type ReportKind = "break" | "issue";
 
 const statusMeta: Record<
   ShopMachine["status"],
-  { label: string; color: "green" | "gray" | "blue" | "red" | "orange" }
+  {
+    label: string;
+    color: "green" | "gray" | "blue" | "red" | "orange" | "yellow";
+  }
 > = {
   running: { label: "运行", color: "green" },
   idle: { label: "空闲", color: "gray" },
-  standby: { label: "待机", color: "gray" },
+  standby: { label: "待机", color: "yellow" },
   break: { label: "休息", color: "blue" },
   down: { label: "停机", color: "red" },
   awaitingStart: { label: "待开机", color: "orange" },

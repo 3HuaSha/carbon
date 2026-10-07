@@ -34,7 +34,7 @@ export const shopIos = {
   statusText: {
     running: "text-[color:var(--shop-run)]",
     idle: "text-[color:var(--shop-muted)]",
-    standby: "text-[color:var(--shop-standby)]",
+    standby: "text-[color:var(--shop-standby-text)]",
     break: "text-[color:var(--shop-break)]",
     down: "text-[color:var(--shop-down)]",
     awaitingStart: "text-[color:var(--shop-warn)]",
