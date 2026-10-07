@@ -19,6 +19,8 @@
   --shop-idle: #8e8e93;
   --shop-idle-fill: #ffffff;
   --shop-warn: #ff9500;
+  /* 待机: not running but holding a work order. */
+  --shop-standby: #636366;
   --shop-shadow: 0 1px 2px rgb(0 0 0 / 0.06);
   --shop-selected-shadow: 0 1px 3px rgb(0 0 0 / 0.1);
 
@@ -58,6 +60,7 @@
 .shop-ios-fill-break,
 .shop-ios-fill-down,
 .shop-ios-fill-awaiting,
+.shop-ios-fill-standby,
 .shop-ios-fill-offline {
   border-radius: 1rem;
   box-shadow: var(--shop-shadow);
@@ -66,8 +69,13 @@
 .shop-ios-fill-running,
 .shop-ios-fill-break,
 .shop-ios-fill-down,
-.shop-ios-fill-awaiting {
+.shop-ios-fill-awaiting,
+.shop-ios-fill-standby {
   color: #ffffff;
+}
+
+.shop-ios-fill-standby {
+  background-color: var(--shop-standby);
 }
 
 .shop-ios-fill-running {

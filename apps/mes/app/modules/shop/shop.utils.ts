@@ -300,14 +300,20 @@ export function deriveShopMachineStatus(args: {
   return "idle";
 }
 
-/** Physical Meter pulse → shop tile status (when no Carbon blocking episode). */
+/**
+ * Physical Meter pulse → shop tile status (when no Carbon blocking episode).
+ * A Meter stop is never 停机 — only a reported repair is. A machine that is
+ * not running is 待机 when it holds a work order, else 空闲.
+ */
 export function shopStatusFromMeterPhysical(
-  physical: "running" | "idle" | "stopped" | "offline" | "unknown" | null
+  physical: "running" | "idle" | "stopped" | "offline" | "unknown" | null,
+  hasWorkOrder = false
 ): ShopMachineStatus | null {
   if (physical === "running") return "running";
-  if (physical === "idle") return "idle";
-  if (physical === "stopped") return "down";
   if (physical === "offline") return "offline";
+  if (physical === "idle" || physical === "stopped") {
+    return hasWorkOrder ? "standby" : "idle";
+  }
   return null;
 }
 
@@ -317,15 +323,22 @@ export function shopStatusFromMeterPhysical(
  * Priority:
  * 1. Carbon blocking downtime (fault/planned/blocked) or break
  * 2. Redis 待开机 (unless physically running — then clear overlay)
- * 3. Meter physical status when available
+ * 3. Meter physical status when available (not running → 待机 / 空闲 by
+ *    whether Meter reports a work order)
  * 4. Carbon running/idle from production events
  */
 export function mergeShopMachineStatus(args: {
   carbonStatus: ShopMachineStatus;
   meterPhysical?: "running" | "idle" | "stopped" | "offline" | "unknown" | null;
   awaitingStart?: boolean;
+  hasWorkOrder?: boolean;
 }): ShopMachineStatus {
-  const { carbonStatus, meterPhysical = null, awaitingStart = false } = args;
+  const {
+    carbonStatus,
+    meterPhysical = null,
+    awaitingStart = false,
+    hasWorkOrder = false
+  } = args;
 
   if (carbonStatus === "down" || carbonStatus === "break") {
     return carbonStatus;
@@ -336,7 +349,7 @@ export function mergeShopMachineStatus(args: {
     return "awaitingStart";
   }
 
-  const fromMeter = shopStatusFromMeterPhysical(meterPhysical);
+  const fromMeter = shopStatusFromMeterPhysical(meterPhysical, hasWorkOrder);
   if (fromMeter) return fromMeter;
 
   return carbonStatus;
@@ -371,6 +384,7 @@ export function countShopStatuses(
   const counts: Record<ShopMachineStatus, number> = {
     running: 0,
     idle: 0,
+    standby: 0,
     break: 0,
     down: 0,
     awaitingStart: 0,

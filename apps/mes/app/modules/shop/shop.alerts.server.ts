@@ -147,7 +147,8 @@ export async function syncShopAlertsForOverview(args: {
       status: mergeShopMachineStatus({
         carbonStatus: m.status,
         meterPhysical,
-        awaitingStart: true
+        awaitingStart: true,
+        hasWorkOrder: m.meterWorkOrder != null
       })
     };
   });

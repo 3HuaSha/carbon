@@ -292,6 +292,7 @@ export function MachineDetailSheet({
     machine != null &&
     (machine.status === "running" ||
       machine.status === "idle" ||
+      machine.status === "standby" ||
       !hasOpenMaintenance);
 
   return (

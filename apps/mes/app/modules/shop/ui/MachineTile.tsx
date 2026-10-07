@@ -9,13 +9,15 @@ import { shopIos } from "./shopIos";
 
 /**
  * Floor-map tile — status-filled card, exactly three lines.
- * Fill: 运行 green / 停机 red / 休息 blue / 待开机 amber / 空闲·离线 white + dark ink.
+ * Fill: 运行 green / 停机 red / 休息 blue / 待开机 amber / 待机 dark gray /
+ * 空闲·离线 white + dark ink.
  * Colored fills use white ink; idle/offline never force `text-white`.
  * No continuous animations (ping/pulse) — 30+ tiles must stay cheap to paint.
  */
 const STATUS: Record<ShopMachineStatus, { label: string; name: string }> = {
   running: { label: "运行", name: "运行中" },
   idle: { label: "空闲", name: "空闲" },
+  standby: { label: "待机", name: "待机" },
   break: { label: "休息", name: "休息" },
   down: { label: "停机", name: "停机" },
   awaitingStart: { label: "待开机", name: "待开机" },

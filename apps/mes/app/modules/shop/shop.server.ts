@@ -316,7 +316,8 @@ export function applyMeterToShopMachines(
       status: mergeShopMachineStatus({
         carbonStatus: machine.status,
         meterPhysical: physical,
-        awaitingStart: false
+        awaitingStart: false,
+        hasWorkOrder: meterWorkOrder != null
       }),
       meterWorkOrder,
       // Grid line 2: prefer Meter/scan 单号 (actual) over Carbon productionEvent.

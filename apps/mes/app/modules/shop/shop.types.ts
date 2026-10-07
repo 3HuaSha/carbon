@@ -8,13 +8,16 @@
 
 /**
  * Display statuses on `/shop` tiles + detail.
- * Fault / planned (blocking) + Meter stop collapse to **停机**.
+ * Only a reported fault / planned stop (blocking dispatch) is **停机**; a
+ * Meter stop is not. A machine that is not running shows `standby` (待机)
+ * when Meter reports a work order, else `idle` (空闲).
  * `awaitingStart` = 待开机 after Complete when not running.
  * `offline` = Meter power-off / unreachable pulse (code 4).
  */
 export const shopMachineStatuses = [
   "running",
   "idle",
+  "standby",
   "break",
   "down",
   "awaitingStart",
