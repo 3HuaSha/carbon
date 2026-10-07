@@ -4,7 +4,6 @@ import {
   countShopStatuses,
   defaultSelectedAssignIds,
   deriveShopMachineStatus,
-  detectShopStatusTransitions,
   filterShopMachines,
   formatShopTilePersonLine,
   groupPeopleByAssignGroup,
@@ -22,8 +21,7 @@ import {
   resolveShopAssignGroup,
   resolveShopDispatchKind,
   shopMachineSubtitle,
-  shopStatusFromMeterPhysical,
-  shopStatusSnapshotFromMachines
+  shopStatusFromMeterPhysical
 } from "./shop.utils";
 
 describe("formatShopTilePersonLine", () => {
@@ -551,63 +549,5 @@ describe("shopMachineSubtitle", () => {
     expect(
       shopMachineSubtitle({ description: "  ", processes: ["proc-1"] })
     ).toBe("proc-1");
-  });
-});
-
-describe("detectShopStatusTransitions", () => {
-  it("skips machines with no prior snapshot (cold start)", () => {
-    expect(
-      detectShopStatusTransitions({}, [
-        { id: "t1", name: "T1", status: "down" }
-      ])
-    ).toEqual([]);
-  });
-
-  it("alerts when status becomes down", () => {
-    expect(
-      detectShopStatusTransitions({ t1: "running", t2: "idle" }, [
-        { id: "t1", name: "T1", status: "down" },
-        { id: "t2", name: "T2", status: "idle" }
-      ])
-    ).toEqual([
-      {
-        kind: "down",
-        workCenterId: "t1",
-        workCenterName: "T1",
-        justFixed: false
-      }
-    ]);
-  });
-
-  it("alerts + justFixed when down → idle", () => {
-    expect(
-      detectShopStatusTransitions({ t1: "down" }, [
-        { id: "t1", name: "T1", status: "idle" }
-      ])
-    ).toEqual([
-      {
-        kind: "recovered",
-        workCenterId: "t1",
-        workCenterName: "T1",
-        justFixed: true
-      }
-    ]);
-  });
-
-  it("does not justFixed when down → running", () => {
-    expect(
-      detectShopStatusTransitions({ t1: "down" }, [
-        { id: "t1", name: "T1", status: "running" }
-      ])
-    ).toEqual([]);
-  });
-
-  it("builds a status snapshot map", () => {
-    expect(
-      shopStatusSnapshotFromMachines([
-        { id: "a", status: "idle" },
-        { id: "b", status: "down" }
-      ])
-    ).toEqual({ a: "idle", b: "down" });
   });
 });

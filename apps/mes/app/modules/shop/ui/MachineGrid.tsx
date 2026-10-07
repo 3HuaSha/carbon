@@ -10,23 +10,32 @@ import { shopIos } from "./shopIos";
 type MachineGridProps = {
   machines: ShopMachine[];
   onSelect: (machine: ShopMachine) => void;
+  preserveFloorPlan?: boolean;
 };
 
 /**
  * Phone PWA machine overview as physical shop floor (3-col floor plan).
  * Opaque system-gray canvas — no blur, no continuous tile animations.
  */
-export function MachineGrid({ machines, onSelect }: MachineGridProps) {
+export function MachineGrid({
+  machines,
+  onSelect,
+  preserveFloorPlan = true
+}: MachineGridProps) {
   if (machines.length === 0) {
     return (
       <div className="flex flex-col items-center px-6 py-20 text-center">
         <p className="text-[17px] font-semibold">没有符合筛选条件的机台</p>
-        <p className={`mt-1 text-[14px] ${shopIos.muted}`}>换个状态筛选试试</p>
+        <p className={`mt-1 text-[14px] ${shopIos.muted}`}>换个机台分类试试</p>
       </div>
     );
   }
 
-  const cells = layoutShopMachinesByFloorPlan(machines);
+  const cells = preserveFloorPlan
+    ? layoutShopMachinesByFloorPlan(machines)
+    : [...machines]
+        .sort((a, b) => a.name.localeCompare(b.name, undefined, { numeric: true }))
+        .map((machine) => ({ kind: "machine" as const, machine }));
 
   return (
     <div className="px-3 py-3">

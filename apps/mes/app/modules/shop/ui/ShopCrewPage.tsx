@@ -14,7 +14,6 @@ import type {
   ShopCrewMember,
   ShopCrewTask
 } from "../shop.types";
-import { ShopTabNav } from "./ShopTabNav";
 import { shopIos } from "./shopIos";
 
 type ShopCrewPageProps = {
@@ -78,7 +77,6 @@ function MemberRow({
 export function ShopCrewPage({ board }: ShopCrewPageProps) {
   const { t } = useLingui();
   const busyCount = board.members.filter((m) => m.tasks.length > 0).length;
-  const tab = board.crew === "repair" ? "repair" : "mold";
 
   return (
     <div
@@ -98,7 +96,6 @@ export function ShopCrewPage({ board }: ShopCrewPageProps) {
           {board.locationName?.trim() ? `${board.locationName} · ` : null}
           {t`${board.members.length} people · ${busyCount} busy`}
         </p>
-        <ShopTabNav active={tab} />
       </header>
 
       <div className="flex-1 px-4 py-4">

@@ -26,6 +26,17 @@ import {
 const logger = getLogger("mes", "shop-meter");
 
 const DEFAULT_TIMEOUT_MS = 8_000;
+const STATUS_LOG_CONCURRENCY = 16;
+// Status needs one request per machine, so concurrent /shop loads share a
+// snapshot instead of each fanning out ~100 requests.
+const SNAPSHOT_TTL_MS = 10_000;
+
+let cachedSnapshot: { at: number; promise: Promise<MeterShopSnapshot> } | null =
+  null;
+
+export function resetMeterSnapshotCache() {
+  cachedSnapshot = null;
+}
 
 export type { MeterPhysicalStatus };
 
@@ -92,10 +103,21 @@ async function fetchJson(url: string, signal: AbortSignal): Promise<unknown> {
 }
 
 /**
- * Fetch current board status + Remaining (for Index_ 单号).
+ * Fetch current board status + per-machine status log + Remaining (Index_ 单号).
+ * Cached for SNAPSHOT_TTL_MS.
  * Returns empty / available:false when unset or any hard failure.
  */
-export async function fetchMeterShopSnapshot(): Promise<MeterShopSnapshot> {
+export function fetchMeterShopSnapshot(): Promise<MeterShopSnapshot> {
+  const now = performance.now();
+  if (cachedSnapshot && now - cachedSnapshot.at < SNAPSHOT_TTL_MS) {
+    return cachedSnapshot.promise;
+  }
+  const promise = loadMeterShopSnapshot();
+  cachedSnapshot = { at: now, promise };
+  return promise;
+}
+
+async function loadMeterShopSnapshot(): Promise<MeterShopSnapshot> {
   const base = baseUrl();
   if (!base) {
     return { byMachineId: new Map(), available: false };
@@ -123,17 +145,12 @@ export async function fetchMeterShopSnapshot(): Promise<MeterShopSnapshot> {
           pickField(row, "Machine", "machine")
         );
         if (!machineId || machineId.includes("99")) continue;
-        const physicalStatus = mapMeterStatusCode(
-          pickField(row, "MachineStatus", "machine_status")
-        );
-        const existing = byMachineId.get(machineId);
         byMachineId.set(machineId, {
           machineId,
-          physicalStatus:
-            physicalStatus !== "unknown" || !existing
-              ? physicalStatus
-              : existing.physicalStatus,
-          workOrder: existing?.workOrder ?? null
+          physicalStatus: mapMeterStatusCode(
+            pickField(row, "MachineStatus", "machine_status")
+          ),
+          workOrder: null
         });
       }
     } else {
@@ -142,6 +159,47 @@ export async function fetchMeterShopSnapshot(): Promise<MeterShopSnapshot> {
           boardResult.reason instanceof Error
             ? boardResult.reason.message
             : String(boardResult.reason)
+      });
+    }
+
+    // The postgres BoardStatus table carries only {machine, datetime_}; the
+    // live status is the newest MachineStatusChanges row, served one machine
+    // at a time. (The SQL Server `/api/machine/…` tree is no longer fed.)
+    const unknownIds = [...byMachineId.values()]
+      .filter((m) => m.physicalStatus === "unknown")
+      .map((m) => m.machineId);
+    let statusLogFulfilled = false;
+    let statusLogFailures = 0;
+    for (let i = 0; i < unknownIds.length; i += STATUS_LOG_CONCURRENCY) {
+      const batch = unknownIds.slice(i, i + STATUS_LOG_CONCURRENCY);
+      const results = await Promise.allSettled(
+        batch.map((machineId) =>
+          fetchJson(
+            `${base}/api/postgres/machine/getMachineStatusLog?machine=${encodeURIComponent(machineId)}`,
+            controller.signal
+          )
+        )
+      );
+      results.forEach((result, idx) => {
+        if (result.status !== "fulfilled") {
+          statusLogFailures++;
+          return;
+        }
+        statusLogFulfilled = true;
+        const latest = asRecord(normalizeArray(result.value)[0]);
+        const physicalStatus = mapMeterStatusCode(
+          pickField(latest, "machine_status", "MachineStatus")
+        );
+        const existing = byMachineId.get(batch[idx]!);
+        if (existing && physicalStatus !== "unknown") {
+          byMachineId.set(batch[idx]!, { ...existing, physicalStatus });
+        }
+      });
+    }
+    if (statusLogFailures > 0) {
+      logger.warn("MachineMeter status log fetch failed", {
+        failed: statusLogFailures,
+        total: unknownIds.length
       });
     }
 
@@ -178,6 +236,7 @@ export async function fetchMeterShopSnapshot(): Promise<MeterShopSnapshot> {
 
     const available =
       boardResult.status === "fulfilled" ||
+      statusLogFulfilled ||
       remainingResult.status === "fulfilled";
 
     return { byMachineId, available };

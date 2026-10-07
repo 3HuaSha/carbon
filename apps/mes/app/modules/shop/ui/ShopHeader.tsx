@@ -7,32 +7,27 @@ import { useState } from "react";
 import { LuBell, LuDownload, LuMonitor, LuShare } from "react-icons/lu";
 import { Link } from "react-router";
 import { path } from "~/utils/path";
-import type { ShopMachineStatus, ShopStatusFilter } from "../shop.types";
-import { shopStatusFilterChips } from "../shop.types";
+import {
+  shopMachineTypeOptions,
+  type ShopMachineTypeFilter
+} from "../shop.machine-types";
+import type { ShopMachineStatus } from "../shop.types";
 import { PwaInstallSheet } from "./PwaInstallSheet";
-import { ShopTabNav } from "./ShopTabNav";
 import { shopIos } from "./shopIos";
 import { usePwaInstall } from "./usePwaInstall";
 
 /**
  * Compact header (no large titles) + opaque sticky filter strip.
- * Tabs 机台/维修/模房 + status filters stay; big “车间总览” titles are gone.
+ * Machine-type filters stay at the top; crew shortcuts live in the bottom dock.
  * No backdrop-blur — solid `--shop-bg` for snappy paint on phones.
  */
-const FILTER_META: Record<
-  (typeof shopStatusFilterChips)[number],
-  { label: string; dotClass: string }
-> = {
-  running: { label: "运行中", dotClass: shopIos.statusDot.running },
-  down: { label: "停机", dotClass: shopIos.statusDot.down }
-};
-
 type ShopHeaderProps = {
   locationName: string | null;
   total: number;
   counts: Record<ShopMachineStatus, number>;
-  filter: ShopStatusFilter;
-  onFilterChange: (filter: ShopStatusFilter) => void;
+  machineType: ShopMachineTypeFilter;
+  typeCounts: Record<ShopMachineTypeFilter, number>;
+  onMachineTypeChange: (filter: ShopMachineTypeFilter) => void;
   alertUnreadCount?: number;
 };
 
@@ -40,8 +35,9 @@ export function ShopHeader({
   locationName,
   total,
   counts,
-  filter,
-  onFilterChange,
+  machineType,
+  typeCounts,
+  onMachineTypeChange,
   alertUnreadCount = 0
 }: ShopHeaderProps) {
   const {
@@ -187,41 +183,23 @@ export function ShopHeader({
             ) : null}
           </div>
         </div>
-        <div className="mt-2">
-          <ShopTabNav active="machines" />
-        </div>
       </div>
 
       <div className={cn("sticky top-0 z-10 px-4 py-2", shopIos.bar)}>
-        <div className={shopIos.segment} role="tablist" aria-label="按状态筛选">
-          <SegmentedOption
-            selected={filter === "all"}
-            onClick={() => onFilterChange("all")}
-            label="全部"
-            count={total}
-          />
-          {shopStatusFilterChips.map((value) => {
-            const meta = FILTER_META[value];
-            const selected = filter === value;
-            return (
-              <button
-                key={value}
-                type="button"
-                role="tab"
-                aria-selected={selected}
-                onClick={() => onFilterChange(selected ? "all" : value)}
-                className={cn(shopIos.segmentItem, "gap-1.5")}
-              >
-                <span
-                  className={cn("h-1.5 w-1.5 rounded-full", meta.dotClass)}
-                />
-                {meta.label}
-                <span className="text-[12px] font-semibold tabular-nums opacity-80">
-                  {counts[value]}
-                </span>
-              </button>
-            );
-          })}
+        <div
+          className={shopIos.segment}
+          role="group"
+          aria-label="按机台类型筛选"
+        >
+          {shopMachineTypeOptions.map(({ id, label }) => (
+            <SegmentedOption
+              key={id}
+              selected={machineType === id}
+              onClick={() => onMachineTypeChange(id)}
+              label={label}
+              count={typeCounts[id]}
+            />
+          ))}
         </div>
       </div>
 
@@ -252,10 +230,14 @@ function SegmentedOption({
   return (
     <button
       type="button"
-      role="tab"
-      aria-selected={selected}
+      aria-pressed={selected}
       onClick={onClick}
-      className={shopIos.segmentItem}
+      className={cn(
+        shopIos.segmentItem,
+        "min-h-11 min-w-0 flex-col gap-0.5 !px-1",
+        selected &&
+          "!bg-[color:var(--shop-card)] !text-[color:var(--shop-ink)] shadow-sm"
+      )}
     >
       {label}
       <span className="text-[12px] font-semibold tabular-nums opacity-80">

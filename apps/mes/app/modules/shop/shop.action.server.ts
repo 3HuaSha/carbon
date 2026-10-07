@@ -23,8 +23,9 @@ import {
 } from "~/services/operations.service";
 import { openDispatchStatuses } from "~/utils/display";
 import {
-  appendShopAwaitingStartAlert,
   appendShopIssueAlert,
+  appendShopRepairedAlert,
+  appendShopRepairRequestAlert,
   clearAwaitingStart,
   setAwaitingStart
 } from "./shop.alerts.server";
@@ -453,8 +454,8 @@ export async function runShopMaintenanceAction(
       userId
     });
 
-    // 待开机: if machine is not running at Complete, persist Redis flag + alert.
-    await maybeEnterAwaitingStartAfterComplete(client, {
+    // 已修好 提醒 + 刚修完 badge; 待开机 flag if the machine is not running.
+    await afterShopRepairComplete(client, {
       companyId,
       workCenterId: resolvedWorkCenterId,
       dispatchWorkCenterId: ownedDispatch.data.workCenterId
@@ -522,7 +523,7 @@ async function createShopAvailabilityDispatch(
 
   const workCenter = await client
     .from("workCenter")
-    .select("id, locationId")
+    .select("id, name, locationId")
     .eq("id", workCenterId)
     .eq("companyId", companyId)
     .maybeSingle();
@@ -658,6 +659,25 @@ async function createShopAvailabilityDispatch(
         : "Machine downtime reported",
     workCenterId
   );
+
+  const locationId = workCenter.data.locationId;
+  if (kind === "fault" && locationId) {
+    try {
+      await appendShopRepairRequestAlert({
+        companyId,
+        locationId,
+        workCenterId,
+        workCenterName: workCenter.data.name ?? workCenterId,
+        note
+      });
+    } catch (err) {
+      logger.warn("Failed to append shop repair alert (Redis fail-soft)", {
+        companyId,
+        workCenterId,
+        error: err instanceof Error ? err.message : String(err)
+      });
+    }
+  }
 
   let telegramUnbound: boolean | undefined;
   if (assignee && (kind === "fault" || kind === "planned")) {
@@ -1061,10 +1081,10 @@ async function confirmShopMachineStarted(
 }
 
 /**
- * After Complete: if the work center is not running (Meter when available,
- * else open productionEvent), set 待开机 + 提醒 alert.
+ * After Complete: push the 已修好 提醒 (+ 刚修完 badge), and if the work center
+ * is not running (Meter when available, else open productionEvent) set 待开机.
  */
-async function maybeEnterAwaitingStartAfterComplete(
+async function afterShopRepairComplete(
   client: SupabaseClient<Database>,
   args: {
     companyId: string;
@@ -1083,6 +1103,24 @@ async function maybeEnterAwaitingStartAfterComplete(
     .maybeSingle();
 
   if (!workCenter.data) return;
+
+  const locationId = workCenter.data.locationId;
+  if (locationId) {
+    try {
+      await appendShopRepairedAlert({
+        companyId: args.companyId,
+        locationId,
+        workCenterId,
+        workCenterName: workCenter.data.name ?? workCenterId
+      });
+    } catch (err) {
+      logger.warn("Failed to append shop repaired alert (Redis fail-soft)", {
+        companyId: args.companyId,
+        workCenterId,
+        error: err instanceof Error ? err.message : String(err)
+      });
+    }
+  }
 
   let meterAvailable = false;
   let meterPhysical:
@@ -1123,15 +1161,6 @@ async function maybeEnterAwaitingStartAfterComplete(
       companyId: args.companyId,
       workCenterId
     });
-    const locationId = workCenter.data.locationId;
-    if (locationId) {
-      await appendShopAwaitingStartAlert({
-        companyId: args.companyId,
-        locationId,
-        workCenterId,
-        workCenterName: workCenter.data.name ?? workCenterId
-      });
-    }
   } catch (err) {
     logger.warn(
       "Failed to set awaiting-start after Complete (Redis fail-soft)",

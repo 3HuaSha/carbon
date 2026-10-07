@@ -35,9 +35,10 @@ function dayGroupLabel(iso: string): string {
 
 function alertMeta(alert: ShopAlert) {
   if (alert.kind === "down") {
+    const note = alert.note?.trim();
     return {
-      title: `${alert.workCenterName} 停机`,
-      detail: "机台状态变为停机",
+      title: `${alert.workCenterName} 报修`,
+      detail: note || "故障报修，机台停机",
       iconBg: "bg-[color:var(--shop-down)]",
       Icon: LuCircleAlert
     };
@@ -60,8 +61,8 @@ function alertMeta(alert: ShopAlert) {
     };
   }
   return {
-    title: `${alert.workCenterName} 已恢复`,
-    detail: "停机已恢复为空闲",
+    title: `${alert.workCenterName} 已修好`,
+    detail: "维修已完成",
     iconBg: "bg-[color:var(--shop-run)]",
     Icon: LuWrench
   };

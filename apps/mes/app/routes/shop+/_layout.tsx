@@ -7,8 +7,9 @@ import type {
   MiddlewareFunction,
   ShouldRevalidateFunction
 } from "react-router";
-import { Outlet, useLoaderData } from "react-router";
+import { Outlet, useLoaderData, useLocation } from "react-router";
 import { userMiddleware } from "~/middleware/user";
+import { ShopTabNav } from "~/modules/shop/ui/ShopTabNav";
 import ShopIos from "~/styles/shop-ios.css?url";
 import { path } from "~/utils/path";
 
@@ -76,11 +77,18 @@ export async function loader({ request }: LoaderFunctionArgs) {
 
 export default function ShopLayout() {
   const { session } = useLoaderData<typeof loader>();
+  const { pathname } = useLocation();
+  const activeTab = pathname.startsWith(path.to.shopRepair)
+    ? "repair"
+    : pathname.startsWith(path.to.shopMold)
+      ? "mold"
+      : "machines";
 
   return (
     <CarbonProvider session={session}>
-      <div className="shop-ios min-h-dvh w-full pb-[env(safe-area-inset-bottom)] pt-[env(safe-area-inset-top)]">
+      <div className="shop-ios min-h-dvh w-full pb-[calc(5.5rem+env(safe-area-inset-bottom))] pt-[env(safe-area-inset-top)]">
         <Outlet />
+        <ShopTabNav active={activeTab} />
       </div>
     </CarbonProvider>
   );

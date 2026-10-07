@@ -8,10 +8,13 @@ import { useLoaderData, useNavigate, useRevalidator } from "react-router";
 import { userContext } from "~/context";
 import {
   countShopStatuses,
-  filterShopMachines,
-  type ShopMachine,
-  type ShopStatusFilter
+  type ShopMachine
 } from "~/modules/shop";
+import {
+  countShopMachineTypes,
+  filterShopMachinesByType,
+  type ShopMachineTypeFilter
+} from "~/modules/shop/shop.machine-types";
 import { syncShopAlertsForOverview } from "~/modules/shop/shop.alerts.server";
 import { getShopOverview } from "~/modules/shop/shop.server";
 import { MachineGrid, ShopEmptyState, ShopHeader } from "~/modules/shop/ui";
@@ -56,7 +59,8 @@ export async function loader({ context, request }: LoaderFunctionArgs) {
 export default function ShopIndexRoute() {
   const { locationName, machines, alertUnreadCount } =
     useLoaderData<typeof loader>();
-  const [filter, setFilter] = useState<ShopStatusFilter>("all");
+  const [machineType, setMachineType] =
+    useState<ShopMachineTypeFilter>("all");
   const navigate = useNavigate();
   const revalidator = useRevalidator();
 
@@ -64,8 +68,9 @@ export default function ShopIndexRoute() {
     if (revalidator.state === "idle") revalidator.revalidate();
   }, SHOP_POLL_MS);
 
-  const counts = countShopStatuses(machines);
-  const visible = filterShopMachines(machines, filter);
+  const typeCounts = countShopMachineTypes(machines);
+  const visible = filterShopMachinesByType(machines, machineType);
+  const counts = countShopStatuses(visible);
 
   const onSelect = useCallback(
     (machine: ShopMachine) => {
@@ -78,17 +83,22 @@ export default function ShopIndexRoute() {
     <div className="shop-ios-page-enter mx-auto flex min-h-dvh w-full max-w-3xl flex-col">
       <ShopHeader
         locationName={locationName}
-        total={machines.length}
+        total={visible.length}
         counts={counts}
-        filter={filter}
-        onFilterChange={setFilter}
+        machineType={machineType}
+        typeCounts={typeCounts}
+        onMachineTypeChange={setMachineType}
         alertUnreadCount={alertUnreadCount}
       />
 
       {machines.length === 0 ? (
         <ShopEmptyState />
       ) : (
-        <MachineGrid machines={visible} onSelect={onSelect} />
+        <MachineGrid
+          machines={visible}
+          onSelect={onSelect}
+          preserveFloorPlan={machineType === "all" || machineType === "T"}
+        />
       )}
     </div>
   );
