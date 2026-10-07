@@ -12,6 +12,7 @@
 
 import { redis } from "@carbon/kv";
 import { datetime } from "@carbon/utils";
+import { sendShopAlertPush } from "./shop.push.server";
 import type { ShopAlert, ShopAlertKind, ShopMachine } from "./shop.types";
 import type { MeterPhysicalStatus } from "./shop.utils";
 import { mergeShopMachineStatus } from "./shop.utils";
@@ -346,6 +347,12 @@ async function appendShopAlert(args: {
   };
   const alerts = [alert, ...existing].slice(0, MAX_ALERTS);
   await redis.set(listKey, JSON.stringify(alerts), "EX", ALERTS_TTL_SECONDS);
+  // Not awaited: a slow push service must not hold up the 报修 / 已修好 action.
+  void sendShopAlertPush({
+    companyId: args.companyId,
+    locationId: args.locationId,
+    alert
+  });
 }
 
 function countUnreadAlerts(alerts: ShopAlert[], seenAt: string | null): number {

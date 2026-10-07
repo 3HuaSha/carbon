@@ -420,6 +420,24 @@ export const TELEGRAM_MOLD_GROUP_CHAT_ID = getEnv(
     isRequired: false
   }
 );
+/**
+ * VAPID key pair for MES PWA Web Push (lock-screen 提醒). Generate once with
+ * `npx web-push generate-vapid-keys`; push is off when either key is unset.
+ * The public key is handed to the browser by the shop loaders.
+ */
+export const WEB_PUSH_VAPID_PUBLIC_KEY = getEnv("WEB_PUSH_VAPID_PUBLIC_KEY", {
+  isRequired: false,
+  isSecret: false
+});
+export const WEB_PUSH_VAPID_PRIVATE_KEY = getEnv(
+  "WEB_PUSH_VAPID_PRIVATE_KEY",
+  { isRequired: false, isSecret: true }
+);
+/** `mailto:` or `https:` contact the push services may use (VAPID `sub`). */
+export const WEB_PUSH_VAPID_SUBJECT =
+  getEnv("WEB_PUSH_VAPID_SUBJECT", { isRequired: false, isSecret: false }) ||
+  "mailto:admin@localhost";
+
 export const CARBON_TELEGRAM_ENABLED = isBrowser
   ? window.env?.CARBON_TELEGRAM_ENABLED === "true"
   : Boolean(TELEGRAM_BOT_TOKEN);

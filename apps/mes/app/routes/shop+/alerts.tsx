@@ -8,6 +8,7 @@ import {
   listShopAlerts,
   markShopAlertsSeen
 } from "~/modules/shop/shop.alerts.server";
+import { getShopPushPublicKey } from "~/modules/shop/shop.push.server";
 import { ShopAlertsPage } from "~/modules/shop/ui/ShopAlertsPage";
 
 /**
@@ -33,11 +34,19 @@ export async function loader({ context, request }: LoaderFunctionArgs) {
 
   return {
     alerts,
-    locationName: locationResult.data?.name ?? null
+    locationName: locationResult.data?.name ?? null,
+    pushPublicKey: getShopPushPublicKey()
   };
 }
 
 export default function ShopAlertsRoute() {
-  const { alerts, locationName } = useLoaderData<typeof loader>();
-  return <ShopAlertsPage alerts={alerts} locationName={locationName} />;
+  const { alerts, locationName, pushPublicKey } =
+    useLoaderData<typeof loader>();
+  return (
+    <ShopAlertsPage
+      alerts={alerts}
+      locationName={locationName}
+      pushPublicKey={pushPublicKey}
+    />
+  );
 }

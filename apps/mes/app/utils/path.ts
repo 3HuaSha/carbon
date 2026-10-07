@@ -209,6 +209,8 @@ export const path = {
     shopAlerts: `${shop}/alerts`,
     shopMachine: (workCenterId: string) =>
       generatePath(`${shop}/${workCenterId}`),
+    /** POST — save / drop this device's lock-screen push subscription. */
+    shopPush: `${shop}/push`,
     /** Mold-room crew board — assigned incomplete dispatches by 模房 type. */
     shopMold: `${shop}/mold`,
     /** Repair crew board — assigned incomplete dispatches by 机修/维修 type. */

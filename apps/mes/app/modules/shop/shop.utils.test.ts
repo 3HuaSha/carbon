@@ -20,9 +20,27 @@ import {
   resolvePrimaryAssigneeId,
   resolveShopAssignGroup,
   resolveShopDispatchKind,
+  shopAlertText,
   shopMachineSubtitle,
   shopStatusFromMeterPhysical
 } from "./shop.utils";
+
+describe("shopAlertText", () => {
+  it("uses the note for 报修 and falls back when blank", () => {
+    expect(
+      shopAlertText({ kind: "down", workCenterName: "A01", note: " 漏油 " })
+    ).toEqual({ title: "A01 报修", detail: "漏油" });
+    expect(
+      shopAlertText({ kind: "down", workCenterName: "A01", note: "  " })
+    ).toEqual({ title: "A01 报修", detail: "故障报修，机台停机" });
+  });
+
+  it("describes 已修好", () => {
+    expect(
+      shopAlertText({ kind: "recovered", workCenterName: "A01", note: null })
+    ).toEqual({ title: "A01 已修好", detail: "维修已完成" });
+  });
+});
 
 describe("formatShopTilePersonLine", () => {
   it("joins assignee and downtime reason on one line when down", () => {

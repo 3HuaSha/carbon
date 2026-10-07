@@ -87,6 +87,7 @@
     "tailwind-merge": "catalog:",
     "tailwindcss-animate": "catalog:",
     "tsup": "catalog:",
+    "web-push": "^3.6.7",
     "zod": "catalog:",
     "zod-form-data": "catalog:"
   },
@@ -95,6 +96,7 @@
     "@carbon/dev": "workspace:*",
     "@types/react": "catalog:",
     "@types/react-dom": "catalog:",
+    "@types/web-push": "^3.6.4",
     "cross-env": "catalog:",
     "nodemon": "catalog:",
     "npm-run-all": "catalog:",

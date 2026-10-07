@@ -1,4 +1,5 @@
 import type {
+  ShopAlert,
   ShopAssignGroup,
   ShopCrewKind,
   ShopDispatchComment,
@@ -10,6 +11,35 @@ import type {
   ShopStatusFilter
 } from "./shop.types";
 import { shopAssignGroups } from "./shop.types";
+
+/**
+ * Title + detail for one 提醒 row. Shared by the `/shop/alerts` list and the
+ * lock-screen Web Push so both read the same.
+ */
+export function shopAlertText(
+  alert: Pick<ShopAlert, "kind" | "workCenterName" | "note">
+): { title: string; detail: string } {
+  const note = alert.note?.trim();
+  if (alert.kind === "down") {
+    return {
+      title: `${alert.workCenterName} 报修`,
+      detail: note || "故障报修，机台停机"
+    };
+  }
+  if (alert.kind === "issue") {
+    return {
+      title: `${alert.workCenterName} 报问题`,
+      detail: note || "有新的问题反馈（未停机）"
+    };
+  }
+  if (alert.kind === "awaitingStart") {
+    return {
+      title: `${alert.workCenterName} 待开机`,
+      detail: "问题已处理，等待确认开机"
+    };
+  }
+  return { title: `${alert.workCenterName} 已修好`, detail: "维修已完成" };
+}
 
 /** Raw Meter status codes → physical shop meaning (kanban MACHINE_STATUS_MAP). */
 export type MeterPhysicalStatus =

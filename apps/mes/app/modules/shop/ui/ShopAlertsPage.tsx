@@ -17,11 +17,15 @@ import {
 import { Link } from "react-router";
 import { path } from "~/utils/path";
 import type { ShopAlert } from "../shop.types";
+import { shopAlertText } from "../shop.utils";
+import { ShopPushToggle } from "./ShopPushToggle";
 import { shopIos } from "./shopIos";
 
 type ShopAlertsPageProps = {
   alerts: ShopAlert[];
   locationName: string | null;
+  /** VAPID public key; null when the server has push disabled. */
+  pushPublicKey: string | null;
 };
 
 function dayGroupLabel(iso: string): string {
@@ -34,42 +38,41 @@ function dayGroupLabel(iso: string): string {
 }
 
 function alertMeta(alert: ShopAlert) {
+  const text = shopAlertText(alert);
   if (alert.kind === "down") {
-    const note = alert.note?.trim();
     return {
-      title: `${alert.workCenterName} 报修`,
-      detail: note || "故障报修，机台停机",
+      ...text,
       iconBg: "bg-[color:var(--shop-down)]",
       Icon: LuCircleAlert
     };
   }
   if (alert.kind === "issue") {
-    const note = alert.note?.trim();
     return {
-      title: `${alert.workCenterName} 报问题`,
-      detail: note || "有新的问题反馈（未停机）",
+      ...text,
       iconBg: "bg-[color:var(--shop-warn)]",
       Icon: LuMessageSquareText
     };
   }
   if (alert.kind === "awaitingStart") {
     return {
-      title: `${alert.workCenterName} 待开机`,
-      detail: "问题已处理，等待确认开机",
+      ...text,
       iconBg: "bg-[color:var(--shop-warn)]",
       Icon: LuWrench
     };
   }
   return {
-    title: `${alert.workCenterName} 已修好`,
-    detail: "维修已完成",
+    ...text,
     iconBg: "bg-[color:var(--shop-run)]",
     Icon: LuWrench
   };
 }
 
 /** iOS notification-center style — opaque inset groups, no blur. */
-export function ShopAlertsPage({ alerts, locationName }: ShopAlertsPageProps) {
+export function ShopAlertsPage({
+  alerts,
+  locationName,
+  pushPublicKey
+}: ShopAlertsPageProps) {
   const groups = useMemo(() => {
     const map = new Map<string, ShopAlert[]>();
     for (const alert of alerts) {
@@ -108,6 +111,8 @@ export function ShopAlertsPage({ alerts, locationName }: ShopAlertsPageProps) {
           ) : null}
         </div>
       </div>
+
+      {pushPublicKey ? <ShopPushToggle publicKey={pushPublicKey} /> : null}
 
       {alerts.length === 0 ? (
         <div className="flex flex-1 flex-col items-center justify-center gap-2 px-6 py-20 text-center">
