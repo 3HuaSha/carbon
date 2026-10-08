@@ -8,20 +8,59 @@ import { formatShopTilePersonLine, primaryOpenDispatch } from "../shop.utils";
 import { shopIos } from "./shopIos";
 
 /**
- * Floor-map tile — status-filled card, exactly three lines.
- * Fill: 运行 green / 停机 red / 休息 blue / 待开机 amber / 待机 yellow /
- * 空闲·离线 white.
- * Colored fills use white ink; 待机 (yellow) and idle/offline use dark ink.
- * No continuous animations (ping/pulse) — 30+ tiles must stay cheap to paint.
+ * Awwwards-caliber Reactor Machine Tile for MES Floor Plan.
+ * Features:
+ * - Cyber-brutalist neon reactors with etched HUD telemetry
+ * - Pulsating reactor status core
+ * - Hazard warning stripes for just-fixed units
+ * - High-precision tactile physics on tap
  */
-const STATUS: Record<ShopMachineStatus, { label: string; name: string }> = {
-  running: { label: "运行", name: "运行中" },
-  idle: { label: "空闲", name: "空闲" },
-  standby: { label: "待机", name: "待机" },
-  break: { label: "休息", name: "休息" },
-  down: { label: "停机", name: "停机" },
-  awaitingStart: { label: "待开机", name: "待开机" },
-  offline: { label: "离线", name: "离线" }
+const STATUS: Record<
+  ShopMachineStatus,
+  { label: string; name: string; dotClass: string; textClass: string }
+> = {
+  running: {
+    label: "运行",
+    name: "运行中",
+    dotClass: "bg-emerald-400 shadow-[0_0_8px_#34d399]",
+    textClass: "text-emerald-100"
+  },
+  idle: {
+    label: "空闲",
+    name: "空闲",
+    dotClass: "bg-slate-400 shadow-[0_0_4px_#94a3b8]",
+    textClass: "text-slate-300"
+  },
+  standby: {
+    label: "待机",
+    name: "待机",
+    dotClass: "bg-amber-400 shadow-[0_0_8px_#fbbf24]",
+    textClass: "text-amber-950 font-bold"
+  },
+  break: {
+    label: "休息",
+    name: "休息",
+    dotClass: "bg-sky-400 shadow-[0_0_8px_#38bdf8]",
+    textClass: "text-sky-100"
+  },
+  down: {
+    label: "停机",
+    name: "停机",
+    dotClass: "bg-rose-400 shadow-[0_0_8px_#fb7185]",
+    textClass: "text-rose-100"
+  },
+  awaitingStart: {
+    label: "待开机",
+    name: "待开机",
+    dotClass: "bg-amber-400 shadow-[0_0_8px_#f59e0b]",
+    textClass: "text-amber-100"
+  },
+  offline: {
+    label: "离线",
+    name: "离线",
+    dotClass: "bg-slate-500 shadow-[0_0_4px_#64748b]",
+    textClass: "text-slate-400"
+  }
 };
 
 type MachineTileProps = {
@@ -45,12 +84,7 @@ function formatIssuePersonLine(
 
 export function MachineTile({ machine, onSelect }: MachineTileProps) {
   const meta = STATUS[machine.status];
-  const lightInk =
-    machine.status === "idle" ||
-    machine.status === "offline" ||
-    machine.status === "standby";
-  const ink = lightInk ? "text-black" : "text-white";
-  const statusDot = lightInk ? "bg-black/70" : "bg-white/90";
+  const isStandby = machine.status === "standby";
   const jobId =
     machine.meterWorkOrder ??
     machine.currentJobReadableId ??
@@ -81,53 +115,89 @@ export function MachineTile({ machine, onSelect }: MachineTileProps) {
       onClick={() => onSelect(machine)}
       aria-label={`${machine.name} ${meta.name}${jobId ? ` ${jobId}` : ""}${personLine.text !== "—" ? ` ${personLine.text}` : ""}${machine.justFixed ? " 刚修完" : ""}`}
       className={cn(
-        "relative flex w-full flex-col gap-0.5 px-2.5 py-2 text-left",
+        "group relative flex w-full flex-col justify-between gap-1.5 p-3 text-left font-mono transition-all duration-200",
         shopIos.statusFill[machine.status],
-        shopIos.press
+        shopIos.press,
+        "hover:scale-[1.02] hover:shadow-[0_8px_24px_rgba(0,0,0,0.6)]"
       )}
     >
+      {/* Subtle Laser Top Border Flare */}
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-[1px] bg-gradient-to-r from-transparent via-white/30 to-transparent" />
+
+      {/* Just Fixed Hazard Caution Banner */}
       {machine.justFixed ? (
-        <span className="absolute -right-1 -top-1 z-[1] rounded-md bg-[color:var(--shop-warn)] px-1 py-px text-[9px] font-bold leading-tight text-white">
+        <span className="hazard-stripes absolute -right-1 -top-1 z-10 rounded-md border border-amber-300/60 px-1.5 py-0.5 text-[9px] font-black tracking-widest text-white shadow-[0_2px_8px_rgba(0,0,0,0.6)]">
           刚修完
         </span>
       ) : null}
 
+      {/* Line 1: Machine Identifier & Live Status Beacon */}
       <div className="flex min-w-0 items-center justify-between gap-1">
         <span
           className={cn(
-            "truncate text-[13px] font-semibold leading-tight tracking-tight",
-            ink
+            "truncate text-[14px] font-black tracking-tight",
+            isStandby ? "text-amber-950" : "text-white"
           )}
         >
           {machine.name}
         </span>
-        <span className="flex shrink-0 items-center gap-1">
+        <span className="flex shrink-0 items-center gap-1.5 rounded-full bg-black/20 px-1.5 py-0.5 backdrop-blur-sm">
           <span
-            className={cn("inline-flex h-1.5 w-1.5 rounded-full", statusDot)}
+            className={cn(
+              "inline-flex h-1.5 w-1.5 rounded-full transition-transform group-hover:scale-125",
+              meta.dotClass,
+              machine.status === "running" && "cyber-status-pulse"
+            )}
           />
-          <span className={cn("text-[10px] font-semibold leading-tight", ink)}>
+          <span
+            className={cn(
+              "text-[10px] font-bold tracking-wider uppercase",
+              meta.textClass
+            )}
+          >
             {meta.label}
           </span>
         </span>
       </div>
 
-      <div
-        className={cn(
-          "min-w-0 truncate text-[11px] leading-tight tabular-nums",
-          shopIos.fillMuted
+      {/* Line 2: Work Order Code (Laser Etched) */}
+      <div className="min-w-0 truncate text-[11px] leading-tight">
+        {jobId ? (
+          <span
+            className={cn(
+              "font-bold tracking-tight",
+              isStandby ? "text-amber-900" : "text-slate-100"
+            )}
+          >
+            {jobId}
+          </span>
+        ) : (
+          <span
+            className={cn(
+              "text-[10px] font-medium tracking-widest opacity-60",
+              isStandby ? "text-amber-900" : "text-slate-400"
+            )}
+          >
+            // IDLE
+          </span>
         )}
-      >
-        {jobId ? <span className={cn("font-medium", ink)}>{jobId}</span> : "—"}
       </div>
 
+      {/* Line 3: Operator / Issue Telemetry */}
       <div
         className={cn(
-          "min-w-0 truncate text-[10px] leading-tight",
+          "min-w-0 truncate text-[10px] leading-tight tracking-tight",
           personLine.tone === "unassigned"
-            ? cn("font-semibold", ink)
+            ? isStandby
+              ? "font-bold text-amber-950"
+              : "font-bold text-rose-300"
             : personLine.tone === "empty"
-              ? shopIos.fillFaint
-              : shopIos.fillMuted
+              ? isStandby
+                ? "text-amber-900/60"
+                : "text-slate-400/60"
+              : isStandby
+                ? "text-amber-900/80"
+                : "text-slate-300"
         )}
       >
         {personLine.text}

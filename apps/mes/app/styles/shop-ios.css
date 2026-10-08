@@ -1,62 +1,66 @@
 /**
- * MES `/shop` PWA — iOS-inspired tokens + cheap motion.
- * Opaque surfaces only (no backdrop-filter). Transforms/opacity only.
- * Scoped under `.shop-ios` so the rest of MES is untouched.
+ * MES `/shop` PWA — Awwwards-Caliber Avant-Garde Industrial Cybernetic Design System.
+ * Fusion of Cyber-Brutalism, Futuristic Factory OS, and Kinetic Micro-Interactions.
  */
 
 .shop-ios {
-  --shop-bg: #f2f2f7;
-  --shop-card: #ffffff;
-  --shop-track: #e3e3e8;
-  --shop-ink: #000000;
-  --shop-muted: #8e8e93;
-  --shop-hairline: rgb(0 0 0 / 0.08);
-  --shop-link: #007aff;
-  --shop-run: #34c759;
-  --shop-down: #ff3b30;
-  --shop-break: #007aff;
-  /* Idle tiles use white fill + dark ink (other statuses keep solid color fills). */
-  --shop-idle: #8e8e93;
-  --shop-idle-fill: #ffffff;
-  --shop-warn: #ff9500;
-  /* 待机: not running but holding a work order. */
-  --shop-standby: #ffcc00;
-  /* Yellow is unreadable as text on white; status text uses a darker amber. */
-  --shop-standby-text: #b38600;
-  --shop-shadow: 0 1px 2px rgb(0 0 0 / 0.06);
-  --shop-selected-shadow: 0 1px 3px rgb(0 0 0 / 0.1);
+  /* Default Cyber Obsidian Dark Space */
+  --shop-bg: #07090e;
+  --shop-card: rgba(15, 20, 30, 0.75);
+  --shop-card-hover: rgba(22, 30, 46, 0.88);
+  --shop-track: rgba(255, 255, 255, 0.06);
+  --shop-ink: #f8fafc;
+  --shop-muted: #94a3b8;
+  --shop-faint: #64748b;
+  --shop-hairline: rgba(255, 255, 255, 0.09);
+  --shop-border-glow: rgba(56, 189, 248, 0.2);
+
+  --shop-link: #38bdf8;
+  --shop-run: #10b981;
+  --shop-run-glow: rgba(16, 185, 129, 0.4);
+  --shop-down: #f43f5e;
+  --shop-down-glow: rgba(244, 63, 94, 0.45);
+  --shop-break: #3b82f6;
+  --shop-break-glow: rgba(59, 130, 246, 0.4);
+  --shop-idle: #64748b;
+  --shop-idle-fill: rgba(30, 41, 59, 0.7);
+  --shop-warn: #f59e0b;
+  --shop-warn-glow: rgba(245, 158, 11, 0.4);
+  --shop-standby: #eab308;
+  --shop-standby-text: #fef08a;
+
+  --shop-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  --shop-selected-shadow: 0 0 20px rgba(56, 189, 248, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.2);
 
   background: var(--shop-bg);
   color: var(--shop-ink);
   -webkit-font-smoothing: antialiased;
   font-family:
-    -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", system-ui,
-    sans-serif;
+    ui-monospace, SFMono-Regular, "SF Pro Display", -apple-system, BlinkMacSystemFont,
+    "Segoe UI", Roboto, monospace;
 }
 
-.dark .shop-ios {
-  --shop-bg: #000000;
-  --shop-card: #1c1c1e;
-  --shop-track: #1c1c1e;
-  --shop-ink: #ffffff;
-  --shop-muted: #98989d;
-  --shop-hairline: rgb(255 255 255 / 0.1);
-  --shop-shadow: 0 1px 2px rgb(0 0 0 / 0.35);
-  --shop-selected-shadow: 0 1px 3px rgb(0 0 0 / 0.45);
-}
-
+/* Glass & HUD Navigation Bar */
 .shop-ios-bar {
-  background: var(--shop-bg);
+  background: rgba(7, 9, 14, 0.82);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   border-bottom: 1px solid var(--shop-hairline);
+  box-shadow: 0 4px 24px -4px rgba(0, 0, 0, 0.6);
 }
 
+/* Futuristic Card Foundations */
 .shop-ios-card {
   background: var(--shop-card);
-  border-radius: 1rem;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-radius: 1.125rem;
+  border: 1px solid var(--shop-hairline);
   box-shadow: var(--shop-shadow);
+  transition: all 220ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* Machine tiles: status fills. Colored statuses use white ink; idle/offline is white + dark ink. */
+/* Machine tiles: Status fills transformed into Cybernetic Reactors */
 .shop-ios-fill-running,
 .shop-ios-fill-idle,
 .shop-ios-fill-break,
@@ -64,85 +68,106 @@
 .shop-ios-fill-awaiting,
 .shop-ios-fill-standby,
 .shop-ios-fill-offline {
-  border-radius: 1rem;
+  border-radius: 1.125rem;
   box-shadow: var(--shop-shadow);
-}
-
-.shop-ios-fill-running,
-.shop-ios-fill-break,
-.shop-ios-fill-down,
-.shop-ios-fill-awaiting {
-  color: #ffffff;
-}
-
-/* Yellow fill needs dark ink. */
-.shop-ios-fill-standby {
-  background-color: var(--shop-standby);
-  color: #000000;
-}
-
-.shop-ios-fill-standby .shop-ios-fill-muted {
-  color: rgb(0 0 0 / 0.7);
-}
-
-.shop-ios-fill-standby .shop-ios-fill-faint {
-  color: rgb(0 0 0 / 0.5);
+  border: 1px solid var(--shop-hairline);
+  position: relative;
+  overflow: hidden;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  transition: transform 180ms cubic-bezier(0.16, 1, 0.3, 1), box-shadow 180ms cubic-bezier(0.16, 1, 0.3, 1), border-color 180ms ease;
 }
 
 .shop-ios-fill-running {
-  background-color: var(--shop-run);
+  background: linear-gradient(145deg, rgba(16, 185, 129, 0.92) 0%, rgba(5, 150, 105, 0.96) 100%);
+  border-color: rgba(52, 211, 153, 0.5);
+  box-shadow: 0 4px 20px -2px rgba(16, 185, 129, 0.3), inset 0 1px 1px rgba(255, 255, 255, 0.3);
+  color: #ffffff;
+}
+
+.shop-ios-fill-down {
+  background: linear-gradient(145deg, rgba(244, 63, 94, 0.92) 0%, rgba(225, 29, 72, 0.96) 100%);
+  border-color: rgba(251, 113, 133, 0.6);
+  box-shadow: 0 4px 20px -2px rgba(244, 63, 94, 0.35), inset 0 1px 1px rgba(255, 255, 255, 0.3);
+  color: #ffffff;
+}
+
+.shop-ios-fill-break {
+  background: linear-gradient(145deg, rgba(59, 130, 246, 0.9) 0%, rgba(37, 99, 235, 0.95) 100%);
+  border-color: rgba(96, 165, 250, 0.5);
+  box-shadow: 0 4px 20px -2px rgba(59, 130, 246, 0.3), inset 0 1px 1px rgba(255, 255, 255, 0.3);
+  color: #ffffff;
+}
+
+.shop-ios-fill-awaiting {
+  background: linear-gradient(145deg, rgba(245, 158, 11, 0.92) 0%, rgba(217, 119, 6, 0.96) 100%);
+  border-color: rgba(251, 191, 36, 0.6);
+  box-shadow: 0 4px 20px -2px rgba(245, 158, 11, 0.35), inset 0 1px 1px rgba(255, 255, 255, 0.3);
+  color: #ffffff;
+}
+
+.shop-ios-fill-standby {
+  background: linear-gradient(145deg, rgba(234, 179, 8, 0.9) 0%, rgba(202, 138, 4, 0.95) 100%);
+  border-color: rgba(250, 204, 21, 0.6);
+  box-shadow: 0 4px 20px -2px rgba(234, 179, 8, 0.3), inset 0 1px 1px rgba(255, 255, 255, 0.3);
+  color: #000000;
 }
 
 .shop-ios-fill-idle,
 .shop-ios-fill-offline {
-  /* White fill + dark ink always (ignore dark-mode --shop-ink = white). */
-  background-color: var(--shop-idle-fill);
-  color: #000000;
-  border: 1px solid var(--shop-hairline);
+  background: linear-gradient(145deg, rgba(23, 29, 43, 0.85) 0%, rgba(15, 20, 31, 0.92) 100%);
+  border-color: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 4px 18px -2px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  color: #f1f5f9;
+}
+
+.shop-ios-fill-standby .shop-ios-fill-muted {
+  color: rgba(0, 0, 0, 0.72);
+}
+
+.shop-ios-fill-standby .shop-ios-fill-faint {
+  color: rgba(0, 0, 0, 0.5);
 }
 
 .shop-ios-fill-idle .shop-ios-fill-muted,
 .shop-ios-fill-offline .shop-ios-fill-muted {
-  color: #636366;
+  color: #94a3b8;
 }
 
 .shop-ios-fill-idle .shop-ios-fill-faint,
 .shop-ios-fill-offline .shop-ios-fill-faint {
-  color: rgb(0 0 0 / 0.45);
-}
-
-.shop-ios-fill-break {
-  background-color: var(--shop-break);
-}
-
-.shop-ios-fill-down {
-  background-color: var(--shop-down);
-}
-
-.shop-ios-fill-awaiting {
-  background-color: var(--shop-warn);
+  color: #64748b;
 }
 
 .shop-ios-fill-muted {
-  color: rgb(255 255 255 / 0.85);
+  color: rgba(255, 255, 255, 0.85);
 }
 
 .shop-ios-fill-faint {
-  color: rgb(255 255 255 / 0.7);
+  color: rgba(255, 255, 255, 0.65);
 }
 
+/* Inset HUD Sections */
 .shop-ios-inset {
   background: var(--shop-card);
-  border-radius: 1rem;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-radius: 1.25rem;
+  border: 1px solid var(--shop-hairline);
   box-shadow: var(--shop-shadow);
   overflow: hidden;
+  position: relative;
 }
 
+/* Segmented HUD Filter Strip */
 .shop-ios-segment {
   display: flex;
-  border-radius: 10px;
-  background: var(--shop-track);
-  padding: 2px;
+  border-radius: 0.875rem;
+  background: rgba(15, 23, 42, 0.75);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 3px;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
 }
 
 .shop-ios-segment-item {
@@ -151,36 +176,33 @@
   align-items: center;
   justify-content: center;
   gap: 0.375rem;
-  border-radius: 0.5rem;
-  padding: 0.375rem 0.625rem;
+  border-radius: 0.625rem;
+  padding: 0.4rem 0.625rem;
   font-size: 13px;
   font-weight: 500;
   color: var(--shop-muted);
-  transition:
-    background-color 120ms ease-out,
-    color 120ms ease-out,
-    box-shadow 120ms ease-out,
-    transform 120ms ease-out,
-    opacity 120ms ease-out;
+  transition: all 180ms cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
 }
 
 .shop-ios-segment-item[aria-current="page"],
 .shop-ios-segment-item[aria-selected="true"] {
-  background: var(--shop-card);
-  color: var(--shop-ink);
+  background: linear-gradient(135deg, rgba(30, 41, 59, 0.95), rgba(15, 23, 42, 0.95));
+  color: #ffffff;
   font-weight: 600;
-  box-shadow: var(--shop-selected-shadow);
+  border: 1px solid rgba(56, 189, 248, 0.35);
+  box-shadow: 0 2px 12px rgba(56, 189, 248, 0.25);
 }
 
+/* Kinetic Physics Press Effect */
 .shop-ios-press {
-  transition:
-    transform 120ms ease-out,
-    opacity 120ms ease-out;
+  transition: transform 140ms cubic-bezier(0.16, 1, 0.3, 1), opacity 140ms ease;
+  will-change: transform;
 }
 
 .shop-ios-press:active {
-  transform: scale(0.96);
-  opacity: 0.85;
+  transform: scale(0.96) translateY(1px);
+  opacity: 0.88;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -190,23 +212,49 @@
     transition: none !important;
     animation: none !important;
   }
-
-  .shop-ios-press:active {
-    transform: none;
-    opacity: 0.85;
-  }
 }
 
-/* One-shot page enter — opacity only, ~180ms, no layout thrash */
-@keyframes shop-ios-fade-in {
-  from {
+/* Avant-Garde Holographic Entrance Animation */
+@keyframes cyber-hologram-in {
+  0% {
     opacity: 0;
+    transform: translateY(8px) scale(0.99);
+    filter: blur(4px);
   }
-  to {
+  100% {
     opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0);
   }
 }
 
 .shop-ios-page-enter {
-  animation: shop-ios-fade-in 180ms ease-out both;
+  animation: cyber-hologram-in 260ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* Subtle Kinetic Pulse Animation for Active Stations */
+@keyframes cyber-pulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.7;
+    transform: scale(1.08);
+  }
+}
+
+.cyber-status-pulse {
+  animation: cyber-pulse 2.4s ease-in-out infinite;
+}
+
+/* Diagonal Hazard Warning Stripes */
+.hazard-stripes {
+  background: repeating-linear-gradient(
+    -45deg,
+    rgba(245, 158, 11, 0.9),
+    rgba(245, 158, 11, 0.9) 8px,
+    rgba(0, 0, 0, 0.8) 8px,
+    rgba(0, 0, 0, 0.8) 16px
+  );
 }

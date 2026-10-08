@@ -9,6 +9,7 @@ import type {
 } from "react-router";
 import { Outlet, useLoaderData, useLocation } from "react-router";
 import { userMiddleware } from "~/middleware/user";
+import { CyberCanvas } from "~/modules/shop/ui/CyberCanvas";
 import { ShopTabNav } from "~/modules/shop/ui/ShopTabNav";
 import ShopIos from "~/styles/shop-ios.css?url";
 import { path } from "~/utils/path";
@@ -86,8 +87,11 @@ export default function ShopLayout() {
 
   return (
     <CarbonProvider session={session}>
-      <div className="shop-ios min-h-dvh w-full pl-[calc(52px+env(safe-area-inset-left))] pr-[env(safe-area-inset-right)] pb-[env(safe-area-inset-bottom)] pt-[env(safe-area-inset-top)]">
-        <Outlet />
+      <div className="shop-ios relative min-h-dvh w-full overflow-x-hidden pl-[calc(56px+env(safe-area-inset-left))] pr-[env(safe-area-inset-right)] pb-[env(safe-area-inset-bottom)] pt-[env(safe-area-inset-top)] selection:bg-emerald-500/20 selection:text-emerald-400">
+        <CyberCanvas />
+        <div className="relative z-10 w-full">
+          <Outlet />
+        </div>
         <ShopTabNav active={activeTab} />
       </div>
     </CarbonProvider>

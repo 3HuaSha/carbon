@@ -3,8 +3,7 @@
 // including ports, remain AGPLv3; serving them over a network requires releasing their source.
 
 /**
- * Class helpers for MES `/shop` iOS tokens (see `styles/shop-ios.css`).
- * Cheap paint: opaque surfaces, transform/opacity presses, no blur/ping.
+ * Class helpers for MES `/shop` Awwwards cyber-industrial tokens (see `styles/shop-ios.css`).
  */
 export const shopIos = {
   page: "shop-ios",
@@ -15,44 +14,38 @@ export const shopIos = {
   segmentItem: "shop-ios-segment-item",
   press: "shop-ios-press",
   pageEnter: "shop-ios-page-enter",
-  /** Compact nav title — large iOS titles waste vertical space on the floor PWA. */
-  compactTitle: "text-[17px] font-semibold leading-tight tracking-tight",
+  compactTitle: "text-[16px] font-bold leading-tight tracking-wider uppercase font-mono",
   sectionLabel:
-    "text-[13px] font-medium uppercase tracking-wide text-[color:var(--shop-muted)]",
+    "text-[12px] font-semibold uppercase tracking-widest text-[color:var(--shop-muted)] font-mono",
   muted: "text-[color:var(--shop-muted)]",
-  link: "text-[color:var(--shop-link)] transition-opacity duration-150 ease-out active:opacity-60",
+  link: "text-[color:var(--shop-link)] transition-all duration-200 ease-out hover:opacity-100 active:opacity-70",
   hairlineTop: "border-t border-[color:var(--shop-hairline)]",
   statusDot: {
-    running: "bg-[color:var(--shop-run)]",
-    idle: "bg-[color:var(--shop-idle)]",
-    standby: "bg-[color:var(--shop-standby)]",
-    break: "bg-[color:var(--shop-break)]",
-    down: "bg-[color:var(--shop-down)]",
-    awaitingStart: "bg-[color:var(--shop-warn)]",
-    offline: "bg-[color:var(--shop-idle)]"
+    running: "bg-[color:var(--shop-run)] shadow-[0_0_8px_var(--shop-run)]",
+    idle: "bg-[color:var(--shop-idle)] shadow-[0_0_4px_var(--shop-idle)]",
+    standby: "bg-[color:var(--shop-standby)] shadow-[0_0_8px_var(--shop-standby)]",
+    break: "bg-[color:var(--shop-break)] shadow-[0_0_8px_var(--shop-break)]",
+    down: "bg-[color:var(--shop-down)] shadow-[0_0_8px_var(--shop-down)]",
+    awaitingStart: "bg-[color:var(--shop-warn)] shadow-[0_0_8px_var(--shop-warn)]",
+    offline: "bg-[color:var(--shop-idle)] shadow-[0_0_4px_var(--shop-idle)]"
   },
   statusText: {
-    running: "text-[color:var(--shop-run)]",
+    running: "text-[color:var(--shop-run)] font-semibold",
     idle: "text-[color:var(--shop-muted)]",
-    standby: "text-[color:var(--shop-standby-text)]",
-    break: "text-[color:var(--shop-break)]",
-    down: "text-[color:var(--shop-down)]",
-    awaitingStart: "text-[color:var(--shop-warn)]",
+    standby: "text-[color:var(--shop-standby-text)] font-semibold",
+    break: "text-[color:var(--shop-break)] font-semibold",
+    down: "text-[color:var(--shop-down)] font-semibold",
+    awaitingStart: "text-[color:var(--shop-warn)] font-semibold",
     offline: "text-[color:var(--shop-muted)]"
   },
-  /**
-   * Opaque status fills for machine tiles.
-   * Idle/offline = white fill + dark ink; other statuses use solid color + white ink.
-   * Tailwind `bg-*` mirrors CSS so a stale shop-ios.css (PWA SW) cannot drift.
-   */
   statusFill: {
-    running: "shop-ios-fill-running bg-[color:var(--shop-run)]",
-    idle: "shop-ios-fill-idle !bg-white !text-black",
-    standby: "shop-ios-fill-standby bg-[color:var(--shop-standby)]",
-    break: "shop-ios-fill-break bg-[color:var(--shop-break)]",
-    down: "shop-ios-fill-down bg-[color:var(--shop-down)]",
-    awaitingStart: "shop-ios-fill-awaiting bg-[color:var(--shop-warn)]",
-    offline: "shop-ios-fill-offline !bg-white !text-black"
+    running: "shop-ios-fill-running",
+    idle: "shop-ios-fill-idle",
+    standby: "shop-ios-fill-standby",
+    break: "shop-ios-fill-break",
+    down: "shop-ios-fill-down",
+    awaitingStart: "shop-ios-fill-awaiting",
+    offline: "shop-ios-fill-offline"
   },
   fillMuted: "shop-ios-fill-muted",
   fillFaint: "shop-ios-fill-faint"

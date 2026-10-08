@@ -83,16 +83,84 @@ const statusMeta: Record<
 
 function MachineStatusChip({ status }: { status: ShopMachine["status"] }) {
   const meta = statusMeta[status];
+  const glowStyles: Record<
+    ShopMachine["status"],
+    { bg: string; text: string; dot: string; border: string }
+  > = {
+    running: {
+      bg: "bg-emerald-950/60",
+      text: "text-emerald-300",
+      dot: "bg-emerald-400 shadow-[0_0_8px_#34d399]",
+      border: "border-emerald-500/40"
+    },
+    idle: {
+      bg: "bg-slate-900/60",
+      text: "text-slate-300",
+      dot: "bg-slate-400 shadow-[0_0_4px_#94a3b8]",
+      border: "border-white/10"
+    },
+    standby: {
+      bg: "bg-amber-950/60",
+      text: "text-amber-300",
+      dot: "bg-amber-400 shadow-[0_0_8px_#fbbf24]",
+      border: "border-amber-500/40"
+    },
+    break: {
+      bg: "bg-blue-950/60",
+      text: "text-sky-300",
+      dot: "bg-sky-400 shadow-[0_0_8px_#38bdf8]",
+      border: "border-sky-500/40"
+    },
+    down: {
+      bg: "bg-rose-950/60",
+      text: "text-rose-300",
+      dot: "bg-rose-400 shadow-[0_0_8px_#fb7185]",
+      border: "border-rose-500/40"
+    },
+    awaitingStart: {
+      bg: "bg-amber-950/60",
+      text: "text-amber-300",
+      dot: "bg-amber-400 shadow-[0_0_8px_#f59e0b]",
+      border: "border-amber-500/40"
+    },
+    offline: {
+      bg: "bg-slate-900/60",
+      text: "text-slate-400",
+      dot: "bg-slate-500 shadow-[0_0_4px_#64748b]",
+      border: "border-white/10"
+    }
+  };
+
+  const current = glowStyles[status];
+
   return (
-    <Status color={meta.color} disableTooltip>
+    <span
+      className={cn(
+        "inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 font-mono text-[11px] font-bold tracking-wider uppercase backdrop-blur-md",
+        current.bg,
+        current.text,
+        current.border
+      )}
+    >
+      <span
+        className={cn(
+          "inline-flex h-2 w-2 rounded-full",
+          current.dot,
+          status === "running" && "cyber-status-pulse"
+        )}
+      />
       {meta.label}
-    </Status>
+    </span>
   );
 }
 
 function QcStatus({ status }: { status: string | null }) {
   if (!status) {
-    return <span className="text-sm text-muted-foreground">暂无检验</span>;
+    return (
+      <span className="font-mono text-xs text-slate-400 tracking-wider">
+        // 暂无检验
+      </span>
+    );
   }
   const label =
     status === "Passed"
@@ -106,18 +174,28 @@ function QcStatus({ status }: { status: string | null }) {
             : status === "Pending"
               ? "待检验"
               : status;
-  const color =
-    status === "Passed"
-      ? "green"
-      : status === "Failed"
-        ? "red"
-        : status === "In Progress" || status === "Partial"
-          ? "orange"
-          : "gray";
+  const isGood = status === "Passed";
+  const isBad = status === "Failed";
+
   return (
-    <Status color={color} disableTooltip>
+    <span
+      className={cn(
+        "inline-flex items-center gap-1 rounded-md border px-2 py-0.5 font-mono text-[11px] font-bold tracking-wider",
+        isGood
+          ? "border-emerald-500/40 bg-emerald-950/50 text-emerald-300 shadow-[0_0_8px_rgba(16,185,129,0.2)]"
+          : isBad
+            ? "border-rose-500/40 bg-rose-950/50 text-rose-300 shadow-[0_0_8px_rgba(244,63,94,0.2)]"
+            : "border-amber-500/40 bg-amber-950/50 text-amber-300"
+      )}
+    >
+      <span
+        className={cn(
+          "h-1.5 w-1.5 rounded-full",
+          isGood ? "bg-emerald-400" : isBad ? "bg-rose-400" : "bg-amber-400"
+        )}
+      />
       {label}
-    </Status>
+    </span>
   );
 }
 
@@ -129,8 +207,8 @@ function SectionTitle({
   children: React.ReactNode;
 }) {
   return (
-    <h2 className={cn("flex items-center gap-1.5", shopIos.sectionLabel)}>
-      {icon ? <span className="opacity-70">{icon}</span> : null}
+    <h2 className="flex items-center gap-2 font-mono text-[12px] font-bold tracking-widest text-slate-400 uppercase">
+      {icon ? <span className="text-cyan-400">{icon}</span> : null}
       {children}
     </h2>
   );
@@ -146,49 +224,61 @@ function WorkOrderSection({ work }: { work: ShopCurrentWork | null }) {
     : null;
 
   return (
-    <section className={shopIos.inset}>
-      <div className="border-b border-[color:var(--shop-hairline)] px-4 py-2.5">
+    <section className="relative overflow-hidden rounded-2xl border border-white/10 bg-slate-950/70 p-4 shadow-[0_8px_32px_rgba(0,0,0,0.5)] backdrop-blur-xl">
+      {/* Corner laser accents */}
+      <div className="pointer-events-none absolute top-0 left-0 h-3 w-3 border-l-2 border-t-2 border-cyan-400/60" />
+      <div className="pointer-events-none absolute top-0 right-0 h-3 w-3 border-r-2 border-t-2 border-cyan-400/60" />
+
+      <div className="mb-3 flex items-center justify-between border-b border-white/5 pb-2.5">
         <SectionTitle icon={<LuPackage className="h-4 w-4" />}>
-          当前生产
+          CURRENT PRODUCTION // 当前生产
         </SectionTitle>
+        <span className="font-mono text-[10px] tracking-widest text-cyan-400/70">
+          SEC.01
+        </span>
       </div>
-      <div className="px-4 py-3">
+
+      <div>
         {jobLabel ? (
-          <div className="flex flex-wrap items-center gap-2">
+          <div className="flex flex-wrap items-center gap-3">
             {operationHref ? (
               <Link
                 to={operationHref}
-                className="text-xl font-bold tabular-nums tracking-tight text-foreground underline-offset-4 hover:underline"
+                className="font-mono text-2xl font-black tracking-tight text-white underline-offset-4 hover:text-cyan-300 hover:underline"
               >
                 {jobLabel}
               </Link>
             ) : (
-              <p className="text-xl font-bold tabular-nums tracking-tight">
+              <p className="font-mono text-2xl font-black tracking-tight text-white">
                 {jobLabel}
               </p>
             )}
             {work?.operationStatus ? (
-              <Status color="gray" disableTooltip>
+              <span className="rounded-md border border-white/10 bg-slate-900 px-2 py-0.5 font-mono text-xs font-semibold text-slate-300">
                 {work.operationStatus}
-              </Status>
+              </span>
             ) : null}
           </div>
         ) : (
-          <p className="py-1 text-sm text-muted-foreground">暂无在产工单</p>
+          <p className="py-2 font-mono text-sm text-slate-400">
+            // 暂无在产工单 (NO ACTIVE WORK ORDER)
+          </p>
         )}
 
-        <div className="mt-3 flex items-center justify-between gap-2 rounded-xl bg-muted/50 px-3 py-2.5">
-          <div className="flex items-center gap-2">
-            <LuClipboardCheck className="h-4 w-4 text-muted-foreground" />
-            <span className="text-sm font-medium">质检</span>
+        <div className="mt-4 flex items-center justify-between gap-3 rounded-xl border border-white/5 bg-slate-900/60 p-3">
+          <div className="flex items-center gap-2.5">
+            <LuClipboardCheck className="h-4 w-4 text-cyan-400" />
+            <span className="font-mono text-xs font-bold text-slate-300 tracking-wider">
+              QC.STATUS
+            </span>
             <QcStatus status={work?.inspectionStatus ?? null} />
           </div>
           {inspectionHref && work?.inspectionId ? (
             <Link
               to={inspectionHref}
-              className="shrink-0 rounded-lg bg-primary px-3 py-1.5 text-xs font-medium text-primary-foreground"
+              className="shrink-0 rounded-lg border border-cyan-400/40 bg-gradient-to-r from-cyan-600 to-blue-600 px-3 py-1.5 font-mono text-xs font-bold text-white shadow-[0_0_12px_rgba(6,182,212,0.3)] transition-all hover:scale-105"
             >
-              查看检验单
+              查看检验单 →
             </Link>
           ) : null}
         </div>
@@ -244,39 +334,41 @@ function ReportForm({
       : "bg-gradient-to-br from-sky-500 to-blue-600";
 
   return (
-    <section className={shopIos.inset}>
-      <div className="flex items-start justify-between gap-2 border-b border-[color:var(--shop-hairline)] px-4 py-3">
-        <div className="flex items-center gap-2.5">
+    <section className="relative overflow-hidden rounded-2xl border border-cyan-500/30 bg-slate-950/80 p-4 shadow-[0_8px_32px_rgba(0,0,0,0.6)] backdrop-blur-xl">
+      <div className="flex items-start justify-between gap-2 border-b border-white/5 pb-3">
+        <div className="flex items-center gap-3">
           <span
             className={cn(
-              "flex h-9 w-9 items-center justify-center rounded-xl text-white",
+              "flex h-10 w-10 items-center justify-center rounded-xl text-white shadow-md",
               iconClass
             )}
           >
             {meta.icon}
           </span>
           <div>
-            <h2 className="text-sm font-semibold">{meta.title}</h2>
-            <p className="mt-0.5 text-xs text-muted-foreground">{meta.hint}</p>
+            <h2 className="font-mono text-sm font-bold text-white tracking-wide">
+              {meta.title}
+            </h2>
+            <p className="mt-0.5 text-xs text-slate-400">{meta.hint}</p>
           </div>
         </div>
         <button
           type="button"
           aria-label="取消"
-          className="rounded-md p-1.5 text-muted-foreground hover:bg-muted"
+          className="rounded-lg border border-white/5 bg-slate-900/60 p-1.5 text-slate-400 hover:bg-slate-800 hover:text-white"
           onClick={onCancel}
         >
           <LuX className="h-4 w-4" />
         </button>
       </div>
 
-      <div className="px-4 py-3">
+      <div className="pt-3">
         <textarea
           value={note}
           onChange={(e) => setNote(e.target.value)}
           rows={kind === "break" ? 2 : 4}
           placeholder={noteRequired ? "发生了什么？（必填）" : "备注（可选）"}
-          className="w-full rounded-xl border border-border bg-background px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-ring"
+          className="w-full rounded-xl border border-white/10 bg-slate-900/80 px-3 py-2.5 font-mono text-sm text-white placeholder:text-slate-500 outline-none focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400"
         />
 
         {mediaRecommended ? (
@@ -287,11 +379,11 @@ function ReportForm({
               capture="environment"
               multiple
               onChange={(e) => setFiles(Array.from(e.target.files ?? []))}
-              className="block w-full text-xs text-muted-foreground file:mr-3 file:rounded-lg file:border-0 file:bg-muted file:px-3 file:py-2 file:text-sm file:font-medium"
+              className="block w-full text-xs text-slate-400 file:mr-3 file:rounded-lg file:border-0 file:bg-slate-800 file:px-3 file:py-2 file:font-mono file:text-xs file:font-bold file:text-white"
             />
             {files.length > 0 ? (
-              <p className="mt-1 text-xs tabular-nums text-muted-foreground">
-                已选择 {files.length} 个文件
+              <p className="mt-1 font-mono text-xs tabular-nums text-cyan-400">
+                // 已选择 {files.length} 个文件
               </p>
             ) : null}
           </div>
@@ -299,7 +391,7 @@ function ReportForm({
 
         {kind !== "break" ? (
           <div className="mt-3">
-            <p className="mb-1.5 text-xs text-muted-foreground">
+            <p className="mb-1.5 font-mono text-xs text-slate-400">
               指派人员（可选）— 主管 / PE / 模房 / 维修 · 主管默认全选
             </p>
             <GroupedAssignPicker
@@ -325,9 +417,9 @@ function ReportForm({
                 files
               })
             }
-            className="flex-1"
+            className="flex-1 font-mono font-bold tracking-wider"
           >
-            确认提交
+            确认提交 // SUBMIT
           </Button>
           <Button
             type="button"
@@ -335,6 +427,7 @@ function ReportForm({
             variant="ghost"
             isDisabled={busy}
             onClick={onCancel}
+            className="font-mono text-slate-400 hover:text-white"
           >
             取消
           </Button>
@@ -409,10 +502,10 @@ function DispatchActions({
       : "down";
 
   return (
-    <section className={shopIos.inset}>
-      <div className="flex items-start justify-between gap-2 px-4 pt-3">
+    <section className="relative overflow-hidden rounded-2xl border border-white/10 bg-slate-950/70 p-4 shadow-[0_8px_32px_rgba(0,0,0,0.5)] backdrop-blur-xl">
+      <div className="flex items-start justify-between gap-2 border-b border-white/5 pb-3">
         <div className="min-w-0 flex-1">
-          <p className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+          <p className="flex items-center gap-1.5 font-mono text-xs font-bold tracking-widest text-cyan-400 uppercase">
             {isIssue ? (
               <LuMessageSquareText className="h-3.5 w-3.5" />
             ) : (
@@ -421,44 +514,44 @@ function DispatchActions({
             {kindLabel}
           </p>
           {problemText ? (
-            <p className="mt-1.5 whitespace-pre-wrap text-base font-semibold leading-snug text-foreground">
+            <p className="mt-1.5 whitespace-pre-wrap font-mono text-base font-bold leading-snug text-white">
               {problemText}
             </p>
           ) : (
-            <p className="mt-1.5 text-sm text-muted-foreground">暂无问题描述</p>
+            <p className="mt-1.5 font-mono text-sm text-slate-400">// 暂无问题描述</p>
           )}
-          <p className="mt-1.5 text-xs text-muted-foreground">
+          <p className="mt-2 font-mono text-xs text-slate-400">
             {dispatch.assigneeName ? (
               assignedToMe ? (
-                <span className="font-medium text-primary">已指派给你</span>
+                <span className="font-bold text-cyan-300">已指派给你 (ASSIGNED TO YOU)</span>
               ) : (
                 <>负责人：{dispatch.assigneeName}</>
               )
             ) : (
-              <span className="font-medium text-foreground">未分配</span>
+              <span className="font-bold text-amber-300">未分配负责人 (UNASSIGNED)</span>
             )}
           </p>
         </div>
         {chipStatus ? (
           <MachineStatusChip status={chipStatus} />
         ) : (
-          <Status color="orange" disableTooltip>
+          <span className="rounded-md border border-amber-500/30 bg-amber-950/40 px-2 py-0.5 font-mono text-xs font-bold text-amber-300">
             未停机
-          </Status>
+          </span>
         )}
       </div>
 
       {followUpComments.length > 0 ? (
-        <ul className="mx-4 mt-3 flex flex-col gap-2 border-t border-border pt-3">
+        <ul className="mt-3 flex flex-col gap-2 border-t border-white/5 pt-3">
           {followUpComments.map((c) => (
-            <li key={c.id} className="whitespace-pre-wrap text-sm">
+            <li key={c.id} className="whitespace-pre-wrap font-mono text-sm text-slate-300">
               {c.comment}
             </li>
           ))}
         </ul>
       ) : null}
 
-      <div className="mx-4 mt-3">
+      <div className="mt-3">
         <ShopDispatchMedia
           companyId={companyId}
           dispatchId={dispatch.id}
@@ -468,7 +561,7 @@ function DispatchActions({
         />
       </div>
 
-      <div className="flex flex-wrap gap-2 px-4 py-3">
+      <div className="mt-4 flex flex-wrap gap-2">
         {showResume ? (
           <Button
             type="button"
@@ -476,9 +569,9 @@ function DispatchActions({
             variant="primary"
             isDisabled={busy}
             onClick={() => onAction("ResumeAvailability", dispatch)}
-            className="flex-1"
+            className="flex-1 border border-emerald-400/50 bg-gradient-to-r from-emerald-600 to-teal-600 font-mono font-bold text-white shadow-[0_0_16px_rgba(16,185,129,0.3)]"
           >
-            {dispatch.shopKind === "break" ? "我回来了" : "恢复生产"}
+            {dispatch.shopKind === "break" ? "我回来了 (RESUME)" : "恢复生产 (RESUME)"}
           </Button>
         ) : null}
         {showComplete ? (
@@ -488,9 +581,9 @@ function DispatchActions({
             variant="primary"
             isDisabled={busy}
             onClick={() => onAction("Complete", dispatch)}
-            className="flex-1"
+            className="flex-1 border border-cyan-400/50 bg-gradient-to-r from-cyan-600 to-blue-600 font-mono font-bold text-white shadow-[0_0_16px_rgba(6,182,212,0.3)]"
           >
-            {isIssue ? "问题已处理" : "维修完成"}
+            {isIssue ? "问题已处理 (COMPLETE)" : "维修完成 (COMPLETE)"}
           </Button>
         ) : null}
         {showEnd ? (
@@ -500,14 +593,15 @@ function DispatchActions({
             variant="secondary"
             isDisabled={busy}
             onClick={() => onAction("End", dispatch)}
+            className="border border-white/10 bg-slate-900 font-mono text-slate-300 hover:text-white"
           >
-            暂停
+            暂停 (PAUSE)
           </Button>
         ) : null}
       </div>
 
       {canAssignPerson ? (
-        <div className="px-4 pb-3">
+        <div className="mt-4 border-t border-white/5 pt-3">
           <GroupedAssignPicker
             people={people}
             busy={busy}
@@ -677,57 +771,59 @@ export function MachineDetailPage({
         shopIos.pageEnter
       )}
     >
-      <header className={cn("sticky top-0 z-10", shopIos.bar)}>
-        <div className="flex items-center gap-1 px-2 py-2">
+      <header className={cn("sticky top-0 z-20", shopIos.bar)}>
+        <div className="flex items-center justify-between gap-2 px-3 py-2.5">
           <button
             type="button"
             className={cn(
-              "flex items-center rounded-full py-1 pl-1 pr-2",
-              shopIos.link
+              "group flex items-center gap-1 rounded-xl border border-white/10 bg-slate-900/70 px-2.5 py-1.5 font-mono text-[13px] font-bold tracking-wider text-slate-300 shadow-sm transition-all duration-200 hover:border-cyan-400/50 hover:bg-slate-800 hover:text-white",
+              shopIos.press
             )}
-            aria-label="返回"
+            aria-label="返回机台列表"
             onClick={() => navigate(path.to.shop)}
           >
-            <LuChevronLeft className="h-6 w-6" />
-            <span className="text-[17px]">机台</span>
+            <LuChevronLeft className="h-5 w-5 text-cyan-400 transition-transform group-hover:-translate-x-0.5" />
+            <span>// STATIONS</span>
           </button>
-          <div className="min-w-0 flex-1 text-center">
-            <h1 className="truncate text-[17px] font-semibold tracking-tight">
+          <div className="min-w-0 flex-1 text-center font-mono">
+            <h1 className="truncate text-xl font-black tracking-tight text-white">
               {machine.name}
             </h1>
             {machine.subtitle ? (
-              <p className={cn("truncate text-[12px]", shopIos.muted)}>
+              <p className="truncate text-[11px] font-medium text-slate-400">
                 {machine.subtitle}
               </p>
             ) : null}
           </div>
-          <div className="flex w-[76px] shrink-0 justify-end pr-2">
+          <div className="flex shrink-0 justify-end">
             <MachineStatusChip status={machine.status} />
           </div>
         </div>
       </header>
 
-      <div className="flex flex-col gap-4 px-4">
+      <div className="flex flex-col gap-4 px-4 font-mono">
         <WorkOrderSection work={workForDisplay} />
 
         {showAwaitingStartConfirm && !reportKind ? (
-          <section className={shopIos.inset}>
-            <div className="px-4 py-3">
-              <p className="text-sm font-semibold text-foreground">待开机</p>
-              <p className={cn("mt-1 text-xs", shopIos.muted)}>
-                问题已处理。确认机台已开机后点击下方按钮。
+          <section className="relative overflow-hidden rounded-2xl border border-amber-500/40 bg-amber-950/40 p-4 shadow-[0_8px_32px_rgba(245,158,11,0.2)] backdrop-blur-xl">
+            <div>
+              <p className="text-sm font-bold text-amber-300 uppercase tracking-wider">
+                AWAITING START // 待开机确认
+              </p>
+              <p className="mt-1 text-xs text-amber-200/70">
+                问题已处理完毕。确认机台已开机后点击下方按钮。
               </p>
               <Button
                 type="button"
                 size="md"
                 variant="primary"
                 isDisabled={busy}
-                className="mt-3 w-full"
+                className="mt-3.5 w-full border border-amber-400/50 bg-gradient-to-r from-amber-500 to-amber-600 font-bold text-slate-950 shadow-[0_0_16px_rgba(245,158,11,0.4)]"
                 onClick={() =>
                   submit("ConfirmStarted", { workCenterId: machine.id })
                 }
               >
-                已开机
+                确认已开机 (CONFIRM STARTED)
               </Button>
             </div>
           </section>
@@ -746,7 +842,7 @@ export function MachineDetailPage({
         {!reportKind && canReportIssue ? (
           <section>
             <SectionTitle icon={<LuWrench className="h-4 w-4" />}>
-              快捷操作
+              TACTICAL ACTIONS // 快捷操作
             </SectionTitle>
             <div className="mt-2.5 grid grid-cols-1 gap-2.5">
               <button
@@ -754,15 +850,21 @@ export function MachineDetailPage({
                 disabled={busy}
                 onClick={() => setReportKind("issue")}
                 className={cn(
-                  "flex flex-col items-center gap-1.5 px-1.5 py-4 disabled:opacity-50",
-                  shopIos.card,
+                  "group relative flex items-center justify-center gap-3 overflow-hidden rounded-2xl border border-white/10 bg-slate-950/70 p-4 text-left shadow-lg backdrop-blur-xl transition-all duration-200 hover:border-cyan-400/40 hover:bg-slate-900/90",
                   shopIos.press
                 )}
               >
-                <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-teal-600 text-white">
+                <span className="flex h-11 w-11 items-center justify-center rounded-xl border border-cyan-400/40 bg-gradient-to-br from-cyan-500 to-teal-600 text-white shadow-[0_0_16px_rgba(6,182,212,0.4)] transition-transform group-hover:scale-110">
                   <LuMessageSquareText className="h-5 w-5" />
                 </span>
-                <span className="text-xs font-medium">报问题</span>
+                <div className="flex-1">
+                  <span className="block text-sm font-bold text-white tracking-wide">
+                    报问题 (REPORT ISSUE)
+                  </span>
+                  <span className="text-xs text-slate-400">
+                    机台不停机，快速描述问题、拍照并指派相关人员
+                  </span>
+                </div>
               </button>
             </div>
           </section>
@@ -787,7 +889,7 @@ export function MachineDetailPage({
           0 ? (
           <section className="flex flex-col gap-3">
             <SectionTitle icon={<LuWrench className="h-4 w-4" />}>
-              其他进行中的工单
+              ACTIVE TICKETS // 其他进行中的工单
             </SectionTitle>
             {machine.openDispatches
               .filter((d) => d.id !== primary?.id)
@@ -808,28 +910,25 @@ export function MachineDetailPage({
           </section>
         ) : null}
 
-        <section className={cn(shopIos.card, "px-4 py-3")}>
+        <section className="rounded-2xl border border-white/10 bg-slate-950/70 p-4 shadow-lg backdrop-blur-xl">
           <SectionTitle icon={<LuTrendingUp className="h-4 w-4" />}>
-            今日产量
+            TELEMETRY OUTPUT // 今日产量
           </SectionTitle>
-          <p className={cn("mt-2 text-sm", shopIos.muted)}>
-            后续版本上线，敬请期待
-          </p>
+          <div className="mt-3 flex items-center justify-between rounded-xl border border-white/5 bg-slate-900/50 p-3">
+            <span className="text-xs text-slate-400">// 实时计数遥测传感器</span>
+            <span className="rounded-md border border-cyan-400/30 bg-cyan-950/40 px-2 py-0.5 text-[11px] font-bold text-cyan-300">
+              NEXT RELEASE
+            </span>
+          </div>
         </section>
 
         <section>
           <SectionTitle icon={<LuHistory className="h-4 w-4" />}>
-            维修历史
+            MAINTENANCE LOGS // 维修历史
           </SectionTitle>
           {history.length === 0 ? (
-            <p
-              className={cn(
-                shopIos.card,
-                "mt-2 px-4 py-6 text-center text-sm",
-                shopIos.muted
-              )}
-            >
-              暂无历史维修记录
+            <p className="mt-2.5 rounded-2xl border border-white/5 bg-slate-950/60 px-4 py-8 text-center text-xs text-slate-400">
+              // 暂无历史维修记录 (ARCHIVE EMPTY)
             </p>
           ) : (
             <ul className="mt-2.5 flex flex-col gap-2">
@@ -845,20 +944,23 @@ export function MachineDetailPage({
                           ? "报问题"
                           : item.shopKind;
                 return (
-                  <li key={item.id} className={cn(shopIos.card, "px-4 py-3")}>
+                  <li
+                    key={item.id}
+                    className="rounded-2xl border border-white/10 bg-slate-950/70 p-3.5 shadow-md backdrop-blur-xl transition-all hover:border-white/20"
+                  >
                     <div className="flex items-center justify-between gap-2">
-                      <span className="text-sm font-semibold">
+                      <span className="text-sm font-bold text-white tracking-wide">
                         {item.note?.trim() || kindLabel}
                       </span>
-                      <Status color="gray" disableTooltip>
+                      <span className="rounded-md border border-white/10 bg-slate-900 px-2 py-0.5 text-[11px] font-semibold text-slate-300">
                         {item.status === "Completed"
                           ? "已完成"
                           : item.status === "Cancelled"
                             ? "已取消"
                             : item.status}
-                      </Status>
+                      </span>
                     </div>
-                    <p className={cn("mt-1 text-xs", shopIos.muted)}>
+                    <p className="mt-1 text-xs text-slate-400">
                       {[
                         item.note?.trim() ? kindLabel : null,
                         item.assigneeName ?? "未分配"

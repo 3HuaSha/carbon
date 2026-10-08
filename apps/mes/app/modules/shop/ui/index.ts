@@ -1,3 +1,4 @@
+export { CyberCanvas } from "./CyberCanvas";
 export { GroupedAssignPicker } from "./GroupedAssignPicker";
 export { MachineDetailPage } from "./MachineDetailPage";
 export { MachineDetailSheet } from "./MachineDetailSheet";

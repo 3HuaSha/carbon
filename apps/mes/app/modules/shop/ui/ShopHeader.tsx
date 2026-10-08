@@ -17,9 +17,11 @@ import { shopIos } from "./shopIos";
 import { usePwaInstall } from "./usePwaInstall";
 
 /**
- * Compact header (no large titles) + opaque sticky filter strip.
- * Machine-type filters stay at the top; crew shortcuts use the left gutter.
- * No backdrop-blur — solid `--shop-bg` for snappy paint on phones.
+ * Awwwards-caliber Command Header for MES Shop Floor.
+ * Features:
+ * - High-impact industrial HUD typography
+ * - Dynamic production running telemetry gauge
+ * - Cybernetic glass filter strip with laser illumination
  */
 type ShopHeaderProps = {
   locationName: string | null;
@@ -117,30 +119,62 @@ export function ShopHeader({
             ? "用 Chrome 打开"
             : "安装应用";
 
-  const location = locationName?.trim() || null;
+  const location = locationName?.trim() || "车间总览";
+  const runRate = total > 0 ? Math.round((counts.running / total) * 100) : 0;
 
   return (
     <>
-      <div className="px-4 pb-2 pt-3">
-        <h1 className="sr-only">{location || "车间总览"}</h1>
-        <div className="flex items-center justify-between gap-2">
-          <p
-            className={cn(
-              "min-w-0 truncate text-[13px] tabular-nums",
-              shopIos.muted
-            )}
-          >
-            {location ? `${location} · ` : null}
-            {total} 台 ·{" "}
-            <span className="font-semibold text-[color:var(--shop-run)]">
-              {counts.running} 运行
-            </span>{" "}
-            ·{" "}
-            <span className="font-semibold text-[color:var(--shop-down)]">
-              {counts.down} 停机
-            </span>
-          </p>
-          <div className="flex shrink-0 items-center gap-0.5">
+      <div className="relative px-4 pt-3 pb-2.5">
+        <h1 className="sr-only">{location}</h1>
+
+        <div className="flex items-center justify-between gap-3">
+          {/* Tactical Telemetry Badge */}
+          <div className="min-w-0 flex-1">
+            <div className="flex items-center gap-2">
+              <span className="flex h-2 w-2 relative">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
+                <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500 shadow-[0_0_8px_#10b981]" />
+              </span>
+              <span className="font-mono text-[11px] font-bold tracking-widest text-emerald-400/90 uppercase">
+                SYS.LIVE // {location}
+              </span>
+            </div>
+
+            <div className="mt-1 flex items-baseline gap-2 font-mono tabular-nums text-slate-200">
+              <span className="text-xl font-black tracking-tight text-white">
+                {total}
+                <span className="ml-1 text-[11px] font-normal text-slate-400">
+                  UNITS
+                </span>
+              </span>
+              <span className="text-[12px] text-slate-500">/</span>
+              <span className="flex items-center gap-1 text-[13px] font-bold text-emerald-400">
+                <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
+                {counts.running} 运行
+              </span>
+              <span className="text-[12px] text-slate-500">/</span>
+              <span className="flex items-center gap-1 text-[13px] font-bold text-rose-400">
+                <span className="h-1.5 w-1.5 rounded-full bg-rose-400" />
+                {counts.down} 停机
+              </span>
+            </div>
+
+            {/* High-Tech Running Ratio Meter */}
+            <div className="mt-2 flex items-center gap-2">
+              <div className="relative h-1 flex-1 overflow-hidden rounded-full bg-slate-800/80">
+                <div
+                  className="h-full rounded-full bg-gradient-to-r from-emerald-500 via-teal-400 to-cyan-400 shadow-[0_0_8px_rgba(52,211,153,0.6)] transition-all duration-500"
+                  style={{ width: `${runRate}%` }}
+                />
+              </div>
+              <span className="font-mono text-[10px] font-semibold tracking-wider text-slate-400 tabular-nums">
+                {runRate}% EFF
+              </span>
+            </div>
+          </div>
+
+          {/* Action HUD Controls */}
+          <div className="flex shrink-0 items-center gap-2">
             <Link
               to={path.to.shopAlerts}
               aria-label={
@@ -149,33 +183,35 @@ export function ShopHeader({
                   : "提醒"
               }
               className={cn(
-                "relative flex h-9 w-9 items-center justify-center rounded-full",
-                shopIos.link
+                "group relative flex h-10 w-10 items-center justify-center rounded-xl border border-white/10 bg-slate-900/80 text-slate-300 shadow-sm transition-all duration-200 hover:border-cyan-400/50 hover:bg-slate-800 hover:text-white",
+                shopIos.press
               )}
             >
-              <LuBell className="h-5 w-5" />
+              <LuBell className="h-4 w-4 transition-transform duration-200 group-hover:scale-110" />
               {alertUnreadCount > 0 ? (
-                <span className="absolute right-0 top-0 flex h-[16px] min-w-[16px] items-center justify-center rounded-full bg-[color:var(--shop-down)] px-1 text-[10px] font-bold tabular-nums text-white">
+                <span className="absolute -top-1 -right-1 flex h-4 min-w-[16px] items-center justify-center rounded-full bg-rose-500 px-1 font-mono text-[9px] font-black tabular-nums text-white shadow-[0_0_8px_rgba(244,63,94,0.8)]">
                   {alertUnreadCount > 99 ? "99+" : alertUnreadCount}
                 </span>
               ) : null}
             </Link>
+
             {!installed ? (
               <IconButton
                 aria-label={installAria}
                 title={installAria}
                 icon={
                   knownInstalled ? (
-                    <LuMonitor />
+                    <LuMonitor className="h-4 w-4 text-cyan-400" />
                   ) : isIos ? (
-                    <LuShare />
+                    <LuShare className="h-4 w-4 text-cyan-400" />
                   ) : (
-                    <LuDownload />
+                    <LuDownload className="h-4 w-4 text-cyan-400" />
                   )
                 }
                 variant="secondary"
                 size="md"
                 isDisabled={preparing}
+                className="h-10 w-10 rounded-xl border border-white/10 bg-slate-900/80 shadow-sm hover:border-cyan-400/50 hover:bg-slate-800"
                 onClick={() => {
                   void onInstallClick();
                 }}
@@ -185,7 +221,8 @@ export function ShopHeader({
         </div>
       </div>
 
-      <div className={cn("sticky top-0 z-10 px-4 py-2", shopIos.bar)}>
+      {/* Sticky Segmented Machine Type Filter Strip */}
+      <div className={cn("sticky top-0 z-20 px-4 py-2", shopIos.bar)}>
         <div
           className={shopIos.segment}
           role="group"
@@ -234,13 +271,18 @@ function SegmentedOption({
       onClick={onClick}
       className={cn(
         shopIos.segmentItem,
-        "min-h-11 min-w-0 flex-col gap-0.5 !px-1",
+        "min-h-11 min-w-0 flex-col gap-0.5 !px-1 font-mono transition-all duration-200",
         selected &&
-          "!bg-[color:var(--shop-card)] !text-[color:var(--shop-ink)] shadow-sm"
+          "!border-cyan-400/40 !bg-gradient-to-b !from-slate-800 !to-slate-900 !text-white shadow-[0_0_12px_rgba(6,182,212,0.25)]"
       )}
     >
-      {label}
-      <span className="text-[12px] font-semibold tabular-nums opacity-80">
+      <span className="text-[12px] font-bold tracking-wider">{label}</span>
+      <span
+        className={cn(
+          "text-[11px] font-semibold tabular-nums",
+          selected ? "text-cyan-300" : "text-slate-400 opacity-80"
+        )}
+      >
         {count}
       </span>
     </button>
